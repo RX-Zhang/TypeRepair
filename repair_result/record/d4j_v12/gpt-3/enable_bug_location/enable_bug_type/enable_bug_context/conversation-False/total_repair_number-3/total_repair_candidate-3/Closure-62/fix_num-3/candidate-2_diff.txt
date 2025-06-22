@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -27,10 +27,10 @@
+     int charno = error.getCharno();
+ 
+     // padding equal to the excerpt and arrow at the end
+-    // charno == sourceExpert.length() means something is missing
+-    // at the end of the line
++    // charno == sourceExcerpt.length() means something is missing
++    // at the end of the line, so allow caret at end as well
+     if (excerpt.equals(LINE)
+-        && 0 <= charno && charno < sourceExcerpt.length()) {
++        && 0 <= charno && charno <= sourceExcerpt.length()) {
+       for (int i = 0; i < charno; i++) {
+         char c = sourceExcerpt.charAt(i);
+         if (Character.isWhitespace(c)) {
+@@ -44,3 +44,4 @@
+   }
+   return b.toString();
+ }
++

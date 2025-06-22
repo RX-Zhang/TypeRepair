@@ -1,0 +1,48 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 3 items
+
+python_testcases/test_reverse_linked_list.py FF.                         [100%]
+
+=================================== FAILURES ===================================
+____________________________________ test1 _____________________________________
+
+    def test1():
+        """Case 1: 5-node list input
+        Expected Output: 1 2 3 4 5
+        """
+    
+        node1 = Node(1)
+        node2 = Node(2, node1)
+        node3 = Node(3, node2)
+        node4 = Node(4, node3)
+        node5 = Node(5, node4)
+    
+        result = reverse_linked_list(node5)
+>       assert result == node1
+E       assert None == <node.Node object at 0x7f257ac54970>
+
+python_testcases/test_reverse_linked_list.py:22: AssertionError
+____________________________________ test2 _____________________________________
+
+    def test2():
+        """Case 2: 1-node list input
+        Expected Output: 0
+        """
+    
+        node = Node(0)
+    
+        result = reverse_linked_list(node)
+>       assert result == node
+E       assert None == <node.Node object at 0x7f257ac2ac20>
+
+python_testcases/test_reverse_linked_list.py:39: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_reverse_linked_list.py::test1 - assert None == <...
+FAILED python_testcases/test_reverse_linked_list.py::test2 - assert None == <...
+========================= 2 failed, 1 passed in 0.03s ==========================

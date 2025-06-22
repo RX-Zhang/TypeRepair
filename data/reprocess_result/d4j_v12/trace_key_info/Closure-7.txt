@@ -1,0 +1,12 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest.testGoogIsFunction2
+- Error: junit.framework.AssertionFailedError: Expected: (Object|boolean|number|string)
+Actual  : (boolean|number|string)
+- Location:     testClosureFunction("goog.isFunction",
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.SemanticReverseAbstractInterpreterTest.testTypeof3
+- Error: junit.framework.AssertionFailedError: Expected: (Object|boolean|number|string)
+Actual  : (boolean|number|string)
+- Location:     testBinop(blind,

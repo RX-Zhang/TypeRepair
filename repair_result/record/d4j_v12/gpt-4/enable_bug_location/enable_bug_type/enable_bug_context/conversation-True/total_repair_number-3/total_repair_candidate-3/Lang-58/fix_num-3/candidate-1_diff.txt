@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -20,7 +20,10 @@
+     String dec;
+     String exp;
+     int decPos = str.indexOf('.');
+-    int expPos = str.indexOf('e') + str.indexOf('E') + 1;
++    int expPos = str.indexOf('e');
++    if (expPos == -1) {
++        expPos = str.indexOf('E');
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -147,3 +150,4 @@
+         }
+     }
+ }
++

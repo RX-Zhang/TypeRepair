@@ -1,0 +1,101 @@
+--- 
++++ 
+@@ -7,20 +7,28 @@
+     }
+     if (val.startsWith("--")) {
+         // this is protection for poorness in java.lang.BigDecimal.
+-        // it accepts this as a legal value, but it does not appear 
+-        // to be in specification of class. OS X Java parses it to 
++        // it accepts this as a legal value, but it does not appear
++        // to be in specification of class. OS X Java parses it to
+         // a wrong value.
+         return null;
+     }
+     if (val.startsWith("0x") || val.startsWith("-0x")) {
+         return createInteger(val);
+-    }   
++    }
+     char lastChar = val.charAt(val.length() - 1);
+     String mant;
+     String dec;
+     String exp;
++
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    int ePos = val.indexOf('e');
++    int EPos = val.indexOf('E');
++    int expPos = -1;
++    if (ePos > -1 && EPos > -1) {
++        expPos = Math.min(ePos, EPos);
++    } else {
++        expPos = Math.max(ePos, EPos);
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -49,24 +57,26 @@
+         }
+         //Requesting a specific type..
+         String numeric = val.substring(0, val.length() - 1);
++        if (numeric.length() == 0) {
++            throw new NumberFormatException(val + " is not a valid number.");
++        }
+         boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+         switch (lastChar) {
+-            case 'l' :
+-            case 'L' :
+-                if (dec == null
+-                    && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++            case 'l':
++            case 'L':
++                if (dec == null &&
++                        exp == null &&
++                        ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+                         //Too big for a long
+                     }
+                     return createBigInteger(numeric);
+-
+                 }
+                 throw new NumberFormatException(val + " is not a valid number.");
+-            case 'f' :
+-            case 'F' :
++            case 'f':
++            case 'F':
+                 try {
+                     Float f = NumberUtils.createFloat(numeric);
+                     if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+@@ -79,11 +89,11 @@
+                     // ignore the bad number
+                 }
+                 //Fall through
+-            case 'd' :
+-            case 'D' :
++            case 'd':
++            case 'D':
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -95,9 +105,8 @@
+                     // empty catch
+                 }
+                 //Fall through
+-            default :
++            default:
+                 throw new NumberFormatException(val + " is not a valid number.");
+-
+         }
+     } else {
+         //User doesn't have a preference on the return type, so let's start
+@@ -147,3 +156,4 @@
+ 
+     }
+ }
++

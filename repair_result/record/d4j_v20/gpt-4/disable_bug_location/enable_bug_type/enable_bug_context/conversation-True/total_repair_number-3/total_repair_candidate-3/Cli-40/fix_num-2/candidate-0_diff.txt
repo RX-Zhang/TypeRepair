@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -1,5 +1,9 @@
+ public static <T> T createValue(final String str, final Class<T> clazz) throws ParseException
+ {
++    if (str == null || clazz == null) {
++        throw new ParseException("Input string or class type is null");
++    }
++
+     if (PatternOptionBuilder.STRING_VALUE == clazz)
+     {
+         return (T) str;
+@@ -38,6 +42,7 @@
+     }
+     else
+     {
+-        return null;
++        throw new ParseException("Unknown class type: " + clazz.getName());
+     }
+ }
++

@@ -1,0 +1,27 @@
+protected RealPointValuePair getSolution() {
+    double[] coefficients = new double[getOriginalNumDecisionVariables()];
+    Integer basicRow;
+    double mostNegative = 0;
+
+    for (int i = 0; i < coefficients.length; i++) {
+        basicRow = getBasicRow(getNumObjectiveFunctions() + i);
+        if (basicRow != null) {
+            mostNegative = getEntry(basicRow, getRhsOffset());
+        }
+        
+        // if multiple variables can take a given value 
+        // then we choose the first and set the rest equal to 0
+        coefficients[i] = (basicRow == null ? 0 : mostNegative) -
+                (restrictToNonNegative ? 0 : mostNegative);
+        
+        if (basicRow != null) {
+            for (int j = getNumObjectiveFunctions(); j < getNumObjectiveFunctions() + getOriginalNumDecisionVariables(); j++) {
+                if (MathUtils.equals(tableau.getEntry(basicRow, j), 1.0, epsilon)) {
+                    coefficients[i] = 0;
+                    break; // Exit the loop once we set the coefficient to 0
+                }
+            }
+        }
+    }
+    return new RealPointValuePair(coefficients, f.getValue(coefficients));
+}

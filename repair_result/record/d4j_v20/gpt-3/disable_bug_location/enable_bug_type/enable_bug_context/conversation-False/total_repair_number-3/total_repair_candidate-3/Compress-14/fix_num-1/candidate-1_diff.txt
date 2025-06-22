@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -18,9 +18,9 @@
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
++    // Skip leading spaces and NULs (RFC 4880 allows leading spaces and NULs as padding)
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == ' ' || buffer[start] == 0){
+             start++;
+         } else {
+             break;
+@@ -28,18 +28,19 @@
+     }
+ 
+     // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
++    byte trailer = buffer[end-1];
+     if (trailer == 0 || trailer == ' '){
+         end--;
+     } else {
+         throw new IllegalArgumentException(
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+-    // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    // May have additional trailing NUL or space
++    if (end > start) {
++        trailer = buffer[end-1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -55,3 +56,4 @@
+ 
+     return result;
+ }
++

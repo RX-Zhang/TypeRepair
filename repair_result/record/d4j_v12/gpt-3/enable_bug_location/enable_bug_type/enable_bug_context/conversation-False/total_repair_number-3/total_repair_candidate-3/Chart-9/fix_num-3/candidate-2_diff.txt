@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -33,7 +33,8 @@
+         return copy;
+     }
+     else {
++        // Use the correct range for creating the copy
+         return createCopy(startIndex, endIndex);
+     }
++}
+ 
+-}

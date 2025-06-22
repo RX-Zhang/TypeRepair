@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.ZipTestCase.testListAllFilesWithNestedArchive
+- Error: junit.framework.AssertionFailedError: expected:<1> but was:<0>
+- Location:         assertEquals(1, expectedExceptions.size());
+
+
+Test failure 2:
+- Test: org.apache.commons.compress.archivers.zip.ZipArchiveInputStreamTest.testThrowOnInvalidEntry
+- Error: junit.framework.AssertionFailedError: IOException expected
+- Location:             fail("IOException expected");

@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -10,26 +10,37 @@
+         throw MathRuntimeException.createIllegalArgumentException(
+               "bad value for maximum iterations number: {0}", maximumIterations);
+     }
+-    if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
++    if (lowerBound >= upperBound) {
+         throw MathRuntimeException.createIllegalArgumentException(
+-              "invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}",
+-              lowerBound, initial, upperBound);
++              "invalid bracketing parameters:  lower bound={0}, upper bound={1}",
++              lowerBound, upperBound);
+     }
++    if (initial < lowerBound || initial > upperBound) {
++        throw MathRuntimeException.createIllegalArgumentException(
++              "initial value not in valid range: initial={0}, lower bound={1}, upper bound={2}",
++              initial, lowerBound, upperBound);
++    }
++    
+     double a = initial;
+     double b = initial;
+-    double fa;
+-    double fb;
++    double fa = function.value(a);
++    double fb = function.value(b);
+     int numIterations = 0 ;
+ 
+-    do {
+-        a = Math.max(a - 1.0, lowerBound);
+-        b = Math.min(b + 1.0, upperBound);
+-        fa = function.value(a);
+-        
+-        fb = function.value(b);
++    // Only expand interval if f(a) and f(b) don't bracket a root (i.e., have opposite signs)
++    while ((fa * fb > 0.0) && (numIterations < maximumIterations) && 
++            ((a > lowerBound) || (b < upperBound))) {
++
++        if (a > lowerBound) {
++            a = Math.max(a - 1.0, lowerBound);
++            fa = function.value(a);
++        }
++        if (b < upperBound) {
++            b = Math.min(b + 1.0, upperBound);
++            fb = function.value(b);
++        }
+         numIterations++ ;
+-    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && 
+-            ((a > lowerBound) || (b < upperBound)));
++    }
+ 
+     if (fa * fb >= 0.0 ) {
+         throw new ConvergenceException(
+@@ -42,3 +53,4 @@
+     
+     return new double[]{a, b};
+ }
++

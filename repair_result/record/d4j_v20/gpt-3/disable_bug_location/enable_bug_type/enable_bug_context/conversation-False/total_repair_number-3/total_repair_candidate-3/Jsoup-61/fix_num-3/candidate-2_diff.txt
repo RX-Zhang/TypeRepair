@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,5 +1,9 @@
+ public boolean hasClass(String className) {
+     final String classAttr = attributes.get("class");
++    if (classAttr == null) {
++        return false;
++    }
++
+     final int len = classAttr.length();
+     final int wantLen = className.length();
+ 
+@@ -26,7 +30,7 @@
+             }
+         } else {
+             if (!inClass) {
+-                // we're in a class name : keep the start of the substring
++                // we're in a class name: keep the start of the substring
+                 inClass = true;
+                 start = i;
+             }
+@@ -40,3 +44,4 @@
+ 
+     return false;
+ }
++

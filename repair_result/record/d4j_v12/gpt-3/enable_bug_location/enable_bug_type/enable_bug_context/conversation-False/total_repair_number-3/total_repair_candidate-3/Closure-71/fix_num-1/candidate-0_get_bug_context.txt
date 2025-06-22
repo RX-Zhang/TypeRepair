@@ -1,0 +1,1 @@
+['checkPropertyVisibility', 'shouldEmitDeprecationWarning', 'isDeprecatedFunction']

@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CommandLineRunnerTest.testDependencySortingWhitespaceMode
+- Error: junit.framework.AssertionFailedError: 
+Expected: goog.provide("hops");goog.provide("beer");goog.require("hops");goog.require("beer")
+Result: goog.require("beer");goog.provide("beer");goog.require("hops");goog.provide("hops")
+- Location:     test(new String[] {

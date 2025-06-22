@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -5,10 +5,27 @@
+ 
+         String prefix = updateNamespaces(sourceEl);
+         String namespace = namespacesStack.peek().get(prefix);
++
+         String tagName = sourceEl.tagName();
++        String localName = tagName;
++        int colonIndex = tagName.indexOf(':');
++        if (colonIndex != -1) {
++            localName = tagName.substring(colonIndex + 1);
++            // if namespace is null (undeclared), createElementNS should be called with null namespace
++            if (namespace == null) {
++                namespace = null;
++            }
++        } else {
++            localName = tagName;
++        }
+ 
+-        Element el = 
+-            doc.createElementNS(namespace, tagName);
++        Element el;
++        if (namespace == null) {
++            el = doc.createElement(localName);
++        } else {
++            el = doc.createElementNS(namespace, tagName);
++        }
++
+         copyAttributes(sourceEl, el);
+         if (dest == null) { // sets up the root
+             doc.appendChild(el);
+@@ -32,3 +49,4 @@
+         // unhandled
+     }
+ }
++

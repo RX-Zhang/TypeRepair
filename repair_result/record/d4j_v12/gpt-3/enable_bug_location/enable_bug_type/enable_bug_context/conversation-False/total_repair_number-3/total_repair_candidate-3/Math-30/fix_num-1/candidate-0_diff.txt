@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -13,5 +13,15 @@
+ 
+     final NormalDistribution standardNormal = new NormalDistribution(0, 1);
+ 
+-    return 2 * standardNormal.cumulativeProbability(z);
++    // Two-tailed p-value calculated by doubling the smaller tail probability
++    double p;
++    if (z < 0) {
++        p = 2 * standardNormal.cumulativeProbability(z);
++    } else {
++        p = 2 * (1 - standardNormal.cumulativeProbability(z));
++    }
++
++    // Cap p-value at 1 since doubling can exceed 1
++    return Math.min(p, 1.0);
+ }
++

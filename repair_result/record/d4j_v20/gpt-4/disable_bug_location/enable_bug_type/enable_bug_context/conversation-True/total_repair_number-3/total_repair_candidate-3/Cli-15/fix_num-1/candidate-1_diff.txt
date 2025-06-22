@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -3,18 +3,18 @@
+     // initialize the return list
+     List valueList = (List) values.get(option);
+ 
+-    // grab the correct default values
++    // if no command line values are present, use the provided default values
+     if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = defaultValues;
++        if ((defaultValues == null) || defaultValues.isEmpty()) {
++            valueList = (List) this.defaultValues.get(option);
++            if (valueList == null) {
++                valueList = Collections.EMPTY_LIST;
++            }
++        } else {
++            valueList = defaultValues;
++        }
+     }
+ 
+-    // augment the list with the default values
+-    if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = (List) this.defaultValues.get(option);
+-    }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+-    
+-    return valueList == null ? Collections.EMPTY_LIST : valueList;
++    return valueList;
+ }
++

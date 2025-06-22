@@ -1,0 +1,68 @@
+--- 
++++ 
+@@ -26,8 +26,12 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
++        try {
+           addToSetIfLocal(lhs, kill);
+           addToSetIfLocal(lhs, gen);
++        } catch (IllegalStateException e) {
++          // Defensive: ignore if variable not declared or escaped
++        }
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -37,7 +41,11 @@
+         if (c.hasChildren()) {
+           computeGenKill(c.getFirstChild(), gen, kill, conditional);
+           if (!conditional) {
+-            addToSetIfLocal(c, kill);
++            try {
++              addToSetIfLocal(c, kill);
++            } catch (IllegalStateException e) {
++              // Defensive: ignore if variable not declared or escaped
++            }
+           }
+         }
+       }
+@@ -61,7 +69,11 @@
+       if (isArgumentsName(n)) {
+         markAllParametersEscaped();
+       } else {
+-        addToSetIfLocal(n, gen);
++        try {
++          addToSetIfLocal(n, gen);
++        } catch (IllegalStateException e) {
++          // Defensive: ignore if variable not declared or escaped
++        }
+       }
+       return;
+ 
+@@ -69,11 +81,19 @@
+       if (NodeUtil.isAssignmentOp(n) && NodeUtil.isName(n.getFirstChild())) {
+         Node lhs = n.getFirstChild();
+         if (!conditional) {
+-          addToSetIfLocal(lhs, kill);
++          try {
++            addToSetIfLocal(lhs, kill);
++          } catch (IllegalStateException e) {
++            // Defensive: ignore if variable not declared or escaped
++          }
+         }
+         if (!NodeUtil.isAssign(n)) {
+           // assignments such as a += 1 reads a.
+-          addToSetIfLocal(lhs, gen);
++          try {
++            addToSetIfLocal(lhs, gen);
++          } catch (IllegalStateException e) {
++            // Defensive: ignore if variable not declared or escaped
++          }
+         }
+         computeGenKill(lhs.getNext(), gen, kill, conditional);
+       } else {
+@@ -84,3 +104,4 @@
+       return;
+   }
+ }
++

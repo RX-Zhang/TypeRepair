@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -1,24 +1,29 @@
+ public String absUrl(String attributeKey) {
+     Validate.notEmpty(attributeKey);
+ 
+-    String relUrl = attr(attributeKey);
+     if (!hasAttr(attributeKey)) {
+         return ""; // nothing to make absolute with
+-    } else {
+-        URL base;
++    }
++
++    String relUrl = attr(attributeKey);
++    try {
++        URL base = new URL(baseUri);
++        // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
++        if (relUrl.startsWith("?") && base.getFile() != null && !base.getFile().isEmpty()) {
++            // construct string manually to preserve base file with query
++            String baseWithoutQuery = base.toExternalForm().split("\\?")[0];
++            return baseWithoutQuery + relUrl;
++        }
++        URL abs = new URL(base, relUrl);
++        return abs.toExternalForm();
++    } catch (MalformedURLException e) {
+         try {
+-            try {
+-                base = new URL(baseUri);
+-            } catch (MalformedURLException e) {
+-                // the base is unsuitable, but the attribute may be abs on its own, so try that
+-                URL abs = new URL(relUrl);
+-                return abs.toExternalForm();
+-            }
+-            // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+-            URL abs = new URL(base, relUrl);
++            // if baseUri is malformed, maybe relUrl is abs
++            URL abs = new URL(relUrl);
+             return abs.toExternalForm();
+-        } catch (MalformedURLException e) {
++        } catch (MalformedURLException ex) {
+             return "";
+         }
+     }
+ }
++

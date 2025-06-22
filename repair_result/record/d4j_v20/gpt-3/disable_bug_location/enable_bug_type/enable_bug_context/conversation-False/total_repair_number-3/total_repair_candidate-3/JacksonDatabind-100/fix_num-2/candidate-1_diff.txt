@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -16,7 +16,22 @@
+                 return (byte[]) ob;
+             }
+         }
++        // If it's a text node, decode using specified Base64 variant
++        if (n.isTextual()) {
++            String str = n.textValue().trim();
++            if (!str.isEmpty()) {
++                try {
++                    return b64variant.decode(str);
++                } catch (IllegalArgumentException e) {
++                    // Wrap exception as JsonParseException, to provide consistent error handling
++                    throw new JsonParseException(null,
++                        "Cannot access contents of TextNode as binary due to broken Base64 encoding: "
++                        + e.getMessage(), e);
++                }
++            }
++        }
+     }
+     // otherwise return null to mark we have no binary content
+     return null;
+ }
++

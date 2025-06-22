@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,10 +1,15 @@
+ public String setValue(String val) {
+-    String oldVal = parent.get(this.key);
+-    if (parent != null) {
++    if (parent == null) {
++        String oldVal = this.val;
++        this.val = val;
++        return Attributes.checkNotNull(oldVal);
++    } else {
++        String oldVal = parent.get(this.key);
+         int i = parent.indexOfKey(this.key);
+         if (i != Attributes.NotFound)
+             parent.vals[i] = val;
++        this.val = val;
++        return Attributes.checkNotNull(oldVal);
+     }
+-    this.val = val;
+-    return Attributes.checkNotNull(oldVal);
+ }
++

@@ -1,0 +1,76 @@
+--- 
++++ 
+@@ -17,26 +17,58 @@
+         {
+             tokens.add("-");
+         }
+-        else if (arg.startsWith("-"))
++        else if (arg.startsWith("--"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
+-
+-            if (options.hasOption(opt))
++            int pos = arg.indexOf('=');
++            if (pos == -1)
+             {
+                 tokens.add(arg);
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = arg.substring(2, pos);
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add("--" + opt);
++                    tokens.add(arg.substring(pos + 1));
+                 }
+                 else
+                 {
+-                    eatTheRest = stopAtNonOption;
++                    tokens.add(arg);
++                }
++            }
++        }
++        else if (arg.startsWith("-"))
++        {
++            int pos = arg.indexOf('=');
++            if (pos == -1)
++            {
++                String opt = arg.substring(1);
++                if (options.hasOption(opt))
++                {
++                    tokens.add(arg);
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
++            }
++            else
++            {
++                String opt = arg.substring(1, pos);
++                if (options.hasOption(opt))
++                {
++                    tokens.add("-" + opt);
++                    tokens.add(arg.substring(pos + 1));
++                }
++                else if (options.hasOption(arg.substring(0, 2)))
++                {
++                    // the format is a special properties option (-Dproperty=value)
++                    tokens.add(arg.substring(0, 2)); // -D
++                    tokens.add(arg.substring(2));
++                }
++                else
++                {
+                     tokens.add(arg);
+                 }
+             }
+@@ -57,3 +89,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

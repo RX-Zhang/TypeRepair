@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.chart.block.junit.BorderArrangementTests.testSizingWithWidthConstraint
+- Error: java.lang.IllegalArgumentException: Range(double, double): require lower (0.0) <= upper (-2.3000000000000007).
+- Location:         size = container.arrange(g2, constraint);

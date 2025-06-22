@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -17,11 +17,7 @@
+     }
+     String myComment = getComment();
+     String otherComment = other.getComment();
+-    if (myComment == null) {
+-        if (otherComment != null) {
+-            return false;
+-        }
+-    } else if (!myComment.equals(otherComment)) {
++    if ((myComment == null && otherComment != null) || (myComment != null && !myComment.equals(otherComment))) {
+         return false;
+     }
+     return getTime() == other.getTime()
+@@ -38,3 +34,4 @@
+                          other.getLocalFileDataExtra())
+         && gpb.equals(other.gpb);
+ }
++

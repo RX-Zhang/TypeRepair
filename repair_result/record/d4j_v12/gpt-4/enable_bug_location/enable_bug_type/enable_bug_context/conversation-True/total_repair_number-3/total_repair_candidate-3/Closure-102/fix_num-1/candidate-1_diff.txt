@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -9,3 +9,4 @@
+   new PropogateConstantAnnotations(compiler, assertOnChange)
+       .process(externs, root);
+ }
++

@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -20,7 +20,9 @@
+     String dec;
+     String exp;
+     int decPos = str.indexOf('.');
+-    int expPos = str.indexOf('e') + str.indexOf('E') + 1;
++    int expPosE = str.indexOf('e');
++    int expPosEUpper = str.indexOf('E');
++    int expPos = (expPosE == -1) ? expPosEUpper : (expPosEUpper == -1) ? expPosE : Math.min(expPosE, expPosEUpper);
+ 
+     if (decPos > -1) {
+ 
+@@ -68,7 +70,7 @@
+             case 'f' :
+             case 'F' :
+                 try {
+-                    Float f = NumberUtils.createFloat(numeric);
++                    Float f = createFloat(numeric);
+                     if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                         //If it's too big for a float or the float value = 0 and the string
+                         //has non-zeros in it, then float does not have the precision we want
+@@ -82,8 +84,8 @@
+             case 'd' :
+             case 'D' :
+                 try {
+-                    Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    Double d = createDouble(numeric);
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -146,3 +148,4 @@
+         }
+     }
+ }
++

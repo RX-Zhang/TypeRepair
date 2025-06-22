@@ -1,0 +1,1 @@
+['findCalledFunctions', 'decomposeExpressions', 'removeInlinedFunctions', 'verifyAllReferencesInlined']

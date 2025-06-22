@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+   }
+ 
+   Node arrayNode = left.getFirstChild();
+-  Node functionName = arrayNode.getNext();
++  Node functionName = left.getNext();
+ 
+   if ((arrayNode.getType() != Token.ARRAYLIT) ||
+       !functionName.getString().equals("join")) {
+@@ -83,7 +83,11 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      Node joinNode = Node.newString("join");
++      Node callNode = new Node(Token.CALL, Node.newGetProp(arrayNode, joinNode), right.cloneTree());
++      parent.replaceChild(n, callNode);
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

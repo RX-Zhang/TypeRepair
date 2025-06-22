@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -30,10 +30,15 @@
+     } else { // if directly assigned, probably not yet contextual, so:
+         valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, vt);
+     }
+-    // and finally, type deserializer needs context as well
++    // Handle situation for TypeDeserializer to avoid RuntimeErrors
+     TypeDeserializer valueTypeDeser = _valueTypeDeserializer;
+     if (valueTypeDeser != null) {
+         valueTypeDeser = valueTypeDeser.forProperty(property);
+     }
++    // Validate that the resolved valueDeserializer is not null
++    if (valueDeser == null) {
++        throw new JsonMappingException("Value deserializer cannot be null for property: " + property.getName());
++    }
+     return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+ }
++

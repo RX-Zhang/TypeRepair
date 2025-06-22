@@ -1,0 +1,40 @@
+Test failure 1:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseLocalDate_weekyear_month_week_2010
+- Error: junit.framework.AssertionFailedError: expected:<2010-01-04> but was:<2008-12-29>
+- Location:         assertEquals(new LocalDate(2010, 1, 4, chrono), f.parseLocalDate("2010-01-01"));
+
+
+Test failure 2:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseLocalDate_weekyear_month_week_2011
+- Error: junit.framework.AssertionFailedError: expected:<2011-01-03> but was:<2010-01-04>
+- Location:         assertEquals(new LocalDate(2011, 1, 3, chrono), f.parseLocalDate("2011-01-01"));
+
+
+Test failure 3:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseLocalDate_weekyear_month_week_2012
+- Error: junit.framework.AssertionFailedError: expected:<2012-01-02> but was:<2011-01-03>
+- Location:         assertEquals(new LocalDate(2012, 1, 2, chrono), f.parseLocalDate("2012-01-01"));
+
+
+Test failure 4:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseLocalDate_year_month_week_2010
+- Error: junit.framework.AssertionFailedError: expected:<2010-01-04> but was:<2008-12-29>
+- Location:         assertEquals(new LocalDate(2010, 1, 4, chrono), f.parseLocalDate("2010-01-01"));
+
+
+Test failure 5:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseLocalDate_year_month_week_2011
+- Error: junit.framework.AssertionFailedError: expected:<2011-01-03> but was:<2010-01-04>
+- Location:         assertEquals(new LocalDate(2011, 1, 3, chrono), f.parseLocalDate("2011-01-01"));
+
+
+Test failure 6:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseLocalDate_year_month_week_2012
+- Error: junit.framework.AssertionFailedError: expected:<2012-01-02> but was:<2011-01-03>
+- Location:         assertEquals(new LocalDate(2012, 1, 2, chrono), f.parseLocalDate("2012-01-01"));
+
+
+Test failure 7:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseLocalDate_year_month_week_2016
+- Error: junit.framework.AssertionFailedError: expected:<2016-01-04> but was:<2014-12-29>
+- Location:         assertEquals(new LocalDate(2016, 1, 4, chrono), f.parseLocalDate("2016-01-01"));

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+             if (!name.equals(tb.currentElement().nodeName()))
+                 tb.error(this);
+             tb.popStackToClose(name);
+-            break;
++            return true; // must return true here to avoid further processing
+         } else {
+             if (tb.isSpecial(node)) {
+                 tb.error(this);
+@@ -16,5 +16,6 @@
+             }
+         }
+     }
+-    return true;
++    return false; // if no matching element found, should return false
+ }
++

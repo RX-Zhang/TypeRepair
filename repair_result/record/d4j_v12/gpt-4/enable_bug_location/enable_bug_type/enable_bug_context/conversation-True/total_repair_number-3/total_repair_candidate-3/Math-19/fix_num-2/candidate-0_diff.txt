@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+     // Checks whether there is at least one finite bound value.
+     boolean hasFiniteBounds = false;
+     for (int i = 0; i < lB.length; i++) {
+-        if (!Double.isInfinite(lB[i]) ||
++        if (!Double.isInfinite(lB[i]) &&
+             !Double.isInfinite(uB[i])) {
+             hasFiniteBounds = true;
+             break;
+@@ -34,6 +34,15 @@
+             boundaries[1] = uB;
+ 
+             // Abort early if the normalization will overflow (cf. "encode" method).
++            for (int i = 0; i < init.length; i++) {
++                double diff = boundaries[1][i] - boundaries[0][i];
++                if (diff < 0) {
++                    throw new NumberIsTooLargeException(boundaries[0][i], boundaries[1][i], true);
++                }
++                if (Double.isInfinite(diff) || Double.isNaN(diff) || diff == 0) {
++                    throw new MathIllegalStateException();
++                }
++            }
+         }
+     } else {
+         // Convert API to internal handling of boundaries.
+@@ -56,3 +65,4 @@
+         }
+     }
+ }
++

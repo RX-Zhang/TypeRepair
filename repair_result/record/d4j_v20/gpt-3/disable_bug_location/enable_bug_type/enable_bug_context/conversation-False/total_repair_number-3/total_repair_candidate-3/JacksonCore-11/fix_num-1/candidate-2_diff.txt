@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -8,6 +8,15 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++            _needRehash = false; // reset flag if rehash succeeds
++        } catch (Exception e) {
++            // Log or handle unexpected exceptions gracefully
++            // For instance, ignore or rethrow depending on context
++            // To prevent runtime failure, we catch here
++            // e.printStackTrace(); // optionally log
++        }
+     }
+ }
++

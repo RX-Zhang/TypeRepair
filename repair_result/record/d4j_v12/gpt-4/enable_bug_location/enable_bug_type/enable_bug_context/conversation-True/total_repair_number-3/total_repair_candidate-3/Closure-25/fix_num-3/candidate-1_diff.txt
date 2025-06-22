@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -17,6 +17,7 @@
+         ct = (FunctionType) constructorType;
+       }
+       if (ct != null && ct.isConstructor()) {
++        backwardsInferenceFromCallSite(n, ct);
+         type = ct.getInstanceType();
+       }
+     }
+@@ -27,3 +28,4 @@
+   }
+   return scope;
+ }
++

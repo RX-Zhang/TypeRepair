@@ -1,0 +1,12 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.DisambiguatePropertiesTest.testOneType4
+- Error: junit.framework.ComparisonFailure: expected:<{[]}> but was:<{[a=[[Foo.prototype]]]}>
+- Location:     testSets(false, js, js, expected);
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.DisambiguatePropertiesTest.testTwoTypes4
+- Error: junit.framework.AssertionFailedError: 
+Expected: function Foo(){}Foo.prototype={a:0};var F=new Foo;F.a=0;function Bar(){}Bar.prototype={"a":0};var B=new Bar;B["a"]=0
+Result: function Foo(){}Foo.prototype={Foo_prototype$a:0};var F=new Foo;F.Foo_prototype$a=0;function Bar(){}Bar.prototype={"Bar_prototype$a":0};var B=new Bar;B["a"]=0
+- Location:     testSets(false, js, output, "{a=[[Foo.prototype]]}");

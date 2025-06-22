@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -62,4 +62,9 @@
+       problemNodes.add(n);
+     }
+   }
++  // Added boundary check to prevent runtime errors
++  if (problemNodes.size() > 0) {
++    protectSideEffects();
++  }
+ }
++

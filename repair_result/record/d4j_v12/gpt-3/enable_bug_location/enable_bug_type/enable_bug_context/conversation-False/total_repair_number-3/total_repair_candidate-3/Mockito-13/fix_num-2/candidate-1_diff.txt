@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -21,8 +21,10 @@
+             VerificationDataImpl data = new VerificationDataImpl(invocationContainerImpl, invocationMatcher);            
+             verificationMode.verify(data);
+             return null;
+-            // this means there is an invocation on a different mock. Re-adding verification mode 
++        } else {
++            // This means there is an invocation on a different mock. Re-adding verification mode 
+             // - see VerifyingWithAnExtraCallToADifferentMockTest (bug 138)
++            mockingProgress.pushVerificationMode(verificationMode);
+         }
+     }
+     
+@@ -47,3 +49,4 @@
+         return ret;
+     }
+ }
++

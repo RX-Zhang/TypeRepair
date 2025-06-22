@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.caseSensitiveParseTree
+- Error: junit.framework.AssertionFailedError: expected:<<r> <X> A <[/X> <y> B </y]> </r>> but was:<<r> <X> A <[y> B </y> </X]> </r>>
+- Location:         assertEquals("<r> <X> A </X> <y> B </y> </r>", StringUtil.normaliseWhitespace(doc.body().html()));

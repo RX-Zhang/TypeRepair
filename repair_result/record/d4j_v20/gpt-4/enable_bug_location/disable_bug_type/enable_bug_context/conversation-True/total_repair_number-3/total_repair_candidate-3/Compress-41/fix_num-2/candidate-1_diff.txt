@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -26,6 +26,7 @@
+     if (sig.equals(ZipLong.CFH_SIG) || sig.equals(ZipLong.AED_SIG)) {
+         hitCentralDirectory = true;
+         skipRemainderOfArchive();
++        return null; // <== missing return here to prevent further processing
+     }
+     if (!sig.equals(ZipLong.LFH_SIG)) {
+         return null;
+@@ -100,7 +101,8 @@
+             current.in = new BZip2CompressorInputStream(new BoundedInputStream(in, current.entry.getCompressedSize()));
+         }
+     }
+-    
++
+     entriesRead++;
+     return current.entry;
+ }
++

@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CommandLineRunnerTest.testProcessClosurePrimitives
+- Error: junit.framework.AssertionFailedError: 
+Expected: var goog={};goog.provide("goog.dom")
+Result: var goog={};goog.dom={}
+- Location:     testSame("var goog = {}; goog.provide('goog.dom');");

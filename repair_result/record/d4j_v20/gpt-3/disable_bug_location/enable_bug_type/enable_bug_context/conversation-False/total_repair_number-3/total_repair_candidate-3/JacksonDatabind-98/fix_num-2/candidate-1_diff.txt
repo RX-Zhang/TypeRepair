@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -41,7 +41,9 @@
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+                 // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+                 //    apply deserializer... fun fun.
+-                buffer.assignParameter(typeProp, typeId);
++                if (typeId instanceof String) { // Ensure typeId is a String
++                    buffer.assignParameter(typeProp, typeId);
++                }
+             }
+         }
+     }
+@@ -55,3 +57,4 @@
+     }
+     return bean;
+ }
++

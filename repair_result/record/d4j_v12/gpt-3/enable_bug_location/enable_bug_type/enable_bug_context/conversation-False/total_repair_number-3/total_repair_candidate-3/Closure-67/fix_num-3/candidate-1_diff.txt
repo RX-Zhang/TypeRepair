@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -8,7 +8,11 @@
+         n.getFirstChild().getType() == Token.GETPROP;
+ 
+     if (isChainedProperty) {
+-      Node child = n.getFirstChild().getFirstChild().getNext();
++      Node child = n.getFirstChild().getFirstChild();
++
++      if (child.getType() == Token.GETPROP) {
++        child = child.getFirstChild().getNext();
++      }
+ 
+       if (child.getType() == Token.STRING &&
+           child.getString().equals("prototype")) {
+@@ -19,3 +23,4 @@
+ 
+   return false;
+ }
++

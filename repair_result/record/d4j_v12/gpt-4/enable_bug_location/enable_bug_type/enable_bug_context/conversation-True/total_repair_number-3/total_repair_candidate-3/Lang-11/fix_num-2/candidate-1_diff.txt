@@ -1,0 +1,75 @@
+--- 
++++ 
+@@ -14,18 +14,24 @@
+             end = chars.length;
+         } else {
+             if (!letters && !numbers) {
++                start = 0;
+                 end = Integer.MAX_VALUE;
+             } else {
++                start = ' ';
+                 end = 'z' + 1;
+-                start = ' ';                
+             }
+         }
+     }
+ 
++    int gap = end - start;
++    if (gap <= 0) {
++        throw new IllegalArgumentException("Parameter end (" + end + ") must be greater than start (" + start + ")");
++    }
++
+     char[] buffer = new char[count];
+-    int gap = end - start;
++    int generated = 0;
+ 
+-    while (count-- != 0) {
++    while (generated < count) {
+         char ch;
+         if (chars == null) {
+             ch = (char) (random.nextInt(gap) + start);
+@@ -36,32 +42,25 @@
+                 || numbers && Character.isDigit(ch)
+                 || !letters && !numbers) {
+             if(ch >= 56320 && ch <= 57343) {
+-                if(count == 0) {
+-                    count++;
+-                } else {
+-                    // low surrogate, insert high surrogate after putting it in
+-                    buffer[count] = ch;
+-                    count--;
+-                    buffer[count] = (char) (55296 + random.nextInt(128));
++                if (generated + 1 == count) {
++                    continue;
+                 }
++                buffer[generated++] = (char) (55296 + random.nextInt(128));
++                buffer[generated++] = ch;
+             } else if(ch >= 55296 && ch <= 56191) {
+-                if(count == 0) {
+-                    count++;
+-                } else {
+-                    // high surrogate, insert low surrogate before putting it in
+-                    buffer[count] = (char) (56320 + random.nextInt(128));
+-                    count--;
+-                    buffer[count] = ch;
++                if (generated + 1 == count) {
++                    continue;
+                 }
++                buffer[generated++] = ch;
++                buffer[generated++] = (char) (56320 + random.nextInt(128));
+             } else if(ch >= 56192 && ch <= 56319) {
+-                // private high surrogate, no effing clue, so skip it
+-                count++;
++                // private high surrogate, skip it
++                continue;
+             } else {
+-                buffer[count] = ch;
++                buffer[generated++] = ch;
+             }
+-        } else {
+-            count++;
+         }
+     }
+     return new String(buffer);
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -4,7 +4,8 @@
+     List<Class<?>> parents = new ArrayList<Class<?>>();
+     parents.add(mixInCls);
+     ClassUtil.findSuperTypes(mixInCls, targetClass, parents);
+-    for (Class<?> mixin : parents) {
++    for (int i = parents.size() - 1; i >= 0; --i) {
++        Class<?> mixin = parents.get(i);
+         for (Method m : mixin.getDeclaredMethods()) {
+             if (!_isIncludableMemberMethod(m)) {
+                 continue;
+@@ -22,8 +23,9 @@
+                  */
+             } else {
+                 // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
++                mixIns.add(_constructMethod(m));
+             }
+         }
+     }
+ }
++

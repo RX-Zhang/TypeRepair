@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -23,8 +23,8 @@
+     if (key.length() != 0)
+         return Attribute.createFromEncoded(key, value);
+     else {
+-        tq.consume();
+-            
++        // If key is empty, we should not consume but return null directly
+         return null;
+     }
+ }
++

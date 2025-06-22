@@ -1,0 +1,79 @@
+--- 
++++ 
+@@ -8,30 +8,54 @@
+     // Need to deal with all possible hex prefixes here
+     final String[] hex_prefixes = {"0x", "0X", "-0x", "-0X", "#", "-#"};
+     int pfxLen = 0;
++    String prefix = null;
+     for(final String pfx : hex_prefixes) {
+         if (str.startsWith(pfx)) {
+-            pfxLen += pfx.length();
++            prefix = pfx;
++            pfxLen = pfx.length();
+             break;
+         }
+     }
+     if (pfxLen > 0) { // we have a hex number
+-        final int hexDigits = str.length() - pfxLen;
++        // remove prefix for parsing values correctly
++        String hexNumber = str.substring(pfxLen);
++        boolean negative = str.startsWith("-");
++
++        // Determine length without sign and prefix
++        int hexDigits = hexNumber.length();
++
+         if (hexDigits > 16) { // too many for Long
+             return createBigInteger(str);
++        } 
++        if (hexDigits > 8) { // too many for int
++            // Long.decode accepts hex strings with 0x, 0X, # and optional negative
++            try {
++                return createLong(str);
++            } catch (NumberFormatException nfe) {
++                return createBigInteger(str);
++            }
+         }
+-        if (hexDigits > 8) { // too many for an int
+-            return createLong(str);
++
++        // For hex digits <= 8, try Integer first.
++        try {
++            return createInteger(str);
++        } catch (NumberFormatException nfe) {
++            // If fails, try Long
++            try {
++                return createLong(str);
++            } catch (NumberFormatException nfe2) {
++                return createBigInteger(str);
++            }
+         }
+-        return createInteger(str);
+     }
+     final char lastChar = str.charAt(str.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+     final int decPos = str.indexOf('.');
+-    final int expPos = str.indexOf('e') + str.indexOf('E') + 1; // assumes both not present
+-    // if both e and E are present, this is caught by the checks on expPos (which prevent IOOBE)
+-    // and the parsing which will detect if e or E appear in a number due to using the wrong offset
++    final int expIndexE = str.indexOf('e');
++    final int expIndexCapE = str.indexOf('E');
++    final int expPos = (expIndexE == -1) ? expIndexCapE : (expIndexCapE == -1) ? expIndexE : Math.min(expIndexE, expIndexCapE);
+ 
+     int numDecimals = 0; // Check required precision (LANG-693)
+     if (decPos > -1) { // there is a decimal point
+@@ -63,7 +87,7 @@
+         } else {
+             exp = null;
+         }
+-        //Requesting a specific type..
++        // Requesting a specific type..
+         final String numeric = str.substring(0, str.length() - 1);
+         final boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+         switch (lastChar) {
+@@ -163,3 +187,4 @@
+ 
+     return createBigDecimal(str);
+ }
++

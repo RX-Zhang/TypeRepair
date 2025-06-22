@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -206,7 +206,11 @@
+                 tb.insertEmpty(startTag);
+                 tb.framesetOk(false);
+             } else if (name.equals("image")) {
++                if (!tb.getStack().stream().anyMatch(el -> el.nodeName().equals("svg"))) {
+                     return tb.process(startTag.name("img")); // change <image> to <img>, unless in svg
++                } else {
++                    tb.insert(startTag); // in svg, keep as <image>
++                }
+             } else if (name.equals("isindex")) {
+                 // how much do we care about the early 90s?
+                 tb.error(this);
+@@ -505,3 +509,4 @@
+     }
+     return true;
+ }
++

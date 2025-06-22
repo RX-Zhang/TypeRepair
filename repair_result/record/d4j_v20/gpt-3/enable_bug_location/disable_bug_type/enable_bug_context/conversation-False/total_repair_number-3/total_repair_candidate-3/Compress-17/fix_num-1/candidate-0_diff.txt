@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -7,44 +7,36 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
++    // If the buffer starts with a NUL byte, treat as zero
+     if (buffer[start] == 0) {
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
++    // Skip leading spaces or NULs
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == ' ' || buffer[start] == 0){
+             start++;
+         } else {
+             break;
+         }
+     }
+ 
+-    // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    // Must have trailing NUL or space, one or more
++    int last = end - 1;
++    while (last >= start && (buffer[last] == 0 || buffer[last] == ' ')) {
++        last--;
+     }
+ 
+-    for ( ;start < end; start++) {
+-        final byte currentByte = buffer[start];
+-        // CheckStyle:MagicNumber OFF
++    // Now parse octal digits between start and last (inclusive)
++    for (int i = start; i <= last; i++) {
++        final byte currentByte = buffer[i];
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, currentByte));
++                    exceptionMessage(buffer, offset, length, i, currentByte));
+         }
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+     }
+ 
+     return result;
+ }
++

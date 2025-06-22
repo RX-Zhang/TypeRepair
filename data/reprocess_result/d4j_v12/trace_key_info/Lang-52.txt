@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang.StringEscapeUtilsTest.testEscapeJavaScript
+- Error: junit.framework.ComparisonFailure: expected:<...ipt>alert(\'aaa\');<[\]/script>\';> but was:<...ipt>alert(\'aaa\');<[]/script>\';>
+- Location:         assertEquals("document.getElementById(\\\"test\\\").value = \\'<script>alert(\\'aaa\\');<\\/script>\\';",

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -27,7 +27,11 @@
+         CheckLevel.OFF);
+   }
+ 
+-  if (options.checkGlobalThisLevel.isOn()) {
++  if (options.checkGlobalThisLevel.isOff()) { // Corrected logical expression
++    options.setWarningLevel(
++        DiagnosticGroups.GLOBAL_THIS,
++        CheckLevel.OFF); // Ensure warning level is set to OFF
++  } else {
+     options.setWarningLevel(
+         DiagnosticGroups.GLOBAL_THIS,
+         options.checkGlobalThisLevel);
+@@ -61,3 +65,4 @@
+ 
+   this.warningsGuard = composedGuards;
+ }
++

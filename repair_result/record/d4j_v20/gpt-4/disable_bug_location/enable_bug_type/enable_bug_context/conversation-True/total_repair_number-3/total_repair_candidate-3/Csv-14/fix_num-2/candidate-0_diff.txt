@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -7,6 +7,7 @@
+ 
+     final char delimChar = getDelimiter();
+     final char quoteChar = getQuoteCharacter().charValue();
++    final Character escapeChar = getEscapeCharacter();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +37,7 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z')) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -46,7 +47,8 @@
+             } else {
+                 while (pos < end) {
+                     c = value.charAt(pos);
+-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                    if (c == LF || c == CR || c == quoteChar || c == delimChar
++                            || (escapeChar != null && c == escapeChar.charValue())) {
+                         quote = true;
+                         break;
+                     }
+@@ -104,3 +106,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

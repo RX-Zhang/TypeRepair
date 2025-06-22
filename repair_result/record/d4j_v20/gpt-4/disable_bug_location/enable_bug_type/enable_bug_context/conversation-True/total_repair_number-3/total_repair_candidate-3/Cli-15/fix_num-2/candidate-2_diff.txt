@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -3,18 +3,24 @@
+     // initialize the return list
+     List valueList = (List) values.get(option);
+ 
+-    // grab the correct default values
+-    if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = defaultValues;
++    // if there are no values, start with a new list
++    if (valueList == null) {
++        valueList = new ArrayList();
+     }
+ 
+-    // augment the list with the default values
+-    if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = (List) this.defaultValues.get(option);
++    // add all explicitly set values
++    if (valueList.isEmpty() && defaultValues != null && !defaultValues.isEmpty()) {
++        valueList.addAll(defaultValues);
+     }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+-    
++
++    // add defaultValues from this.defaultValues if needed and not already added
++    if (valueList.isEmpty()) {
++        List defVals = (List) this.defaultValues.get(option);
++        if (defVals != null && !defVals.isEmpty()) {
++            valueList.addAll(defVals);
++        }
++    }
++
+     return valueList == null ? Collections.EMPTY_LIST : valueList;
+ }
++

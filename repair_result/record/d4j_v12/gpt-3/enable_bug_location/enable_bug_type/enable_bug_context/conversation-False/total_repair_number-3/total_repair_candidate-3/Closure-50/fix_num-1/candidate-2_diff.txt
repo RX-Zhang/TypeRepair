@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -20,8 +20,7 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+@@ -94,7 +93,7 @@
+       }
+       int kJoinOverhead = "[].join()".length();
+       foldedSize += kJoinOverhead;
+-      foldedSize += (right != null) ? InlineCostEstimator.getCost(right) : 0;
++      foldedSize += (right != null && NodeUtil.isImmutableValue(right)) ? InlineCostEstimator.getCost(right) : 0;
+       if (foldedSize > originalSize) {
+         return n;
+       }
+@@ -108,3 +107,4 @@
+ 
+   return n;
+ }
++

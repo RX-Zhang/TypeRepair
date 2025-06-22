@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -6,23 +6,29 @@
+         return appendTo == null ? null : appendTo.append(QUOTE);
+     }
+     int lastHold = start;
+-    for (int i = pos.getIndex(); i < pattern.length(); i++) {
+-        if (escapingOn && pattern.substring(i).startsWith(ESCAPED_QUOTE)) {
+-            appendTo.append(c, lastHold, pos.getIndex() - lastHold).append(
+-                    QUOTE);
+-            pos.setIndex(i + ESCAPED_QUOTE.length());
+-            lastHold = pos.getIndex();
++    int i = pos.getIndex();
++    while (i < pattern.length()) {
++        if (escapingOn && pattern.startsWith(ESCAPED_QUOTE, i)) {
++            if (appendTo != null) {
++                appendTo.append(c, lastHold, i - lastHold).append(QUOTE);
++            }
++            i += ESCAPED_QUOTE.length();
++            pos.setIndex(i);
++            lastHold = i;
+             continue;
+         }
+-        switch (c[pos.getIndex()]) {
+-        case QUOTE:
+-            next(pos);
+-            return appendTo == null ? null : appendTo.append(c, lastHold,
+-                    pos.getIndex() - lastHold);
+-        default:
+-            next(pos);
++        char ch = c[i];
++        if (ch == QUOTE) {
++            i++;
++            pos.setIndex(i);
++            if (appendTo != null) {
++                appendTo.append(c, lastHold, i - lastHold);
++            }
++            return appendTo;
+         }
++        i++;
+     }
+     throw new IllegalArgumentException(
+             "Unterminated quoted string at position " + start);
+ }
++

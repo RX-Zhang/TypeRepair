@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ public int[] getCounts(int index) {
+     if (index < 0 ||
+         index >= totalSize) {
+-        throw new OutOfRangeException(index, 0, totalSize);
++        throw new OutOfRangeException(index, 0, totalSize - 1);
+     }
+ 
+     final int[] indices = new int[dimension];
+@@ -10,22 +10,15 @@
+     for (int i = 0; i < last; i++) {
+         int idx = 0;
+         final int offset = uniCounterOffset[i];
+-        while (count <= index) {
++        while (count + offset <= index) {
+             count += offset;
+             ++idx;
+         }
+-        --idx;
+-        count -= offset;
+         indices[i] = idx;
+     }
+ 
+-    int idx = 1;
+-    while (count < index) {
+-        count += idx;
+-        ++idx;
+-    }
+-    --idx;
+-    indices[last] = idx;
++    indices[last] = index - count;
+ 
+     return indices;
+ }
++

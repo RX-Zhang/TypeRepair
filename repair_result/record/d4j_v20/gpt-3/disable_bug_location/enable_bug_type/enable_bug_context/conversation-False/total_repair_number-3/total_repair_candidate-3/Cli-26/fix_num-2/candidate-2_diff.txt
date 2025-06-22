@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -2,6 +2,9 @@
+ {
+         // create the option
+     Option option = new Option(opt, description);
++
++        // reset the OptionBuilder properties BEFORE setting them to avoid leaking state
++        OptionBuilder.reset();
+ 
+         // set the option properties
+         option.setLongOpt(longopt);
+@@ -11,9 +14,8 @@
+         option.setType(type);
+         option.setValueSeparator(valuesep);
+         option.setArgName(argName);
+-        // reset the OptionBuilder properties
+-        OptionBuilder.reset();
+ 
+     // return the Option instance
+     return option;
+ }
++

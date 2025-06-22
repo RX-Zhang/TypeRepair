@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.parsing.JsDocInfoParserTest.testTextExtents
+- Error: java.lang.IllegalStateException: Recorded bad position information
+start-char: 14
+end-char: 13
+- Location:     parse("@return {@code foo} bar \n *    baz. */",

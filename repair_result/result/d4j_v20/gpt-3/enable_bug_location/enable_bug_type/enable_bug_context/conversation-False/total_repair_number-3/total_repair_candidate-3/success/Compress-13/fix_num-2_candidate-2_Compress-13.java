@@ -1,0 +1,6 @@
+protected void setName(String name) {
+    if (name != null && name.contains("\\")) {
+        name = name.replace("\\", "/"); // Correcting backslashes to forward slashes
+    }
+    this.name = name;
+}

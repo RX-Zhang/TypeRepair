@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,11 +1,17 @@
+ public List<String> getMatchingOptions(String opt)
+ {
+     opt = Util.stripLeadingHyphens(opt);
+-    
++
+     List<String> matchingOpts = new ArrayList<String>();
+ 
+-    // for a perfect match return the single option only
++    // Check for perfect match first
++    if (hasLongOption(opt))
++    {
++        matchingOpts.add(opt);
++        return matchingOpts;
++    }
+ 
++    // Otherwise, find all options that start with opt
+     for (String longOpt : longOpts.keySet())
+     {
+         if (longOpt.startsWith(opt))
+@@ -13,6 +19,7 @@
+             matchingOpts.add(longOpt);
+         }
+     }
+-    
++
+     return matchingOpts;
+ }
++

@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -47,5 +47,8 @@
+     }
+   }
+ 
+-  return getDeclaredTypeInAnnotation(sourceName, lValue, info);
++  // Ensure to return a type that is not unknown
++  JSType declaredType = getDeclaredTypeInAnnotation(sourceName, lValue, info);
++  return (declaredType != null && !declaredType.isUnknownType()) ? declaredType : null;
+ }
++

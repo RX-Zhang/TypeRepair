@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -1,7 +1,19 @@
+ public RectangularCholeskyDecomposition(RealMatrix matrix, double small)
+     throws NonPositiveDefiniteMatrixException {
+ 
++    // Input validation
++    if (matrix == null) {
++        throw new IllegalArgumentException("Input matrix cannot be null.");
++    }
++    if (small <= 0) {
++        throw new IllegalArgumentException("Small value must be positive.");
++    }
++
+     final int order = matrix.getRowDimension();
++    if (order != matrix.getColumnDimension()) {
++        throw new IllegalArgumentException("Input matrix must be square.");
++    }
++
+     final double[][] c = matrix.getData();
+     final double[][] b = new double[order][order];
+ 
+@@ -18,12 +30,11 @@
+         swap[r] = r;
+         for (int i = r + 1; i < order; ++i) {
+             int ii  = index[i];
+-            int isi = index[swap[i]];
++            int isi = index[swap[r]]; // Corrected from swap[i] to swap[r]
+             if (c[ii][ii] > c[isi][isi]) {
+                 swap[r] = i;
+             }
+         }
+-
+ 
+         // swap elements
+         if (swap[r] != r) {
+@@ -88,3 +99,4 @@
+     }
+ 
+ }
++

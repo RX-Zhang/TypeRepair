@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -59,6 +59,8 @@
+     // For every call argument check for side-effects, even if there
+     // isn't a named parameter to match.
+     if (cArg != null) {
++      // FIX: only increment cArg after checking side effects,
++      // and move cArg = cArg.getNext() after return check.
+       if (NodeUtil.mayHaveSideEffects(cArg, compiler)) {
+         return CanInlineResult.NO;
+       }
+@@ -68,3 +70,4 @@
+ 
+   return CanInlineResult.YES;
+ }
++

@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    if (quoteCharObj == null) {
++        // if no quote char is set, fallback to no quoting
++        printAndEscape(value, offset, len, out);
++        return;
++    }
++    final char quoteChar = quoteCharObj.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,9 +42,9 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            if (newRecord && (c < 0x20 || (c > 0x21 && c < 0x23) || (c > 0x2B && c < 0x2D) || c > 0x7E)) {
+                 quote = true;
+-            } else if (c <= COMMENT) {
++            } else if (c <= getCommentMarkerOrDefault()) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+                 // encapsulate if we start in anything less than '#'. We are being conservative
+                 // by including the default comment char too.
+@@ -104,3 +110,10 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++
++// helper method to get the comment marker for the MINIMAL quote check, defaulting to '#' (which is ASCII 35)
++private char getCommentMarkerOrDefault() {
++    final Character c = getCommentMarker();
++    return c != null ? c.charValue() : '#';
++}
++

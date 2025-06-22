@@ -1,0 +1,1 @@
+['getPropertyIndex', 'getBean', 'getPropertyName', 'isActualProperty', 'isActual', 'getImmediateNode', 'getImmediateValuePointer']

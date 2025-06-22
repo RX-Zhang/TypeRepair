@@ -1,0 +1,34 @@
+Test failure 1:
+- Test: org.apache.commons.math.stat.descriptive.SummaryStatisticsTest.testOverrideMeanWithMathClass
+- Error: junit.framework.AssertionFailedError: expected:<2.5> but was:<NaN>
+- Location:         Assert.assertEquals((new Mean()).evaluate(scores),stats.getMean(), 0); 
+
+
+Test failure 2:
+- Test: org.apache.commons.math.stat.descriptive.SummaryStatisticsTest.testOverrideGeoMeanWithMathClass
+- Error: junit.framework.AssertionFailedError: expected:<2.213363839400643> but was:<NaN>
+- Location:         Assert.assertEquals((new GeometricMean()).evaluate(scores),stats.getGeometricMean(), 0); 
+
+
+Test failure 3:
+- Test: org.apache.commons.math.stat.descriptive.SummaryStatisticsTest.testOverrideVarianceWithMathClass
+- Error: junit.framework.AssertionFailedError: expected:<1.25> but was:<NaN>
+- Location:         Assert.assertEquals((new Variance(false)).evaluate(scores),stats.getVariance(), 0); 
+
+
+Test failure 4:
+- Test: org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest.testOverrideMeanWithMathClass
+- Error: junit.framework.AssertionFailedError: expected:<2.5> but was:<NaN>
+- Location:         Assert.assertEquals((new Mean()).evaluate(scores),stats.getMean(), 0); 
+
+
+Test failure 5:
+- Test: org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest.testOverrideGeoMeanWithMathClass
+- Error: junit.framework.AssertionFailedError: expected:<2.213363839400643> but was:<NaN>
+- Location:         Assert.assertEquals((new GeometricMean()).evaluate(scores),stats.getGeometricMean(), 0); 
+
+
+Test failure 6:
+- Test: org.apache.commons.math.stat.descriptive.SynchronizedSummaryStatisticsTest.testOverrideVarianceWithMathClass
+- Error: junit.framework.AssertionFailedError: expected:<1.25> but was:<NaN>
+- Location:         Assert.assertEquals((new Variance(false)).evaluate(scores),stats.getVariance(), 0);

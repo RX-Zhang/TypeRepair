@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -15,6 +15,10 @@
+     while (start < end){
+         if (buffer[start] == ' '){
+             start++;
++        } else if (buffer[start] == 0) {
++            // embedded NUL is invalid
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, buffer[start]));
+         } else {
+             break;
+         }
+@@ -35,6 +39,11 @@
+         if (currentByte == 0) {
+             break;
+         }
++        if (currentByte == ' ') {
++            // embedded space is invalid
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
++        }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+@@ -46,3 +55,4 @@
+ 
+     return result;
+ }
++

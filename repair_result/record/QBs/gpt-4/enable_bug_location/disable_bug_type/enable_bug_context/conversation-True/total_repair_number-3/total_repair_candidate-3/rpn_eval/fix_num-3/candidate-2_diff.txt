@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+             '-': lambda a, b: a - b,
+             '*': lambda a, b: a * b,
+             '/': lambda a, b: a / b
+-        }[symbol](a, b)
++        }[symbol](b, a)
+     stack = []
+     for token in tokens:
+         if isinstance(token, float):

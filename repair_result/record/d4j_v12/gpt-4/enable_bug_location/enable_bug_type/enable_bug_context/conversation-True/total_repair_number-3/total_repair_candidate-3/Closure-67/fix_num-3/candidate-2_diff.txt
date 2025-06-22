@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -5,12 +5,16 @@
+       ) {
+     // We want to exclude the assignment itself from the usage list
+     boolean isChainedProperty =
++        n.getFirstChild() != null &&
+         n.getFirstChild().getType() == Token.GETPROP;
+ 
+     if (isChainedProperty) {
+-      Node child = n.getFirstChild().getFirstChild().getNext();
++      Node firstChild = n.getFirstChild();
++      Node secondChild = firstChild.getFirstChild();
++      Node child = (secondChild != null) ? secondChild.getNext() : null;
+ 
+-      if (child.getType() == Token.STRING &&
++      if (child != null &&
++          child.getType() == Token.STRING &&
+           child.getString().equals("prototype")) {
+         return true;
+       }
+@@ -19,3 +23,4 @@
+ 
+   return false;
+ }
++

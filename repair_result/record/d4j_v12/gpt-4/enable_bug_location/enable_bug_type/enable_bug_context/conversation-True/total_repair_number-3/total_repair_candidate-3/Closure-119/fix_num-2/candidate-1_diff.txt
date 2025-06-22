@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -110,7 +110,20 @@
+ 
+   // We are only interested in global names.
+   if (!isGlobalNameReference(name, scope)) {
+-    return;
++    // Add handling for catch block exception variables which are lexically
++    // scoped but should not be considered undefined names
++    if (parent != null && parent.isCatch()) {
++      name = n.getString();
++      if (name != null) {
++        // The catch parameter introduces a local variable, so skip
++        // if it's bound to the current scope.
++        if (scope.getVar(name) != null && scope.getVar(name).isCatchParam()) {
++          return;
++        }
++      }
++    } else {
++      return;
++    }
+   }
+ 
+   if (isSet) {
+@@ -123,3 +136,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

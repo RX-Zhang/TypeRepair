@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -18,4 +18,8 @@
+         if (next == firstFound)
+             break;
+     }
++
++    // After popping elements up to firstFound, reinsert the firstFound element
++    stack.add(firstFound);
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -30,7 +30,9 @@
+                 }
+                 break;
+         }
+-        if (lineLength > 0) {
++        // Only append line separator if something was added to buffer just before
++        // This avoids appending an unnecessary line separator when no data has been encoded
++        if (lineLength > 0 && pos > 0) {
+             System.arraycopy(lineSeparator, 0, buf, pos, lineSeparator.length);
+             pos += lineSeparator.length;
+         }
+@@ -58,3 +60,4 @@
+         }
+     }
+ }
++

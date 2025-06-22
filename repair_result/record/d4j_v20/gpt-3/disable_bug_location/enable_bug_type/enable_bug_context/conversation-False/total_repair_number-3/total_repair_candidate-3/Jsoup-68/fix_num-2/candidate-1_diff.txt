@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -1,12 +1,14 @@
+ private boolean inSpecificScope(String[] targetNames, String[] baseTypes, String[] extraTypes) {
+     // https://html.spec.whatwg.org/multipage/parsing.html#has-an-element-in-the-specific-scope
+-    int bottom = stack.size() -1;
++    int stackSize = stack.size();
++    int bottom = stackSize - 1;
+     if (bottom > MaxScopeSearchDepth) {
+         bottom = MaxScopeSearchDepth;
+     }
+-    final int top = bottom > MaxScopeSearchDepth ? bottom - MaxScopeSearchDepth : 0;
++    final int top = 0;  // Always starts from 0
++
+     // don't walk too far up the tree
+-
++    // Scan from bottom (closest to top of stack) up to top (0)
+     for (int pos = bottom; pos >= top; pos--) {
+         final String elName = stack.get(pos).nodeName();
+         if (inSorted(elName, targetNames))
+@@ -16,6 +18,6 @@
+         if (extraTypes != null && inSorted(elName, extraTypes))
+             return false;
+     }
+-    //Validate.fail("Should not be reachable"); // would end up false because hitting 'html' at root (basetypes)
+     return false;
+ }
++

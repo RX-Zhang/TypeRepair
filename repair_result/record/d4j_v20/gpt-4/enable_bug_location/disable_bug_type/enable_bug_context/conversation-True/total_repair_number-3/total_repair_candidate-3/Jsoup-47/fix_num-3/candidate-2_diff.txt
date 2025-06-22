@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -43,6 +43,8 @@
+                     // escape when in character data or when in a xml attribue val; not needed in html attr val
+                     if (!inAttribute)
+                         accum.append("&lt;");
++                    else if (escapeMode == EscapeMode.xhtml)
++                        accum.append("&lt;");
+                     else
+                         accum.append(c);
+                     break;
+@@ -71,7 +73,8 @@
+             if (encoder.canEncode(c)) // uses fallback encoder for simplicity
+                 accum.append(c);
+             else
+-                accum.append("&#x").append(Integer.toHexString(codePoint)).append(';');
++                accum.append("&#x").append(Integer.toHexString(codePoint)).append(';");
+         }
+     }
+ }
++

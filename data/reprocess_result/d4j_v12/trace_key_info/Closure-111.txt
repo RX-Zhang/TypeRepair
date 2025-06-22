@@ -1,0 +1,5 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.ClosureReverseAbstractInterpreterTest.testGoogIsArray2
+- Error: junit.framework.AssertionFailedError: Expected: Array
+Actual  : *
+- Location:     testClosureFunction("goog.isArray",

@@ -1,0 +1,1 @@
+{"ClassName": "Coders", "Fields": ["static CoderId[] coderTable;"], "Methods": ["static InputStream addDecoder(InputStream is, Coder coder, byte[] password) { ... }", "static OutputStream addEncoder(OutputStream out, SevenZMethod method, byte[] password) { ... }"]}

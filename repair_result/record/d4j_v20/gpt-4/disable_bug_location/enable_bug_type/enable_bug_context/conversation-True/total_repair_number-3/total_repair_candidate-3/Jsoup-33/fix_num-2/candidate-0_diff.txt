@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,9 +1,7 @@
+ Element insert(Token.StartTag startTag) {
+-    // handle empty unknown tags
+-    // when the spec expects an empty tag, will directly hit insertEmpty, so won't generate this fake end tag.
+     if (startTag.isSelfClosing()) {
+         Element el = insertEmpty(startTag);
+-        stack.add(el);
++        push(el);
+         tokeniser.emit(new Token.EndTag(el.tagName()));  // ensure we get out of whatever state we are in. emitted for yielded processing
+         return el;
+     }
+@@ -12,3 +10,4 @@
+     insert(el);
+     return el;
+ }
++

@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -6,8 +6,10 @@
+   }
+ 
+   Node right = callTarget.getNext();
++  // Only fold if right is null or a string/boolean/number literal,
++  // do not fold if there are more than one argument or if right is not immutable.
+   if (right != null) {
+-    if (!NodeUtil.isImmutableValue(right)) {
++    if (!NodeUtil.isImmutableValue(right) || right.getNext() != null) {
+       return n;
+     }
+   }
+@@ -20,8 +22,7 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+@@ -89,7 +90,8 @@
+       return foldedStringNode;
+     default:
+       // No folding could actually be performed.
+-      if (arrayFoldedChildren.size() == arrayNode.getChildCount()) {
++      if (arrayFoldedChildren.size() == arrayNode.getChildCount() &&
++          (right == null || right.getType() == Token.STRING && right.getString().equals(","))) {
+         return n;
+       }
+       int kJoinOverhead = "[].join()".length();
+@@ -102,9 +104,16 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      // Correct the call signature: 
++      // If joinString is ",", use .join(), else .join(joinString)
++      if (right != null && joinString.equals(",")) {
++        // Remove join argument so it's .join() (default separator)
++        callTarget.removeChild(right);
++      }
+       reportCodeChange();
+       break;
+   }
+ 
+   return n;
+ }
++

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,8 +1,10 @@
+ @Override public void visit(NodeTraversal t, Node n, Node parent) {
+   if (n == scope.getRootNode()) return;
+ 
+-  if (n.getType() == Token.LP && parent == scope.getRootNode()) {
+-    handleFunctionInputs(parent);
++  // The check should be if n is a FUNCTION node and parent is the root,
++  // meaning it's a function expression immediately under the root.
++  if (n.getType() == Token.FUNCTION && parent == scope.getRootNode()) {
++    handleFunctionInputs(n);
+     return;
+   }
+ 
+@@ -22,3 +24,4 @@
+       break;
+   }
+ }
++

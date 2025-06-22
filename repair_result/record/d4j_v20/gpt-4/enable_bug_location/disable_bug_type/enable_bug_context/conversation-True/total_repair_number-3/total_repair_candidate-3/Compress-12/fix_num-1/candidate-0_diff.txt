@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -33,10 +33,10 @@
+         StringBuffer longName = new StringBuffer();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+         int length = 0;
+-        while ((length = read(buf)) >= 0) {
++        while ((length = read(buf, 0, buf.length)) >= 0) {
+             longName.append(new String(buf, 0, length));
+         }
+-        getNextEntry();
++        currEntry = (TarArchiveEntry) getNextEntry();
+         if (currEntry == null) {
+             // Bugzilla: 40334
+             // Malformed tar file - long entry name not followed by entry
+@@ -48,6 +48,7 @@
+             longName.deleteCharAt(longName.length() - 1);
+         }
+         currEntry.setName(longName.toString());
++        entrySize = currEntry.getSize();
+     }
+ 
+     if (currEntry.isPaxHeader()){ // Process Pax headers
+@@ -65,3 +66,4 @@
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

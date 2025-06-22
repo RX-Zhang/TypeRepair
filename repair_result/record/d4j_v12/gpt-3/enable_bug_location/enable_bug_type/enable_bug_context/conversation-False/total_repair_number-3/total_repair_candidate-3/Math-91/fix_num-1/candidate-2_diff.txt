@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public int compareTo(Fraction object) {
+-    double nOd = doubleValue();
+-    double dOn = object.doubleValue();
+-    return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);
++    if (object == null) {
++        throw new NullPointerException("Comparison fraction must not be null");
++    }
++    int crossProduct = this.numerator * object.denominator - object.numerator * this.denominator;
++    return (crossProduct < 0) ? -1 : ((crossProduct > 0) ? 1 : 0);
+ }
++

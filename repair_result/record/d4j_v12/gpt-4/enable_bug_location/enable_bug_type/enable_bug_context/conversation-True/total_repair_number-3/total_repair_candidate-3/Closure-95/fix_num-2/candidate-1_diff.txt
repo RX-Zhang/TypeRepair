@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ void defineSlot(Node n, Node parent, JSType type, boolean inferred) {
+   Preconditions.checkArgument(inferred || type != null);
+ 
+-  // Only allow declarations of NAMEs and qualfied names.
++  // Only allow declarations of NAMEs and qualified names.
+   boolean shouldDeclareOnGlobalThis = false;
+   if (n.getType() == Token.NAME) {
+     Preconditions.checkArgument(
+@@ -26,9 +26,6 @@
+   // who declare "global" names in an anonymous namespace.
+   Scope scopeToDeclareIn = scope;
+ 
+-    // don't try to declare in the global scope if there's
+-    // already a symbol there with this name.
+-
+   // declared in closest scope?
+   if (scopeToDeclareIn.isDeclared(variableName, false)) {
+     Var oldVar = scopeToDeclareIn.getVar(variableName);
+@@ -43,8 +40,8 @@
+ 
+     if (shouldDeclareOnGlobalThis) {
+       ObjectType globalThis =
+-          typeRegistry.getNativeObjectType(JSTypeNative.GLOBAL_THIS);
+-      boolean isExtern = input.isExtern();
++          typeRegistry.getNativeType(JSTypeNative.GLOBAL_THIS);
++      boolean isExtern = input != null && input.isExtern();
+       if (inferred) {
+         globalThis.defineInferredProperty(variableName,
+             type == null ?
+@@ -67,8 +64,9 @@
+             /* declared iff there's an explicit supertype */
+             superClassCtor == null ||
+             superClassCtor.getInstanceType().equals(
+-                getNativeType(OBJECT_TYPE)));
++                getNativeType(JSTypeNative.OBJECT_TYPE)));
+       }
+     }
+   }
+ }
++

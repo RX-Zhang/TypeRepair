@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest.testIssue631
+- Error: java.lang.Exception: Unexpected exception, expected<org.apache.commons.math.exception.ConvergenceException> but was<org.apache.commons.math.exception.TooManyEvaluationsException>
+- Location:         final double root = solver.solve(3624, f, 1, 10);

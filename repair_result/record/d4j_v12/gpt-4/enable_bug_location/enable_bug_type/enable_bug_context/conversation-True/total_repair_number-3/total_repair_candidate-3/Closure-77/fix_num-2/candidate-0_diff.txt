@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -40,6 +40,10 @@
+           sb.append(c);
+         }
+         break;
++      case '\0':
++        // Special case for null character: output as \0 instead of \u0000
++        sb.append("\\0");
++        break;
+       default:
+         // If we're given an outputCharsetEncoder, then check if the
+         //  character can be represented in this character set.
+@@ -68,3 +72,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

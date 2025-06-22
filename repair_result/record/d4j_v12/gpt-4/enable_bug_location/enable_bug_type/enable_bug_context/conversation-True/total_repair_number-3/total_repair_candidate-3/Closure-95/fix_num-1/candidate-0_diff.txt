@@ -1,0 +1,50 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ void defineSlot(Node n, Node parent, JSType type, boolean inferred) {
+   Preconditions.checkArgument(inferred || type != null);
+ 
+-  // Only allow declarations of NAMEs and qualfied names.
++  // Only allow declarations of NAMEs and qualified names.
+   boolean shouldDeclareOnGlobalThis = false;
+   if (n.getType() == Token.NAME) {
+     Preconditions.checkArgument(
+@@ -24,10 +24,25 @@
+   // If n is a property, then we should really declare it in the
+   // scope where the root object appears. This helps out people
+   // who declare "global" names in an anonymous namespace.
++  // Correctly identify the scope to declare in by using the root object's scope.
+   Scope scopeToDeclareIn = scope;
++  if (n.getType() == Token.GETPROP) {
++    Node root = n;
++    while (root.getType() == Token.GETPROP) {
++      root = root.getFirstChild();
++    }
++    // Get the name of the root object (e.g., "ns" in "ns.foo")
++    String rootName = root.getQualifiedName();
++    if (!rootName.isEmpty()) {
++      Var rootVar = scope.getVar(rootName);
++      if (rootVar != null) {
++        scopeToDeclareIn = rootVar.getScope();
++      }
++    }
++  }
+ 
+-    // don't try to declare in the global scope if there's
+-    // already a symbol there with this name.
++  // don't try to declare in the scope if there's
++  // already a symbol there with this name.
+ 
+   // declared in closest scope?
+   if (scopeToDeclareIn.isDeclared(variableName, false)) {
+@@ -67,8 +82,9 @@
+             /* declared iff there's an explicit supertype */
+             superClassCtor == null ||
+             superClassCtor.getInstanceType().equals(
+-                getNativeType(OBJECT_TYPE)));
++                getNativeType(JSTypeNative.OBJECT_TYPE)));
+       }
+     }
+   }
+ }
++

@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -1,8 +1,17 @@
+ public Date read(JsonReader in) throws IOException {
+-  if (in.peek() != JsonToken.STRING) {
++  JsonToken token = in.peek();
++  if (token == JsonToken.NULL) {
++    in.nextNull();
++    return null;
++  }
++  if (token != JsonToken.STRING) {
+     throw new JsonParseException("The date should be a string value");
+   }
+-  Date date = deserializeToDate(in.nextString());
++  String dateString = in.nextString();
++  if (dateString == null || dateString.trim().isEmpty()) {
++    return null;
++  }
++  Date date = deserializeToDate(dateString);
+   if (dateType == Date.class) {
+     return date;
+   } else if (dateType == Timestamp.class) {
+@@ -14,3 +23,4 @@
+     throw new AssertionError();
+   }
+ }
++

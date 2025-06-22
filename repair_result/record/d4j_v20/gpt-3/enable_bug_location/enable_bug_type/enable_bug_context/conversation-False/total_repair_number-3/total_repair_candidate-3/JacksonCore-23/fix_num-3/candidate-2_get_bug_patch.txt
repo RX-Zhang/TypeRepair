@@ -1,0 +1,7 @@
+public DefaultPrettyPrinter createInstance() {
+    // Ensure the instance is a valid subclass
+    if (!(this instanceof MyPrettyPrinter)) {
+        throw new IllegalStateException("Instance does not override createInstance");
+    }
+    return new DefaultPrettyPrinter(this);
+}

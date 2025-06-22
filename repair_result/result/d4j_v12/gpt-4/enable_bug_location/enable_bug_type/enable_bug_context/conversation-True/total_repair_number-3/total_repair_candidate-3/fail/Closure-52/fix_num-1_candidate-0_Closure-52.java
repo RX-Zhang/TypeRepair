@@ -1,0 +1,35 @@
+static boolean isSimpleNumber(String s) {
+  if (s.isEmpty()) {
+    return false;
+  }
+  int start = 0;
+  if (s.charAt(0) == '0' && s.length() > 1) {
+    char second = s.charAt(1);
+    // Handle octal and hex prefixes
+    if (second == 'x' || second == 'X') {
+      // Hexadecimal number, digits can be 0-9 a-f A-F
+      for (int i = 2; i < s.length(); i++) {
+        char c = s.charAt(i);
+        boolean isDigit = (c >= '0' && c <= '9');
+        boolean isLowerAtoF = (c >= 'a' && c <= 'f');
+        boolean isUpperAtoF = (c >= 'A' && c <= 'F');
+        if (!isDigit && !isLowerAtoF && !isUpperAtoF) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+  boolean hasDecimalPoint = false;
+  for (int i = 0; i < s.length(); i++) {
+    char c = s.charAt(i);
+    if (c >= '0' && c <= '9') {
+      continue;
+    } else if (c == '.' && !hasDecimalPoint) {
+      hasDecimalPoint = true;
+    } else {
+      return false;
+    }
+  }
+  return true;
+}

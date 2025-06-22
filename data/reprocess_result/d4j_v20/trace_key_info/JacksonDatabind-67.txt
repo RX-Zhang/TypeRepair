@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.module.TestCustomEnumKeyDeserializer.testCustomEnumValueAndKeyViaModifier
+- Error: com.fasterxml.jackson.databind.exc.InvalidFormatException: Can not deserialize Map key of type com.fasterxml.jackson.databind.module.TestCustomEnumKeyDeserializer$KeyEnum from String "REPlaceMENTS": not a valid representation, problem: (com.fasterxml.jackson.databind.exc.InvalidFormatException) Can not deserialize Map key of type com.fasterxml.jackson.databind.module.TestCustomEnumKeyDeserializer$KeyEnum from String "REPlaceMENTS": not one of values excepted for Enum class: [rootDirectory, replacements, licenseString]
+- Location:         EnumMap<KeyEnum,String> map = mapper.readValue(

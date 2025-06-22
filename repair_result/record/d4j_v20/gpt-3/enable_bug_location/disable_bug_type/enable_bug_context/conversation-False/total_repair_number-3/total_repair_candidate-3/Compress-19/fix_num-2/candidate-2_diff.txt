@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -17,23 +17,28 @@
+                                    + rawCentralDirectoryData.length);
+         }
+         int offset = 0;
+-        if (hasUncompressedSize) {
+-            size = new ZipEightByteInteger(rawCentralDirectoryData, offset);
+-            offset += DWORD;
+-        }
+-        if (hasCompressedSize) {
+-            compressedSize = new ZipEightByteInteger(rawCentralDirectoryData,
+-                                                     offset);
+-            offset += DWORD;
+-        }
+-        if (hasRelativeHeaderOffset) {
+-            relativeHeaderOffset =
+-                new ZipEightByteInteger(rawCentralDirectoryData, offset);
+-            offset += DWORD;
+-        }
+-        if (hasDiskStart) {
+-            diskStart = new ZipLong(rawCentralDirectoryData, offset);
+-            offset += WORD;
++        try {
++            if (hasUncompressedSize) {
++                size = new ZipEightByteInteger(rawCentralDirectoryData, offset);
++                offset += DWORD;
++            }
++            if (hasCompressedSize) {
++                compressedSize = new ZipEightByteInteger(rawCentralDirectoryData,
++                                                         offset);
++                offset += DWORD;
++            }
++            if (hasRelativeHeaderOffset) {
++                relativeHeaderOffset =
++                    new ZipEightByteInteger(rawCentralDirectoryData, offset);
++                offset += DWORD;
++            }
++            if (hasDiskStart) {
++                diskStart = new ZipLong(rawCentralDirectoryData, offset);
++                offset += WORD;
++            }
++        } catch (ArrayIndexOutOfBoundsException e) {
++            throw new ZipException("Error while parsing central directory data: " + e.getMessage());
+         }
+     }
+ }
++

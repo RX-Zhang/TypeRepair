@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -6,7 +6,9 @@
+ 
+     case Token.GETPROP:
+       String qualifiedName = node.getQualifiedName();
+-      Preconditions.checkNotNull(qualifiedName);
++      if (qualifiedName == null) {
++        throw new IllegalArgumentException("Qualified name cannot be null. \n" + node.toStringTree());
++      }
+ 
+       JSType origType = node.getJSType();
+       origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+@@ -20,3 +22,4 @@
+           node.toStringTree());
+   }
+ }
++

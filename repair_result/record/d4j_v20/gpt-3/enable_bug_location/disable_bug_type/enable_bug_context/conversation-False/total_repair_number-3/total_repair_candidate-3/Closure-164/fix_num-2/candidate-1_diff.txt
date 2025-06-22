@@ -1,0 +1,84 @@
+--- 
++++ 
+@@ -34,42 +34,57 @@
+   // So, in this case, g < f, but f !< g
+   Node thisParam = parameters.getFirstChild();
+   Node thatParam = that.parameters.getFirstChild();
+-  while (thisParam != null && thatParam != null) {
+-    JSType thisParamType = thisParam.getJSType();
+-    JSType thatParamType = thatParam.getJSType();
++
++  while (thisParam != null || thatParam != null) {
++    JSType thisParamType = thisParam != null ? thisParam.getJSType() : null;
++    JSType thatParamType = thatParam != null ? thatParam.getJSType() : null;
++
+     if (thisParamType != null) {
+-      if (thatParamType == null ||
+-          !thatParamType.isSubtype(thisParamType)) {
++      if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
++        return false;
++      }
++    } else {
++      // If this param type is null but that param type is non-null, fail
++      if (thatParamType != null) {
+         return false;
+       }
+     }
+ 
+-    boolean thisIsVarArgs = thisParam.isVarArgs();
+-    boolean thatIsVarArgs = thatParam.isVarArgs();
++    boolean thisIsVarArgs = thisParam != null && thisParam.isVarArgs();
++    boolean thatIsVarArgs = thatParam != null && thatParam.isVarArgs();
+ 
+-    // "that" can't be a supertype, because it's missing a required argument.
+-      // NOTE(nicksantos): In our type system, we use {function(...?)} and
+-      // {function(...NoType)} to to indicate that arity should not be
+-      // checked. Strictly speaking, this is not a correct formulation,
+-      // because now a sub-function can required arguments that are var_args
+-      // in the super-function. So we special-case this.
++    // If both are var_args, we can consider there are no more parameters
++    if (thisIsVarArgs && thatIsVarArgs) {
++      break;
++    }
+ 
+-    // don't advance if we have variable arguments
++    // If "that" function has var_args param but "this" doesn't, "that" is a supertype only if
++    // "that" param is subtype of "this" param and "this" has no more parameters
++    if (thatIsVarArgs && !thisIsVarArgs) {
++      // "thisParam" is non-varargs, "thatParam" is varargs
++      // Move 'thatParam' forward only if it's not var_args (if var_args, it covers unlimited params)
++      thatParam = thatParam.getNext();
++      // But if "thisParam" has more params, "that" is missing required args
++      if (thisParam != null && thisParam.getNext() != null) {
++        return false;
++      }
++      break;
++    }
++
++    // If "this" function has var_args param but "that" doesn't, then "that" cannot be a supertype
++    if (thisIsVarArgs && !thatIsVarArgs) {
++      return false;
++    }
++
++    // Advance to next parameter if not var_args
+     if (!thisIsVarArgs) {
+-      thisParam = thisParam.getNext();
++      thisParam = (thisParam != null) ? thisParam.getNext() : null;
+     }
+     if (!thatIsVarArgs) {
+-      thatParam = thatParam.getNext();
+-    }
+-
+-    // both var_args indicates the end
+-    if (thisIsVarArgs && thatIsVarArgs) {
+-      thisParam = null;
+-      thatParam = null;
++      thatParam = (thatParam != null) ? thatParam.getNext() : null;
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
+-
+   return true;
+ }
++

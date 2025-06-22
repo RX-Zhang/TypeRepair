@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -21,13 +21,14 @@
+                 charval = full.get(name);
+         }
+ 
+-        if (charval != -1 || charval > 0xFFFF) { // out of range
++        if (charval != -1 && charval <= 0xFFFF) { // fix condition: charval must be valid and within BMP range
+             String c = Character.toString((char) charval);
+-            m.appendReplacement(accum, c);
++            m.appendReplacement(accum, Matcher.quoteReplacement(c)); // quoteReplacement to prevent group references
+         } else {
+-            m.appendReplacement(accum, m.group(0));
++            m.appendReplacement(accum, Matcher.quoteReplacement(m.group(0))); // quoteReplacement needed here too
+         }
+     }
+     m.appendTail(accum);
+     return accum.toString();
+ }
++

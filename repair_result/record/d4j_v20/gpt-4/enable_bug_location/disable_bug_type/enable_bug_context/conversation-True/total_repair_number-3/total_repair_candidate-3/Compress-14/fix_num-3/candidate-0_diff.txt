@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -28,8 +28,7 @@
+     }
+ 
+     // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
++    byte trailer = buffer[end-1];
+     if (trailer == 0 || trailer == ' '){
+         end--;
+     } else {
+@@ -37,9 +36,11 @@
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+     // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    if (end > start) {
++        trailer = buffer[end-1];
++        if (trailer == 0 || trailer == ' ') {
++            end--;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -55,3 +56,4 @@
+ 
+     return result;
+ }
++

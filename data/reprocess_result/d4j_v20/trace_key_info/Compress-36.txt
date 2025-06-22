@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZFileTest.readEntriesOfSize0
+- Error: java.lang.IllegalStateException: No current 7z entry (call getNextEntry() first).
+- Location:                 int b = sevenZFile.read();

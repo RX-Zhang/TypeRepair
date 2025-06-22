@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -35,17 +35,24 @@
+       //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+       //     || !resultType.isSubtype(varType));
+ 
+-
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++      // Only set the JSType if the LHS node is a var declaration or leftType is unknown.
++      // Otherwise, avoid assigning null to avoid losing type info.
++      if (isVarDeclaration || leftType == null) {
++        left.setJSType(resultType);
++      } else {
++        left.setJSType(null);
++      }
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+-        var.setType(oldType == null ?
+-            resultType : oldType.getLeastSupertype(resultType));
++        if (oldType == null) {
++          var.setType(resultType);
++        } else {
++          var.setType(oldType.getLeastSupertype(resultType));
++        }
+       }
+       break;
+     case Token.GETPROP:
+@@ -61,3 +68,4 @@
+       break;
+   }
+ }
++

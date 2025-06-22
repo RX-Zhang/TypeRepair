@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -65,7 +65,7 @@
+       // CATCH block.
+       } else if (NodeUtil.getCatchBlock(parent) == node){
+         if (NodeUtil.hasFinally(parent)) { // and have FINALLY block.
+-          return computeFallThrough(node.getNext());
++          return computeFallThrough(parent.getLastChild());
+         } else {
+           return computeFollowNode(fromNode, parent, cfa);
+         }
+@@ -96,3 +96,4 @@
+     return computeFollowNode(fromNode, parent, cfa);
+   }
+ }
++

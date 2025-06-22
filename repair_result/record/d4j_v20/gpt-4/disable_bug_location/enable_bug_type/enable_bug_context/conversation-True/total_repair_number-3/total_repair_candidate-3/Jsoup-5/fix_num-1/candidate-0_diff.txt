@@ -1,0 +1,64 @@
+--- 
++++ 
+@@ -1,30 +1,43 @@
+ private Attribute parseAttribute() {
+     tq.consumeWhitespace();
++    if (tq.isEmpty()) {
++        return null;
++    }
+     String key = tq.consumeAttributeKey();
++    if (key.length() == 0) {
++        // consume one character to avoid infinite loop on malformed input
++        if (!tq.isEmpty()) {
++            tq.consume();
++        }
++        return null;
++    }
+     String value = "";
+     tq.consumeWhitespace();
+     if (tq.matchChomp("=")) {
+         tq.consumeWhitespace();
+ 
+-        if (tq.matchChomp(SQ)) {
+-            value = tq.chompTo(SQ);
+-        } else if (tq.matchChomp(DQ)) {
+-            value = tq.chompTo(DQ);
+-        } else {
+-            StringBuilder valueAccum = new StringBuilder();
+-            // no ' or " to look for, so scan to end tag or space (or end of stream)
+-            while (!tq.matchesAny("<", "/>", ">") && !tq.matchesWhitespace() && !tq.isEmpty()) {
+-                valueAccum.append(tq.consume());
++        if (!tq.isEmpty()) {
++            if (tq.matchChomp(SQ)) {
++                value = tq.chompTo(SQ);
++                if (!tq.isEmpty() && tq.matchChomp(SQ)) {
++                    // consume closing quote if still there (defensive)
++                }
++            } else if (tq.matchChomp(DQ)) {
++                value = tq.chompTo(DQ);
++                if (!tq.isEmpty() && tq.matchChomp(DQ)) {
++                    // consume closing quote if still there (defensive)
++                }
++            } else {
++                StringBuilder valueAccum = new StringBuilder();
++                // no ' or " to look for, so scan to end tag or space (or end of stream)
++                while (!tq.matchesAny("<", "/>", ">") && !tq.matchesWhitespace() && !tq.isEmpty()) {
++                    valueAccum.append(tq.consume());
++                }
++                value = valueAccum.toString();
+             }
+-            value = valueAccum.toString();
++            tq.consumeWhitespace();
+         }
+-        tq.consumeWhitespace();
+     }
+-    if (key.length() != 0)
+-        return Attribute.createFromEncoded(key, value);
+-    else {
+-        tq.consume();
+-            
+-        return null;
+-    }
++    return Attribute.createFromEncoded(key, value);
+ }
++

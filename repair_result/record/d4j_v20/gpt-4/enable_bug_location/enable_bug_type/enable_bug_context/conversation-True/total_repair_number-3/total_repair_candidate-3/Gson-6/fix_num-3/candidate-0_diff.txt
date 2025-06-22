@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -7,13 +7,16 @@
+     typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterClass)).construct();
+   } else if (TypeAdapterFactory.class.isAssignableFrom(value)) {
+     Class<TypeAdapterFactory> typeAdapterFactory = (Class<TypeAdapterFactory>) value;
+-    typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterFactory))
+-        .construct()
+-        .create(gson, fieldType);
++    TypeAdapterFactory factoryInstance = constructorConstructor.get(TypeToken.get(typeAdapterFactory)).construct();
++    typeAdapter = factoryInstance.create(gson, fieldType);
+   } else {
+     throw new IllegalArgumentException(
+         "@JsonAdapter value must be TypeAdapter or TypeAdapterFactory reference.");
+   }
+-    typeAdapter = typeAdapter.nullSafe();
++  if (typeAdapter == null) {
++    throw new NullPointerException("TypeAdapter returned from @JsonAdapter factory is null");
++  }
++  typeAdapter = typeAdapter.nullSafe();
+   return typeAdapter;
+ }
++

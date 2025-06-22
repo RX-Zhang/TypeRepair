@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ protected void iterateSimplex(final Comparator<RealPointValuePair> comparator)
+     throws FunctionEvaluationException, OptimizationException, IllegalArgumentException {
+ 
+-    while (true) {
++    while (!convergenceChecker.converged(getIterations(), simplex)) {
+ 
+         incrementIterationsCounter();
+ 
+@@ -29,11 +29,11 @@
+         final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
+-
+-        // check convergence
++            simplex = contractedSimplex; // This line might need to assign simplex = contracted if contractedSimplex is available
++            // check convergence 
+             return;
+         }
+-
+     }
+ 
+ }
++

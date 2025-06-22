@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.codec.binary.Base64InputStreamTest.testCodec101
+- Error: junit.framework.AssertionFailedError: Codec101: First read successful [c=0]
+- Location:         assertTrue("Codec101: First read successful [c=" + c + "]", c > 0);

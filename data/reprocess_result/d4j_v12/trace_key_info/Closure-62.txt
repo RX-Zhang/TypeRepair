@@ -1,0 +1,14 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.LightweightMessageFormatterTest.testFormatErrorSpaceEndOfLine1
+- Error: junit.framework.ComparisonFailure: expected:<...ion here
+assert (1;
+[          ^
+- Location:     assertEquals("javascript/complex.js:1: ERROR - error description here\n" +
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.LightweightMessageFormatterTest.testFormatErrorSpaceEndOfLine2
+- Error: junit.framework.ComparisonFailure: expected:<...iption here
+if (foo
+[       ^
+- Location:     assertEquals("javascript/complex.js:6: ERROR - error description here\n" +

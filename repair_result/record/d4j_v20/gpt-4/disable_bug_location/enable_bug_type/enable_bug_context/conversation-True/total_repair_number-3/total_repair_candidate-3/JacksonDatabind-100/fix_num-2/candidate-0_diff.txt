@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -1,14 +1,23 @@
+ public byte[] getBinaryValue(Base64Variant b64variant)
+     throws IOException, JsonParseException
+ {
+-    // Multiple possibilities...
+     JsonNode n = currentNode();
+     if (n != null) {
+-        // [databind#2096]: although `binaryValue()` works for real binary node
+-        // and embedded "POJO" node, coercion from TextNode may require variant, so:
+         byte[] data = n.binaryValue();
+         if (data != null) {
+             return data;
++        }
++        if (n.isTextual()) {
++            // TextNode coercion requires decoding using variant
++            String text = n.textValue().trim();
++            if (text.length() == 0) {
++                return new byte[0];
++            }
++            try {
++                return b64variant.decode(text);
++            } catch (IllegalArgumentException e) {
++                throw new JsonParseException(this, "Cannot access contents of TextNode as binary due to broken Base64 encoding: "+e.getMessage());
++            }
+         }
+         if (n.isPojo()) {
+             Object ob = ((POJONode) n).getPojo();
+@@ -17,6 +26,6 @@
+             }
+         }
+     }
+-    // otherwise return null to mark we have no binary content
+     return null;
+ }
++

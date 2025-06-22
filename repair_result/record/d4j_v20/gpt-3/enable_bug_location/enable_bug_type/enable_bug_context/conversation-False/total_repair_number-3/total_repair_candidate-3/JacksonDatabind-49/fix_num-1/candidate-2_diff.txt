@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -2,6 +2,15 @@
+     // 04-Jun-2016, tatu: As per [databind#1255], need to consider possibility of
+     //    id being generated for "alwaysAsId", but not being written as POJO; regardless,
+     //    need to use existing id if there is one:
++    try {
++        if (forPojo == null) {
++            throw new IllegalArgumentException("forPojo cannot be null");
++        }
+         id = generator.generateId(forPojo);
++    } catch (Exception e) {
++        // Log the exception or handle it as needed
++        e.printStackTrace(); // For simplicity, we just print the stack trace
++    }
+     return id;
+ }
++

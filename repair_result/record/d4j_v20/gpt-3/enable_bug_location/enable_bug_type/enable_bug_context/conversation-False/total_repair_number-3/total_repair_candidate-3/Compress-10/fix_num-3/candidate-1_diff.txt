@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -7,6 +7,9 @@
+     // directory order
+     for (ZipArchiveEntry ze : entries.keySet()) {
+         OffsetEntry offsetEntry = entries.get(ze);
++        if (offsetEntry == null) {
++            throw new IOException("OffsetEntry for " + ze.getName() + " not found.");
++        }
+         long offset = offsetEntry.headerOffset;
+         archive.seek(offset + LFH_OFFSET_FOR_FILENAME_LENGTH);
+         byte[] b = new byte[SHORT];
+@@ -17,9 +20,8 @@
+         int lenToSkip = fileNameLen;
+         while (lenToSkip > 0) {
+             int skipped = archive.skipBytes(lenToSkip);
+-            if (skipped <= 0) {
+-                throw new RuntimeException("failed to skip file name in"
+-                                           + " local file header");
++            if (skipped < 0) {
++                throw new IOException("Failed to skip file name in local file header");
+             }
+             lenToSkip -= skipped;
+         }
+@@ -41,3 +43,4 @@
+         }
+     }
+ }
++

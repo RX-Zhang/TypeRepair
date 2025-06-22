@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -4,18 +4,20 @@
+     ObjectType interfaceType) {
+   ObjectType implicitProto = interfaceType.getImplicitPrototype();
+   Set<String> currentPropertyNames;
+-    // This can be the case if interfaceType is proxy to a non-existent
+-    // object (which is a bad type annotation, but shouldn't crash).
+-    currentPropertyNames = implicitProto.getOwnPropertyNames();
++  // This can be the case if interfaceType is proxy to a non-existent
++  // object (which is a bad type annotation, but shouldn't crash).
++  if (implicitProto == null) {
++    return;
++  }
++  currentPropertyNames = implicitProto.getOwnPropertyNames();
+   for (String name : currentPropertyNames) {
+     ObjectType oType = properties.get(name);
+     if (oType != null) {
+       if (!interfaceType.getPropertyType(name).isEquivalentTo(
+           oType.getPropertyType(name))) {
+-        compiler.report(
+-            t.makeError(n, INCOMPATIBLE_EXTENDED_PROPERTY_TYPE,
+-                functionName, name, oType.toString(),
+-                interfaceType.toString()));
++        report(t, n, INCOMPATIBLE_EXTENDED_PROPERTY_TYPE,
++            functionName, name, oType.toString(),
++            interfaceType.toString());
+       }
+     }
+     currentProperties.put(name, interfaceType);
+@@ -25,3 +27,4 @@
+         currentProperties, iType);
+   }
+ }
++

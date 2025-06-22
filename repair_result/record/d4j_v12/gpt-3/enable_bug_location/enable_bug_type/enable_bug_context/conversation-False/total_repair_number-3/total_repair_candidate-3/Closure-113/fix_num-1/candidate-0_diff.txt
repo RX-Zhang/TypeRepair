@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,7 +4,10 @@
+   if (verifyLastArgumentIsString(t, left, arg)) {
+     String ns = arg.getString();
+     ProvidedName provided = providedNames.get(ns);
+-    if (provided == null || !provided.isExplicitlyProvided()) {
++    if (provided == null) {
++      unrecognizedRequires.add(
++          new UnrecognizedRequire(n, ns, t.getSourceName()));
++    } else if (!provided.isExplicitlyProvided()) {
+       unrecognizedRequires.add(
+           new UnrecognizedRequire(n, ns, t.getSourceName()));
+     } else {
+@@ -38,3 +41,4 @@
+     }
+   }
+ }
++

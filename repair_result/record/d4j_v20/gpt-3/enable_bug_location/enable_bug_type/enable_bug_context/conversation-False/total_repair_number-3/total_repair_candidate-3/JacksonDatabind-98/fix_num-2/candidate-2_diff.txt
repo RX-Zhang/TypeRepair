@@ -1,0 +1,56 @@
+--- 
++++ 
+@@ -14,6 +14,21 @@
+                 continue;
+             }
+             // but not just one
++            JsonParser tokenParser = _tokens[i].asParser(p);
++            JsonToken t = tokenParser.nextToken();
++            if (t.isScalarValue()) {
++                tokenParser.close();
++                Object natural = TypeDeserializer.deserializeIfNatural(tokenParser, ctxt, extProp.getProperty().getType());
++                if (natural != null) {
++                    values[i] = natural;
++                    // If this property is a creator property, assign it now
++                    final SettableBeanProperty prop = extProp.getProperty();
++                    if (prop.getCreatorIndex() >= 0) {
++                        buffer.assignParameter(prop, natural);
++                    }
++                    continue;
++                }
++            }
+             // 26-Oct-2012, tatu: As per [databind#94], must allow use of 'defaultImpl'
+             if (!extProp.hasDefaultType()) {
+                 ctxt.reportInputMismatch(_beanType,
+@@ -24,9 +39,14 @@
+             }
+         } else if (_tokens[i] == null) {
+             SettableBeanProperty prop = extProp.getProperty();
+-            ctxt.reportInputMismatch(_beanType,
+-                    "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++            if (prop.isRequired() ||
++                    ctxt.isEnabled(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY)) {
++                ctxt.reportInputMismatch(_beanType,
++                        "Missing property '%s' for external type id '%s'",
++                        prop.getName(), extProp.getTypePropertyName());
++            }
++            // continue so value stays null for this index and does not cause NullPointerException later
++            continue;
+         }
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+@@ -50,8 +70,12 @@
+     for (int i = 0; i < len; ++i) {
+         SettableBeanProperty prop = _properties[i].getProperty();
+         if (prop.getCreatorIndex() < 0) {
+-            prop.set(bean, values[i]);
++            Object value = values[i];
++            if (value != null) { // avoid setting null if no value
++                prop.set(bean, value);
++            }
+         }
+     }
+     return bean;
+ }
++

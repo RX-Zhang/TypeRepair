@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -2,9 +2,12 @@
+     Validate.notEmpty(key);
+     if (attributes == null)
+         return;
+-    for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext(); ) {
+-        String attrKey = it.next();
+-        if (attrKey.equalsIgnoreCase(key))
+-            attributes.remove(attrKey);
++    Iterator<Attribute> it = iterator();
++    while (it.hasNext()) {
++        Attribute attr = it.next();
++        if (attr.getKey().equalsIgnoreCase(key)) {
++            it.remove();
++        }
+     }
+ }
++

@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -21,18 +21,16 @@
+     int millisecs = val.get(Calendar.MILLISECOND);
+     if (!round || millisecs < 500) {
+         time = time - millisecs;
+-    if (field == Calendar.SECOND) {
++    } else if (field == Calendar.SECOND) {
+         done = true;
+-        }
+     }
+ 
+     // truncate seconds
+     int seconds = val.get(Calendar.SECOND);
+     if (!done && (!round || seconds < 30)) {
+         time = time - (seconds * 1000L);
+-    if (field == Calendar.MINUTE) {
++    } else if (field == Calendar.MINUTE) {
+         done = true;
+-        }
+     }
+ 
+     // truncate minutes
+@@ -65,7 +63,7 @@
+                             val.add(Calendar.MONTH, 1);
+                         }
+                     } else {
+-                        //We need at add one to this field since the
++                        //We need to add one to this field since the
+                         //  last number causes us to round up
+                         val.add(fields[i][0], 1);
+                     }
+@@ -123,3 +121,4 @@
+     throw new IllegalArgumentException("The field " + field + " is not supported");
+ 
+ }
++

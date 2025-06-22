@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -67,7 +67,7 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+@@ -132,3 +132,4 @@
+     _throwInternal();
+     return null;
+ }
++

@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -65,7 +65,7 @@
+             JSModule.CIRCULAR_DEPENDENCY_ERROR, e.getMessage()));
+ 
+         // If in IDE mode, we ignore the error and keep going.
+-        if (hasErrors()) {
++        if (!isIdeMode()) {
+           return null;
+         }
+       } catch (MissingProvideException e) {
+@@ -73,7 +73,7 @@
+             MISSING_ENTRY_ERROR, e.getMessage()));
+ 
+         // If in IDE mode, we ignore the error and keep going.
+-        if (hasErrors()) {
++        if (!isIdeMode()) {
+           return null;
+         }
+       }
+@@ -121,3 +121,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

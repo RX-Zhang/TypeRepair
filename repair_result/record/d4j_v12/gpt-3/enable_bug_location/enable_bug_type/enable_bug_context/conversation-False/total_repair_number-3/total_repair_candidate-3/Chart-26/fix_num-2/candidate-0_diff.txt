@@ -1,0 +1,116 @@
+--- 
++++ 
+@@ -18,10 +18,11 @@
+     FontMetrics fm = g2.getFontMetrics();
+     Rectangle2D labelBounds = TextUtilities.getTextBounds(label, g2, fm);
+     Shape hotspot = null;
++    double angle = getLabelAngle();
+     
+     if (edge == RectangleEdge.TOP) {
+         AffineTransform t = AffineTransform.getRotateInstance(
+-                getLabelAngle(), labelBounds.getCenterX(), 
++                angle, labelBounds.getCenterX(), 
+                 labelBounds.getCenterY());
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+@@ -31,15 +32,15 @@
+         float labely = (float) (state.getCursor() - insets.getBottom() 
+                 - h / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+-                TextAnchor.CENTER, getLabelAngle(), TextAnchor.CENTER);
++                TextAnchor.CENTER, angle, TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorUp(insets.getTop() + labelBounds.getHeight() 
+-                + insets.getBottom());
++        // move cursor up by insets top + label height + insets bottom
++        state.cursorUp(insets.getTop() + h + insets.getBottom());
+     }
+     else if (edge == RectangleEdge.BOTTOM) {
+         AffineTransform t = AffineTransform.getRotateInstance(
+-                getLabelAngle(), labelBounds.getCenterX(), 
++                angle, labelBounds.getCenterX(), 
+                 labelBounds.getCenterY());
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+@@ -49,15 +50,17 @@
+         float labely = (float) (state.getCursor() + insets.getTop() 
+                 + h / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+-                TextAnchor.CENTER, getLabelAngle(), TextAnchor.CENTER);
++                TextAnchor.CENTER, angle, TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorDown(insets.getTop() + labelBounds.getHeight() 
+-                + insets.getBottom());
++        // move cursor down by insets top + label height + insets bottom
++        state.cursorDown(insets.getTop() + h + insets.getBottom());
+     }
+     else if (edge == RectangleEdge.LEFT) {
++        // rotate by (angle - PI/2)
++        double rotatedAngle = angle - Math.PI / 2.0;
+         AffineTransform t = AffineTransform.getRotateInstance(
+-                getLabelAngle() - Math.PI / 2.0, labelBounds.getCenterX(), 
++                rotatedAngle, labelBounds.getCenterX(), 
+                 labelBounds.getCenterY());
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+@@ -67,43 +70,41 @@
+                 - w / 2.0);
+         float labely = (float) dataArea.getCenterY();
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+-                TextAnchor.CENTER, getLabelAngle() - Math.PI / 2.0, 
+-                TextAnchor.CENTER);
++                TextAnchor.CENTER, rotatedAngle, TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorLeft(insets.getLeft() + labelBounds.getWidth() 
+-                + insets.getRight());
++        // move cursor left by insets left + label width + insets right
++        state.cursorLeft(insets.getLeft() + w + insets.getRight());
+     }
+     else if (edge == RectangleEdge.RIGHT) {
+ 
++        double rotatedAngle = angle + Math.PI / 2.0;
+         AffineTransform t = AffineTransform.getRotateInstance(
+-                getLabelAngle() + Math.PI / 2.0, 
+-                labelBounds.getCenterX(), labelBounds.getCenterY());
++                rotatedAngle, labelBounds.getCenterX(), labelBounds.getCenterY());
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+         float labelx = (float) (state.getCursor() 
+                         + insets.getLeft() + w / 2.0);
+-        float labely = (float) (dataArea.getY() + dataArea.getHeight() 
+-                / 2.0);
++        float labely = (float) (dataArea.getY() + dataArea.getHeight() / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+-                TextAnchor.CENTER, getLabelAngle() + Math.PI / 2.0, 
+-                TextAnchor.CENTER);
++                TextAnchor.CENTER, rotatedAngle, TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorRight(insets.getLeft() + labelBounds.getWidth() 
+-                + insets.getRight());
++        // move cursor right by insets left + label width + insets right
++        state.cursorRight(insets.getLeft() + w + insets.getRight());
+ 
+     }
+     if (plotState != null && hotspot != null) {
+         ChartRenderingInfo owner = plotState.getOwner();
+-            EntityCollection entities = owner.getEntityCollection();
+-            if (entities != null) {
+-                entities.add(new AxisLabelEntity(this, hotspot, 
+-                        this.labelToolTip, this.labelURL));
+-            }
++        EntityCollection entities = owner.getEntityCollection();
++        if (entities != null) {
++            entities.add(new AxisLabelEntity(this, hotspot, 
++                    this.labelToolTip, this.labelURL));
++        }
+     }
+     return state;
+ 
+ }
++

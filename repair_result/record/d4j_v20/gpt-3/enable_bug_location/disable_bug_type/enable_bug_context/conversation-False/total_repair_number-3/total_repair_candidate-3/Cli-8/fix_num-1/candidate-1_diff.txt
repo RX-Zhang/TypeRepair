@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -23,10 +23,11 @@
+         if (pos == -1)
+         {
+             sb.append(text);
+-
+             return sb;
+         }
+ 
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        text = text.substring(pos);
+     }
+ }
++

@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -21,10 +21,10 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -54,6 +54,18 @@
+         return (_currToken = t);
+     }
+ 
++    // Handle the case when no multiple matches are allowed and a match was previously found
++    if (!_allowMultipleMatches && _matchCount > 0) {
++        // If including path, can continue reading tokens matching the context, else skip non scalar children
++        if (!_includePath) {
++            // skip children of current token if any
++            if (t.isStructStart()) {
++                delegate.skipChildren();
++            }
++            return (_currToken = null);
++        }
++    }
++    
+     // otherwise... to include or not?
+     TokenFilter f;
+     
+@@ -210,3 +222,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

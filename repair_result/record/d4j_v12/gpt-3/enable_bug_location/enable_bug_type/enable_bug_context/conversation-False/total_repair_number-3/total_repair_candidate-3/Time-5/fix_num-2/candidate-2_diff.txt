@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -19,5 +19,6 @@
+             result = result.withMonths(months);
+         }
+     }
+-    return result;
++    return result.normalizedStandard();
+ }
++

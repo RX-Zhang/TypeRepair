@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -21,7 +21,8 @@
+         // build the name to index mappings
+         if (headerRecord != null) {
+             for (int i = 0; i < headerRecord.length; i++) {
+-                final String header = headerRecord[i];
++                // Defensive coding to avoid NullPointerException on header elements
++                final String header = headerRecord[i] == null ? "" : headerRecord[i];
+                 final boolean containsHeader = hdrMap.containsKey(header);
+                 final boolean emptyHeader = header.trim().isEmpty();
+                 if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getIgnoreEmptyHeaders()))) {
+@@ -34,3 +35,4 @@
+     }
+     return hdrMap;
+ }
++

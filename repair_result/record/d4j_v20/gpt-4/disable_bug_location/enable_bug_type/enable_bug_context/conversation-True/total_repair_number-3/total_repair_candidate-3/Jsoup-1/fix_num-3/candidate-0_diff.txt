@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ private void normalise(Element element) {
+     List<Node> toMove = new ArrayList<Node>();
+-    for (Node node: element.childNodes) {
++    for (Node node : element.childNodes()) {
+         if (node instanceof TextNode) {
+             TextNode tn = (TextNode) node;
+             if (!tn.isBlank())
+@@ -8,9 +8,15 @@
+         }
+     }
+ 
+-    for (Node node: toMove) {
++    for (Node node : toMove) {
+         element.removeChild(node);
+-        body().appendChild(new TextNode(" ", ""));
+-        body().appendChild(node);
++        if (body() != null) {
++            // Remove trailing whitespace if not first node to avoid extra leading space
++            if (body().childNodeSize() > 0 && !(node instanceof TextNode && ((TextNode) node).isBlank())) {
++                body().appendChild(new TextNode(" ", ""));
++            }
++            body().appendChild(node);
++        }
+     }
+ }
++

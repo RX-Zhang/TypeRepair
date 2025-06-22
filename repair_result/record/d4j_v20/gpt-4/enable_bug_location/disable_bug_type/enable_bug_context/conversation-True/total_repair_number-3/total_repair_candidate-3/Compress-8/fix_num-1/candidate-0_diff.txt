@@ -1,0 +1,69 @@
+--- 
++++ 
+@@ -1,37 +1,50 @@
+ public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+-    long    result = 0;
++    if (length < 2) {
++        throw new IllegalArgumentException("length must be at least 2");
++    }
++    long result = 0;
+     boolean stillPadding = true;
+-    int     end = offset + length;
+-    int     start = offset;
++    int end = offset + length;
++    int start = offset;
+ 
+-    for (int i = start; i < end; i++){
++    for (int i = start; i < end; i++) {
+         final byte currentByte = buffer[i];
+         if (currentByte == 0) {
++            // Trailing null, stop parsing as expected
+             break;
+         }
+ 
+-    // Skip leading spaces
+-        if (currentByte == (byte) ' ' || currentByte == '0') {
++        // Skip leading spaces
++        if (currentByte == (byte) ' ' || currentByte == (byte) '0') {
+             if (stillPadding) {
+-               continue;
+-        }
++                continue;
++            }
++            // If we encounter a space once parsing octal digits, treat it as the end
+             if (currentByte == (byte) ' ') {
+-            break;
++                break;
+             }
+         }
+ 
+-    // Must have trailing NUL or space
+-    // May have additional NUL or space
+-
+         stillPadding = false;
+-        // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++        // Check that the byte is a valid octal digit
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, currentByte));
++                    exceptionMessage(buffer, offset, length, i, currentByte));
+         }
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
++    }
++
++    if (stillPadding) {
++        // means no digits were found (only spaces or zeros)
++        throw new IllegalArgumentException("No octal digits found");
++    }
++
++    // Check that the last byte is NUL or space
++    final byte lastByte = buffer[end - 1];
++    if (lastByte != 0 && lastByte != (byte) ' ') {
++        throw new IllegalArgumentException("Missing trailing NUL or space");
+     }
+ 
+     return result;
+ }
++

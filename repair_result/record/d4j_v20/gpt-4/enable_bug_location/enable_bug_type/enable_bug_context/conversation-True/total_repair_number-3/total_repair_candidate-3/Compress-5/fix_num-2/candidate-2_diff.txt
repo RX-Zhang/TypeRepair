@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+             if (offsetInBuffer >= lengthOfLastRead) {
+                 offsetInBuffer = 0;
+                 if ((lengthOfLastRead = in.read(buf)) == -1) {
+-                    return -1;
++                    throw new IOException("Truncated ZIP file");
+                 }
+                 count(lengthOfLastRead);
+                 bytesReadFromStream += lengthOfLastRead;
+@@ -38,6 +38,9 @@
+             fill();
+             if (lengthOfLastRead > 0) {
+                 bytesReadFromStream += lengthOfLastRead;
++            } else if (inf.finished()) {
++                // premature end of compressed data
++                throw new IOException("Truncated ZIP file");
+             }
+         }
+         int read = 0;
+@@ -46,11 +49,27 @@
+         } catch (DataFormatException e) {
+             throw new ZipException(e.getMessage());
+         }
+-        if (read == 0 && inf.finished()) {
+-            return -1;
++        if (read == 0) {
++            if (inf.finished()) {
++                return -1;
++            }
++            if (inf.needsInput()) {
++                fill();
++                if (lengthOfLastRead <= 0 && !inf.finished()) {
++                    throw new IOException("Truncated ZIP file");
++                }
++                read = inf.inflate(buffer, start, length);
++                if (read == 0 && inf.finished()) {
++                    return -1;
++                }
++            }
++        }
++        if (read == 0 && !inf.finished()) {
++            throw new IOException("Truncated ZIP file");
+         }
+         crc.update(buffer, start, read);
+         return read;
+     }
+     throw new ArrayIndexOutOfBoundsException();
+ }
++

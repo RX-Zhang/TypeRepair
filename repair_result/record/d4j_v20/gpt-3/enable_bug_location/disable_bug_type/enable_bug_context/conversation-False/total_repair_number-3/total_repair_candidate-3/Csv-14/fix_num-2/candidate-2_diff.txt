@@ -1,0 +1,71 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character qc = getQuoteCharacter();
++    final char quoteChar = qc != null ? qc.charValue() : 0;
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +37,10 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            if (newRecord && ((c < '0') || 
++                (c > '9' && c < 'A') || 
++                (c > 'Z' && c < 'a') || 
++                (c > 'z'))) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -46,7 +50,7 @@
+             } else {
+                 while (pos < end) {
+                     c = value.charAt(pos);
+-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                    if (c == LF || c == CR || (qc != null && c == quoteChar) || c == delimChar) {
+                         quote = true;
+                         break;
+                     }
+@@ -84,23 +88,29 @@
+     // we hit something that needed encapsulation
+     out.append(quoteChar);
+ 
++    // Reset pos to start to correctly process all characters
++    pos = offset;
++
+     // Pick up where we left off: pos should be positioned on the first character that caused
+     // the need for encapsulation.
+     while (pos < end) {
+         final char c = value.charAt(pos);
+-        if (c == quoteChar) {
++        if (qc != null && c == quoteChar) {
+             // write out the chunk up until this point
+-
+-            // add 1 to the length to write out the encapsulator also
+-            out.append(value, start, pos + 1);
+-            // put the next starting position on the encapsulator so we will
+-            // write it out again with the next string (effectively doubling it)
+-            start = pos;
++            if (pos > start) {
++                out.append(value, start, pos);
++            }
++            // append doubled quoteChar to escape quotes inside quoted string
++            out.append(quoteChar).append(quoteChar);
++            start = pos + 1;
+         }
+         pos++;
+     }
+ 
+     // write the last segment
+-    out.append(value, start, pos);
++    if (pos > start) {
++        out.append(value, start, pos);
++    }
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,54 @@
+Test failure 1:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testAvailableLocaleSet
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 2:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testIsAvailableLocale
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 3:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testAvailableLocaleList
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 4:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testCountriesByLanguage
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 5:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testLocaleLookupList_LocaleLocale
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 6:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testLanguagesByCountry
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 7:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testToLocale_1Part
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 8:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testToLocale_2Part
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 9:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testToLocale_3Part
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 10:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testLocaleLookupList_Locale
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 11:
+- Test: org.apache.commons.lang.LocaleUtilsTest.testConstructor
+- Error: java.lang.NullPointerException
+- Location: Unknown location

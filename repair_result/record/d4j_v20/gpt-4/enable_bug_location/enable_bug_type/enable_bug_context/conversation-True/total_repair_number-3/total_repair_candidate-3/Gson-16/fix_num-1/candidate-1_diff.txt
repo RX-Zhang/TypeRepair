@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -1,14 +1,18 @@
+ private static Type resolve(Type context, Class<?> contextRawType, Type toResolve,
+                             Collection<TypeVariable> visitedTypeVariables) {
+-  // this implementation is made a little more complicated in an attempt to avoid object-creation
+   while (true) {
+     if (toResolve instanceof TypeVariable) {
+       TypeVariable<?> typeVariable = (TypeVariable<?>) toResolve;
+-        // cannot reduce due to infinite recursion
+-      toResolve = resolveTypeVariable(context, contextRawType, typeVariable);
+-      if (toResolve == typeVariable) {
++      if (visitedTypeVariables.contains(typeVariable)) {
++        // To avoid infinite recursion
+         return toResolve;
+       }
++      visitedTypeVariables.add(typeVariable);
++      Type result = resolveTypeVariable(context, contextRawType, typeVariable);
++      if (result == typeVariable) {
++        return result;
++      }
++      toResolve = result;
+ 
+     } else if (toResolve instanceof Class && ((Class<?>) toResolve).isArray()) {
+       Class<?> original = (Class<?>) toResolve;
+@@ -71,3 +75,4 @@
+     }
+   }
+ }
++

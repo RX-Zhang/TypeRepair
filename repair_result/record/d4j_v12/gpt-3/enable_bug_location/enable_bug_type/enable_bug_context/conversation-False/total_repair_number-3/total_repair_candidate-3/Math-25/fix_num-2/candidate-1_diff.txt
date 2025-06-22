@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -5,6 +5,10 @@
+     double sxy = 0;
+     double sxz = 0;
+     double syz = 0;
++
++    if (observations.length < 2) {
++        throw new IllegalArgumentException("At least two observations are required.");
++    }
+ 
+     double currentX = observations[0].getX();
+     double currentY = observations[0].getY();
+@@ -22,6 +26,11 @@
+         // considering a linear model for f (and therefore constant f')
+         final double dx = currentX - previousX;
+         final double dy = currentY - previousY;
++
++        if (dx == 0) {
++            throw new IllegalArgumentException("Consecutive observations cannot have the same x value.");
++        }
++
+         final double f2StepIntegral =
+             dx * (previousY * previousY + previousY * currentY + currentY * currentY) / 3;
+         final double fPrime2StepIntegral = dy * dy / dx;
+@@ -41,6 +50,9 @@
+     double c1 = sy2 * sxz - sxy * syz;
+     double c2 = sxy * sxz - sx2 * syz;
+     double c3 = sx2 * sy2 - sxy * sxy;
++    if (c2 == 0 || c3 == 0) {
++        throw new IllegalStateException("Coefficients cannot be zero, unable to compute results.");
++    }
+     if ((c1 / c2 < 0) || (c2 / c3 < 0)) {
+         final int last = observations.length - 1;
+         // Range of the observations, assuming that the
+@@ -64,10 +76,11 @@
+         }
+         a = 0.5 * (yMax - yMin);
+     } else {
+-            // In some ill-conditioned cases (cf. MATH-844), the guesser
+-            // procedure cannot produce sensible results.
++        // In some ill-conditioned cases (cf. MATH-844), the guesser
++        // procedure cannot produce sensible results.
+ 
+         a = FastMath.sqrt(c1 / c2);
+         omega = FastMath.sqrt(c2 / c3);
+     }
+ }
++

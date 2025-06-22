@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -15,9 +15,10 @@
+     // characters
+     final String padding = createPadding(nextLineTabStop);
+ 
++    int start = pos;
+     while (true)
+     {
+-        text = padding + text.substring(pos).trim();
++        text = padding + text.substring(start).trim();
+         pos = findWrapPos(text, width, nextLineTabStop);
+ 
+         if (pos == -1)
+@@ -28,5 +29,7 @@
+         }
+ 
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        start = pos;
+     }
+ }
++

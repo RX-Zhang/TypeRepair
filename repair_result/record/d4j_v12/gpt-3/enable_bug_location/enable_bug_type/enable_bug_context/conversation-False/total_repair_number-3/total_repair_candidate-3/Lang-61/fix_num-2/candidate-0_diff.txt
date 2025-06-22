@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -10,13 +10,13 @@
+     if (strLen == 0) {
+         return startIndex;
+     }
+-    if (strLen > size) {
++    if (strLen > size - startIndex) { // Corrected boundary check
+         return -1;
+     }
+     char[] thisBuf = buffer;
+-    int len = thisBuf.length - strLen;
++    int len = size - strLen; // Changed from thisBuf.length to size
+     outer:
+-    for (int i = startIndex; i < len; i++) {
++    for (int i = startIndex; i <= len; i++) { // Changed < to <= to include the last valid index
+         for (int j = 0; j < strLen; j++) {
+             if (str.charAt(j) != thisBuf[i + j]) {
+                 continue outer;
+@@ -26,3 +26,4 @@
+     }
+     return -1;
+ }
++

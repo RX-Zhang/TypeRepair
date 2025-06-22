@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -21,10 +21,10 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -43,6 +43,21 @@
+             _exposedContext = ctxt;
+             if (ctxt == null) { // should never occur
+                 throw _constructError("Unexpected problem: chain of filtered context broken");
++            }
++        }
++    }
++
++    // if _allowMultipleMatches == false and there is a match already ( _matchCount > 0),
++    // just skip the remaining tokens to avoid multiple matches.
++    if (!_allowMultipleMatches && (_matchCount > 0)) {
++        while (true) {
++            JsonToken t = delegate.nextToken();
++            if (t == null) {
++                return (_currToken = null);
++            }
++            // skip children if any
++            if (t.isStructStart()) {
++                delegate.skipChildren();
+             }
+         }
+     }
+@@ -210,3 +225,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -1,6 +1,11 @@
+ public void close() throws IOException {
+     if (!this.closed) {
+-        super.close();
++        try {
++            super.close();
++        } catch (IOException e) {
++            throw new IOException("Failed to close the stream", e);
++        }
+         this.closed = true;
+     }
+ }
++

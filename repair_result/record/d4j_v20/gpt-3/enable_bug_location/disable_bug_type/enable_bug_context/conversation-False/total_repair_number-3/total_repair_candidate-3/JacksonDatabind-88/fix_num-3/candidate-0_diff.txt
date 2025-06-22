@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -30,5 +30,12 @@
+     } catch (Exception e) {
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
++    
++    // Ensure that cls is not null before proceeding
++    if (cls == null) {
++        throw new IllegalArgumentException("Class not found for id: " + id);
++    }
++    
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

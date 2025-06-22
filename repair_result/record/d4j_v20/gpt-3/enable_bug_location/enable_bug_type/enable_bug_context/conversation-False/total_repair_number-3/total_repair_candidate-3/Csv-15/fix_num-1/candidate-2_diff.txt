@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharacterObj = getQuoteCharacter();
++    if (quoteCharacterObj == null) {
++        // if quoteCharacter is null, we can't quote, fallback to escaping
++        printAndEscape(value, offset, len, out);
++        return;
++    }
++    final char quoteChar = quoteCharacterObj.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +42,9 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // Fix the logical expression by adding parentheses to ensure correct evaluation order
++            // The original expression was ambiguous and caused wrong quoting of characters.
++            if (newRecord && (c < 0x20 || (c > 0x21 && c < 0x23) || (c > 0x2B && c < 0x2D) || c > 0x7E)) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -44,6 +52,7 @@
+                 // by including the default comment char too.
+                 quote = true;
+             } else {
++                // Check for problematic characters in value
+                 while (pos < end) {
+                     c = value.charAt(pos);
+                     if (c == LF || c == CR || c == quoteChar || c == delimChar) {
+@@ -53,9 +62,8 @@
+                     pos++;
+                 }
+ 
+-                if (!quote) {
+-                    pos = end - 1;
+-                    c = value.charAt(pos);
++                if (!quote && len > 0) {
++                    c = value.charAt(end - 1);
+                     // Some other chars at the end caused the parser to fail, so for now
+                     // encapsulate if we end in anything less than ' '
+                     if (c <= SP) {
+@@ -104,3 +112,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

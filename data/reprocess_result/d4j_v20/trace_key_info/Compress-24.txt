@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.tar.TarUtilsTest.testParseOctal
+- Error: java.lang.IllegalArgumentException: Invalid byte 55 at offset 11 in '777777777777' len=12
+- Location:         value = TarUtils.parseOctal(buffer,0, buffer.length);

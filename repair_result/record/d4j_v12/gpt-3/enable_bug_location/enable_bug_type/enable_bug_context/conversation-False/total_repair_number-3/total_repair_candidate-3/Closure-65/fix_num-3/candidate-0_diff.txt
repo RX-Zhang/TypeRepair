@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+   for (int i = 0; i < s.length(); i++) {
+     char c = s.charAt(i);
+     switch (c) {
+-      case '\0': sb.append("\\0"); break;
++      case '\0': sb.append("\\000"); break; // Fixed to append "\000" instead of "\0"
+       case '\n': sb.append("\\n"); break;
+       case '\r': sb.append("\\r"); break;
+       case '\t': sb.append("\\t"); break;
+@@ -69,3 +69,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

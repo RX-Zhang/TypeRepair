@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -1,8 +1,6 @@
+ Object returnValueFor(Class<?> type) {
+     if (Primitives.isPrimitiveOrWrapper(type)) {
+         return Primitives.defaultValueForPrimitiveOrWrapper(type);
+-        //new instances are used instead of Collections.emptyList(), etc.
+-        //to avoid UnsupportedOperationException if code under test modifies returned collection
+     } else if (type == Collection.class) {
+         return new LinkedList<Object>();
+     } else if (type == Set.class) {
+@@ -32,6 +30,7 @@
+     } else if (type == LinkedHashMap.class) {
+         return new LinkedHashMap<Object, Object>();
+     }
+-    //Let's not care about the rest of collections.
+-    return null;
++    // Let's not care about the rest of collections.
++    return new LinkedList<Object>(); // Return an empty list instead of null to avoid NullPointerException
+ }
++

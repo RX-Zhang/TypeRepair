@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.fallbackToUtfIfCantEncode
+- Error: junit.framework.AssertionFailedError: expected:<[UTF-8]> but was:<[ISO-2022-CN]>
+- Location:         assertEquals("UTF-8", doc.charset().name());

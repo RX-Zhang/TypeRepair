@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+         final double a = getA(n, x);
+         final double b = getB(n, x);
+ 
+-        double cN = a * hPrev + b * p0;
++        double cN = a * cPrev + b * p0;
+         double q2 = a * q1 + b * dPrev;
+         if (Double.isInfinite(cN) || Double.isInfinite(q2)) {
+             double scaleFactor = 1d;
+@@ -32,10 +32,10 @@
+                 lastScaleFactor = scaleFactor;
+                 scaleFactor *= scale;
+                 if (a != 0.0 && a > b) {
+-                    cN = hPrev / lastScaleFactor + (b / scaleFactor * p0);
++                    cN = cPrev / lastScaleFactor + (b / scaleFactor * p0);
+                     q2 = q1 / lastScaleFactor + (b / scaleFactor * dPrev);
+                 } else if (b != 0) {
+-                    cN = (a / scaleFactor * hPrev) + p0 / lastScaleFactor;
++                    cN = (a / scaleFactor * cPrev) + p0 / lastScaleFactor;
+                     q2 = (a / scaleFactor * q1) + dPrev / lastScaleFactor;
+                 }
+                 if (!(Double.isInfinite(cN) || Double.isInfinite(q2))) {
+@@ -62,7 +62,7 @@
+ 
+         dPrev = q1;
+         cPrev = cN / q2;
+-        p0 = hPrev;
++        p0 = cPrev;
+         hPrev = cN;
+         q1 = q2;
+         n++;
+@@ -75,3 +75,4 @@
+ 
+     return hN;
+ }
++

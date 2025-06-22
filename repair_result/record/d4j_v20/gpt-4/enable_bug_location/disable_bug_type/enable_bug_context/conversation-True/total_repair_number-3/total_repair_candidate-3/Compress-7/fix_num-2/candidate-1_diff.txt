@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -6,8 +6,10 @@
+         if (buffer[i] == 0) {
+             break;
+         }
+-        result.append((char) buffer[i]);
++        // Mask byte to avoid sign extension when casting to char
++        result.append((char) (buffer[i] & 0xFF));
+     }
+ 
+     return result.toString();
+ }
++

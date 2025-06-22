@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -6,8 +6,14 @@
+     if (_valueInstantiator != null) {
+         // [databind#2324]: check both array-delegating and delegating
+         AnnotatedWithParams delegateCreator = _valueInstantiator.getDelegateCreator();
++        if (delegateCreator == null) {
++            delegateCreator = _valueInstantiator.getArrayDelegateCreator();
++        }
+         if (delegateCreator != null) {
+             JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
++            if (delegateType == null) {
++                delegateType = _valueInstantiator.getArrayDelegateType(ctxt.getConfig());
++            }
+             delegate = findDeserializer(ctxt, delegateType, property);
+         }
+     }
+@@ -33,3 +39,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

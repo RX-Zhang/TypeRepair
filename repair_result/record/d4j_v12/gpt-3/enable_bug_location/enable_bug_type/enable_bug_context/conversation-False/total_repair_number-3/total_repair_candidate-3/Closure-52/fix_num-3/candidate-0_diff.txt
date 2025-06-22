@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -1,10 +1,28 @@
+ static boolean isSimpleNumber(String s) {
+   int len = s.length();
++  if (len == 0) return false; // Ensure the string is not empty
+   for (int index = 0; index < len; index++) {
+     char c = s.charAt(index);
+     if (c < '0' || c > '9') {
+-      return false;
++      // Allow for leading zeros and decimal points
++      if (index == 0 && c == '0' && len > 1) {
++        return false; // Reject numbers like "01", "00", etc.
++      }
++      if (c == '.') {
++        // Allow only one decimal point
++        if (index == 0 || index == len - 1) {
++          return false; // Reject ".2" or "2."
++        }
++        // Check if there are digits after the decimal point
++        if (s.substring(index + 1).chars().allMatch(Character::isDigit)) {
++          return true; // Valid decimal number
++        } else {
++          return false; // Invalid decimal number
++        }
++      }
++      return false; // Reject any non-digit character
+     }
+   }
+-  return len > 0;
++  return true; // Valid simple number
+ }
++

@@ -1,0 +1,12 @@
+public ZipArchiveInputStream(InputStream inputStream,
+                             String encoding,
+                             boolean useUnicodeExtraFields,
+                             boolean allowStoredEntriesWithDataDescriptor) {
+    // buf must be initialized before use since buf.capacity() is called in PushbackInputStream constructor
+    buf = ByteBuffer.allocate(ZipArchiveOutputStream.BUFFER_SIZE);
+    zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+    this.useUnicodeExtraFields = useUnicodeExtraFields;
+    in = new PushbackInputStream(inputStream, buf.capacity());
+    this.allowStoredEntriesWithDataDescriptor = allowStoredEntriesWithDataDescriptor;
+    // haven't read anything so far
+}

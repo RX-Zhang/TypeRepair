@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -4,7 +4,7 @@
+   while (true) {
+     if (toResolve instanceof TypeVariable) {
+       TypeVariable<?> typeVariable = (TypeVariable<?>) toResolve;
+-        // cannot reduce due to infinite recursion
++      // cannot reduce due to infinite recursion
+       toResolve = resolveTypeVariable(context, contextRawType, typeVariable);
+       if (toResolve == typeVariable) {
+         return toResolve;
+@@ -69,5 +69,12 @@
+     } else {
+       return toResolve;
+     }
++    
++    // Adding a boundary check to prevent infinite recursion
++    if (visitedTypeVariables.contains(toResolve)) {
++      throw new RuntimeException("Infinite recursion detected while resolving type: " + toResolve);
++    }
++    visitedTypeVariables.add((TypeVariable<?>) toResolve);
+   }
+ }
++

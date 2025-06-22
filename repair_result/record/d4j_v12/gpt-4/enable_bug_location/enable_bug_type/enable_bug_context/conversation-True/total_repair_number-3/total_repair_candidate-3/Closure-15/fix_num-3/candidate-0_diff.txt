@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -16,11 +16,15 @@
+     return true;
+   }
+ 
+-
+   for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+-    if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
+-      return true;
+-    }
++    // Fix: 
++    // Only skip entering new CFG nodes if the node is NOT a ForIn loop control expression
++    // This avoids misclassifying "a in b" expressions inside ForIn loops.
++    if (!(ControlFlowGraph.isEnteringNewCfgNode(c) || c.isForIn()))
++      if (apply(c)) {
++        return true;
++      }
+   }
+   return false;
+ }
++

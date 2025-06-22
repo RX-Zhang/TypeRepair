@@ -1,0 +1,1 @@
+['setAddPaxHeadersForNonAsciiNames', 'putArchiveEntry', 'closeArchiveEntry', 'stripTo7Bits']

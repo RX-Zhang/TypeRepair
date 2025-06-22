@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -6,10 +6,10 @@
+     if (pos == -1)
+     {
+         sb.append(rtrim(text));
+-
+         return sb;
+     }
+-    sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++    
++    sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
+ 
+     // all following lines must be padded with nextLineTabStop space 
+     // characters
+@@ -17,16 +17,16 @@
+ 
+     while (true)
+     {
+-        text = padding + text.substring(pos).trim();
++        text = text.substring(pos).trim(); // Update text to remove processed part
+         pos = findWrapPos(text, width, nextLineTabStop);
+-
++        
+         if (pos == -1)
+         {
+-            sb.append(text);
+-
++            sb.append(padding).append(rtrim(text)); // Add padding before the last segment
+             return sb;
+         }
+ 
+-        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        sb.append(padding).append(rtrim(text.substring(0, pos))).append(getNewLine());
+     }
+ }
++

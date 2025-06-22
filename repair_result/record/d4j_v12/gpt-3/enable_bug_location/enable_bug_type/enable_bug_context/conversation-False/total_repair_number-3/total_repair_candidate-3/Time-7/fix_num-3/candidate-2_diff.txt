@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -4,6 +4,11 @@
+         throw new IllegalArgumentException("Instant must not be null");
+     }
+     
++    // Validate input text for potential invalid date values
++    if (text == null || text.trim().isEmpty()) {
++        throw new IllegalArgumentException("Text must not be null or empty");
++    }
++
+     long instantMillis = instant.getMillis();
+     Chronology chrono = instant.getChronology();
+     long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+@@ -13,6 +18,12 @@
+     DateTimeParserBucket bucket = new DateTimeParserBucket(
+         instantLocal, chrono, iLocale, iPivotYear, defaultYear);
+     int newPos = parser.parseInto(bucket, text, position);
++    
++    // Additional validation for day value within range
++    if (bucket.getDay() > 29 && bucket.getMonth() == 2) {
++        throw new IllegalFieldValueException("dayOfMonth", bucket.getDay(), 1, 28);
++    }
++    
+     instant.setMillis(bucket.computeMillis(false, text));
+     if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+         int parsedOffset = bucket.getOffsetInteger();
+@@ -27,3 +38,4 @@
+     }
+     return newPos;
+ }
++

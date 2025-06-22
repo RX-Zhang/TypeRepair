@@ -1,0 +1,1 @@
+['newParameterizedTypeWithOwner', 'subtypeOf', 'supertypeOf', 'getArrayComponentType', 'resolve', 'resolveTypeVariable']

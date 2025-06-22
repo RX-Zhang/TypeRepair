@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -1,17 +1,29 @@
+ public static boolean isJSIdentifier(String s) {
+   int length = s.length();
+ 
+-  if (length == 0 ||
+-      !Character.isJavaIdentifierStart(s.charAt(0))) {
++  if (length == 0) {
++    return false;
++  }
++
++  char firstChar = s.charAt(0);
++  // Only allow ASCII letters, $, and _ as the first character to avoid JS control and non-ASCII chars
++  if (!((firstChar >= 'A' && firstChar <= 'Z') ||
++        (firstChar >= 'a' && firstChar <= 'z') ||
++        firstChar == '$' || firstChar == '_')) {
+     return false;
+   }
+ 
+   for (int i = 1; i < length; i++) {
+-    if (
+-        !Character.isJavaIdentifierPart(s.charAt(i))) {
++    char c = s.charAt(i);
++    // Only allow ASCII letters, digits, $, and _ as subsequent characters
++    if (!((c >= 'A' && c <= 'Z') ||
++          (c >= 'a' && c <= 'z') ||
++          (c >= '0' && c <= '9') ||
++          c == '$' || c == '_')) {
+       return false;
+     }
+   }
+ 
+   return true;
+ }
++

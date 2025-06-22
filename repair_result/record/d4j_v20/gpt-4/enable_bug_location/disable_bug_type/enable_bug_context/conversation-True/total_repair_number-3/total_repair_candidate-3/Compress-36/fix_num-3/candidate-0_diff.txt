@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,8 +1,8 @@
+ private InputStream getCurrentStream() throws IOException {
+-    if (deferredBlockStreams.isEmpty()) {
++    if (currentEntryIndex < 0 || currentEntryIndex >= archive.files.length) {
+         throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
+     }
+-    
++
+     while (deferredBlockStreams.size() > 1) {
+         // In solid compression mode we need to decompress all leading folder'
+         // streams to get access to an entry. We defer this until really needed
+@@ -14,3 +14,4 @@
+ 
+     return deferredBlockStreams.get(0);
+ }
++

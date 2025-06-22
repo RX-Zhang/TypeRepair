@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -14,6 +14,22 @@
+   // taking any each property on the record and trying to match
+   // properties on this object.
+   if (constraint.isRecordType()) {
+-    matchRecordTypeConstraint(constraint.toObjectType());
++    ObjectType constraintObj = constraint.toObjectType();
++
++    for (String propName : constraintObj.getOwnPropertyNames()) {
++      JSType constraintPropType = constraintObj.getPropertyType(propName);
++
++      if (hasOwnProperty(propName)) {
++        // Property exists, so try to match types accordingly.
++        JSType existingType = getPropertyType(propName);
++        if (!existingType.equals(constraintPropType)) {
++          defineProperty(propName, constraintPropType, true /* inferred */, null);
++        }
++      } else {
++        // Property does not exist, define it using the constraint type.
++        defineProperty(propName, constraintPropType, true /* inferred */, null);
++      }
++    }
+   }
+ }
++

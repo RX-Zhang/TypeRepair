@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -7,8 +7,16 @@
+         int len = 0;
+         int read = 0;
+         while((ch = i.read()) != -1) {
+-            read++;
+             if (ch == ' '){
++                read++;
++                // If len is zero here, skip this line (blank line)
++                if (len == 0) {
++                    // Read to the end of this line (consume remainder)
++                    while ((ch = i.read()) != -1 && ch != '\n') {
++                        // discard
++                    }
++                    break; // go to next header line
++                }
+                 // Get keyword
+                 final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                 while((ch = i.read()) != -1) {
+@@ -17,7 +25,7 @@
+                         final String keyword = coll.toString(CharsetNames.UTF_8);
+                         // Get rest of entry
+                         final int restLen = len - read;
+-                        if (restLen == 1) { // only NL
++                        if (restLen <= 0) { // no content or blank line
+                             headers.remove(keyword);
+                         } else {
+                             final byte[] rest = new byte[restLen];
+@@ -40,8 +48,12 @@
+                 }
+                 break; // Processed single header
+             }
++            if (ch < '0' || ch > '9') {
++                throw new IOException("Invalid length field in Pax header");
++            }
+             len *= 10;
+             len += ch - '0';
++            read++;
+         }
+         if (ch == -1){ // EOF
+             break;
+@@ -49,3 +61,4 @@
+     }
+     return headers;
+ }
++

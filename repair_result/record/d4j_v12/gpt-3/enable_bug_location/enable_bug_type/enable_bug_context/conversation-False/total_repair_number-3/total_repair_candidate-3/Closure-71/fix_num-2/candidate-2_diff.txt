@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -90,5 +90,12 @@
+         }
+       }
+     }
++  } else {
++    // If objectType is null, we should ensure we handle this case
++    // appropriately to avoid runtime errors.
++    compiler.report(
++        t.makeError(getprop, BAD_PRIVATE_PROPERTY_ACCESS,
++            propertyName, "Object type is null, cannot determine visibility."));
+   }
+ }
++

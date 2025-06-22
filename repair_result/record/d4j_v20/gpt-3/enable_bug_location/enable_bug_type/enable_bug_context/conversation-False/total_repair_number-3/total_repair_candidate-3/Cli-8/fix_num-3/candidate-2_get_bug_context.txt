@@ -1,0 +1,1 @@
+['getNewLine', 'createPadding', 'rtrim']

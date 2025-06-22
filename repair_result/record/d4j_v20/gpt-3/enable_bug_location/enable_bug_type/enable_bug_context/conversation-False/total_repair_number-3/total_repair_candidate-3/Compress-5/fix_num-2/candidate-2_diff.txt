@@ -1,0 +1,62 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     if (closed) {
+         throw new IOException("The stream is closed");
+     }
+-    if (inf.finished() || current == null) {
++    if (current == null) {
+         return -1;
+     }
+ 
+@@ -17,12 +17,12 @@
+             if (offsetInBuffer >= lengthOfLastRead) {
+                 offsetInBuffer = 0;
+                 if ((lengthOfLastRead = in.read(buf)) == -1) {
+-                    return -1;
++                    throw new IOException("Truncated ZIP file");
+                 }
+                 count(lengthOfLastRead);
+                 bytesReadFromStream += lengthOfLastRead;
+             }
+-            int toRead = length > lengthOfLastRead
++            int toRead = length > (lengthOfLastRead - offsetInBuffer)
+                 ? lengthOfLastRead - offsetInBuffer
+                 : length;
+             if ((csize - readBytesOfEntry) < toRead) {
+@@ -34,13 +34,20 @@
+             crc.update(buffer, start, toRead);
+             return toRead;
+         }
++        if (inf.finished()) {
++            // All data for the current entry has been decompressed
++            return -1;
++        }
+         if (inf.needsInput()) {
+             fill();
++            if (lengthOfLastRead == -1) {
++                throw new IOException("Truncated ZIP file");
++            }
+             if (lengthOfLastRead > 0) {
+                 bytesReadFromStream += lengthOfLastRead;
+             }
+         }
+-        int read = 0;
++        int read;
+         try {
+             read = inf.inflate(buffer, start, length);
+         } catch (DataFormatException e) {
+@@ -49,8 +56,13 @@
+         if (read == 0 && inf.finished()) {
+             return -1;
+         }
++        if (read == 0 && inf.needsInput()) {
++            // No data to inflate and no input available means truncated
++            throw new IOException("Truncated ZIP file");
++        }
+         crc.update(buffer, start, read);
+         return read;
+     }
+     throw new ArrayIndexOutOfBoundsException();
+ }
++

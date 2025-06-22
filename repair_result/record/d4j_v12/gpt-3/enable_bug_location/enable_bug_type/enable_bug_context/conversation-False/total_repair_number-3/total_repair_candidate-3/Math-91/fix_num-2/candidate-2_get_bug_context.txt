@@ -1,0 +1,1 @@
+['doubleValue', 'getDenominator', 'getNumerator', 'add', 'subtract']

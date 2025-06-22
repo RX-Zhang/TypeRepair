@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -18,7 +18,8 @@
+             if (token.indexOf('=') != -1)
+             {
+                 tokens.add(token.substring(0, token.indexOf('=')));
+-                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                String val = token.substring(token.indexOf('=') + 1, token.length());
++                process(val);
+             }
+             else
+             {
+@@ -61,3 +62,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

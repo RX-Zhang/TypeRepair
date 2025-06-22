@@ -1,0 +1,1 @@
+['_calcOffset', '_verifyNeedForRehash', '_findOffsetForAdd', 'rehash']

@@ -1,0 +1,92 @@
+--- 
++++ 
+@@ -1,37 +1,73 @@
+ public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+-    long    result = 0;
++    if (buffer == null) {
++        throw new IllegalArgumentException("Buffer must not be null");
++    }
++    if (length < 2) {
++        throw new IllegalArgumentException("Length must be at least 2");
++    }
++    if (offset < 0 || length < 0 || offset + length > buffer.length) {
++        throw new IllegalArgumentException("Invalid offset/length for buffer");
++    }
++
++    long result = 0;
+     boolean stillPadding = true;
+-    int     end = offset + length;
+-    int     start = offset;
++    int end = offset + length;
++    int start = offset;
++    boolean foundDigit = false;
+ 
+-    for (int i = start; i < end; i++){
++    for (int i = start; i < end; i++) {
+         final byte currentByte = buffer[i];
++
+         if (currentByte == 0) {
++            // trailing NUL found - must be all NUL or spaces after this
++            for (int j = i; j < end; j++) {
++                byte b = buffer[j];
++                if (b != 0 && b != (byte) ' ') {
++                    throw new IllegalArgumentException(
++                            exceptionMessage(buffer, offset, length, i, b));
++                }
++            }
+             break;
+         }
+ 
+-    // Skip leading spaces
+-        if (currentByte == (byte) ' ' || currentByte == '0') {
++        // Skip leading spaces and zeros
++        if (currentByte == (byte) ' ' || currentByte == (byte) '0') {
+             if (stillPadding) {
+-               continue;
+-        }
++                continue;
++            }
+             if (currentByte == (byte) ' ') {
+-            break;
++                // space in "non-padding" part means end
++                // trailing spaces allowed, but no embedded spaces
++                // check that all trailing bytes are NUL or space
++                for (int j = i; j < end; j++) {
++                    byte b = buffer[j];
++                    if (b != 0 && b != (byte) ' ') {
++                        throw new IllegalArgumentException(
++                                exceptionMessage(buffer, offset, length, j, b));
++                    }
++                }
++                break;
+             }
+         }
+ 
+-    // Must have trailing NUL or space
+-    // May have additional NUL or space
++        // Must have trailing NUL or space after digits, so these are digits now
++        stillPadding = false;
+ 
+-        stillPadding = false;
+-        // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, currentByte));
++                    exceptionMessage(buffer, offset, length, i, currentByte));
+         }
++
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
++        foundDigit = true;
++    }
++
++    // If no digits found (means all NUL or spaces), invalid input
++    if (!foundDigit) {
++        throw new IllegalArgumentException(
++                "No valid octal digits found in buffer at offset " + offset + " length " + length);
+     }
+ 
+     return result;
+ }
++

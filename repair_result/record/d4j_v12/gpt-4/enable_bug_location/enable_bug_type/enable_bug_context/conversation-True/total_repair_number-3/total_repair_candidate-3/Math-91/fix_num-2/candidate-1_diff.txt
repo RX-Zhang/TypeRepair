@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -1,5 +1,6 @@
+ public int compareTo(Fraction object) {
+-    double nOd = doubleValue();
+-    double dOn = object.doubleValue();
+-    return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);
++    long lhsNumerator = (long) this.getNumerator() * object.getDenominator();
++    long rhsNumerator = (long) object.getNumerator() * this.getDenominator();
++    return Long.compare(lhsNumerator, rhsNumerator);
+ }
++

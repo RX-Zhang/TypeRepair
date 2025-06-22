@@ -1,0 +1,1 @@
+['setErrorManager', 'getErrors', 'getWarnings', 'getDiagnosticGroups', 'report', 'getErrorCount', 'getWarningCount', 'getOptions']

@@ -1,0 +1,1 @@
+['isNoType', 'isUnknownType', 'canTestForEqualityWith', 'testForEquality', 'getTypesUnderEquality']

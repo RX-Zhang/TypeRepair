@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -8,13 +8,24 @@
+         valueList = defaultValues;
+     }
+ 
+-    // augment the list with the default values
++    // if still null or empty, grab from this.defaultValues
+     if ((valueList == null) || valueList.isEmpty()) {
+         valueList = (List) this.defaultValues.get(option);
+     }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+-    
++
++    // if there are more default values as specified, add them to the list.
++    if (valueList != null && defaultValues != null && valueList != defaultValues) {
++        // Create a new list to avoid modifying the original lists
++        List combined = new ArrayList(valueList.size() + defaultValues.size());
++        combined.addAll(valueList);
++        for (Object defVal : defaultValues) {
++            if (!combined.contains(defVal)) {
++                combined.add(defVal);
++            }
++        }
++        valueList = combined;
++    }
++
+     return valueList == null ? Collections.EMPTY_LIST : valueList;
+ }
++

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -34,15 +34,19 @@
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Remove this call to tryMinimizeExits on finally block to avoid removing break or return
++      // nodes in finally, which causes logical bugs.
++      // Node finallyBlock = n.getLastChild();
++      // tryMinimizeExits(finallyBlock, exitType, labelName);
+     }
++    return;
+   }
+ 
+   // Just a 'label'.
+   if (n.isLabel()) {
+     Node labelBlock = n.getLastChild();
+     tryMinimizeExits(labelBlock, exitType, labelName);
++    return;
+   }
+ 
+   // TODO(johnlenz): The last case of SWITCH statement?
+@@ -94,3 +98,4 @@
+     }
+   }
+ }
++

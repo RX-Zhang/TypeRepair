@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.codec.language.DoubleMetaphone2Test.testDoubleMetaphoneAlternate
+- Error: junit.framework.ComparisonFailure: Test [19]=Angier expected:<AN[J]R> but was:<AN[K]R>
+- Location:             assertEquals("Test [" + i + "]=" + value, TEST_DATA[i][2], doubleMetaphone.doubleMetaphone(value, true));

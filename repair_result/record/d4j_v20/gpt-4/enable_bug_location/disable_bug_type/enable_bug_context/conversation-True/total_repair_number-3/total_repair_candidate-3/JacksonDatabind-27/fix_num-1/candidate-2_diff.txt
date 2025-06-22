@@ -1,0 +1,85 @@
+--- 
++++ 
+@@ -22,27 +22,31 @@
+                 ;
+             } else {
+                 // Last creator property to set?
+-                if (buffer.assignParameter(creatorProp, _deserializeWithErrorWrapping(p, ctxt, creatorProp))) {
+-                    t = p.nextToken(); // to move to following FIELD_NAME/END_OBJECT
+-                    Object bean;
+-                    try {
+-                        bean = creator.build(ctxt, buffer);
+-                    } catch (Exception e) {
+-                        wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+-                        continue; // never gets here
++                try {
++                    if (buffer.assignParameter(creatorProp, _deserializeWithErrorWrapping(p, ctxt, creatorProp))) {
++                        t = p.nextToken(); // to move to following FIELD_NAME/END_OBJECT
++                        Object bean;
++                        try {
++                            bean = creator.build(ctxt, buffer);
++                        } catch (Exception e) {
++                            wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
++                            continue; // never gets here
++                        }
++                        // if so, need to copy all remaining tokens into buffer
++                        while (t == JsonToken.FIELD_NAME) {
++                            p.nextToken(); // to skip name
++                            tokens.copyCurrentStructure(p);
++                            t = p.nextToken();
++                        }
++                        if (bean.getClass() != _beanType.getRawClass()) {
++                            // !!! 08-Jul-2011, tatu: Could theoretically support; but for now
++                            //   it's too complicated, so bail out
++                            throw ctxt.mappingException("Can not create polymorphic instances with unwrapped values");
++                        }
++                        return ext.complete(p, ctxt, bean);
+                     }
+-                    // if so, need to copy all remaining tokens into buffer
+-                    while (t == JsonToken.FIELD_NAME) {
+-                        p.nextToken(); // to skip name
+-                        tokens.copyCurrentStructure(p);
+-                        t = p.nextToken();
+-                    }
+-                    if (bean.getClass() != _beanType.getRawClass()) {
+-                        // !!! 08-Jul-2011, tatu: Could theoretically support; but for now
+-                        //   it's too complicated, so bail out
+-                        throw ctxt.mappingException("Can not create polymorphic instances with unwrapped values");
+-                    }
+-                    return ext.complete(p, ctxt, bean);
++                } catch (Exception e) {
++                    wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+                 }
+             }
+             continue;
+@@ -54,7 +58,11 @@
+         // regular property? needs buffering
+         SettableBeanProperty prop = _beanProperties.find(propName);
+         if (prop != null) {
+-            buffer.bufferProperty(prop, prop.deserialize(p, ctxt));
++            try {
++                buffer.bufferProperty(prop, _deserializeWithErrorWrapping(p, ctxt, prop));
++            } catch (Exception e) {
++                wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
++            }
+             continue;
+         }
+         // external type id (or property that depends on it)?
+@@ -70,7 +78,11 @@
+         }
+         // "any property"?
+         if (_anySetter != null) {
+-            buffer.bufferAnyProperty(_anySetter, propName, _anySetter.deserialize(p, ctxt));
++            try {
++                buffer.bufferAnyProperty(_anySetter, propName, _anySetter.deserialize(p, ctxt));
++            } catch (Exception e) {
++                wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
++            }
+         }
+     }
+ 
+@@ -82,3 +94,4 @@
+         return null; // never gets here
+     }
+ }
++

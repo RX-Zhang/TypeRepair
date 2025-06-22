@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -6,12 +6,14 @@
+         final String val = vals[i];
+         accum.append(' ').append(key);
+ 
+-        // collapse checked=null, checked="", checked=checked; write out others
++        // collapse for boolean attributes: if output syntax is html and 
++        // val is null OR (val is empty or val equals key and attribute is boolean), then omit =""
+         if (!(out.syntax() == Document.OutputSettings.Syntax.html
+-            && (val == null || val.equals(key) && Attribute.isBooleanAttribute(key)))) {
++            && (val == null || val.isEmpty() || (val.equals(key) && Attribute.isBooleanAttribute(key))))) {
+             accum.append("=\"");
+             Entities.escape(accum, val == null ? EmptyString : val, out, true, false, false);
+             accum.append('"');
+         }
+     }
+ }
++

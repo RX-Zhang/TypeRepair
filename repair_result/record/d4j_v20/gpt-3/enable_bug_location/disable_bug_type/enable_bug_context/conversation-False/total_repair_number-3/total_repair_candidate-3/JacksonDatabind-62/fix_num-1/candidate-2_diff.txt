@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -11,7 +11,7 @@
+                         +": value instantiator ("+_valueInstantiator.getClass().getName()
+                         +") returned true for 'canCreateUsingDelegate()', but null for 'getDelegateType()'");
+             }
+-            delegateDeser = findDeserializer(ctxt, delegateType, property);
++            delegateDeser = ctxt.findContextualValueDeserializer(delegateType, property);
+         }
+     }
+     // [databind#1043]: allow per-property allow-wrapping of single overrides:
+@@ -37,3 +37,4 @@
+     }
+     return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+ }
++

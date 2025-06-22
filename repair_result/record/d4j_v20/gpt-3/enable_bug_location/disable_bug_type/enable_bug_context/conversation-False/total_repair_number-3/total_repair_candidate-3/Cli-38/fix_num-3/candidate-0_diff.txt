@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -9,6 +9,9 @@
+     // remove leading "-" and "=value"
+     int pos = token.indexOf("=");
+     String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
+-    return options.hasShortOption(optName);
+-    // check for several concatenated short options
++
++    // Check only the first character as a short option
++    String firstChar = optName.substring(0, 1);
++    return options.hasShortOption(firstChar);
+ }
++

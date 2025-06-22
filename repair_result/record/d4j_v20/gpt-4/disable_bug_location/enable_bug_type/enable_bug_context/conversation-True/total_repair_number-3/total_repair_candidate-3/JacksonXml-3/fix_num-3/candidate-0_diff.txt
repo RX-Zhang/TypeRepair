@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -60,15 +60,16 @@
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            return null;
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
++            return null;
+         }
+-        break;
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText;
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -76,8 +77,6 @@
+             // Also: must skip following END_ELEMENT
+             _xmlTokens.skipEndElement();
+ 
+-            // NOTE: this is different from nextToken() -- NO work-around
+-            // for otherwise empty List/array
+             _currToken = JsonToken.VALUE_STRING;
+             return _currText;
+         }
+@@ -91,3 +90,4 @@
+     }
+     return null;
+ }
++

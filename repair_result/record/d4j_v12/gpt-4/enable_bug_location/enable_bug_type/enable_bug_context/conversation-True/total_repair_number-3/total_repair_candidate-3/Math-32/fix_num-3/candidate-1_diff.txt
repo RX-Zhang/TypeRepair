@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -4,11 +4,20 @@
+ 
+     if (v.length == 0) {
+         final BSPTree<Euclidean2D> tree = getTree(false);
+-        if ((Boolean) tree.getAttribute()) {
+-            // the instance covers the whole space
+-            setSize(Double.POSITIVE_INFINITY);
+-            setBarycenter(Vector2D.NaN);
++        // The attribute is expected to be a BoundaryAttribute, not a Boolean
++        final Object attribute = tree.getAttribute();
++        if (attribute instanceof BoundaryAttribute) {
++            BoundaryAttribute boundaryAttr = (BoundaryAttribute) attribute;
++            if (boundaryAttr.isInside()) {
++                // the instance covers the whole space
++                setSize(Double.POSITIVE_INFINITY);
++                setBarycenter(Vector2D.NaN);
++            } else {
++                setSize(0);
++                setBarycenter(new Vector2D(0, 0));
++            }
+         } else {
++            // Defensive: treat unknown attribute as outside
+             setSize(0);
+             setBarycenter(new Vector2D(0, 0));
+         }
+@@ -50,3 +59,4 @@
+     }
+ 
+ }
++

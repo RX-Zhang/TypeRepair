@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -2,7 +2,15 @@
+ {
+     // There are certain nasty classes that could cause problems, mostly
+     // via default typing -- catch them here.
++    if (type == null || ctxt == null) {
++        throw new IllegalArgumentException("DeserializationContext and JavaType cannot be null");
++    }
++
+     final Class<?> raw = type.getRawClass();
++    if (raw == null) {
++        throw new IllegalArgumentException("Raw class cannot be null");
++    }
++    
+     String full = raw.getName();
+ 
+     main_check:
+@@ -31,3 +39,4 @@
+     throw JsonMappingException.from(ctxt,
+             String.format("Illegal type (%s) to deserialize: prevented for security reasons", full));
+ }
++

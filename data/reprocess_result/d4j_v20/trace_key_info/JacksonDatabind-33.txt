@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.struct.TestUnwrapped.testUnwrappedAsPropertyIndicator
+- Error: com.fasterxml.jackson.databind.JsonMappingException: No serializer found for class com.fasterxml.jackson.databind.struct.TestUnwrapped$Outer and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) )
+- Location:         String actual = MAPPER.writeValueAsString(outer);

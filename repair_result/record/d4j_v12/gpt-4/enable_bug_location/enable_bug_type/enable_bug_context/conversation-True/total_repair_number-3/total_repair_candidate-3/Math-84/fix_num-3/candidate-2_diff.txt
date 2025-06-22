@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -1,13 +1,26 @@
+ protected void iterateSimplex(final Comparator<RealPointValuePair> comparator)
+     throws FunctionEvaluationException, OptimizationException, IllegalArgumentException {
+ 
+-    while (true) {
++    double previousBestValue = Double.NaN;
++    int iter = 0;
++    final int maxIter = getMaxIterations();
++
++    while (iter < maxIter) {
+ 
+         incrementIterationsCounter();
+ 
+         // save the original vertex
+         final RealPointValuePair[] original = simplex;
+         final RealPointValuePair best = original[0];
++
++        // check for convergence
++        if (!Double.isNaN(previousBestValue)) {
++            double currentBestValue = best.getValue();
++            if (Math.abs(currentBestValue - previousBestValue) <= getConvergenceChecker().getAbsoluteThreshold()) {
++                return;
++            }
++        }
++        previousBestValue = best.getValue();
+ 
+         // perform a reflection step
+         final RealPointValuePair reflected = evaluateNewSimplex(original, 1.0, comparator);
+@@ -30,10 +43,13 @@
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
+ 
+-        // check convergence
++            // check convergence
+             return;
+         }
+ 
++        iter++;
+     }
+ 
++    throw new OptimizationException(new MaxIterationsExceededException(maxIter));
+ }
++

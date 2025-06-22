@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.cli.HelpFormatterTest.testRenderWrappedTextWordCut
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 12
+- Location:         new HelpFormatter().renderWrappedText(sb, width, padding, text);
+
+
+Test failure 2:
+- Test: org.apache.commons.cli.HelpFormatterTest.testFindWrapPos
+- Error: junit.framework.AssertionFailedError: wrap position 3 expected:<3> but was:<4>
+- Location:         assertEquals("wrap position 3", 3, hf.findWrapPos(text, 3, 0));

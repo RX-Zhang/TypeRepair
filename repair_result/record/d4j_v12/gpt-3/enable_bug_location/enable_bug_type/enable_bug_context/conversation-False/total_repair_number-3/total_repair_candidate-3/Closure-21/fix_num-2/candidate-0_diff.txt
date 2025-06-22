@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -58,8 +58,9 @@
+         t.makeError(n, level, USELESS_CODE_ERROR, msg));
+     // TODO(johnlenz): determine if it is necessary to
+     // try to protect side-effect free statements as well.
+-    if (!NodeUtil.isStatement(n)) {
++    if (!NodeUtil.isStatement(n) && !NodeUtil.isExpressionResultUsed(n)) {
+       problemNodes.add(n);
+     }
+   }
+ }
++

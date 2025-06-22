@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+     int pfxLen = 0;
+     for(final String pfx : hex_prefixes) {
+         if (str.startsWith(pfx)) {
+-            pfxLen += pfx.length();
++            pfxLen = pfx.length();
+             break;
+         }
+     }
+@@ -29,7 +29,19 @@
+     String dec;
+     String exp;
+     final int decPos = str.indexOf('.');
+-    final int expPos = str.indexOf('e') + str.indexOf('E') + 1; // assumes both not present
++    final int expPos;
++    // Calculate expPos correctly (find min index of 'e' or 'E' if any)
++    int ePos = str.indexOf('e');
++    int EPos = str.indexOf('E');
++    if (ePos == -1 && EPos == -1) {
++        expPos = -1;
++    } else if (ePos == -1) {
++        expPos = EPos;
++    } else if (EPos == -1) {
++        expPos = ePos;
++    } else {
++        expPos = Math.min(ePos, EPos);
++    }
+     // if both e and E are present, this is caught by the checks on expPos (which prevent IOOBE)
+     // and the parsing which will detect if e or E appear in a number due to using the wrong offset
+ 
+@@ -71,7 +83,7 @@
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (final NumberFormatException nfe) { // NOPMD
+@@ -99,7 +111,7 @@
+             case 'D' :
+                 try {
+                     final Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (final NumberFormatException nfe) { // NOPMD
+@@ -163,3 +175,4 @@
+ 
+     return createBigDecimal(str);
+ }
++

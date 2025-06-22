@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -21,13 +21,16 @@
+                 charval = full.get(name);
+         }
+ 
+-        if (charval != -1 || charval > 0xFFFF) { // out of range
++        if (charval != -1 && charval <= 0xFFFF) { // corrected condition (changed || to &&, and fixed out of range logic)
+             String c = Character.toString((char) charval);
+-            m.appendReplacement(accum, c);
++            String replacement = Matcher.quoteReplacement(c); // escape replacement string properly
++            m.appendReplacement(accum, replacement);
+         } else {
+-            m.appendReplacement(accum, m.group(0));
++            String replacement = Matcher.quoteReplacement(m.group(0)); // escape replacement string properly
++            m.appendReplacement(accum, replacement);
+         }
+     }
+     m.appendTail(accum);
+     return accum.toString();
+ }
++

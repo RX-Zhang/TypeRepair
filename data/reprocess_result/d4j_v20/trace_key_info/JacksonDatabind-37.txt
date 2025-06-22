@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.objectid.Objecid1083Test.testSimple
+- Error: com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "name" (class com.fasterxml.jackson.databind.objectid.Objecid1083Test$JsonMapSchema), not marked as ignorable (0 known properties: ])
+- Location:           mapper.readValue(json, JsonRoot.class);

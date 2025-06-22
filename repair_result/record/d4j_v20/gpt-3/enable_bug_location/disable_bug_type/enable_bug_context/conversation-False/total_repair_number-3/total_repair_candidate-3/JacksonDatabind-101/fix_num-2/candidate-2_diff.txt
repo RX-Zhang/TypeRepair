@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -58,7 +58,14 @@
+         // regular property? needs buffering
+         SettableBeanProperty prop = _beanProperties.find(propName);
+         if (prop != null) {
+-            buffer.bufferProperty(prop, _deserializeWithErrorWrapping(p, ctxt, prop));
++            // Ensure that we handle possible null values gracefully
++            Object value = null;
++            try {
++                value = _deserializeWithErrorWrapping(p, ctxt, prop);
++            } catch (Exception e) {
++                wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
++            }
++            buffer.bufferProperty(prop, value);
+             continue;
+         }
+         // Things marked as ignorable should not be passed to any setter
+@@ -99,3 +106,4 @@
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

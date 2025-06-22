@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -20,7 +20,14 @@
+     String dec;
+     String exp;
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    int expPosE = val.indexOf('e');
++    int expPosBigE = val.indexOf('E');
++    int expPos = -1;
++    if (expPosE > -1 && expPosBigE > -1) {
++        expPos = Math.min(expPosE, expPosBigE);
++    } else {
++        expPos = Math.max(expPosE, expPosBigE);
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -55,7 +62,7 @@
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+@@ -108,7 +115,7 @@
+             exp = null;
+         }
+         if (dec == null && exp == null) {
+-            //Must be an int,long,bigint
++            //Must be an int,bigint
+             try {
+                 return createInteger(val);
+             } catch (NumberFormatException nfe) {
+@@ -147,3 +154,4 @@
+ 
+     }
+ }
++

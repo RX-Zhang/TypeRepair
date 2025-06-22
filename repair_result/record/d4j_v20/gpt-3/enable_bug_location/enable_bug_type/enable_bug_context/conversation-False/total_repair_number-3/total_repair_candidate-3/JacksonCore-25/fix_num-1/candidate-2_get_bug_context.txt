@@ -1,0 +1,1 @@
+['getNextChar', '_loadMore', '_parseName', '_handleOddName']

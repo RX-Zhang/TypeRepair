@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+         // injection AND without name
+         int oneNotInjected = candidate.findOnlyParamWithoutInjection();
+         if (oneNotInjected >= 0) {
+-            // getting close; but most not have name
++            // getting close; but must not have name
+             if (candidate.paramName(oneNotInjected) == null) {
+                 _addExplicitDelegatingCreator(ctxt, beanDesc, creators, candidate);
+                 return;
+@@ -30,8 +30,7 @@
+         // or field, we'll consider it property-based as well
+ 
+         // 25-May-2018, tatu: as per [databind#2051], looks like we have to get
+-        //    not implicit name, but name with possible strategy-based-rename
+-          paramName = candidate.findImplicitParamName(0);
++        //    name with possible strategy-based-rename, not just implicit name
+         paramName = candidate.findImplicitParamName(0);
+         useProps = (paramName != null) && paramDef.couldSerialize();
+     }
+@@ -42,11 +41,16 @@
+         creators.addPropertyCreator(candidate.creator(), true, properties);
+         return;
+     }
+-    _handleSingleArgumentCreator(creators, candidate.creator(), true, true);
++    if (_handleSingleArgumentCreator(creators, candidate.creator(), true, true)) {
++        // one more thing: sever link to creator property, to avoid possible later
++        // problems with "unresolved" constructor property
++        if (paramDef != null) {
++            ((POJOPropertyBuilder) paramDef).removeConstructors();
++        }
++        return;
++    }
+ 
+-    // one more thing: sever link to creator property, to avoid possible later
+-    // problems with "unresolved" constructor property
+-    if (paramDef != null) {
+-        ((POJOPropertyBuilder) paramDef).removeConstructors();
+-    }
++    // If we get here, no naming or injection info and not a simple creator:
++    _addExplicitPropertyCreator(ctxt, beanDesc, creators, candidate);
+ }
++

@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.codec.binary.Base64Codec13Test.testEncoder
+- Error: junit.framework.AssertionFailedError: Encoder test-1
+- Location:                 assertTrue("Encoder test-" + i, b);
+
+
+Test failure 2:
+- Test: org.apache.commons.codec.binary.Base64Codec13Test.testBinaryEncoder
+- Error: junit.framework.AssertionFailedError: BinaryEncoder test-1
+- Location:                 assertTrue("BinaryEncoder test-" + i, b);

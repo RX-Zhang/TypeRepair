@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.util.FastMathTest.testMinMaxFloat
+- Error: junit.framework.AssertionFailedError: max(50.0, -50.0) expected:<50.0> but was:<-50.0>
+- Location:             Assert.assertEquals("max(" + pair[1] + ", " + pair[0] + ")",

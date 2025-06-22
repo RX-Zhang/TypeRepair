@@ -1,0 +1,1 @@
+['read', 'readStored', 'readFully', 'readStoredEntry']

@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -4,14 +4,20 @@
+      *    check if any generics info is added; and only then ask factory
+      *    to do translation when necessary
+      */
+-    TypeFactory tf = ctxt.getTypeFactory();
++    TypeFactory tf ctxt.getTypeFactory();
+     if (id.indexOf('<') > 0) {
+         // note: may want to try combining with specialization (esp for EnumMap)?
+         // 17-Aug-2017, tatu: As per [databind#1735] need to ensure assignment
+         //    compatibility -- needed later anyway, and not doing so may open
+         //    security issues.
+         JavaType t = tf.constructFromCanonical(id);
+-            // Probably cleaner to have a method in `TypeFactory` but can't add in patch
++        // Here is the crucial fix:
++        // Must ensure the resolved type is subtype of _baseType; if not, throw
++        if (!_baseType.getRawClass().isAssignableFrom(t.getRawClass())) {
++            throw new JsonMappingException(ctxt.getParser(),
++                    String.format("Trying to resolve subtype '%s', is not a subtype of base type '%s'",
++                            t.getRawClass().getName(), _baseType.getRawClass().getName()));
++        }
+         return t;
+     }
+     Class<?> cls;
+@@ -30,5 +36,11 @@
+     } catch (Exception e) {
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
++    if (!_baseType.getRawClass().isAssignableFrom(cls)) {
++        throw new JsonMappingException(ctxt.getParser(),
++            String.format("Trying to resolve subtype '%s', is not a subtype of base type '%s'",
++                cls.getName(), _baseType.getRawClass().getName()));
++    }
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

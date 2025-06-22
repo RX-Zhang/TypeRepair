@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -14,6 +14,21 @@
+                 continue;
+             }
+             // but not just one
++            JsonToken t = _tokens[i].firstToken();
++            if (t.isScalarValue()) {
++                JsonParser buffered = _tokens[i].asParser(p);
++                buffered.nextToken();
++                SettableBeanProperty prop = extProp.getProperty();
++                Object result = TypeDeserializer.deserializeIfNatural(buffered, ctxt, prop.getType());
++                if (result != null) {
++                    values[i] = result;
++                    // also handle if creator parameter
++                    if (prop.getCreatorIndex() >= 0) {
++                        buffer.assignParameter(prop, result);
++                    }
++                    continue;
++                }
++            }
+             // 26-Oct-2012, tatu: As per [databind#94], must allow use of 'defaultImpl'
+             if (!extProp.hasDefaultType()) {
+                 ctxt.reportInputMismatch(_beanType,
+@@ -26,13 +41,15 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
+         }
+-        values[i] = _deserialize(p, ctxt, i, typeId);
++        if (values[i] == null) {
++            values[i] = _deserialize(p, ctxt, i, typeId);
++        }
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+         // also: if it's creator prop, fill in
+-        if (prop.getCreatorIndex() >= 0) {
++        if (prop.getCreatorIndex() >= 0 && values[i] != null) {
+             buffer.assignParameter(prop, values[i]);
+ 
+             // [databind#999] And maybe there's creator property for type id too?
+@@ -49,9 +66,10 @@
+     // third: assign non-creator properties
+     for (int i = 0; i < len; ++i) {
+         SettableBeanProperty prop = _properties[i].getProperty();
+-        if (prop.getCreatorIndex() < 0) {
++        if (prop.getCreatorIndex() < 0 && values[i] != null) {
+             prop.set(bean, values[i]);
+         }
+     }
+     return bean;
+ }
++

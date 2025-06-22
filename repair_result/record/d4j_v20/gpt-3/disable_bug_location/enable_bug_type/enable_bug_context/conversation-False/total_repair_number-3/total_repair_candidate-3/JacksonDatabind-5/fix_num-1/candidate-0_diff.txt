@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ protected void _addMethodMixIns(Class<?> targetClass, AnnotatedMethodMap methods,
+         Class<?> mixInCls, AnnotatedMethodMap mixIns)
+ {
++    if (mixInCls == null) {
++        throw new IllegalArgumentException("mixInCls cannot be null");
++    }
++    
+     List<Class<?>> parents = new ArrayList<Class<?>>();
+     parents.add(mixInCls);
+     ClassUtil.findSuperTypes(mixInCls, targetClass, parents);
+@@ -22,8 +26,12 @@
+                  */
+             } else {
+                 // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
++                AnnotatedMethod newMethod = _constructMethod(m);
++                if (newMethod != null) {
++                    mixIns.add(newMethod);
++                }
+             }
+         }
+     }
+ }
++

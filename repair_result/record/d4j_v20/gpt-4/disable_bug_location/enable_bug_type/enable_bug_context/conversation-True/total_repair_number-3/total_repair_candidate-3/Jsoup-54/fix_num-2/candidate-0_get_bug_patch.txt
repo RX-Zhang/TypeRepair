@@ -1,0 +1,20 @@
+private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+    for (Attribute attribute : source.attributes()) {
+        String originalKey = attribute.getKey();
+
+        // Validate the attribute name according to XML specs (names must start with a letter, underscore, or colon,
+        // followed by letters, digits, hyphens, underscores, colons, or periods).
+        // Reject or sanitize keys containing invalid characters.
+        if (!originalKey.matches("^[a-zA-Z_:][a-zA-Z0-9_:\\-\\.]*$")) {
+            // Skip invalid attribute names to avoid INVALID_CHARACTER_ERR in XML DOM
+            continue;
+        }
+
+        try {
+            el.setAttribute(originalKey, attribute.getValue());
+        } catch (DOMException e) {
+            // Skip attribute if setting it causes a DOMException (invalid character or other issues)
+            // Could also log the issue here if desired
+        }
+    }
+}

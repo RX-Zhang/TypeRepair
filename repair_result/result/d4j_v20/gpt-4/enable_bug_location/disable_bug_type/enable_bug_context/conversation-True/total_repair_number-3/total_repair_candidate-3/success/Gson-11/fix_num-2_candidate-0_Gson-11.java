@@ -1,0 +1,19 @@
+public Number read(JsonReader in) throws IOException {
+  JsonToken jsonToken = in.peek();
+  switch (jsonToken) {
+  case NULL:
+    in.nextNull();
+    return null;
+  case NUMBER:
+    return new LazilyParsedNumber(in.nextString());
+  case STRING:
+    String value = in.nextString();
+    try {
+      return new LazilyParsedNumber(value);
+    } catch (NumberFormatException e) {
+      throw new JsonSyntaxException("Expecting number, got: STRING", e);
+    }
+  default:
+    throw new JsonSyntaxException("Expecting number, got: " + jsonToken);
+  }
+}

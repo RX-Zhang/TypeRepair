@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -63,6 +63,10 @@
+                     out.write('\\');
+                     out.write('\\');
+                     break;
++                case '/': // Fix: properly escape forward slash '/'
++                    out.write('\\');
++                    out.write('/');
++                    break;
+                 default :
+                     out.write(ch);
+                     break;
+@@ -70,3 +74,4 @@
+         }
+     }
+ }
++

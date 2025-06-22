@@ -1,0 +1,1 @@
+['getRawType', 'equal', 'equals', 'getGenericSupertype', 'resolve']

@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -87,12 +87,16 @@
+                 || chars[i] == 'D'
+                 || chars[i] == 'f'
+                 || chars[i] == 'F')) {
++            // Fix: Float type qualifier only allowed if no exponent and decimal point
++            if (hasExp || hasDecPoint) {
++                return false;
++            }
+             return foundDigit;
+         }
+         if (chars[i] == 'l'
+             || chars[i] == 'L') {
+             // not allowing L with an exponent or decimal point
+-            return foundDigit && !hasExp;
++            return foundDigit && !hasExp && !hasDecPoint;
+         }
+         // last character is illegal
+         return false;
+@@ -101,3 +105,4 @@
+     // found digit it to make sure weird stuff like '.' and '1E-' doesn't pass
+     return !allowSigns && foundDigit;
+ }
++

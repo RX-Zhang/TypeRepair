@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -13,8 +13,13 @@
+     case FALSE:
+     case UNKNOWN:
+       return new TypePair(this, that);
++
++    case null:
++      // testForEquality may return null, treat as UNKNOWN
++      return new TypePair(this, that);
+   }
+ 
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

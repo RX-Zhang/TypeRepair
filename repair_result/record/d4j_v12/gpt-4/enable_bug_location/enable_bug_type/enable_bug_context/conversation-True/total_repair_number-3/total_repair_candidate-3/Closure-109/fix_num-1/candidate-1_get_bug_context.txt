@@ -1,0 +1,1 @@
+['parseTypeString', 'parseTypeExpressionAnnotation', 'parseTypeName', 'parseFunctionType', 'reportTypeSyntaxWarning']

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+   if (objectType != null) {
+     // Is this a normal property access, or are we trying to override
+     // an existing property?
+-    boolean isOverride = t.inGlobalScope() &&
++    boolean isOverride = !t.inGlobalScope() &&
+         parent.getType() == Token.ASSIGN &&
+         parent.getFirstChild() == getprop;
+ 
+@@ -47,8 +47,10 @@
+       // visibility of the original property.
+       if (visibility == Visibility.PRIVATE && !sameInput) {
+         compiler.report(
+-            t.makeError(getprop, PRIVATE_OVERRIDE,
+-                objectType.toString()));
++            t.makeError(getprop, BAD_PRIVATE_PROPERTY_ACCESS,
++                propertyName,
++                validator.getReadableJSTypeName(
++                    getprop.getFirstChild(), true)));
+       } else if (overridingVisibility != Visibility.INHERITED &&
+           overridingVisibility != visibility) {
+         compiler.report(
+@@ -92,3 +94,4 @@
+     }
+   }
+ }
++

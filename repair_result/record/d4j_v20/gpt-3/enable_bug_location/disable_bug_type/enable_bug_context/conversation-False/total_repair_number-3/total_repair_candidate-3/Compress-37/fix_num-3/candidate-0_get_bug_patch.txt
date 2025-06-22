@@ -1,0 +1,84 @@
+Map<String, String> parsePaxHeaders(final InputStream i)
+    throws IOException {
+    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+    // Format is "length keyword=value\n";
+    while(true){ // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+
+        // Read length field digits until space or EOF
+        while((ch = i.read()) != -1){
+            read++;
+            if (ch == ' '){
+                break;
+            }
+            if (ch < '0' || ch > '9') {
+                // Skip invalid characters, tolerate blank lines
+                // or malformed lines gracefully by skipping this line
+                // and continue to next
+                // Consume rest of the line until '\n'
+                while (ch != -1 && ch != '\n') {
+                    ch = i.read();
+                }
+                len = 0;
+                read = 0;
+                break;
+            }
+            len = len * 10 + (ch - '0');
+        }
+
+        if (ch == -1){
+            break; // EOF
+        }
+
+        if (len == 0) {
+            // Possibly blank line or no valid length, continue reading next line
+            continue;
+        }
+
+        // Get keyword
+        final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+        while((ch = i.read()) != -1){
+            read++;
+            if (ch == '='){ // end of keyword
+                break;
+            }
+            coll.write((byte) ch);
+        }
+
+        if (ch == -1){
+            // EOF reached unexpectedly
+            break;
+        }
+
+        final String keyword = coll.toString(CharsetNames.UTF_8);
+
+        final int restLen = len - read;
+        if (restLen < 0) {
+            // Malformed header, length too small, skip this header
+            // and continue to next
+            // Consume until '\n' to try to resync
+            int skipch;
+            do {
+                skipch = i.read();
+            } while (skipch != -1 && skipch != '\n');
+            continue;
+        }
+
+        if (restLen == 1) { // only NL
+            headers.remove(keyword);
+        } else {
+            final byte[] rest = new byte[restLen];
+            final int got = IOUtils.readFully(i, rest);
+            if (got != restLen) {
+                throw new IOException("Failed to read Paxheader. Expected "
+                    + restLen + " bytes, read " + got);
+            }
+            // Drop trailing NL
+            final String value = new String(rest, 0, restLen - 1, CharsetNames.UTF_8);
+            headers.put(keyword, value);
+        }
+    }
+    return headers;
+}

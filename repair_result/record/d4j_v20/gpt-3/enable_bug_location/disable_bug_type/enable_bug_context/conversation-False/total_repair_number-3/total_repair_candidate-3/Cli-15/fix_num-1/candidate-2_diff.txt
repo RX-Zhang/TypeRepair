@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -5,16 +5,14 @@
+ 
+     // grab the correct default values
+     if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = defaultValues;
++        if (defaultValues != null && !defaultValues.isEmpty()) {
++            valueList = defaultValues;
++        } else {
++            valueList = (List) this.defaultValues.get(option);
++        }
+     }
+ 
+-    // augment the list with the default values
+-    if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = (List) this.defaultValues.get(option);
+-    }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+-    
++    // if valueList is still null, return empty list
+     return valueList == null ? Collections.EMPTY_LIST : valueList;
+ }
++

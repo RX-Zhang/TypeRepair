@@ -1,0 +1,74 @@
+--- 
++++ 
+@@ -9,18 +9,19 @@
+     // If all the conditions matches then check for scalar / non-scalar property
+     if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+         //if not scalar and ended successfully, and !includePath, then return null
+-            if (_currToken.isStructEnd()) {
+-                if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
+-                }
+-            } else if (_currToken.isScalarValue()) {
+-                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                // then return null 
+-                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
+-                }
+-        }
+-    }
++        if (_currToken.isStructEnd()) {
++            if (_headContext.isStartHandled()) {
++                return (_currToken = null);
++            }
++        } else if (_currToken.isScalarValue()) {
++            //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++            // then return null 
++            if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                return (_currToken = null);
++            }
++        }
++    }
++
+     // Anything buffered?
+     TokenFilterContext ctxt = _exposedContext;
+ 
+@@ -36,10 +37,12 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    // At this point, delegate.getCurrentToken() should not be START_ARRAY.
++                    // We can return it if it is not START_ARRAY.
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -72,7 +75,7 @@
+ 
+     // otherwise... to include or not?
+     TokenFilter f;
+-    
++
+     switch (t.id()) {
+     case ID_START_ARRAY:
+         f = _itemFilter;
+@@ -99,7 +102,7 @@
+             return (_currToken = t);
+         }
+         _headContext = _headContext.createChildArrayContext(f, false);
+-        
++
+         // Also: only need buffering if parent path to be included
+         if (_includePath) {
+             t = _nextTokenWithBuffering(_headContext);
+@@ -226,3 +229,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

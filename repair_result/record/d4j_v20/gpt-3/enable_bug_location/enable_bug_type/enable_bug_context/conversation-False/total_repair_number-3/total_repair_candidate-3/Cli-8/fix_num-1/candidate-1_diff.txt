@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+ 
+         return sb;
+     }
+-    sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++    sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
+ 
+     // all following lines must be padded with nextLineTabStop space 
+     // characters
+@@ -18,7 +18,7 @@
+     while (true)
+     {
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, nextLineTabStop);
++        pos = findWrapPos(text, width, 0); // Corrected nextLineTabStop to 0
+ 
+         if (pos == -1)
+         {
+@@ -27,6 +27,7 @@
+             return sb;
+         }
+ 
+-        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
+     }
+ }
++

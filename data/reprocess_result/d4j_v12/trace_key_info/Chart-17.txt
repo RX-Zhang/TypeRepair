@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.data.time.junit.TimeSeriesTests.testBug1832432
+- Error: java.lang.IllegalArgumentException: Requires start <= end.
+- Location:             s2 = (TimeSeries) s1.clone();

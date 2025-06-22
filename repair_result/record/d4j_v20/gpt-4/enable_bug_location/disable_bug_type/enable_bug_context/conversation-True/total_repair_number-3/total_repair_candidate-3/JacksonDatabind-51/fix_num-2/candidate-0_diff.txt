@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -42,7 +42,15 @@
+                 //   generic type with custom type resolvers. If so, should try to retain them.
+                 //  Whether this is sufficient to avoid problems remains to be seen, but for
+                 //  now it should improve things.
+-                    type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
++                // FIXED: use constructSpecializedType with the erased raw class of the base type's contained type
++                JavaType baseContained = _baseType.getBindings().getBoundType(0);
++                if (baseContained != null) {
++                    type = ctxt.getTypeFactory()
++                        .constructSpecializedType(baseContained, type.getRawClass());
++                } else {
++                    type = ctxt.getTypeFactory()
++                        .constructSpecializedType(_baseType, type.getRawClass());
++                }
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
+         }
+@@ -50,3 +58,4 @@
+     }
+     return deser;
+ }
++

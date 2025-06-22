@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+ 
+         final double[] lI = lTData[i];
+ 
+-        if (lTData[i][i] < absolutePositivityThreshold) {
++        if (lTData[i][i] <= absolutePositivityThreshold) { // Changed < to <= for strict positivity check
+             throw new NotPositiveDefiniteMatrixException();
+         }
+         // check off-diagonal elements (and reset them to 0)
+@@ -32,8 +32,8 @@
+             if (Math.abs(lIJ - lJI) > maxDelta) {
+                 throw new NotSymmetricMatrixException();
+             }
+-            lJ[i] = 0;
+-       }
++            lJ[i] = 0; // reset off-diagonal element
++        }
+     }
+ 
+     // transform the matrix
+@@ -42,7 +42,6 @@
+         final double[] ltI = lTData[i];
+ 
+         // check diagonal element
+-
+         ltI[i] = Math.sqrt(ltI[i]);
+         final double inverse = 1.0 / ltI[i];
+ 
+@@ -53,7 +52,7 @@
+                 ltQ[p] -= ltI[q] * ltI[p];
+             }
+         }
+-
+     }
+ 
+ }
++

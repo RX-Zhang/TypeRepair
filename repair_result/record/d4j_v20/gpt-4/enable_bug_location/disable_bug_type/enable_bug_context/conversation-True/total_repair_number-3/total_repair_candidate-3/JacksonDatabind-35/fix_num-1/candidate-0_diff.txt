@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -12,14 +12,18 @@
+         throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
+                 "need JSON Object to contain As.WRAPPER_OBJECT type information for class "+baseTypeName());
+     }
+-        // should always get field name, but just in case...
+-        if (p.nextToken() != JsonToken.FIELD_NAME) {
+-            throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
+-                    "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
+-        }
++    // should always get field name, but just in case...
++    if (p.nextToken() != JsonToken.FIELD_NAME) {
++        throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
++                "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
++    }
+     final String typeId = p.getText();
+     JsonDeserializer<Object> deser = _findDeserializer(ctxt, typeId);
+-    p.nextToken();
++    // move to the value token associated with this field name
++    if (p.nextToken() != JsonToken.START_OBJECT && p.getCurrentToken() != JsonToken.VALUE_NULL) {
++        // we expect either start of object or a scalar/null value
++        // do nothing, just continue
++    }
+ 
+     // Minor complication: we may need to merge type id in?
+     if (_typeIdVisible && p.getCurrentToken() == JsonToken.START_OBJECT) {
+@@ -31,7 +35,7 @@
+         p = JsonParserSequence.createFlattened(tb.asParser(p), p);
+         p.nextToken();
+     }
+-    
++
+     Object value = deser.deserialize(p, ctxt);
+     // And then need the closing END_OBJECT
+     if (p.nextToken() != JsonToken.END_OBJECT) {
+@@ -40,3 +44,4 @@
+     }
+     return value;
+ }
++

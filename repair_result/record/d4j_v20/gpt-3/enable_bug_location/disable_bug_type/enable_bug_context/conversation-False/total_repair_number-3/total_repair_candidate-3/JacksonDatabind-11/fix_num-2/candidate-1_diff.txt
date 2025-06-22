@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -32,6 +32,10 @@
+     // added as bounds if so.
+     // Either way let's just use the first bound, for now, and
+     // worry about better match later on if there is need.
++    
++    if (bounds.length == 0) {
++        return _unknownType();
++    }
+ 
+     /* 29-Jan-2010, tatu: One more problem are recursive types
+      *   (T extends Comparable<T>). Need to add "placeholder"
+@@ -40,3 +44,4 @@
+     context._addPlaceholder(name);
+     return _constructType(bounds[0], context);
+ }
++

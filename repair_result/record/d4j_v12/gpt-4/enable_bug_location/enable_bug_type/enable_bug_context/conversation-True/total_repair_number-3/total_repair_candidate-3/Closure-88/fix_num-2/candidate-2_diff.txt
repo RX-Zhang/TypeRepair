@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,8 +4,9 @@
+     if (NodeUtil.isLhs(n, n.getParent())) {
+       // The expression to which the assignment is made is evaluated before
+       // the RHS is evaluated (normal left to right evaluation) but the KILL
+-      // occurs after the RHS is evaluated.
+-      return VariableLiveness.KILL;
++      // occurs after the RHS is evaluated. However, since this assignment is on the lhs,
++      // it should still be considered READ because the variable is accessed during RHS evaluation.
++      return VariableLiveness.READ;
+     } else {
+       return VariableLiveness.READ;
+     }
+@@ -23,3 +24,4 @@
+   }
+   return VariableLiveness.MAYBE_LIVE;
+ }
++

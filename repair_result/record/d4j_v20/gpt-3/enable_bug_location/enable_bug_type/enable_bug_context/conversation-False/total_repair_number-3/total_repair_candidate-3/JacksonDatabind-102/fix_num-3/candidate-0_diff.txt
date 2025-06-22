@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -57,7 +57,7 @@
+     if (!(df0 instanceof SimpleDateFormat)) {
+         serializers.reportBadDefinition(handledType(), String.format(
+ "Configured `DateFormat` (%s) not a `SimpleDateFormat`; cannot configure `Locale` or `TimeZone`",
+-getClass().getName()));
++df0.getClass().getName()));
+     }
+     SimpleDateFormat df = (SimpleDateFormat) df0;
+     if (hasLocale) {
+@@ -71,5 +71,6 @@
+     if (changeTZ) {
+         df.setTimeZone(newTz);
+     }
+-    return withFormat(Boolean.FALSE, df);
++    return withFormat(asString ? Boolean.FALSE : Boolean.TRUE, df);
+ }
++

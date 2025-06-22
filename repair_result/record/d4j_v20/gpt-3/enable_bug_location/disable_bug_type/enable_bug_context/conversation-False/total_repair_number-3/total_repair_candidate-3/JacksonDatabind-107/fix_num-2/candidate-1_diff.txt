@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -17,7 +17,9 @@
+                 JavaType actual = _handleUnknownTypeId(ctxt, typeId);
+                 if (actual == null) { // what should this be taken to mean?
+                     // 17-Jan-2019, tatu: As per [databind#2221], better NOT return `null` but...
+-                    return null;
++                    // Instead, throw an exception to avoid NPE downstream
++                    throw JsonMappingException.from(ctxt,
++                            "Could not resolve type id '" + typeId + "' into a subtype of " + _baseType);
+                 }
+                 // ... would this actually work?
+                 deser = ctxt.findContextualValueDeserializer(actual, _property);
+@@ -52,3 +54,4 @@
+     }
+     return deser;
+ }
++

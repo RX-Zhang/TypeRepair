@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -9,16 +9,16 @@
+             tokens.add("-" + ch);
+             currentOption = options.getOption(ch);
+ 
+-            if (currentOption.hasArg() && (token.length() != (i + 1)))
++            if (currentOption.hasArg() && (token.length() > (i + 1)))
+             {
+                 tokens.add(token.substring(i + 1));
+-
+                 break;
+             }
+         }
+         else if (stopAtNonOption)
+         {
+             process(token.substring(i));
++            break; // Add a break here to ensure we stop processing further tokens
+         }
+         else
+         {
+@@ -27,3 +27,4 @@
+         }
+     }
+ }
++

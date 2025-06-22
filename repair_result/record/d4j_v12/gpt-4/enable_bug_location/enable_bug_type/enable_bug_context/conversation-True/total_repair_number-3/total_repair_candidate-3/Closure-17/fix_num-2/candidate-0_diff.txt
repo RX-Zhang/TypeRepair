@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -20,7 +20,6 @@
+     } else {
+       // Check if this is constant, and if it has a known type.
+       if (info.isConstant()) {
+-        JSType knownType = null;
+         if (rValue != null) {
+           if (rValue.getJSType() != null && !rValue.getJSType().isUnknownType()) {
+             // If rValue has a type-cast, we use the type in the type-cast.
+@@ -43,9 +42,11 @@
+             }
+           }
+         }
++        return getFunctionAnalysisResults(rValue).functionType;
+       }
+     }
+   }
+ 
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

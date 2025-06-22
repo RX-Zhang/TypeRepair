@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.nodes.ElementTest.testClonesClassnames
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(classes.contains("one"));

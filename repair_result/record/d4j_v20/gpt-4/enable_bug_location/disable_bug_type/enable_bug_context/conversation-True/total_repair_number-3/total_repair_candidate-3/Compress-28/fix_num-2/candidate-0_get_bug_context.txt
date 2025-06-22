@@ -1,0 +1,1 @@
+['isEOFRecord', 'tryToConsumeSecondEOFRecord', 'canReadEntryData', 'isAtEOF']

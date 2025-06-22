@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+             if (token.indexOf('=') != -1)
+             {
+                 tokens.add(token.substring(0, token.indexOf('=')));
+-                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                tokens.add(token.substring(token.indexOf('=') + 1));
+             }
+             else
+             {
+@@ -50,6 +50,8 @@
+         else if (stopAtNonOption)
+         {
+             process(token);
++            gobble(iter);
++            break;
+         }
+         else
+         {
+@@ -61,3 +63,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

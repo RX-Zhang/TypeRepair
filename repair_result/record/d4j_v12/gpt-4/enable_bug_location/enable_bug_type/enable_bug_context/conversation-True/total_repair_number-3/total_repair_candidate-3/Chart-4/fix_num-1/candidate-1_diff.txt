@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+                 new Integer(domainIndex)));
+         if (domainIndex == 0) {
+             // grab the plot's annotations
+-            Iterator iterator = this.annotations.iterator();
++            Iterator iterator = getAnnotations().iterator();
+             while (iterator.hasNext()) {
+                 XYAnnotation annotation = (XYAnnotation) iterator.next();
+                 if (annotation instanceof XYAnnotationBoundsInfo) {
+@@ -30,7 +30,7 @@
+         mappedDatasets.addAll(getDatasetsMappedToRangeAxis(
+                 new Integer(rangeIndex)));
+         if (rangeIndex == 0) {
+-            Iterator iterator = this.annotations.iterator();
++            Iterator iterator = getAnnotations().iterator();
+             while (iterator.hasNext()) {
+                 XYAnnotation annotation = (XYAnnotation) iterator.next();
+                 if (annotation instanceof XYAnnotationBoundsInfo) {
+@@ -66,6 +66,7 @@
+                 }
+             }
+             
++            if (r != null) {
+                 Collection c = r.getAnnotations();
+                 Iterator i = c.iterator();
+                 while (i.hasNext()) {
+@@ -74,6 +75,7 @@
+                         includedAnnotations.add(a);
+                     }
+                 }
++            }
+         }
+     }
+ 
+@@ -93,3 +95,4 @@
+     return result;
+ 
+ }
++

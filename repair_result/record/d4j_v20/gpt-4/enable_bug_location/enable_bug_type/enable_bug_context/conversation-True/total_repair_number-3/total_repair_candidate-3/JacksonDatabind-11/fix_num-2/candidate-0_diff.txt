@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -14,6 +14,14 @@
+         JavaType actualType = context.findType(name);
+         if (actualType != null) {
+             return actualType;
++        }
++        // Try looking up type parameter bindings via findTypeParameters to resolve further
++        JavaType[] typeParams = findTypeParameters(context.getRawClass(), Object.class, context);
++        for (JavaType jt : typeParams) {
++            if (jt.getRawClass().getTypeParameters().length > 0 &&
++                jt.getRawClass().getTypeParameters()[0].getName().equals(name)) {
++                return jt;
++            }
+         }
+     }
+ 
+@@ -40,3 +48,4 @@
+     context._addPlaceholder(name);
+     return _constructType(bounds[0], context);
+ }
++

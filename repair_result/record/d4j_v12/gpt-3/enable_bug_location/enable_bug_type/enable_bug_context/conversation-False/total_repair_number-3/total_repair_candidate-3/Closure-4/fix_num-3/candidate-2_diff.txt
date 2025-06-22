@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -3,11 +3,13 @@
+   // different mechanisms for resolving named types, and if so, which order
+   // makes more sense. Now, resolution via registry is first in order to
+   // avoid triggering the warnings built into the resolution via properties.
+-  boolean resolved = resolveViaRegistry(t, enclosing);
+   if (detectImplicitPrototypeCycle()) {
+     handleTypeCycle(t);
++    // After a cycle is detected and handled, we should return early to prevent stack overflow.
++    return registry.isLastGeneration() ? getReferencedType() : this;
+   }
+ 
++  boolean resolved = resolveViaRegistry(t, enclosing);
+   if (resolved) {
+     super.resolveInternal(t, enclosing);
+     finishPropertyContinuations();
+@@ -18,6 +20,8 @@
+   resolveViaProperties(t, enclosing);
+   if (detectImplicitPrototypeCycle()) {
+     handleTypeCycle(t);
++    // After a cycle is detected and handled, return to avoid further processing.
++    return registry.isLastGeneration() ? getReferencedType() : this;
+   }
+ 
+   super.resolveInternal(t, enclosing);
+@@ -27,3 +31,4 @@
+   return registry.isLastGeneration() ?
+       getReferencedType() : this;
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -22,7 +22,9 @@
+       if (info.isConstant()) {
+         JSType knownType = null;
+         if (rValue != null) {
+-          if (rValue.getJSType() != null && !rValue.getJSType().isUnknownType()) {
++          if (info.hasType()) {
++            return getDeclaredTypeInAnnotation(sourceName, lValue, info);
++          } else if (rValue.getJSType() != null && !rValue.getJSType().isUnknownType()) {
+             // If rValue has a type-cast, we use the type in the type-cast.
+             // If rValue's type was already computed during scope creation,
+             // then we can safely use that.
+@@ -49,3 +51,4 @@
+ 
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

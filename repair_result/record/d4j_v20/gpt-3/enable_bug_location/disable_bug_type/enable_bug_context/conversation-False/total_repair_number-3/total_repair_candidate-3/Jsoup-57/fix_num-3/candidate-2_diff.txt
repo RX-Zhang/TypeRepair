@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -4,7 +4,10 @@
+         return;
+     for (Iterator<String> it = attributes.keySet().iterator(); it.hasNext(); ) {
+         String attrKey = it.next();
+-        if (attrKey.equalsIgnoreCase(key))
+-            attributes.remove(attrKey);
++        if (attrKey.equalsIgnoreCase(key)) {
++            it.remove();
++            break; // Assuming only one attribute matches and should be removed
++        }
+     }
+ }
++

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,9 +1,9 @@
+ void read(Tokeniser t, CharacterReader r) {
+     if (r.matchesLetter()) {
+         String name = r.consumeLetterSequence();
+-        t.tagPending.appendTagName(name.toLowerCase());
++        t.tag.appendTagName(name.toLowerCase());
+         t.dataBuffer.append(name);
+-        r.advance();
++        // Removed r.advance(); to avoid skipping a character after consumeLetterSequence()
+         return;
+     }
+ 
+@@ -32,3 +32,4 @@
+         anythingElse(t, r);
+     }
+ }
++

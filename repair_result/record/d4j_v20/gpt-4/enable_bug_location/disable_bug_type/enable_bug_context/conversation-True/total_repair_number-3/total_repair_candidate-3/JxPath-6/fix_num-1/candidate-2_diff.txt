@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -6,16 +6,16 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//    System.err.println("COMPARING: " +
++//        (l == null ? "null" : l.getClass().getName()) + " " +
++//        (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+-        l = ((EvalContext) l).getSingleNodePointer();
++        l = ((EvalContext) l).getValue();
+     }
+ 
+     if (r instanceof InitialContext || r instanceof SelfContext) {
+-        r = ((EvalContext) r).getSingleNodePointer();
++        r = ((EvalContext) r).getValue();
+     }
+ 
+     if (l instanceof Collection) {
+@@ -37,3 +37,4 @@
+     }
+     return equal(l, r);
+ }
++

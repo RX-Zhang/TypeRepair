@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public static boolean containsAny(CharSequence cs, char[] searchChars) {
+-	if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
++	if (isEmpty(cs) || searchChars == null || searchChars.length == 0) {
+ 		return false;
+ 	}
+ 	int csLength = cs.length();
+@@ -8,11 +8,10 @@
+ 		char ch = cs.charAt(i);
+ 		for (int j = 0; j < searchLength; j++) {
+ 			if (searchChars[j] == ch) {
+-					// ch is a supplementary character
+-					// ch is in the Basic Multilingual Plane
+-					return true;
++				return true;
+ 			}
+ 		}
+ 	}
+ 	return false;
+ }
++

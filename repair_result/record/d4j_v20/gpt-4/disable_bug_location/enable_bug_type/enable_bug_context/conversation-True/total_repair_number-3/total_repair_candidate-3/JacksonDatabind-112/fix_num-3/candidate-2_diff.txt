@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -17,11 +17,15 @@
+         // [databind#125]: May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+         valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, valueType);
++    }
++    // Ensure the value type is not null
++    if (valueType == null) {
++        throw new JsonMappingException("Value type for deserializer cannot be null");
+     }
+     // 11-Dec-2015, tatu: Should we pass basic `Collection.class`, or more refined? Mostly
+     //   comes down to "List vs Collection" I suppose... for now, pass Collection
+@@ -33,3 +37,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

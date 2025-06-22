@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,8 +1,8 @@
+ @Override public void visit(NodeTraversal t, Node n, Node parent) {
+   if (n == scope.getRootNode()) return;
+ 
+-  if (n.getType() == Token.LP && parent == scope.getRootNode()) {
+-    handleFunctionInputs(parent);
++  if (n.getType() == Token.LP && n.getParent() == scope.getRootNode()) {
++    handleFunctionInputs(n);
+     return;
+   }
+ 
+@@ -22,3 +22,4 @@
+       break;
+   }
+ }
++

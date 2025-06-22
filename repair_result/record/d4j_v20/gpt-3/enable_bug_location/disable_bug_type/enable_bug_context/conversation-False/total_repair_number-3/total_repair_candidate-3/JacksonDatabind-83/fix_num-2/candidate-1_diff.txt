@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -3,7 +3,8 @@
+     // 22-Sep-2012, tatu: For 2.1, use this new method, may force coercion:
+     String text = p.getValueAsString();
+     if (text != null) { // has String representation
+-        if (text.length() == 0 || (text = text.trim()).length() == 0) {
++        text = text.trim();
++        if (text.length() == 0) {
+             // 04-Feb-2013, tatu: Usually should become null; but not always
+             return _deserializeFromEmptyString();
+         }
+@@ -12,9 +13,12 @@
+             // 19-May-2017, tatu: Used to require non-null result (assuming `null`
+             //    indicated error; but that seems wrong. Should be able to return
+             //    `null` as value.
+-            if (_deserialize(text, ctxt) != null) {
+-            return _deserialize(text, ctxt);
++            T result = _deserialize(text, ctxt);
++            if (result != null) {
++                return result;
+             }
++            // Allow null result to return as null
++            return null;
+         } catch (IllegalArgumentException iae) {
+             cause = iae;
+         } catch (MalformedURLException me) {
+@@ -53,3 +57,4 @@
+     }
+     return (T) ctxt.handleUnexpectedToken(_valueClass, p);
+ }
++

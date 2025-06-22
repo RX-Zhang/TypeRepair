@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -36,7 +36,7 @@
+         data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
+       }
+     }
+-  } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
++  } else if (n.isGetProp() && NodeUtil.isUnscopedQualifiedName(n) &&
+       NodeUtil.isLValue(n)) {
+     String name = NodeUtil.getRootOfQualifiedName(n).getString();
+     Scope scope = t.getScope();
+@@ -50,3 +50,4 @@
+     }
+   }
+ }
++

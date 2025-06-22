@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -2,7 +2,9 @@
+     Validate.notNull(dirtyDocument);
+ 
+     Document clean = Document.createShell(dirtyDocument.baseUri());
+-        copySafeNodes(dirtyDocument.body(), clean.body());
++
++    copySafeNodes(dirtyDocument.body(), clean.body());
+ 
+     return clean;
+ }
++

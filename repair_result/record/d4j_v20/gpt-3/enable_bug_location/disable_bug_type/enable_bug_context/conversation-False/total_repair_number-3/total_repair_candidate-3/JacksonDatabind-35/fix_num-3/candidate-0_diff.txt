@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -12,14 +12,18 @@
+         throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
+                 "need JSON Object to contain As.WRAPPER_OBJECT type information for class "+baseTypeName());
+     }
+-        // should always get field name, but just in case...
+-        if (p.nextToken() != JsonToken.FIELD_NAME) {
+-            throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
+-                    "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
+-        }
++    // should always get field name, but just in case...
++    if (p.nextToken() != JsonToken.FIELD_NAME) {
++        throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
++                "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
++    }
+     final String typeId = p.getText();
+     JsonDeserializer<Object> deser = _findDeserializer(ctxt, typeId);
+-    p.nextToken();
++
++    // advance to the next token, which should be the start of the value to deserialize
++    if (p.nextToken() == null) {
++        throw ctxt.mappingException("Unexpected end-of-input after type id");
++    }
+ 
+     // Minor complication: we may need to merge type id in?
+     if (_typeIdVisible && p.getCurrentToken() == JsonToken.START_OBJECT) {
+@@ -40,3 +44,4 @@
+     }
+     return value;
+ }
++

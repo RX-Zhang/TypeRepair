@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -20,6 +20,8 @@
+         }
+     } catch (final EOFException e) {
+         return null;
++    } catch (final IOException e) {
++        throw new ZipException("Error reading ZIP entry", e);
+     }
+ 
+     final ZipLong sig = new ZipLong(LFH_BUF);
+@@ -104,3 +106,4 @@
+     entriesRead++;
+     return current.entry;
+ }
++

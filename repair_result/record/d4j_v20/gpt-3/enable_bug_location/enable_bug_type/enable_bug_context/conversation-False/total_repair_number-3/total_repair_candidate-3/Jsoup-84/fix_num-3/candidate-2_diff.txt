@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -5,6 +5,12 @@
+ 
+         String prefix = updateNamespaces(sourceEl);
+         String namespace = namespacesStack.peek().get(prefix);
++
++        // Ensure that the namespace is not null before creating the element
++        if (namespace == null) {
++            namespace = ""; // Use empty string for no namespace
++        }
++
+         String tagName = sourceEl.tagName();
+ 
+         Element el = 
+@@ -32,3 +38,4 @@
+         // unhandled
+     }
+ }
++

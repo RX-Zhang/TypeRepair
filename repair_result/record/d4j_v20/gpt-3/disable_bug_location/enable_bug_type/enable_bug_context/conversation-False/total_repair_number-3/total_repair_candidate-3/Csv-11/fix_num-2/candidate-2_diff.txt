@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -22,15 +22,18 @@
+         if (headerRecord != null) {
+             for (int i = 0; i < headerRecord.length; i++) {
+                 final String header = headerRecord[i];
+-                final boolean containsHeader = hdrMap.containsKey(header);
+-                final boolean emptyHeader = header.trim().isEmpty();
++                // Defensive null check for header to avoid NPE
++                final String normalizedHeader = (header == null) ? "" : header;
++                final boolean containsHeader = hdrMap.containsKey(normalizedHeader);
++                final boolean emptyHeader = normalizedHeader.trim().isEmpty();
+                 if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getIgnoreEmptyHeaders()))) {
+-                    throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
++                    throw new IllegalArgumentException("The header contains a duplicate name: \"" + normalizedHeader +
+                             "\" in " + Arrays.toString(headerRecord));
+                 }
+-                hdrMap.put(header, Integer.valueOf(i));
++                hdrMap.put(normalizedHeader, Integer.valueOf(i));
+             }
+         }
+     }
+     return hdrMap;
+ }
++

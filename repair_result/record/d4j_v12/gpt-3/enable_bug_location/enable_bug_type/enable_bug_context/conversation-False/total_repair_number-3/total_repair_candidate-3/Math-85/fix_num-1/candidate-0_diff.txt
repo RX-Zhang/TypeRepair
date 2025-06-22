@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -17,19 +17,26 @@
+     }
+     double a = initial;
+     double b = initial;
+-    double fa;
+-    double fb;
++    double fa = function.value(a);
++    double fb = function.value(b);
+     int numIterations = 0 ;
+ 
+-    do {
+-        a = Math.max(a - 1.0, lowerBound);
+-        b = Math.min(b + 1.0, upperBound);
+-        fa = function.value(a);
+-        
+-        fb = function.value(b);
+-        numIterations++ ;
+-    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && 
+-            ((a > lowerBound) || (b < upperBound)));
++    while ((fa * fb > 0.0) && (numIterations < maximumIterations) &&
++           ((a > lowerBound) || (b < upperBound))) {
++
++        if (a > lowerBound) {
++            a = Math.max(a - 1.0, lowerBound);
++            fa = function.value(a);
++        }
++        if (fb * fa <= 0.0) { // bracket found on left side
++            break;
++        }
++        if (b < upperBound) {
++            b = Math.min(b + 1.0, upperBound);
++            fb = function.value(b);
++        }
++        numIterations++;
++    }
+ 
+     if (fa * fb >= 0.0 ) {
+         throw new ConvergenceException(
+@@ -42,3 +49,4 @@
+     
+     return new double[]{a, b};
+ }
++

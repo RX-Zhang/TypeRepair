@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+             if (token.indexOf('=') != -1)
+             {
+                 tokens.add(token.substring(0, token.indexOf('=')));
+-                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                tokens.add(token.substring(token.indexOf('=') + 1));
+             }
+             else
+             {
+@@ -37,14 +37,16 @@
+             {
+                 processOptionToken(token, stopAtNonOption);
+             }
+-            else if (options.hasOption(token))
+-            {
+-                tokens.add(token);
+-            }
+-            // requires bursting
+             else
+             {
+-                burstToken(token, stopAtNonOption);
++                if (options.hasOption(token))
++                {
++                    tokens.add(token);
++                }
++                else
++                {
++                    burstToken(token, stopAtNonOption);
++                }
+             }
+         }
+         else if (stopAtNonOption)
+@@ -61,3 +63,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

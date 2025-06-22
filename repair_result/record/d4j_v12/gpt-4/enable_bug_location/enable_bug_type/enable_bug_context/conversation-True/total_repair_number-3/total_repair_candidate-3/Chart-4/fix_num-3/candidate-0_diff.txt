@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -65,15 +65,19 @@
+                             DatasetUtilities.findRangeBounds(d));
+                 }
+             }
+-            
++
++            if (r != null) {
+                 Collection c = r.getAnnotations();
+-                Iterator i = c.iterator();
+-                while (i.hasNext()) {
+-                    XYAnnotation a = (XYAnnotation) i.next();
+-                    if (a instanceof XYAnnotationBoundsInfo) {
+-                        includedAnnotations.add(a);
++                if (c != null) {
++                    Iterator i = c.iterator();
++                    while (i.hasNext()) {
++                        XYAnnotation a = (XYAnnotation) i.next();
++                        if (a instanceof XYAnnotationBoundsInfo) {
++                            includedAnnotations.add(a);
++                        }
+                     }
+                 }
++            }
+         }
+     }
+ 
+@@ -93,3 +97,4 @@
+     return result;
+ 
+ }
++

@@ -1,0 +1,1 @@
+['asText', 'asBoolean', 'asInt', 'asLong', 'asDouble', 'getPojo']

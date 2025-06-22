@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -9,6 +9,15 @@
+         if (name.length() == 0) continue;
+         String type = el.attr("type");
+ 
++        // Skip input types that are not submittable, e.g. button, reset, submit
++        if ("input".equals(el.normalName())) {
++            if ("button".equalsIgnoreCase(type) || 
++                "submit".equalsIgnoreCase(type) || 
++                "reset".equalsIgnoreCase(type) || 
++                "file".equalsIgnoreCase(type)) {
++                continue;
++            }
++        }
+ 
+         if ("select".equals(el.normalName())) {
+             Elements options = el.select("option[selected]");
+@@ -34,3 +43,4 @@
+     }
+     return data;
+ }
++

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -36,21 +36,13 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
++// fixed condition here to check START_ARRAY explicitly and continue instead of returning wrong token
++                    if (t == JsonToken.START_ARRAY) {
++                        break;
++                    }
+                     _currToken = t;
+                     return t;
+                 }
+-
+-                // Almost! Most likely still have the current token;
+-                // with the sole exception of 
+-                /*
+-                t = delegate.getCurrentToken();
+-                if (t != JsonToken.FIELD_NAME) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-                */
+                 break;
+             }
+             // If not, traverse down the context chain
+@@ -226,3 +218,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

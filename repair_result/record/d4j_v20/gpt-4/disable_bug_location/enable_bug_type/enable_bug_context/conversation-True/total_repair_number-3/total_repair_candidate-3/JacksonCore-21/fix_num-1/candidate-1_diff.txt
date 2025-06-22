@@ -1,0 +1,170 @@
+--- 
++++ 
+@@ -9,16 +9,18 @@
+     // If all the conditions matches then check for scalar / non-scalar property
+     if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+         //if not scalar and ended successfully, and !includePath, then return null
+-            if (_currToken.isStructEnd()) {
+-                if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
+-                }
+-            } else if (_currToken.isScalarValue()) {
+-                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                // then return null 
+-                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
+-                }
++        if (_currToken.isStructEnd()) {
++            if (_headContext.isStartHandled()) {
++                _currToken = null;
++                return null;
++            }
++        } else if (_currToken.isScalarValue()) {
++            //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++            // then return null 
++            if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                _currToken = null;
++                return null;
++            }
+         }
+     }
+     // Anything buffered?
+@@ -36,12 +38,12 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
++                    // added null check to guard against null tokens
++                    if (t != null && t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 // Almost! Most likely still have the current token;
+                 // with the sole exception of 
+                 /*
+@@ -66,19 +68,20 @@
+     JsonToken t = delegate.nextToken();
+     if (t == null) {
+         // no strict need to close, since we have no state here
+-        _currToken = t;
+-        return t;
++        _currToken = null;
++        return null;
+     }
+ 
+     // otherwise... to include or not?
+     TokenFilter f;
+-    
++
+     switch (t.id()) {
+     case ID_START_ARRAY:
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
+             _headContext = _headContext.createChildArrayContext(f, true);
+-            return (_currToken = t);
++            _currToken = t;
++            return t;
+         }
+         if (f == null) { // does this occur?
+             delegate.skipChildren();
+@@ -96,10 +99,11 @@
+         _itemFilter = f;
+         if (f == TokenFilter.INCLUDE_ALL) {
+             _headContext = _headContext.createChildArrayContext(f, true);
+-            return (_currToken = t);
++            _currToken = t;
++            return t;
+         }
+         _headContext = _headContext.createChildArrayContext(f, false);
+-        
++
+         // Also: only need buffering if parent path to be included
+         if (_includePath) {
+             t = _nextTokenWithBuffering(_headContext);
+@@ -114,7 +118,8 @@
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
+             _headContext = _headContext.createChildObjectContext(f, true);
+-            return (_currToken = t);
++            _currToken = t;
++            return t;
+         }
+         if (f == null) { // does this occur?
+             delegate.skipChildren();
+@@ -132,7 +137,9 @@
+         _itemFilter = f;
+         if (f == TokenFilter.INCLUDE_ALL) {
+             _headContext = _headContext.createChildObjectContext(f, true);
+-            return (_currToken = t);
++            t = _nextTokenWithBuffering(_headContext);
++            _currToken = t;
++            return t;
+         }
+         _headContext = _headContext.createChildObjectContext(f, false);
+         // Also: only need buffering if parent path to be included
+@@ -158,7 +165,8 @@
+             _headContext = _headContext.getParent();
+             _itemFilter = _headContext.getFilter();
+             if (returnEnd) {
+-                return (_currToken = t);
++                _currToken = t;
++                return t;
+             }
+         }
+         break;
+@@ -176,9 +184,14 @@
+                     if (_includeImmediateParent && !_headContext.isStartHandled()) {
+                         t = _headContext.nextTokenToRead(); // returns START_OBJECT but also marks it handled
+                         _exposedContext = _headContext;
++                    } else {
++                        _currToken = t;
++                        return t;
+                     }
+-                }
+-                return (_currToken = t);
++                } else {
++                    _currToken = t;
++                    return t;
++                }
+             }
+             if (f == null) {
+                 delegate.nextToken();
+@@ -194,7 +207,8 @@
+             _itemFilter = f;
+             if (f == TokenFilter.INCLUDE_ALL) {
+                 if (_includePath) {
+-                    return (_currToken = t);
++                    _currToken = t;
++                    return t;
+                 }
+             }
+             if (_includePath) {
+@@ -210,13 +224,15 @@
+     default: // scalar value
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
+-            return (_currToken = t);
++            _currToken = t;
++            return t;
+         }
+         if (f != null) {
+             f = _headContext.checkValue(f);
+             if ((f == TokenFilter.INCLUDE_ALL)
+                     || ((f != null) && f.includeValue(delegate))) {
+-                return (_currToken = t);
++                _currToken = t;
++                return t;
+             }
+         }
+         // Otherwise not included (leaves must be explicitly included)
+@@ -226,3 +242,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

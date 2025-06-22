@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -119,5 +119,11 @@
+                 throw new MathInternalError();
+             }
+         }
++
++        // Adding boundary check to prevent possible runtime errors
++        if (FastMath.abs(f1 - f0) < 1e-10) {
++            throw new RuntimeException("Function values are too close together; may lead to division by zero.");
++        }
+     }
+ }
++

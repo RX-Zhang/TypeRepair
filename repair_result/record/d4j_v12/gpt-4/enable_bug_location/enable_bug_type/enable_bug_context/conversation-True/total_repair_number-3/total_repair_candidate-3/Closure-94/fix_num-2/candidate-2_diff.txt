@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -8,11 +8,15 @@
+ 
+     // Binary operators are only valid if both children are valid.
+     case Token.BITAND:
+-    case Token.BITNOT:
+     case Token.BITOR:
+     case Token.BITXOR:
++      // Binary operators require both children to be valid defines.
++      Node left = val.getFirstChild();
++      Node right = left.getNext();
++      return isValidDefineValue(left, defines) && isValidDefineValue(right, defines);
+ 
+-    // Uniary operators are valid if the child is valid.
++    // Unary operators are valid if the child is valid.
++    case Token.BITNOT:
+     case Token.NOT:
+     case Token.NEG:
+       return isValidDefineValue(val.getFirstChild(), defines);
+@@ -23,6 +27,8 @@
+       if (val.isQualifiedName()) {
+         return defines.contains(val.getQualifiedName());
+       }
++      break;
+   }
+   return false;
+ }
++

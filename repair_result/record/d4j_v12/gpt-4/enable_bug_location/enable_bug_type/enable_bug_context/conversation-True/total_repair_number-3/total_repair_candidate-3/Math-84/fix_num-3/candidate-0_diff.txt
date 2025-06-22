@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -29,11 +29,15 @@
+         final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
++            simplex = evaluateNewSimplex(original, gamma, comparator).clone();
++        }
+ 
+         // check convergence
++        if (convergenceChecker != null && convergenceChecker.converged(iterations, simplex)) {
+             return;
+         }
+ 
+     }
+ 
+ }
++

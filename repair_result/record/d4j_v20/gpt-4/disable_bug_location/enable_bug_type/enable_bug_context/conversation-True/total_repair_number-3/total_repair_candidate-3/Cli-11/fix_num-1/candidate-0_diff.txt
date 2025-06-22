@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -17,14 +17,19 @@
+     }
+ 
+     // if the Option has a value
+-    if (option.hasArg() && (option.getArgName() != null))
++    if (option.hasArg())
+     {
+-        buff.append(" <").append(option.getArgName()).append(">");
++        String argName = option.getArgName();
++        if (argName == null || argName.length() == 0)
++        {
++            argName = HelpFormatter.DEFAULT_ARG_NAME;
++        }
++        buff.append(" <").append(argName).append(">");
+     }
+ 
+-    // if the Option is not a required option
+     if (!required)
+     {
+         buff.append("]");
+     }
+ }
++

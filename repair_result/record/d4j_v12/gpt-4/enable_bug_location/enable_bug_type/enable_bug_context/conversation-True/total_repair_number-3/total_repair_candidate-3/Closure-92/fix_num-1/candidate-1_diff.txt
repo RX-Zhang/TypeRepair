@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -51,8 +51,15 @@
+             providedNames.get(namespace.substring(0, indexOfDot));
+         Preconditions.checkNotNull(parentName);
+         Preconditions.checkNotNull(parentName.replacementNode);
+-        parentName.replacementNode.getParent().addChildAfter(
+-            replacementNode, parentName.replacementNode);
++
++        // Fix order of children to ensure correct namespace initialization order
++        Node parentNode = parentName.replacementNode.getParent();
++        // If parentNode already has children and replacementNode is before parentName.replacementNode, reorder
++        if (parentNode.hasChildren()) {
++          parentNode.addChildAfter(replacementNode, parentName.replacementNode);
++        } else {
++          parentNode.addChildToBack(replacementNode);
++        }
+       }
+     }
+     if (explicitNode != null) {
+@@ -61,3 +68,4 @@
+     compiler.reportCodeChange();
+   }
+ }
++

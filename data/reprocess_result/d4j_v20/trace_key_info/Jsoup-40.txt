@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jsoup.nodes.DocumentTypeTest.constructorValidationOkWithBlankName
+- Error: java.lang.IllegalArgumentException: String must not be empty
+- Location:         DocumentType fail = new DocumentType("","", "", "");
+
+
+Test failure 2:
+- Test: org.jsoup.parser.HtmlParserTest.handlesInvalidDoctypes
+- Error: java.lang.IllegalArgumentException: String must not be empty
+- Location:         Document doc = Jsoup.parse("<!DOCTYPE>");

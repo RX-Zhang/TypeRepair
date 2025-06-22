@@ -1,0 +1,12 @@
+public boolean hasAttr(String attributeKey) {
+    Validate.notNull(attributeKey);
+
+    if (attributeKey.toLowerCase().startsWith("abs:")) {
+        String actualKey = attributeKey.substring("abs:".length());
+        if (!attributes.hasKey(actualKey))
+            return false;
+        String abs = absUrl(actualKey);
+        return abs != null && !abs.isEmpty();
+    }
+    return attributes.hasKey(attributeKey);
+}

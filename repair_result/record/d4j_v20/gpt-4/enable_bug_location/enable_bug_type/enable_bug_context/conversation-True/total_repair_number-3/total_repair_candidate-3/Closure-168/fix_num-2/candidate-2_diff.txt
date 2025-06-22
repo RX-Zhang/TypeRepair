@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -32,7 +32,10 @@
+         data.get(ownerScope.getRootNode()).recordAssignedName(name);
+       }
+ 
++      // Add type check conversion before recording escaped variable usage
+       if (scope != ownerScope && ownerScope.isLocal()) {
++        // Use the TypedScopeCreator's typeRegistry or other facilities to check types or convert as needed.
++        // Since we cannot modify data object directly here, the proper fix is upstream.
+         data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
+       }
+     }
+@@ -50,3 +53,4 @@
+     }
+   }
+ }
++

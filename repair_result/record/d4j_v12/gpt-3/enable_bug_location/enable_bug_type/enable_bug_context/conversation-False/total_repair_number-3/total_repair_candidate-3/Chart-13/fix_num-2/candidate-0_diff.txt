@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -13,13 +13,20 @@
+     }
+     w[1] = w[0];
+     if (this.bottomBlock != null) {
++        double bottomHeight = constraint.getHeight() - h[0];
++        if (bottomHeight < 0) {
++            throw new RuntimeException("Invalid height for bottom block arrangement.");
++        }
+         RectangleConstraint c2 = new RectangleConstraint(w[0], null,
+                 LengthConstraintType.FIXED, 0.0, new Range(0.0,
+-                constraint.getHeight() - h[0]), LengthConstraintType.RANGE);
++                bottomHeight), LengthConstraintType.RANGE);
+         Size2D size = this.bottomBlock.arrange(g2, c2);
+         h[1] = size.height;
+     }
+     h[2] = constraint.getHeight() - h[1] - h[0];
++    if (h[2] < 0) {
++        throw new RuntimeException("Invalid height for left/right block arrangement.");
++    }
+     if (this.leftBlock != null) {
+         RectangleConstraint c3 = new RectangleConstraint(0.0,
+                 new Range(0.0, constraint.getWidth()),
+@@ -30,8 +37,12 @@
+     }
+     h[3] = h[2];
+     if (this.rightBlock != null) {
++        double rightWidth = constraint.getWidth() - w[2];
++        if (rightWidth < 0) {
++            throw new RuntimeException("Invalid width for right block arrangement.");
++        }
+         RectangleConstraint c4 = new RectangleConstraint(0.0,
+-                new Range(0.0, constraint.getWidth() - w[2]),
++                new Range(0.0, rightWidth),
+                 LengthConstraintType.RANGE, h[2], null,
+                 LengthConstraintType.FIXED);
+         Size2D size = this.rightBlock.arrange(g2, c4);
+@@ -39,6 +50,9 @@
+     }
+     h[4] = h[2];
+     w[4] = constraint.getWidth() - w[3] - w[2];
++    if (w[4] < 0) {
++        throw new RuntimeException("Invalid width for center block arrangement.");
++    }
+     RectangleConstraint c5 = new RectangleConstraint(w[4], h[4]);
+     if (this.centerBlock != null) {
+         this.centerBlock.arrange(g2, c5);
+@@ -66,3 +80,4 @@
+     }
+     return new Size2D(constraint.getWidth(), constraint.getHeight());
+ }
++

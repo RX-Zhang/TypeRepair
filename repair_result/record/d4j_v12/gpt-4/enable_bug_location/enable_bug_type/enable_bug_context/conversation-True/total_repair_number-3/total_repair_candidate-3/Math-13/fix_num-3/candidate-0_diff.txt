@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,4 +1,15 @@
+ private RealMatrix squareRoot(RealMatrix m) {
++    // Ensure matrix m is positive semi-definite before decomposition
++    if (!m.isSquare()) {
++        throw new DimensionMismatchException(m.getRowDimension(), m.getColumnDimension());
++    }
++    // Use more stable decomposition if needed, e.g. Cholesky if positive definite
++    try {
++        return new CholeskyDecomposition(m).getLT();
++    } catch (NonPositiveDefiniteMatrixException e) {
++        // Fall back to EigenDecomposition if Cholesky fails
+         final EigenDecomposition dec = new EigenDecomposition(m);
+         return dec.getSquareRoot();
++    }
+ }
++

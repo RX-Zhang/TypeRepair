@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+-private static void appendOption(final StringBuffer buff, 
+-                                 final Option option, 
+-                                 final boolean required)
++private void appendOption(final StringBuffer buff, 
++                          final Option option, 
++                          final boolean required)
+ {
+     if (!required)
+     {
+@@ -9,17 +9,18 @@
+ 
+     if (option.getOpt() != null)
+     {
+-        buff.append("-").append(option.getOpt());
++        buff.append(getOptPrefix()).append(option.getOpt());
+     }
+     else
+     {
+-        buff.append("--").append(option.getLongOpt());
++        buff.append(getLongOptPrefix()).append(option.getLongOpt());
+     }
+ 
+     // if the Option has a value
+-    if (option.hasArg() && (option.getArgName() != null))
++    String argName = option.getArgName();
++    if (option.hasArg() && (argName != null) && (argName.length() > 0))
+     {
+-        buff.append(" <").append(option.getArgName()).append(">");
++        buff.append(" <").append(argName).append(">");
+     }
+ 
+     // if the Option is not a required option
+@@ -28,3 +29,4 @@
+         buff.append("]");
+     }
+ }
++

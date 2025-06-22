@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -69,6 +69,10 @@
+         return PEEKED_NONE;
+       }
+       if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {
++        // fix here: Allow leading zero only if it is the single digit zero and negative sign is handled properly
++        if (value == 0 && i > 0) { 
++          return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++        }
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+@@ -100,3 +104,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -119,7 +119,8 @@
+ 
+             if (checker != null) {
+                 if (checker.converged(iter, previous, current)) {
+-                    return current;
++                    // Return the best point found so far.
++                    return best(current, previous, isMinim);
+                 }
+             }
+ 
+@@ -156,8 +157,10 @@
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return current;
++            // Return the best point found so far.
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

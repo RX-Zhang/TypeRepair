@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -26,7 +26,8 @@
+ 
+           // object literal keys
+           pType == Token.STRING ||
+-          pType == Token.NUMBER)) {
++          pType == Token.NUMBER ||
++          pType == Token.OBJECT)) { // Add OBJECT type to condition
+       return false;
+     }
+ 
+@@ -41,9 +42,7 @@
+       // Always traverse the left side of the assignment. To handle
+       // nested assignments properly (e.g., (a = this).property = c;),
+       // assignLhsChild should not be overridden.
+-      if (assignLhsChild == null) {
+-        assignLhsChild = lhs;
+-      }
++      assignLhsChild = lhs; // Simplified condition
+     } else {
+       // Only traverse the right side if it's not an assignment to a prototype
+       // property or subproperty.
+@@ -63,3 +62,4 @@
+ 
+   return true;
+ }
++

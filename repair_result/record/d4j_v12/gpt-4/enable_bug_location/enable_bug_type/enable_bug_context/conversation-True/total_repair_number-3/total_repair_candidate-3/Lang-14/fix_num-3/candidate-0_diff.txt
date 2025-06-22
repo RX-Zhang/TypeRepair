@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -5,5 +5,7 @@
+     if (cs1 == null || cs2 == null) {
+         return false;
+     }
+-        return cs1.equals(cs2);
++    int last = indexOfDifference(cs1, cs2);
++    return last == StringUtils.INDEX_NOT_FOUND;
+ }
++

@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -44,11 +44,16 @@
+         // JavaScript handles zero shifts on signed numbers differently than
+         // Java as an Java int can not represent the unsigned 32-bit number
+         // where JavaScript can so use a long here.
+-        result = lvalInt >>> rvalInt;
++        result = ((long) lvalInt) >>> rvalInt; // Cast lvalInt to long for unsigned shift
+         break;
+       default:
+         throw new AssertionError("Unknown shift operator: " +
+             Node.tokenToName(n.getType()));
++    }
++
++    // Ensure result is within the range of a 32-bit unsigned integer
++    if (result < 0) {
++      result += (1L << 32); // Adjust for unsigned result
+     }
+ 
+     Node newNumber = Node.newNumber(result);
+@@ -60,3 +65,4 @@
+ 
+   return n;
+ }
++

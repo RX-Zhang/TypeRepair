@@ -1,0 +1,11 @@
+def get_factors(n):
+    if n < 2:  # Corrected to handle cases for n = 1 and n < 2
+        return []
+    factors = []
+    for i in range(2, int(n ** 0.5) + 1):
+        while n % i == 0:  # Changed to a while loop to capture all factors
+            factors.append(i)
+            n //= i
+    if n > 1:  # If n is still greater than 1, it is a prime factor
+        factors.append(n)
+    return factors

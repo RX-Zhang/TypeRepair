@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -1,9 +1,7 @@
+ private Map<String, Integer> initializeHeader() throws IOException {
+-    Map<String, Integer> hdrMap = null;
++    Map<String, Integer> hdrMap = new LinkedHashMap<String, Integer>(); // Initialize hdrMap to avoid null
+     final String[] formatHeader = this.format.getHeader();
+     if (formatHeader != null) {
+-        hdrMap = new LinkedHashMap<String, Integer>();
+-
+         String[] headerRecord = null;
+         if (formatHeader.length == 0) {
+             // read the header from the first line of the file
+@@ -32,5 +30,6 @@
+             }
+         }
+     }
+-    return hdrMap;
++    return hdrMap.isEmpty() ? null : hdrMap; // Return null if hdrMap is empty
+ }
++

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -4,11 +4,19 @@
+     }
+ 
+     if (real == 0.0 && imaginary == 0.0) {
+-        return NaN;
++        return NaN; // This should return NaN, but we need to ensure we handle zero correctly.
+     }
+ 
+     if (isInfinite) {
+-        return ZERO;
++        return ZERO; // This should return ZERO, but we need to ensure we handle infinity correctly.
++    }
++
++    if (real == 0.0) {
++        return createComplex(0.0, -1.0 / imaginary); // Handle the case where real part is zero.
++    }
++
++    if (imaginary == 0.0) {
++        return createComplex(1.0 / real, 0.0); // Handle the case where imaginary part is zero.
+     }
+ 
+     if (FastMath.abs(real) < FastMath.abs(imaginary)) {
+@@ -21,3 +29,4 @@
+         return createComplex(scale, -scale * q);
+     }
+ }
++

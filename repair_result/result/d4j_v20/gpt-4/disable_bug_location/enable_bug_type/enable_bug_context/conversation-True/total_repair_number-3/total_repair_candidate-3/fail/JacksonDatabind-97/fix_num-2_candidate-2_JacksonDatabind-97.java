@@ -1,0 +1,11 @@
+public final void serialize(JsonGenerator gen, SerializerProvider ctxt) throws IOException
+{
+    if (_value == null) {
+        ctxt.defaultSerializeNull(gen);
+    } else if (_value instanceof JsonSerializable) {
+        ((JsonSerializable) _value).serialize(gen, ctxt);
+    } else {
+        // Use asText() to ensure toString provides expected custom serialization
+        gen.writeString(asText());
+    }
+}

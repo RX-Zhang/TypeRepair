@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,5 +1,9 @@
+ static TypeAdapter<?> getTypeAdapter(ConstructorConstructor constructorConstructor, Gson gson,
+     TypeToken<?> fieldType, JsonAdapter annotation) {
++  if (annotation == null) {
++    throw new IllegalArgumentException("JsonAdapter annotation cannot be null.");
++  }
++
+   Class<?> value = annotation.value();
+   TypeAdapter<?> typeAdapter;
+   if (TypeAdapter.class.isAssignableFrom(value)) {
+@@ -14,6 +18,12 @@
+     throw new IllegalArgumentException(
+         "@JsonAdapter value must be TypeAdapter or TypeAdapterFactory reference.");
+   }
+-    typeAdapter = typeAdapter.nullSafe();
++
++  if (typeAdapter == null) {
++    throw new NullPointerException("TypeAdapter cannot be null.");
++  }
++
++  typeAdapter = typeAdapter.nullSafe();
+   return typeAdapter;
+ }
++

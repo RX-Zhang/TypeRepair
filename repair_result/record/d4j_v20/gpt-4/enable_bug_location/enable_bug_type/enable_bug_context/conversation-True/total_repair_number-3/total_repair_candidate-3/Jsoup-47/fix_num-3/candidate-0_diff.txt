@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -25,9 +25,9 @@
+                 reachedNonWhite = true;
+             }
+         }
+-        // surrogate pairs, split implementation for efficiency on single char common case (saves creating strings, char[]):
+-        if (codePoint < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+-            final char c = (char) codePoint;
++        // surrogate pairs, split implementation for efficiency on single char common case (saves creating strings,[]):
++        if (codePoint < Character.MIN_SUPPLEMENT_CODE_POINT) {
++            final char c = (char)Point;
+             // html specific and required escapes:
+             switch (c) {
+                 case '&':
+@@ -35,19 +35,19 @@
+                     break;
+                 case 0xA0:
+                     if (escapeMode != EscapeMode.xhtml)
+-                        accum.append("&nbsp;");
++ accum.append("&nbsp;");
+                     else
+                         accum.append("&#xa0;");
+                     break;
+                 case '<':
+                     // escape when in character data or when in a xml attribue val; not needed in html attr val
+-                    if (!inAttribute)
++                    if (!inAttribute || escapeMode == EscapeMode.xhtml)
+                         accum.append("&lt;");
+                     else
+                         accum.append(c);
+                     break;
+                 case '>':
+-                    if (!inAttribute)
++                    if (!inAttribute || escapeMode == EscapeMode.xhtml)
+                         accum.append("&gt;");
+                     else
+                         accum.append(c);
+@@ -75,3 +75,4 @@
+         }
+     }
+ }
++

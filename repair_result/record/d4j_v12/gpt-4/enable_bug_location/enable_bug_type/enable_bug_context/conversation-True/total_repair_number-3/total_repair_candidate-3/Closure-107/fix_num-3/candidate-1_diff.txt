@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -41,6 +41,7 @@
+       options.messageBundle = new XtbMessageBundle(
+           new FileInputStream(flags.translationsFile),
+           flags.translationsProject);
++      options.setWarningLevel(DiagnosticGroups.I18N, CheckLevel.OFF);
+     } catch (IOException e) {
+       throw new RuntimeException("Reading XTB file", e);
+     }
+@@ -54,7 +55,9 @@
+     // so we might as well inline it. But shut off the i18n warnings,
+     // because the user didn't really ask for i18n.
+     options.messageBundle = new EmptyMessageBundle();
++    options.setWarningLevel(DiagnosticGroups.I18N, CheckLevel.OFF);
+   }
+ 
+   return options;
+ }
++

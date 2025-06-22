@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -8,10 +8,13 @@
+                 out[i][j] = 0d;
+             } else {
+                 double r = correlationMatrix.getEntry(i, j);
+-                double t = Math.abs(r * Math.sqrt((nObs - 2)/(1 - r * r)));
+-                out[i][j] = 2 * (1 - tDistribution.cumulativeProbability(t));
++                double value = (nObs - 2) / (1.0 - r * r);
++                // Correct the formula to use double division
++                double t = Math.abs(r * Math.sqrt(value));
++                out[i][j] = 2 * tDistribution.cumulativeProbability(-t);
+             }
+         }
+     }
+     return new BlockRealMatrix(out);
+ }
++

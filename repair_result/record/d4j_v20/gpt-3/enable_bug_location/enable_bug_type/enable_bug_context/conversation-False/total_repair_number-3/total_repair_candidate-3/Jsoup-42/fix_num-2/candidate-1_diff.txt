@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -25,6 +25,9 @@
+             if (el.hasAttr("checked")) {
+                 final String val = el.val();
+                 data.add(HttpConnection.KeyVal.create(name, val));
++            } else if ("checkbox".equalsIgnoreCase(type)) {
++                // Add checkbox with default value "on" if not set
++                data.add(HttpConnection.KeyVal.create(name, "on"));
+             }
+         } else {
+             data.add(HttpConnection.KeyVal.create(name, el.val()));
+@@ -32,3 +35,4 @@
+     }
+     return data;
+ }
++

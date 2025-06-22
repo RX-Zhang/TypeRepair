@@ -1,0 +1,5 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeInferenceTest.testNoThisInference
+- Error: java.lang.IllegalArgumentException: Node cannot be refined. 
+THIS 1 [source_file: [testcode]] : Object
+- Location:     inFunction("var out = 3; if (goog.isNull(this)) out = this;");

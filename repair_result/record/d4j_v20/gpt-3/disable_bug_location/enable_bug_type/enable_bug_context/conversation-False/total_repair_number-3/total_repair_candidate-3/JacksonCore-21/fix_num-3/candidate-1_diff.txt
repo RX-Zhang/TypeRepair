@@ -1,0 +1,77 @@
+--- 
++++ 
+@@ -8,17 +8,16 @@
+     // check for no buffered context _exposedContext - null
+     // If all the conditions matches then check for scalar / non-scalar property
+     if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+-        //if not scalar and ended successfully, and !includePath, then return null
+-            if (_currToken.isStructEnd()) {
+-                if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
+-                }
+-            } else if (_currToken.isScalarValue()) {
+-                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                // then return null 
+-                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
+-                }
++        // if already at END token (structure end) and start handled, then end stream
++        if (_currToken.isStructEnd()) {
++            if (_headContext.isStartHandled()) {
++                return (_currToken = null);
++            }
++        } else if (_currToken.isScalarValue()) {
++            // if scalar value and start not handled but filter was INCLUDE_ALL, end stream
++            if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                return (_currToken = null);
++            }
+         }
+     }
+     // Anything buffered?
+@@ -35,22 +34,17 @@
+             if (ctxt == _headContext) {
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
++                    // It's possible the delegate is positioned at START_ARRAY
++                    // but filtering logic requires us to bypass this token and
++                    // return next included token
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
+-                // Almost! Most likely still have the current token;
+-                // with the sole exception of 
+-                /*
+-                t = delegate.getCurrentToken();
+-                if (t != JsonToken.FIELD_NAME) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-                */
++                    // Only return token if not START_ARRAY, since START_ARRAY is considered consumed already
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
++                // If we reach here, break out of loop to read new token
+                 break;
+             }
+             // If not, traverse down the context chain
+@@ -62,7 +56,7 @@
+         }
+     }
+ 
+-    // If not, need to read more. If we got any:
++    // If not buffered tokens, need to read new token from delegate
+     JsonToken t = delegate.nextToken();
+     if (t == null) {
+         // no strict need to close, since we have no state here
+@@ -226,3 +220,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

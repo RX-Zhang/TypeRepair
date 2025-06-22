@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.node.POJONodeTest.testPOJONodeCustomSer
+- Error: junit.framework.ComparisonFailure: expected:<...Str":"The value is: [Hello!]"}}> but was:<...Str":"The value is: [NULL]"}}>
+- Location:       assertEquals(EXP, treeOut);

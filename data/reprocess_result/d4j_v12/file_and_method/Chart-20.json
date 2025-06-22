@@ -1,0 +1,1 @@
+{"ClassName": "ValueMarker", "Fields": ["private double value;"], "Methods": ["public double getValue() { ... }", "public void setValue(double value) { ... }", "public boolean equals(Object obj) { ... }"]}

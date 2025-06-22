@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     ArrayList<Connection.KeyVal> data = new ArrayList<>();
+ 
+     // iterate the form control elements and accumulate their values
+-    for (Element el: elements) {
++    for (Element el: elements()) {
+         if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submitable
+         if (el.hasAttr("disabled")) continue; // skip disabled form inputs
+         String name = el.attr("name");
+@@ -28,9 +28,11 @@
+                 final String val = el.val().length() >  0 ? el.val() : "on";
+                 data.add(HttpConnection.KeyVal.create(name, val));
+             }
+-        } else {
++        } else if (!"button".equalsIgnoreCase(type) && !"submit".equalsIgnoreCase(type) && !"reset".equalsIgnoreCase(type) && !"file".equalsIgnoreCase(type)) {
++            // exclude buttons, submit, reset, and file inputs from formData
+             data.add(HttpConnection.KeyVal.create(name, el.val()));
+         }
+     }
+     return data;
+ }
++

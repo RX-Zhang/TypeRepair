@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,4 +1,14 @@
+ public double[] repairAndDecode(final double[] x) {
+-    return
+-        decode(x);
++    final double[] repaired = decode(x);
++    if (boundaries != null) {
++        for (int i = 0; i < repaired.length; i++) {
++            if (repaired[i] < boundaries[0][i]) {
++                repaired[i] = boundaries[0][i];
++            } else if (repaired[i] > boundaries[1][i]) {
++                repaired[i] = boundaries[1][i];
++            }
++        }
++    }
++    return repaired;
+ }
++

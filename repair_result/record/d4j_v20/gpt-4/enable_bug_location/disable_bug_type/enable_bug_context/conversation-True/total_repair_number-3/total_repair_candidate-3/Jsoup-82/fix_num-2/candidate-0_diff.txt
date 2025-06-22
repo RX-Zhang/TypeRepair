@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -63,7 +63,19 @@
+     if (doc == null) {
+         if (charsetName == null)
+             charsetName = defaultCharset;
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetName), bufferSize);
++        // attempt to use the charset for encoding, fallback to UTF-8 if can't encode
++        Charset charset = null;
++        try {
++            charset = Charset.forName(charsetName);
++            if (!charset.newEncoder().canEncode()) {
++                charset = Charset.forName(defaultCharset);
++                charsetName = defaultCharset;
++            }
++        } catch (UnsupportedCharsetException | IllegalCharsetNameException e) {
++            charset = Charset.forName(defaultCharset);
++            charsetName = defaultCharset;
++        }
++        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charset), bufferSize);
+         if (bomCharset != null && bomCharset.offset) // creating the buffered reader ignores the input pos, so must skip here
+             reader.skip(1);
+         try {
+@@ -72,10 +84,10 @@
+             // io exception when parsing (not seen before because reading the stream as we go)
+             throw e.ioException();
+         }
+-        Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+             // some charsets can read but not encode; switch to an encodable charset and update the meta el
+     }
+     input.close();
+     return doc;
+ }
++

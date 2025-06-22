@@ -1,0 +1,14 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.MinimizeExitPointsTest.testDontRemoveBreakInTryFinally
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(){b:try{throw 9;}finally{break b}return 1}
+Result: function f(){b:try{throw 9;}finally{}return 1}
+- Location:     foldSame("function f() {b:try{throw 9} finally {break b} return 1;}");
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.MinimizeExitPointsTest.testFunctionReturnOptimization
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(){try{}catch(e){throw 9;}finally{return}}
+Result: function f(){try{}catch(e){throw 9;}finally{}}
+- Location:     fold("function f(){try{return;}catch(e){throw 9;}finally{return}}",

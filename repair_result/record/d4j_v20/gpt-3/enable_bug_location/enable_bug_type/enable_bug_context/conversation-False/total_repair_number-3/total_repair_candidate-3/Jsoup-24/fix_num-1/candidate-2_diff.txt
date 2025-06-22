@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -3,8 +3,7 @@
+         String name = r.consumeLetterSequence();
+         t.tagPending.appendTagName(name.toLowerCase());
+         t.dataBuffer.append(name);
+-        r.advance();
+-        return;
++        return; // No need to advance here; it should only proceed if matchesLetter is true
+     }
+ 
+     if (t.isAppropriateEndTagToken() && !r.isEmpty()) {
+@@ -32,3 +31,4 @@
+         anythingElse(t, r);
+     }
+ }
++

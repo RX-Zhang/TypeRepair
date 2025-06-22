@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,5 +7,12 @@
+     in = new PushbackInputStream(inputStream, buf.capacity());
+     this.allowStoredEntriesWithDataDescriptor =
+         allowStoredEntriesWithDataDescriptor;
+-    // haven't read anything so far
++
++    // Initialize buffer capacity if needed
++    if (buf == null) {
++        // Assuming buffer size should be set here appropriately
++        // This depends on the context, but typically something like:
++        buf = ByteBuffer.allocate(512); // or appropriate size
++    }
+ }
++

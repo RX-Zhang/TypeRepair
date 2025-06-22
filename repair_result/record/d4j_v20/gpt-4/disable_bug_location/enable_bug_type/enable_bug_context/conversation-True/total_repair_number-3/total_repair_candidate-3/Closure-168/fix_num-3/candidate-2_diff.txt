@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -19,6 +19,9 @@
+     return;
+   }
+ 
++  // Retrieve function analysis results that include type information
++  AstFunctionContents functionContents = getFunctionAnalysisResults(t.getScopeRoot());
++  
+   if (n.isName() && NodeUtil.isLValue(n) &&
+       // Be careful of bleeding functions, which create variables
+       // in the inner scope, not the scope where the name appears.
+@@ -28,6 +31,21 @@
+     Var var = scope.getVar(name);
+     if (var != null) {
+       Scope ownerScope = var.getScope();
++
++      // Verify that the variable type matches expected type if available
++      if (functionContents != null) {
++        JSType expectedType = functionContents.getVarType(name);
++        JSType actualType = var.getType();
++        if (expectedType != null && actualType != null
++            && !expectedType.isUnknownType() && !actualType.isUnknownType()
++            && !actualType.isSubtype(expectedType)) {
++          // Report a type mismatch error or handle accordingly
++          compiler.report(JSError.make(n, typeParsingErrorReporter.getErrorManager(),
++              typeParsingErrorReporter.getWarningLevel(),
++              "Expected type " + expectedType + " but found " + actualType));
++        }
++      }
++
+       if (ownerScope.isLocal()) {
+         data.get(ownerScope.getRootNode()).recordAssignedName(name);
+       }
+@@ -50,3 +68,4 @@
+     }
+   }
+ }
++

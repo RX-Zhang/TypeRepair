@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -67,7 +67,11 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            // Instead of returning VALUE_NULL here, return START_OBJECT and setup context
++            _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
++            _currToken = JsonToken.START_OBJECT;
++            _nextToken = JsonToken.END_OBJECT;
++            return _currToken;
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+@@ -92,7 +96,7 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            /* One more refinement (pronunced like "hack") is that if
++            /* One more refinement (pronounced like "hack") is that if
+              * we had an empty String (or all white space), and we are
+              * deserializing an array, we better hide the empty text.
+              */
+@@ -103,9 +107,9 @@
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                     //    expose as empty Object, not null (or, worse, as used to
+                     //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
+-                    _parsingContext = _parsingContext.getParent();
+-                    _namesToWrap = _parsingContext.getNamesToWrap();
++                    _currToken = JsonToken.START_OBJECT;
++                    _nextToken = JsonToken.END_OBJECT;
++                    _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+                     return _currToken;
+                 }
+             }
+@@ -132,3 +136,4 @@
+     _throwInternal();
+     return null;
+ }
++

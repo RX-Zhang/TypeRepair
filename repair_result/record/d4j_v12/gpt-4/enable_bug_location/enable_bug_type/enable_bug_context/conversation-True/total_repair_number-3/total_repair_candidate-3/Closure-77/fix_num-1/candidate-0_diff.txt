@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -11,6 +11,7 @@
+       case '\n': sb.append("\\n"); break;
+       case '\r': sb.append("\\r"); break;
+       case '\t': sb.append("\\t"); break;
++      case '\0': sb.append("\\0"); break;
+       case '\\': sb.append(backslashEscape); break;
+       case '\"': sb.append(doublequoteEscape); break;
+       case '\'': sb.append(singlequoteEscape); break;
+@@ -68,3 +69,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

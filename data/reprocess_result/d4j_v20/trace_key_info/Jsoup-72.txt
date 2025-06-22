@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jsoup.parser.CharacterReaderTest.consumeToNonexistentEndWhenAtAnd
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+- Location:         String after = r.consumeTo('>');
+
+
+Test failure 2:
+- Test: org.jsoup.parser.HtmlParserTest.commentAtEnd
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+- Location:       Document doc = Jsoup.parse("<!");

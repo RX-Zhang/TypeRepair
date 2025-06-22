@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+     if (domainIndex >= 0) {
+         isDomainAxis = true;
+         mappedDatasets.addAll(getDatasetsMappedToDomainAxis(
+-                new Integer(domainIndex)));
++                Integer.valueOf(domainIndex)));
+         if (domainIndex == 0) {
+             // grab the plot's annotations
+             Iterator iterator = this.annotations.iterator();
+@@ -28,7 +28,7 @@
+     if (rangeIndex >= 0) {
+         isDomainAxis = false;
+         mappedDatasets.addAll(getDatasetsMappedToRangeAxis(
+-                new Integer(rangeIndex)));
++                Integer.valueOf(rangeIndex)));
+         if (rangeIndex == 0) {
+             Iterator iterator = this.annotations.iterator();
+             while (iterator.hasNext()) {
+@@ -65,7 +65,8 @@
+                             DatasetUtilities.findRangeBounds(d));
+                 }
+             }
+-            
++
++            if (r != null) {
+                 Collection c = r.getAnnotations();
+                 Iterator i = c.iterator();
+                 while (i.hasNext()) {
+@@ -74,6 +75,7 @@
+                         includedAnnotations.add(a);
+                     }
+                 }
++            }
+         }
+     }
+ 
+@@ -93,3 +95,4 @@
+     return result;
+ 
+ }
++

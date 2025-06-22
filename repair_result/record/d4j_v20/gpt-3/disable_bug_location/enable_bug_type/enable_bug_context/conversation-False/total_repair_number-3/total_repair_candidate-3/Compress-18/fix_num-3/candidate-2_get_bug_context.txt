@@ -1,0 +1,1 @@
+['setAddPaxHeadersForNonAsciiNames', 'putArchiveEntry', 'closeArchiveEntry', 'writePaxHeaders']

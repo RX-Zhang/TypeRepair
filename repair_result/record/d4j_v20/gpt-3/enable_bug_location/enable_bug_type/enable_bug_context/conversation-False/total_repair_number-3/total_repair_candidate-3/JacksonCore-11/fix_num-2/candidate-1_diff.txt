@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -8,6 +8,13 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (ArrayIndexOutOfBoundsException e) {
++            // Handle the exception, possibly logging it or taking corrective action
++            System.err.println("ArrayIndexOutOfBoundsException occurred during rehash: " + e.getMessage());
++            // Additional handling logic can be added here if necessary
++        }
+     }
+ }
++

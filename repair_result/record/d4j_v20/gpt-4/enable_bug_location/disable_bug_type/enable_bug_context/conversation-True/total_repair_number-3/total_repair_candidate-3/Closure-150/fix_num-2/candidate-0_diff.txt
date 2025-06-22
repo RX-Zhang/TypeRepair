@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -6,7 +6,12 @@
+     return;
+   }
+ 
+-  attachLiteralTypes(n);
++  if (n.getType() == Token.GETPROP || n.getType() == Token.NAME) {
++    attachLiteralTypes(n);
++  } else {
++    attachLiteralTypes(n);
++  }
++
+   switch (n.getType()) {
+     case Token.FUNCTION:
+       if (parent.getType() == Token.NAME) {
+@@ -22,3 +27,4 @@
+       break;
+   }
+ }
++

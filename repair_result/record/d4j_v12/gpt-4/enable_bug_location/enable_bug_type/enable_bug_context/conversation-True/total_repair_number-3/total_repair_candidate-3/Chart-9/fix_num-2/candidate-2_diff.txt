@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -15,16 +15,17 @@
+     int startIndex = getIndex(start);
+     if (startIndex < 0) {
+         startIndex = -(startIndex + 1);
++        // if startIndex is equal to data size, meaning start is after last data item
+         if (startIndex == this.data.size()) {
+             emptyRange = true;  // start is after last data item
+         }
+     }
+     int endIndex = getIndex(end);
+-    if (endIndex < 0) {             // end period is not in original series
+-        endIndex = -(endIndex + 1); // this is first item AFTER end period
+-        endIndex = endIndex - 1;    // so this is last item BEFORE end
++    if (endIndex < 0) {
++        endIndex = -(endIndex + 1) - 1; // last item before end period
+     }
+-    if (endIndex < 0) {
++    // Correct for case where endIndex is less than startIndex or negative
++    if (endIndex < startIndex) {
+         emptyRange = true;
+     }
+     if (emptyRange) {
+@@ -37,3 +38,4 @@
+     }
+ 
+ }
++

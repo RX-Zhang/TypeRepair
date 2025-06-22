@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -33,16 +33,30 @@
+         final SettableBeanProperty prop = extProp.getProperty();
+         // also: if it's creator prop, fill in
+         if (prop.getCreatorIndex() >= 0) {
+-            buffer.assignParameter(prop, values[i]);
+-
+-            // [databind#999] And maybe there's creator property for type id too?
++            Object valueToAssign = values[i];
+             SettableBeanProperty typeProp = extProp.getTypeProperty();
+-            // for now, should only be needed for creator properties, too
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+                 // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+                 //    apply deserializer... fun fun.
+-                buffer.assignParameter(typeProp, typeId);
++                JavaType typePropType = typeProp.getType();
++                if (!typePropType.getRawClass().equals(String.class)) {
++                    // Convert typeId String to actual expected type using deserializer
++                    JsonParser jp = ctxt.getParser().getCodec().treeAsTokens(ctxt.getParser().getCodec().readTree(ctxt.getParser()));
++                    // However, better approach: use deserializer for typeProp
++                    // But in this context without direct parser, fallback:
++                    try {
++                        JsonParser parserForTypeId = ctxt.getParser().codec().treeAsTokens(ctxt.getParser().codec().readTree(new com.fasterxml.jackson.databind.node.TextNode(typeId)));
++                        valueToAssign = typeProp.deserialize(parserForTypeId, ctxt);
++                    } catch (Exception e) {
++                        // fallback: just keep original String typeId
++                        valueToAssign = typeId;
++                    }
++                } else {
++                    valueToAssign = typeId;
++                }
++                buffer.assignParameter(typeProp, valueToAssign);
+             }
++            buffer.assignParameter(prop, values[i]);
+         }
+     }
+     Object bean = creator.build(ctxt, buffer);
+@@ -55,3 +69,4 @@
+     }
+     return bean;
+ }
++

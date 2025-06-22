@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.type.TestJavaType.testLocalType728
+- Error: junit.framework.AssertionFailedError: expected:<interface java.lang.CharSequence> but was:<class java.lang.Object>
+- Location:         assertEquals(CharSequence.class, t.getRawClass());
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.databind.type.TestLocalType609.testLocalPartialType609
+- Error: com.fasterxml.jackson.databind.JsonMappingException: Type variable 'T' can not be resolved (with context of class com.fasterxml.jackson.databind.type.TestLocalType609$EntityContainer)
+- Location:         EntityContainer output = mapper.readValue(json, EntityContainer.class);

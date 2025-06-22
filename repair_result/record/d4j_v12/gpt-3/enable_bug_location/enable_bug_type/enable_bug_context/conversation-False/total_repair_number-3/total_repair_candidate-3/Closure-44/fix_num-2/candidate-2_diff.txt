@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+   }
+ 
+   char c = newcode.charAt(0);
+-  if ((isWordChar(c) || c == '\\') &&
++  if ((isWordChar(c) || c == '/') && // corrected from '\\' to '/' to handle the forward slash properly
+       isWordChar(getLastChar())) {
+     // need space to separate. This is not pretty printing.
+     // For example: "return foo;"
+@@ -20,3 +20,4 @@
+ 
+   append(newcode);
+ }
++

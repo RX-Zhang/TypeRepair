@@ -1,0 +1,1 @@
+['newInstance', 'getZero', 'isNaN', 'add', 'negate', 'multiply', 'multiplyFast', 'dotrap']

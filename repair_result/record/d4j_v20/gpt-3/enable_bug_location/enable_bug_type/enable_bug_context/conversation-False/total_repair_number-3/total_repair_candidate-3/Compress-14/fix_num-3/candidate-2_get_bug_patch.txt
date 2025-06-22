@@ -1,0 +1,54 @@
+public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+    if (buffer == null || offset < 0 || length < 2 || offset + length > buffer.length) {
+        throw new IllegalArgumentException("Invalid buffer or offset/length parameters");
+    }
+
+    long result = 0;
+    int end = offset + length;
+    int start = offset;
+
+    boolean allNUL = true;
+    for (int i = start; i < end; i++) {
+        if (buffer[i] != 0) {
+            allNUL = false;
+            break;
+        }
+    }
+    if (allNUL) {
+        return 0L;
+    }
+
+    // Skip leading spaces
+    while (start < end) {
+        if (buffer[start] == ' ') {
+            start++;
+        } else {
+            break;
+        }
+    }
+
+    // Must have trailing NUL or space
+    byte trailer = buffer[end - 1];
+    if (trailer == 0 || trailer == ' ') {
+        end--;
+    } else {
+        throw new IllegalArgumentException(
+                exceptionMessage(buffer, offset, length, end - 1, trailer));
+    }
+    // May have additional NUL or space
+    trailer = buffer[end - 1];
+    if (trailer == 0 || trailer == ' ') {
+        end--;
+    }
+
+    for (; start < end; start++) {
+        final byte currentByte = buffer[start];
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(
+                    exceptionMessage(buffer, offset, length, start, currentByte));
+        }
+        result = (result << 3) + (currentByte - '0'); // convert from ASCII
+    }
+
+    return result;
+}

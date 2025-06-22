@@ -1,0 +1,50 @@
+--- 
++++ 
+@@ -25,8 +25,9 @@
+         Elements metaElements = doc.select("meta[http-equiv=content-type], meta[charset]");
+         String foundCharset = null; // if not found, will keep utf-8 as best attempt
+         for (Element meta : metaElements) {
+-            if (meta.hasAttr("http-equiv"))
++            if (meta.hasAttr("http-equiv") && meta.attr("http-equiv").equalsIgnoreCase("content-type")) {
+                 foundCharset = getCharsetFromContentType(meta.attr("content"));
++            }
+             if (foundCharset == null && meta.hasAttr("charset"))
+                 foundCharset = meta.attr("charset");
+             if (foundCharset != null)
+@@ -74,8 +75,35 @@
+         }
+         Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        if (!charset.canEncode()) {
++            charset = StandardCharsets.UTF_8;
++            doc.outputSettings().charset(charset);
++            Elements metaElements = doc.select("meta[charset], meta[http-equiv=content-type]");
++            boolean metaCharsetUpdated = false;
++            for (Element meta : metaElements) {
++                if (meta.hasAttr("charset")) {
++                    meta.attr("charset", charset.name());
++                    metaCharsetUpdated = true;
++                } else if (meta.hasAttr("http-equiv") && meta.attr("http-equiv").equalsIgnoreCase("content-type")) {
++                    String content = meta.attr("content");
++                    content = content.replaceAll("(?i)(charset=)([^;]+)", "$1" + charset.name());
++                    meta.attr("content", content);
++                    metaCharsetUpdated = true;
++                }
++            }
++            if (!metaCharsetUpdated) {
++                // if no meta charset tag found, add one to head
++                Element head = doc.head();
++                if (head == null) {
++                    head = doc.prependElement("head");
++                }
++                head.prependElement("meta").attr("charset", charset.name());
++            }
++        }
+     }
+     input.close();
+     return doc;
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -24,7 +24,7 @@
+             double scaleFactor = 1d;
+             double lastScaleFactor = 1d;
+             final int maxPower = 5;
+-            final double scale = FastMath.max(a,b);
++            final double scale = FastMath.max(a, b);
+             if (scale <= 0) {  // Can't scale
+                 throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE, x);
+             }
+@@ -75,3 +75,4 @@
+ 
+     return hN;
+ }
++

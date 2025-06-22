@@ -1,0 +1,1 @@
+['parse', 'handleToken', 'handleShortAndLongOption', 'handleOption', 'handleConcatenatedOptions']

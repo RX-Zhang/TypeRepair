@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.helper.HttpConnectionTest.handlesHeaderEncodingOnRequest
+- Error: java.lang.ArrayIndexOutOfBoundsException: 1
+- Location:         req.addHeader("xxx", "Ã©");

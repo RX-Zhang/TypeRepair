@@ -1,0 +1,1 @@
+['hasData', 'avail', 'resizeBuf', 'readResults', 'setInitialBuffer', 'decodeBase64', 'discardWhitespace']

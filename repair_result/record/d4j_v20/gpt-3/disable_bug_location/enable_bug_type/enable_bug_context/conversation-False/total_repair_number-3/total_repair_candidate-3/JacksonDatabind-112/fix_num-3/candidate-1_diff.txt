@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -31,5 +31,12 @@
+     if (isDefaultDeserializer(valueDeser)) {
+         valueDeser = null;
+     }
++    
++    // Ensure that the ValueInstantiator has a default constructor
++    if (_valueInstantiator.getDelegateCreator() == null && _valueInstantiator.getValueType() == null) {
++        throw new JsonMappingException("Cannot construct instance of " + _valueInstantiator.getValueType().toString() + ": no default no-arguments constructor found");
++    }
++    
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

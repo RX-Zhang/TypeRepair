@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+   double result;
+ 
+   // TODO(johnlenz): Handle NaN with unknown value. BIT ops convert NaN
+-  // to zero so this is a little akward here.
++  // to zero so this is a little awkward here.
+ 
+   Double lValObj = NodeUtil.getNumberValue(left);
+   if (lValObj == null) {
+@@ -61,13 +61,9 @@
+       throw new Error("Unexpected arithmetic operator");
+   }
+ 
+-  // TODO(johnlenz): consider removing the result length check.
+-  // length of the left and right value plus 1 byte for the operator.
++  // Check for overflow or precision issues
+   if (String.valueOf(result).length() <=
+       String.valueOf(lval).length() + String.valueOf(rval).length() + 1 &&
+-
+-      // Do not try to fold arithmetic for numbers > 2^53. After that
+-      // point, fixed-point math starts to break down and become inaccurate.
+       Math.abs(result) <= MAX_FOLD_NUMBER) {
+     Node newNumber = Node.newNumber(result);
+     return newNumber;
+@@ -81,3 +77,4 @@
+ 
+   return null;
+ }
++

@@ -1,0 +1,83 @@
+Map<String, String> parsePaxHeaders(final InputStream i)
+    throws IOException {
+    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+    // Format is "length keyword=value\n";
+    while (true) { // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+        boolean foundSpace = false;
+        while ((ch = i.read()) != -1) {
+            read++;
+            if (ch == ' ') {
+                foundSpace = true;
+                break;
+            }
+            if (ch < '0' || ch > '9') {
+                // Invalid character in length field, skip line or break
+                // To handle blank lines or corrupt ones gracefully:
+                // Skip to next newline
+                while (ch != -1 && ch != '\n') {
+                    ch = i.read();
+                }
+                break;
+            }
+            len *= 10;
+            len += ch - '0';
+        }
+        if (ch == -1) { // EOF
+            break;
+        }
+        if (!foundSpace) {
+            // no valid length found (e.g., blank line), continue parsing next line
+            continue;
+        }
+        // Get keyword
+        final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+        boolean foundEquals = false;
+        while ((ch = i.read()) != -1) {
+            read++;
+            if (ch == '=') { // end of keyword
+                foundEquals = true;
+                break;
+            }
+            coll.write((byte) ch);
+        }
+        if (!foundEquals) {
+            // malformed header, skip line and continue
+            // read until newline or EOF
+            while (ch != -1 && ch != '\n') {
+                ch = i.read();
+            }
+            continue;
+        }
+        final String keyword = coll.toString(CharsetNames.UTF_8);
+        final int restLen = len - read;
+        if (restLen < 0) {
+            // Invalid length (could happen on blank lines or malformed input), skip line
+            // Read until newline or EOF
+            while (ch != -1 && ch != '\n') {
+                ch = i.read();
+            }
+            continue;
+        }
+        if (restLen == 1) { // only NL
+            headers.remove(keyword);
+        } else {
+            final byte[] rest = new byte[restLen];
+            final int got = IOUtils.readFully(i, rest);
+            if (got != restLen) {
+                throw new IOException("Failed to read "
+                    + "Paxheader. Expected "
+                    + restLen
+                    + " bytes, read "
+                    + got);
+            }
+            // Drop trailing NL
+            final String value = new String(rest, 0,
+                restLen - 1, CharsetNames.UTF_8);
+            headers.put(keyword, value);
+        }
+    }
+    return headers;
+}

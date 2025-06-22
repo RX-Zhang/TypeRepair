@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.linear.OpenMapRealMatrixTest.testMath679
+- Error: junit.framework.AssertionFailedError: Expected exception: org.apache.commons.math.exception.NumberIsTooLargeException
+- Location: Unknown location

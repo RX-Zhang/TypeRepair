@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -19,5 +19,20 @@
+     }
+     double ld = InfoSetUtil.doubleValue(left);
+     double rd = InfoSetUtil.doubleValue(right);
++    if (Double.isNaN(ld) || Double.isNaN(rd)) {
++        // According to the test case NaN comparisons should behave as follows:
++        // $nan > $nan = false
++        // $nan < $nan = false
++        // $nan = $nan = true
++        // $nan > number = false
++        // $nan < number = false
++        // $nan = number = false
++        if (ld != rd) {
++            return false;
++        } else {
++            return evaluateCompare(0);
++        }
++    }
+     return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+ }
++

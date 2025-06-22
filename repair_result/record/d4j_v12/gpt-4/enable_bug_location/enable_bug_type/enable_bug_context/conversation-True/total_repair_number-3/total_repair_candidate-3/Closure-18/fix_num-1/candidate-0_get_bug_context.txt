@@ -1,0 +1,1 @@
+['runSanityCheck', 'newTracer', 'stopTracer', 'getModuleGraph', 'getTypeRegistry', 'hoistExterns', 'hoistNoCompileFiles', 'repartitionInputs', 'processAMDAndCommonJSModules', 'addChangeHandler', 'removeChangeHandler', 'isIdeMode', 'report', 'hasErrors']

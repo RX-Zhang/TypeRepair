@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -26,11 +26,19 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
+         }
+-        values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+-        final SettableBeanProperty prop = extProp.getProperty();
++        // Fix: ensure the value returned from _deserialize matches the property type or is properly handled
++        Object deserializedValue = _deserialize(p, ctxt, i, typeId);
++        SettableBeanProperty prop = extProp.getProperty();
++
++        // Convert or verify type compatibility if needed here
++        // For safety, attempt to coerce or cast if needed before assigning; 
++        // but typically Jackson handles this internally.
++
++        values[i] = deserializedValue;
++
+         // also: if it's creator prop, fill in
+         if (prop.getCreatorIndex() >= 0) {
+             buffer.assignParameter(prop, values[i]);
+@@ -55,3 +63,4 @@
+     }
+     return bean;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.time.FastDateFormatTest.testLang645
+- Error: junit.framework.ComparisonFailure: expected:<fredag, week [53]> but was:<fredag, week [01]>
+- Location:         assertEquals("fredag, week 53", fdf.format(d));

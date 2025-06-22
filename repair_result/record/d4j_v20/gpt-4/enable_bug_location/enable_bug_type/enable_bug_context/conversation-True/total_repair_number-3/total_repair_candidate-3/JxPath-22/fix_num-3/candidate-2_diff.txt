@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -8,7 +8,11 @@
+     String uri = element.getNamespaceURI();
+     if (uri == null) {
+         String prefix = getPrefix(node);
+-        String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
++        if (prefix == null) {
++            return null;
++        }
++
++        String qname = "xmlns:" + prefix;
+ 
+         Node aNode = node;
+         while (aNode != null) {
+@@ -24,3 +28,4 @@
+     }
+     return uri;
+ }
++

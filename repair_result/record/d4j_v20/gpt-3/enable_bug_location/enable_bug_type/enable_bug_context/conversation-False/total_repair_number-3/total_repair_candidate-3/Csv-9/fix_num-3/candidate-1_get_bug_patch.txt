@@ -1,0 +1,13 @@
+<M extends Map<String, String>> M putIn(final M map) {
+    if (mapping == null || values == null) {
+        // Nothing to put if mapping or values are null
+        return map;
+    }
+    for (final Entry<String, Integer> entry : mapping.entrySet()) {
+        final int col = entry.getValue().intValue();
+        if (col >= 0 && col < values.length && values[col] != null) {
+            map.put(entry.getKey(), values[col]);
+        }
+    }
+    return map;
+}

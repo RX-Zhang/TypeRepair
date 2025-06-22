@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -22,8 +22,17 @@
+     }
+   }
+   n.setJSType(type);
++  
++  // Ensure we are checking the argument types correctly
+   for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
++    JSType argType = getJSType(arg);
++    if (argType == null || argType.isUnknownType()) {
++      // If the argument type is unknown, we should handle it appropriately
++      compiler.report(JSError.make(NodeUtil.getSourceName(arg), arg,
++          TEMPLATE_TYPE_NOT_OBJECT_TYPE, "Argument type is unknown."));
++    }
+     scope = traverse(arg, scope);
+   }
+   return scope;
+ }
++

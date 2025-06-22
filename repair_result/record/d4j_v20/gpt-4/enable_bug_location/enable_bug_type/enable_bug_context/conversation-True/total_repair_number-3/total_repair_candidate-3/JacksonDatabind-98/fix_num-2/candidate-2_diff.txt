@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -26,13 +26,14 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
+         }
+-        values[i] = _deserialize(p, ctxt, i, typeId);
++        // Use _deserialize with token buffer, not original parser to avoid argument mismatch
++        values[i] = _deserialize(null, ctxt, i, typeId);
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+         // also: if it's creator prop, fill in
+-        if (prop.getCreatorIndex() >= 0) {
++        if (prop.getCreatorIndex() >=0) {
+             buffer.assignParameter(prop, values[i]);
+ 
+             // [databind#999] And maybe there's creator property for type id too?
+@@ -55,3 +56,4 @@
+     }
+     return bean;
+ }
++

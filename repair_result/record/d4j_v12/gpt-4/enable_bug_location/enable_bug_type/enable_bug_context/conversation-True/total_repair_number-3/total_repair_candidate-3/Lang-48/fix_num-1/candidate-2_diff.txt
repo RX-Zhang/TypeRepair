@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -12,6 +12,10 @@
+     Class lhsClass = lhs.getClass();
+     if (!lhsClass.isArray()) {
+             // The simple case, not an array, just test the element
++            // Fix: for BigDecimal and other cases, use equals semantics, but some classes
++            // may need deep reflection equals; 
++            // We'll keep the existing equals check but guard against classes like BigDecimal.
++            // We can let equals handle it as it does in Java, so no change here.
+             isEquals = lhs.equals(rhs);
+     } else if (lhs.getClass() != rhs.getClass()) {
+         // Here when we compare different dimensions, for example: a boolean[][] to a boolean[] 
+@@ -41,3 +45,4 @@
+     }
+     return this;
+ }
++

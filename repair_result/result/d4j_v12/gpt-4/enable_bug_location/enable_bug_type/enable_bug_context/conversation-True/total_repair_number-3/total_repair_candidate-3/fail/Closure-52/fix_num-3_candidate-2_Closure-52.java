@@ -1,0 +1,17 @@
+static boolean isSimpleNumber(String s) {
+  int len = s.length();
+  boolean hasDecimal = false;
+  for (int index = 0; index < len; index++) {
+    char c = s.charAt(index);
+    if ((c < '0' || c > '9') && c != '.') {
+      return false;
+    }
+    if (c == '.') {
+      if (hasDecimal) {
+        return false; // more than one decimal point
+      }
+      hasDecimal = true;
+    }
+  }
+  return len > 0;
+}

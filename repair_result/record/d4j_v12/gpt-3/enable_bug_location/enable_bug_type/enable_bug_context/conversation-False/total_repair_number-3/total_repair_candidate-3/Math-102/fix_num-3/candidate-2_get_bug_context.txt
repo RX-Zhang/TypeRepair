@@ -1,0 +1,1 @@
+['chiSquare', 'chiSquareTest', 'chiSquareTestDataSetsComparison', 'checkArray', 'isRectangular', 'isPositive', 'isNonNegative']

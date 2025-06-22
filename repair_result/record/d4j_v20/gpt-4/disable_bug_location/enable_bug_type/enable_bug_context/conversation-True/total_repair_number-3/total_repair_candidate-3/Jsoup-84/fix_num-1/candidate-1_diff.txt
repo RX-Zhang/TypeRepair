@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -7,15 +7,27 @@
+         String namespace = namespacesStack.peek().get(prefix);
+         String tagName = sourceEl.tagName();
+ 
+-        Element el = 
+-            doc.createElementNS(namespace, tagName);
+-        copyAttributes(sourceEl, el);
+-        if (dest == null) { // sets up the root
+-            doc.appendChild(el);
++        // Fix: createElementNS requires a non-null valid namespace; if namespace is null or empty, use null and adjust tagName accordingly
++        if (namespace == null || namespace.isEmpty()) {
++            // For elements without a namespace, create without namespace and use tagName as is
++            Element el = doc.createElement(tagName);
++            copyAttributes(sourceEl, el);
++            if (dest == null) { // sets up the root
++                doc.appendChild(el);
++            } else {
++                dest.appendChild(el);
++            }
++            dest = el; // descend
+         } else {
+-            dest.appendChild(el);
++            Element el = doc.createElementNS(namespace, tagName);
++            copyAttributes(sourceEl, el);
++            if (dest == null) { // sets up the root
++                doc.appendChild(el);
++            } else {
++                dest.appendChild(el);
++            }
++            dest = el; // descend
+         }
+-        dest = el; // descend
+     } else if (source instanceof org.jsoup.nodes.TextNode) {
+         org.jsoup.nodes.TextNode sourceText = (org.jsoup.nodes.TextNode) source;
+         Text text = doc.createTextNode(sourceText.getWholeText());
+@@ -32,3 +44,4 @@
+         // unhandled
+     }
+ }
++

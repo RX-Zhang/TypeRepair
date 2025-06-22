@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -14,8 +14,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -47,9 +46,9 @@
+         //    static definition. Sigh.
+         // First: case of class specifying it; try to find POJO property defaults
+         if (_defaultInclusion.getValueInclusion() == JsonInclude.Include.NON_DEFAULT) {
++            valueToSuppress = getDefaultValue(actualType);
++        } else {
+             valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
+-        } else {
+-            valueToSuppress = getDefaultValue(actualType);
+         }
+         if (valueToSuppress == null) {
+             suppressNulls = true;
+@@ -102,3 +101,4 @@
+     }
+     return bpw;
+ }
++

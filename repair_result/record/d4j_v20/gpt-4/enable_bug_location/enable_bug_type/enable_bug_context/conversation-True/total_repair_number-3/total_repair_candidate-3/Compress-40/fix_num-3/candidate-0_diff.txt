@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -9,21 +9,22 @@
+         }
+         if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+             bitsCached |= (nextByte << bitsCachedSize);
++            bitsCachedSize += 8;
+         } else {
+             bitsCached <<= 8;
+             bitsCached |= nextByte;
++            bitsCachedSize += 8;
+         }
+-        bitsCachedSize += 8;
+     }
+-        // bitsCachedSize >= 57 and left-shifting it 8 bits would cause an overflow
+-    
+     final long bitsOut;
+-        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+-            bitsOut = (bitsCached & MASKS[count]);
+-            bitsCached >>>= count;
+-        } else {
+-            bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
+-        }
+-        bitsCachedSize -= count;
++    if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
++        bitsOut = bitsCached & MASKS[count];
++        bitsCached >>>= count;
++    } else {
++        bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
++        bitsCached &= (MASKS[bitsCachedSize - count]);
++    }
++    bitsCachedSize -= count;
+     return bitsOut;
+ }
++

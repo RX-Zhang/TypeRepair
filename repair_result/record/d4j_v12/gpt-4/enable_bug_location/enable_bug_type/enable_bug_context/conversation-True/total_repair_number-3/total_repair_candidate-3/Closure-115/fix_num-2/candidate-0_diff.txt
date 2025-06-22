@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -35,8 +35,8 @@
+ 
+   // FUNCTION NODE -> LP NODE: [ ARG1, ARG2, ... ]
+   Node fnParam = NodeUtil.getFunctionParameters(fnNode).getFirstChild();
++  // Fixed bug: make sure to advance fnParam and cArg correctly
+   while (cArg != null || fnParam != null) {
+-    // For each named parameter check if a mutable argument use more than one.
+     if (fnParam != null) {
+       if (cArg != null) {
+         if (hasSideEffects && NodeUtil.canBeSideEffected(cArg)) {
+@@ -51,13 +51,8 @@
+           return CanInlineResult.NO;
+         }
+       }
+-
+-      // Move to the next name.
+       fnParam = fnParam.getNext();
+     }
+-
+-    // For every call argument check for side-effects, even if there
+-    // isn't a named parameter to match.
+     if (cArg != null) {
+       if (NodeUtil.mayHaveSideEffects(cArg, compiler)) {
+         return CanInlineResult.NO;
+@@ -68,3 +63,4 @@
+ 
+   return CanInlineResult.YES;
+ }
++

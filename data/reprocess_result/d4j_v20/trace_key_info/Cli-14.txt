@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli2.bug.BugCLI144Test.testFileValidator
+- Error: java.lang.ClassCastException: java.io.File cannot be cast to java.lang.String
+- Location:         CommandLine cl = parser

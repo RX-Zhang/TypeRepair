@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -8,17 +8,21 @@
+             return _deserializeFromEmptyString();
+         }
+         Exception cause = null;
++        T result = null;
+         try {
+-            // 19-May-2017, tatu: Used to require non-null result (assuming `null`
+-            //    indicated error; but that seems wrong. Should be able to return
+-            //    `null` as value.
+-            if (_deserialize(text, ctxt) != null) {
+-            return _deserialize(text, ctxt);
++            result = _deserialize(text, ctxt);
++            if (result != null) {
++                return result;
+             }
+         } catch (IllegalArgumentException iae) {
+             cause = iae;
+         } catch (MalformedURLException me) {
+             cause = me;
++        }
++        if (result == null && _valueClass == UUID.class && ctxt.getConfig().getCoercionAction(LogicalType.Textual, _valueClass)
++                == CoercionAction.TryConvert) {
++            // Special handling: try to coerce empty or invalid UUID string to null
++            return null;
+         }
+         String msg = "not a valid textual representation";
+         if (cause != null) {
+@@ -53,3 +57,4 @@
+     }
+     return (T) ctxt.handleUnexpectedToken(_valueClass, p);
+ }
++

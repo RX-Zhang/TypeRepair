@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -26,11 +26,11 @@
+   }
+ 
+   Node current = left.getFirstChild();
+-  Node elem = null;
++  Node elem = current; // Fix: initialize elem to current before the loop
++
+   for (int i = 0; current != null && i < intIndex; i++) {
+-      elem = current;
+-
+     current = current.getNext();
++    elem = current;
+   }
+ 
+   if (elem == null) {
+@@ -49,3 +49,4 @@
+   reportCodeChange();
+   return elem;
+ }
++

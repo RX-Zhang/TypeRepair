@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -36,7 +36,7 @@
+         } else {
+           // The star is part of the comment.
+           if (builder.length() > 0) {
+-            builder.append(' ');
++            builder.append('\n');
+           }
+ 
+           builder.append('*');
+@@ -58,7 +58,7 @@
+         ignoreStar = false;
+         state = State.SEARCHING_ANNOTATION;
+ 
+-            // All tokens must be separated by a space.
++        // All tokens must be separated by a space.
+ 
+         if (token == JsDocToken.EOC ||
+             token == JsDocToken.EOF ||
+@@ -99,3 +99,4 @@
+     }
+   } while (true);
+ }
++

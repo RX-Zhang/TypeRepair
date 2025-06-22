@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -1,7 +1,23 @@
+ public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+ {
+-    // 29-Jan-2016, tatu: Simple skipping for all other tokens, but FIELD_NAME bit
+-    //    special unfortunately
++    if (p == null) {
++        return null;
++    }
++    // Skip the contents of the current token if it can have children (array, object)
++    JsonToken currentToken = p.getCurrentToken();
++    if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.START_ARRAY) {
+         p.skipChildren();
++    } else if (currentToken == JsonToken.FIELD_NAME) {
++        // For FIELD_NAME, we attempt skipping the value to avoid parsing errors
++        p.nextToken();
++        p.skipChildren();
++    } else if (currentToken == null) {
++        // Move to first token if parser not yet advanced
++        currentToken = p.nextToken();
++        if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.START_ARRAY) {
++            p.skipChildren();
++        }
++    }
+     return null;
+ }
++

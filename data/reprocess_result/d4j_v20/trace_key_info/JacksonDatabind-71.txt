@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.deser.TestMapDeserialization.testcharSequenceKeyMap
+- Error: com.fasterxml.jackson.databind.JsonMappingException: Can not find a (Map) Key deserializer for type [simple type, class java.lang.CharSequence]
+- Location:         Map<CharSequence,String> result = MAPPER.readValue(JSON, new TypeReference<Map<CharSequence,String>>() { });

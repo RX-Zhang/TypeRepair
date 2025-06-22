@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -5,7 +5,6 @@
+   }
+ 
+   Node block = fnNode.getLastChild();
+-
+ 
+   // CALL NODE: [ NAME, ARG1, ARG2, ... ]
+   Node cArg = callNode.getFirstChild().getNext();
+@@ -57,5 +56,11 @@
+     }
+   }
+ 
++  // Ensure that the function is not capturing variables that could lead to memory leaks.
++  if (NodeUtil.has(fnNode, new NodeUtil.MatchDeclaration(), new NodeUtil.MatchShallowStatement())) {
++    return CanInlineResult.NO;
++  }
++
+   return CanInlineResult.YES;
+ }
++

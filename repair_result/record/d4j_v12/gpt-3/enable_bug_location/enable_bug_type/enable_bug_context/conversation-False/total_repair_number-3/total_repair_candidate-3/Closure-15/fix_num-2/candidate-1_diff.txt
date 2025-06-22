@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -6,9 +6,11 @@
+   }
+ 
+   // TODO(user): We only care about calls to functions that
+-  // passes one of the dependent variable to a non-side-effect free
++  // pass one of the dependent variables to a non-side-effect free
+   // function.
+-  if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) {
++  if (n.isCall() && !NodeUtil.functionCallHasSideEffects(n)) {
++    // No side effects, so continue checking children
++  } else if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) {
+     return true;
+   }
+ 
+@@ -16,11 +18,14 @@
+     return true;
+   }
+ 
+-
+   for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+-    if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
++    // The original logic skipped children that start new CFG nodes.
++    // This is incorrect if those children may have side effects.
++    // Change to always check children.
++    if (apply(c)) {
+       return true;
+     }
+   }
+   return false;
+ }
++

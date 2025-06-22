@@ -1,0 +1,1 @@
+['doesFunctionMeetMinimumRequirements', 'isSupportedCallType', 'inlineFunction', 'callMeetsBlockInliningRequirements', 'canInlineReferenceDirectly', 'inliningLowersCost']

@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -38,6 +38,8 @@
+     }
+     else
+     {
+-        return null;
++        // Throw ParseException if no matching type found instead of returning null
++        throw new ParseException("Unsupported class: " + ((clazz != null) ? clazz.getName() : "null"));
+     }
+ }
++

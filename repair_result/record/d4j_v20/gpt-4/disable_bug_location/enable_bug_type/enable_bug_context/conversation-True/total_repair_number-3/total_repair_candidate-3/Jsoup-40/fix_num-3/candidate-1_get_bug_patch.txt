@@ -1,0 +1,26 @@
+public DocumentType(String name, String publicId, String systemId, String baseUri) {
+    super(baseUri);
+
+    // Allow empty or null name by replacing null with empty string and trimming
+    if (name == null) {
+        name = "";
+    }
+    name = name.trim();
+
+    // Do not throw exception on empty name, but sanitize to prevent invalid names
+    // If name contains invalid characters, replace them or convert to safe value
+    // For simplicity, replace control characters with Unicode replacement character
+    StringBuilder sanitizedName = new StringBuilder();
+    for (char c : name.toCharArray()) {
+        if (c >= 32 && c != 127) {
+            sanitizedName.append(c);
+        } else {
+            sanitizedName.append('\uFFFD');
+        }
+    }
+    String safeName = sanitizedName.toString();
+
+    attr("name", safeName);
+    attr("publicId", publicId == null ? "" : publicId);
+    attr("systemId", systemId == null ? "" : systemId);
+}

@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -14,15 +14,11 @@
+         int fileNameLen = ZipShort.getValue(b);
+         archive.readFully(b);
+         int extraFieldLen = ZipShort.getValue(b);
+-        int lenToSkip = fileNameLen;
+-        while (lenToSkip > 0) {
+-            int skipped = archive.skipBytes(lenToSkip);
+-            if (skipped <= 0) {
+-                throw new RuntimeException("failed to skip file name in"
+-                                           + " local file header");
+-            }
+-            lenToSkip -= skipped;
+-        }
++
++        // Skip the file name bytes in the local file header
++        byte[] fileNameBytes = new byte[fileNameLen];
++        archive.readFully(fileNameBytes);
++
+         byte[] localExtraData = new byte[extraFieldLen];
+         archive.readFully(localExtraData);
+         ze.setExtra(localExtraData);
+@@ -41,3 +37,4 @@
+         }
+     }
+ }
++

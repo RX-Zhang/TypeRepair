@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+             ? builder.getValueInstantiator().getFromObjectArguments(ctxt.getConfig())
+             : null;
+     final boolean hasCreatorProps = (creatorProps != null);
+-    
++
+     // 01-May-2016, tatu: Which base type to use here gets tricky, since
+     //   it may often make most sense to use general type for overrides,
+     //   but what we have here may be more specific impl type. But for now
+@@ -36,10 +36,10 @@
+         builder.setAnySetter(constructAnySetter(ctxt, beanDesc, anySetterMethod));
+     }
+     else {
+-    	anySetterField = beanDesc.findAnySetterField();
+-    	if(anySetterField != null) {
+-    		builder.setAnySetter(constructAnySetter(ctxt, beanDesc, anySetterField));
+-    	}
++        anySetterField = beanDesc.findAnySetterField();
++        if(anySetterField != null) {
++            builder.setAnySetter(constructAnySetter(ctxt, beanDesc, anySetterField));
++        }
+     }
+     // NOTE: we do NOT add @JsonIgnore'd properties into blocked ones if there's any-setter
+     // Implicit ones via @JsonIgnore and equivalent?
+@@ -49,10 +49,13 @@
+             for (String propName : ignored2) {
+                 // allow ignoral of similarly named JSON property, but do not force;
+                 // latter means NOT adding this to 'ignored':
+-                builder.addIgnorable(propName);
++                if (!ignored.contains(propName)) {
++                    builder.addIgnorable(propName);
++                }
+             }
+         }
+     }
++
+     final boolean useGettersAsSetters = ctxt.isEnabled(MapperFeature.USE_GETTERS_AS_SETTERS)
+             && ctxt.isEnabled(MapperFeature.AUTO_DETECT_GETTERS);
+ 
+@@ -66,7 +69,7 @@
+             propDefs = mod.updateProperties(ctxt.getConfig(), beanDesc, propDefs);
+         }
+     }
+-    
++
+     // At which point we still have all kinds of properties; not all with mutators:
+     for (BeanPropertyDefinition propDef : propDefs) {
+         SettableBeanProperty prop = null;
+@@ -142,3 +145,4 @@
+         }
+     }
+ }
++

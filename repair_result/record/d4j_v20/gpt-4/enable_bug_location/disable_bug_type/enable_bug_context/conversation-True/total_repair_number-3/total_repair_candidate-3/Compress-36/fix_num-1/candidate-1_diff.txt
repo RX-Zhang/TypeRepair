@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,6 +1,9 @@
+ private InputStream getCurrentStream() throws IOException {
+     if (deferredBlockStreams.isEmpty()) {
+-        throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++        // Try to move to next entry if none selected yet
++        if (getNextEntry() == null) {
++            throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++        }
+     }
+     
+     while (deferredBlockStreams.size() > 1) {
+@@ -14,3 +17,4 @@
+ 
+     return deferredBlockStreams.get(0);
+ }
++

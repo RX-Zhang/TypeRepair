@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -18,9 +18,8 @@
+       return false;
+     }
+   } else if (nameNode.getType() == Token.GETPROP) {
+-    if (callNode.hasOneChild()
+-        && OBJECT_METHODS_WITHOUT_SIDEEFFECTS.contains(
+-              nameNode.getLastChild().getString())) {
++    if (OBJECT_METHODS_WITHOUT_SIDEEFFECTS.contains(
++          nameNode.getLastChild().getString())) {
+       return false;
+     }
+ 
+@@ -30,22 +29,27 @@
+     }
+ 
+     // Functions in the "Math" namespace have no side effects.
++    Node first = nameNode.getFirstChild();
++    String lastProp = nameNode.getLastChild().getString();
++    if (first != null && first.getType() == Token.NAME && "Math".equals(first.getString())) {
++      return false;
++    }
+ 
+     if (compiler != null && !compiler.hasRegExpGlobalReferences()) {
+-      if (nameNode.getFirstChild().getType() == Token.REGEXP
+-          && REGEXP_METHODS.contains(nameNode.getLastChild().getString())) {
++      if (first != null && first.getType() == Token.REGEXP
++          && REGEXP_METHODS.contains(lastProp)) {
+         return false;
+-      } else if (nameNode.getFirstChild().getType() == Token.STRING
+-          && STRING_REGEXP_METHODS.contains(
+-              nameNode.getLastChild().getString())) {
++      } else if (first != null && first.getType() == Token.STRING
++          && STRING_REGEXP_METHODS.contains(lastProp)) {
+         Node param = nameNode.getNext();
+         if (param != null &&
+             (param.getType() == Token.STRING
+                 || param.getType() == Token.REGEXP))
+-        return false;
++          return false;
+       }
+     }
+   }
+ 
+   return true;
+ }
++

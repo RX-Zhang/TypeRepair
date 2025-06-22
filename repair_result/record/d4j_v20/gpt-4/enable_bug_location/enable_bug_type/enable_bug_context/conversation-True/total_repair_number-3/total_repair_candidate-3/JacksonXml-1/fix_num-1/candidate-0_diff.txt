@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -40,6 +40,10 @@
+         if (_parsingContext.inArray()) {
+             // Yup: in array, so this element could be verified; but it won't be
+             // reported anyway, and we need to process following event.
++            String name = _xmlTokens.getLocalName();
++            if (_namesToWrap != null && _namesToWrap.contains(name)) {
++                _xmlTokens.repeatStartElement();
++            }
+             token = _xmlTokens.next();
+             _mayBeLeaf = true;
+             continue;
+@@ -62,18 +66,18 @@
+     // Ok; beyond start element, what do we get?
+     switch (token) {
+     case XmlTokenStream.XML_END_ELEMENT:
+-        // Simple, except that if this is a leaf, need to suppress end:
++        // Simple, except that if this is a leaf, need to suppress:
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-                // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                //    expose as empty Object, not null
++            // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
++            //    expose as empty Object, not null
+             return (_currToken = JsonToken.VALUE_NULL);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         return _currToken;
+-        
++
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+@@ -127,8 +131,9 @@
+     case XmlTokenStream.XML_END:
+         return (_currToken = null);
+     }
+-    
+-    // should never get here
++
++    // should get here
+     _throwInternal();
+     return null;
+ }
++

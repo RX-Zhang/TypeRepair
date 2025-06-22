@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -4,5 +4,10 @@
+         return URI.create("");
+     }
+     // As per [databind#1123], Locale too
++    // Return Locale.ROOT when deserializing empty string to Locale
++    if (_kind == STD_LOCALE) {
++        return Locale.ROOT;
++    }
+     return super._deserializeFromEmptyString();
+ }
++

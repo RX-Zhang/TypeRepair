@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -1,15 +1,21 @@
+ private Attribute parseAttribute() {
+     tq.consumeWhitespace();
++    if (tq.isEmpty())
++        return null;
++    
+     String key = tq.consumeAttributeKey();
+     String value = "";
+     tq.consumeWhitespace();
+-    if (tq.matchChomp("=")) {
++
++    if (!tq.isEmpty() && tq.matchChomp("=")) {
+         tq.consumeWhitespace();
+ 
+-        if (tq.matchChomp(SQ)) {
++        if (!tq.isEmpty() && tq.matchChomp(SQ)) {
+             value = tq.chompTo(SQ);
+-        } else if (tq.matchChomp(DQ)) {
++            if (!tq.isEmpty()) tq.matchChomp(SQ); // consume closing quote if present
++        } else if (!tq.isEmpty() && tq.matchChomp(DQ)) {
+             value = tq.chompTo(DQ);
++            if (!tq.isEmpty()) tq.matchChomp(DQ); // consume closing quote if present
+         } else {
+             StringBuilder valueAccum = new StringBuilder();
+             // no ' or " to look for, so scan to end tag or space (or end of stream)
+@@ -20,11 +26,14 @@
+         }
+         tq.consumeWhitespace();
+     }
++
+     if (key.length() != 0)
+         return Attribute.createFromEncoded(key, value);
+     else {
+-        tq.consume();
+-            
++        if (!tq.isEmpty()) {
++            tq.consume();
++        }
+         return null;
+     }
+ }
++

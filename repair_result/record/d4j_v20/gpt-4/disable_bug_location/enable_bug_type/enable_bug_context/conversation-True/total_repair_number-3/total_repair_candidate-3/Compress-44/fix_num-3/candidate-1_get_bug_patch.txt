@@ -1,0 +1,10 @@
+public ChecksumCalculatingInputStream(final Checksum checksum, final InputStream in) {
+    if (checksum == null) {
+        throw new NullPointerException("Checksum cannot be null");
+    }
+    if (in == null) {
+        throw new NullPointerException("InputStream cannot be null");
+    }
+    this.checksum = checksum;
+    this.in = in;
+}

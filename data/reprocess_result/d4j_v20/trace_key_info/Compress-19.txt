@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.zip.ZipFileTest.testExcessDataInZip64ExtraField
+- Error: java.util.zip.ZipException: central directory zip64 extended information extra field's length doesn't match central directory data.  Expected length 16 but is 28
+- Location:         zf = new ZipFile(archive);

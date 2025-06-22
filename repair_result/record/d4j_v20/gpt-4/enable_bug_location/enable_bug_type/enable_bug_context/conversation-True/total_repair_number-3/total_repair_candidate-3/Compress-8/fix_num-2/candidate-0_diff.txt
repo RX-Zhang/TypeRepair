@@ -1,0 +1,75 @@
+--- 
++++ 
+@@ -1,37 +1,52 @@
+ public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+-    long    result = 0;
++    if (length < 2) {
++        throw new IllegalArgumentException("Length must be at least 2");
++    }
++    
++    long result = 0;
+     boolean stillPadding = true;
+-    int     end = offset + length;
+-    int     start = offset;
++    int end = offset + length;
++    int start = offset;
+ 
+-    for (int i = start; i < end; i++){
++    // Check if all bytes are zero (NULs)
++    boolean allNuls = true;
++    for (int i = start; i < end; i++) {
++        if (buffer[i] != 0) {
++            allNuls = false;
++            break;
++        }
++    }
++    if (allNuls) {
++        throw new IllegalArgumentException("All bytes are NUL - invalid input");
++    }
++
++    for (int i = start; i < end; i++) {
+         final byte currentByte = buffer[i];
+-        if (currentByte == 0) {
++        if (currentByte == 0) { // Trailing NUL means end
+             break;
+         }
+ 
+-    // Skip leading spaces
+-        if (currentByte == (byte) ' ' || currentByte == '0') {
+-            if (stillPadding) {
+-               continue;
+-        }
+-            if (currentByte == (byte) ' ') {
+-            break;
+-            }
++        // Skip leading spaces and NULs
++        if (stillPadding && (currentByte == (byte) ' ' || currentByte == (byte) '0')) {
++            continue;
+         }
+ 
+-    // Must have trailing NUL or space
+-    // May have additional NUL or space
++        // Trailing space or NUL marks end of octal number
++        if (currentByte == (byte) ' ' ) {
++            break;
++        }
+ 
+         stillPadding = false;
+-        // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++
++        // If outside of allowed range (octal digits)
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, currentByte));
++                    exceptionMessage(buffer, offset, length, i, currentByte));
+         }
++
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+     }
+-
++    
+     return result;
+ }
++

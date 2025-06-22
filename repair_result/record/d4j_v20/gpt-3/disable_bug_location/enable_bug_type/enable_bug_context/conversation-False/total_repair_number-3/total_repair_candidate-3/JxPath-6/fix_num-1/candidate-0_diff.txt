@@ -1,0 +1,60 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++    // System.err.println("COMPARING: " +
++    //     (l == null ? "null" : l.getClass().getName()) + " " +
++    //     (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -19,21 +19,38 @@
+     }
+ 
+     if (l instanceof Collection) {
+-        l = ((Collection) l).iterator();
++        l = ((Collection<?>) l).iterator();
+     }
+ 
+     if (r instanceof Collection) {
+-        r = ((Collection) r).iterator();
++        r = ((Collection<?>) r).iterator();
+     }
+ 
++    // Fix: When one side is Iterator and the other a single value,
++    // contains() should be called only on Iterator with single value argument.
+     if ((l instanceof Iterator) && !(r instanceof Iterator)) {
+-        return contains((Iterator) l, r);
++        return contains((Iterator<?>) l, r);
+     }
+     if (!(l instanceof Iterator) && (r instanceof Iterator)) {
+-        return contains((Iterator) r, l);
++        return contains((Iterator<?>) r, l);
+     }
+     if (l instanceof Iterator && r instanceof Iterator) {
+-        return findMatch((Iterator) l, (Iterator) r);
++        return findMatch((Iterator<?>) l, (Iterator<?>) r);
+     }
+-    return equal(l, r);
++    // At this point both l and r are single objects; perform normal comparison.
++
++    if (l == null) {
++        return r == null;
++    }
++
++    // If both are Numbers, compare as numbers to avoid string vs number mismatch
++    if (l instanceof Number && r instanceof Number) {
++        double dl = ((Number) l).doubleValue();
++        double dr = ((Number) r).doubleValue();
++        return Double.compare(dl, dr) == 0;
++    }
++
++    // Otherwise use equals()
++    return l.equals(r);
+ }
++

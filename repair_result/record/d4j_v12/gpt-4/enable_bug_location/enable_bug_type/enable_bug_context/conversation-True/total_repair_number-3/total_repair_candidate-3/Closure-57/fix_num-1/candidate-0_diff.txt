@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -6,12 +6,13 @@
+     if (callee != null && callee.getType() == Token.GETPROP) {
+       String qualifiedName = callee.getQualifiedName();
+       if (functionName.equals(qualifiedName)) {
+-        Node target = callee.getNext();
+-        if (target != null) {
+-          className = target.getString();
++        Node firstArg = callee.getNext();
++        if (firstArg != null && firstArg.getType() == Token.STRING) {
++          className = firstArg.getString();
+         }
+       }
+     }
+   }
+   return className;
+ }
++

@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -58,7 +58,8 @@
+             case REGULA_FALSI:
+                 // Detect early that algorithm is stuck, instead of waiting
+                 // for the maximum number of iterations to be exceeded.
+-                break;
++                // Added check to throw TooManyEvaluationsException when stuck
++                throw new TooManyEvaluationsException(getMaxEvaluations());
+             default:
+                 // Should never happen.
+                 throw new MathInternalError();
+@@ -121,3 +122,4 @@
+         }
+     }
+ }
++

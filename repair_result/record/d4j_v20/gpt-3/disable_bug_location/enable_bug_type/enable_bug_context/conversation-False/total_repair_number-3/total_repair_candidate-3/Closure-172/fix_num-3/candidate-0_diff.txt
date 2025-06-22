@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -7,7 +7,13 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
++    // When assigning to prototype, ensure type compatibility to avoid
++    // type mismatch errors (e.g., assigning a string to prototype).
++    if (valueType.isStringType() || valueType.isFunctionType() || valueType.isObject() || valueType.isUnknownType()) {
+       return false;
++    }
++    // For other types, cautiously return true to indicate inferred.
++    return true;
+   }
+ 
+   boolean inferred = true;
+@@ -47,3 +53,4 @@
+   }
+   return inferred;
+ }
++

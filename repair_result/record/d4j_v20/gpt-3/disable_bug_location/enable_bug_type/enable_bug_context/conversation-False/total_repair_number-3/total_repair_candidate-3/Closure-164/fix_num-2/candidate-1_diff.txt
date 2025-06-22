@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+   // Section 3.4.7: Subtyping Function Types.
+ 
+   // this.returnType <: that.returnType (covariant)
+-  if (!this.returnType.isSubtype(that.returnType)) {
++  if (!that.returnType.isSubtype(this.returnType)) {
+     return false;
+   }
+ 
+@@ -37,9 +37,9 @@
+   while (thisParam != null && thatParam != null) {
+     JSType thisParamType = thisParam.getJSType();
+     JSType thatParamType = thatParam.getJSType();
+-    if (thisParamType != null) {
+-      if (thatParamType == null ||
+-          !thatParamType.isSubtype(thisParamType)) {
++    if (thatParamType != null) {
++      if (thisParamType == null ||
++          !thisParamType.isSubtype(thatParamType)) {
+         return false;
+       }
+     }
+@@ -48,11 +48,11 @@
+     boolean thatIsVarArgs = thatParam.isVarArgs();
+ 
+     // "that" can't be a supertype, because it's missing a required argument.
+-      // NOTE(nicksantos): In our type system, we use {function(...?)} and
+-      // {function(...NoType)} to to indicate that arity should not be
+-      // checked. Strictly speaking, this is not a correct formulation,
+-      // because now a sub-function can required arguments that are var_args
+-      // in the super-function. So we special-case this.
++    // NOTE(nicksantos): In our type system, we use {function(...?)} and
++    // {function(...NoType)} to indicate that arity should not be checked.
++    // Strictly speaking, this is not a correct formulation,
++    // because now a sub-function can require arguments that are var_args
++    // in the super-function. So we special-case this.
+ 
+     // don't advance if we have variable arguments
+     if (!thisIsVarArgs) {
+@@ -69,7 +69,15 @@
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
++  // Allow extra required parameters in this function, if that function has fewer parameters.
++  // If 'that' still has parameters left that are required, then this is not a subtype.
++  while (thatParam != null) {
++    if (!thatParam.isOptionalArg() && !thatParam.isVarArgs()) {
++      return false;
++    }
++    thatParam = thatParam.getNext();
++  }
+ 
+   return true;
+ }
++

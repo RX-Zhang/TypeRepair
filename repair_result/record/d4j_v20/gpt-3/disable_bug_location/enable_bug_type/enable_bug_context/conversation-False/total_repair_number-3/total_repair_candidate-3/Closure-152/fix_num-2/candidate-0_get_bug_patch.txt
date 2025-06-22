@@ -1,0 +1,44 @@
+JSType resolveInternal(ErrorReporter t, StaticScope<JSType> scope) {
+  setResolvedTypeInternal(this);
+
+  call = (ArrowType) safeResolve(call, t, scope);
+  prototype = (FunctionPrototypeType) safeResolve(prototype, t, scope);
+
+  // Warning about typeOfThis if it doesn't resolve to an ObjectType
+  // is handled further upstream.
+  // TODO(nicksantos): Handle this correctly if we have a UnionType.
+  JSType resolvedTypeOfThis = safeResolve(typeOfThis, t, scope);
+  if (resolvedTypeOfThis instanceof ObjectType) {
+    typeOfThis = (ObjectType) resolvedTypeOfThis;
+  } else {
+    // If not an ObjectType, keep original or handle gracefully
+    typeOfThis = null;
+  }
+
+  boolean changed = false;
+  ImmutableList.Builder<ObjectType> resolvedInterfaces =
+      ImmutableList.builder();
+  for (ObjectType iface : implementedInterfaces) {
+    ObjectType resolvedIface = null;
+    JSType resolved = iface.resolve(t, scope);
+    if (resolved instanceof ObjectType) {
+      resolvedIface = (ObjectType) resolved;
+    }
+    resolvedInterfaces.add(resolvedIface != null ? resolvedIface : iface);
+    changed |= (resolvedIface != null && resolvedIface != iface);
+  }
+  if (changed) {
+    implementedInterfaces = resolvedInterfaces.build();
+  }
+
+  if (subTypes != null) {
+    for (int i = 0; i < subTypes.size(); i++) {
+      JSType resolvedSubType = subTypes.get(i).resolve(t, scope);
+      if (resolvedSubType instanceof FunctionType) {
+        subTypes.set(i, (FunctionType) resolvedSubType);
+      }
+    }
+  }
+
+  return super.resolveInternal(t, scope);
+}

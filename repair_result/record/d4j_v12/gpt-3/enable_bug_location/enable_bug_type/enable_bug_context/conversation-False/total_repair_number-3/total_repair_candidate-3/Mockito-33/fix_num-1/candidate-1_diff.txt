@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -4,6 +4,12 @@
+     Method m1 = invocation.getMethod();
+     Method m2 = candidate.getMethod();
+     
+-    	/* Avoid unnecessary cloning */
++    // Check for null to prevent potential NullPointerException
++    if (m1 == null || m2 == null) {
++        return false;
++    }
++    
++    /* Avoid unnecessary cloning */
+     return m1.equals(m2);
+ }
++

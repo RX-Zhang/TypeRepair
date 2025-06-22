@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    if (quoteCharObj == null) {
++        // If quoteCharacter is not set, just print without quoting
++        out.append(value, start, end);
++        return;
++    }
++    final char quoteChar = quoteCharObj.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -104,3 +110,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -10,7 +10,8 @@
+     // slightly different semantics than '' + (a). See
+     // http://code.google.com/p/closure-compiler/issues/detail?id=759
+     Node value = callTarget.getNext();
+-    if (value != null) {
++    // Only fold if there is exactly one argument
++    if (value != null && value.getNext() == null) {
+       Node addition = IR.add(
+           IR.string("").srcref(callTarget),
+           value.detachFromParent());
+@@ -21,3 +22,4 @@
+   }
+   return n;
+ }
++

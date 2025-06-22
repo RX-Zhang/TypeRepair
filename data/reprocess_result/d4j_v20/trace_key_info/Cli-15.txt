@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.cli2.bug.BugCLI158Test.testSingleOptionSingleArgument
+- Error: junit.framework.ComparisonFailure: expected:<[1[, 1000]]> but was:<[1[]]>
+- Location:         assertEquals("[" + enteredValue1 + ", 1000]", b + "");
+
+
+Test failure 2:
+- Test: org.apache.commons.cli2.bug.BugCLI158Test.testSingleOptionMaximumNumberOfArgument
+- Error: junit.framework.ComparisonFailure: expected:<[1, 2[, 10000]]> but was:<[1, 2[]]>
+- Location:         assertEquals("[1, 2, 10000]", b + "");

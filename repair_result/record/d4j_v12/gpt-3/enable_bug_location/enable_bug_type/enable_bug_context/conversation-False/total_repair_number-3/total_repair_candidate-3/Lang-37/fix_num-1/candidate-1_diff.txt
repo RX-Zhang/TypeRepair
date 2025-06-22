@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -6,8 +6,18 @@
+     }
+     final Class<?> type1 = array1.getClass().getComponentType();
+     T[] joinedArray = (T[]) Array.newInstance(type1, array1.length + array2.length);
++    
+     System.arraycopy(array1, 0, joinedArray, 0, array1.length);
+-        System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
+-        // Check if problem is incompatible types
++    
++    // Check if problem is incompatible types
++    for (T element : array2) {
++        if (element != null && !type1.isInstance(element)) {
++            throw new IllegalArgumentException("Incompatible types: cannot add " + element.getClass().getName() + " to " + type1.getName() + " array.");
++        }
++    }
++    
++    System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
++    
+     return joinedArray;
+ }
++

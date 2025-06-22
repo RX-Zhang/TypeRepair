@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -1,7 +1,15 @@
+ public RectangularCholeskyDecomposition(RealMatrix matrix, double small)
+     throws NonPositiveDefiniteMatrixException {
+ 
++    if (matrix == null) {
++        throw new IllegalArgumentException("Input matrix cannot be null.");
++    }
++    
+     final int order = matrix.getRowDimension();
++    if (order != matrix.getColumnDimension()) {
++        throw new IllegalArgumentException("Input matrix must be square.");
++    }
++
+     final double[][] c = matrix.getData();
+     final double[][] b = new double[order][order];
+ 
+@@ -18,12 +26,11 @@
+         swap[r] = r;
+         for (int i = r + 1; i < order; ++i) {
+             int ii  = index[i];
+-            int isi = index[swap[i]];
++            int isi = index[swap[r]];
+             if (c[ii][ii] > c[isi][isi]) {
+                 swap[r] = i;
+             }
+         }
+-
+ 
+         // swap elements
+         if (swap[r] != r) {
+@@ -43,8 +50,6 @@
+             // check remaining diagonal elements
+             for (int i = r; i < order; ++i) {
+                 if (c[index[i]][index[i]] < -small) {
+-                    // there is at least one sufficiently negative diagonal element,
+-                    // the symmetric positive semidefinite matrix is wrong
+                     throw new NonPositiveDefiniteMatrixException(c[index[i]][index[i]], i, small);
+                 }
+             }
+@@ -88,3 +93,4 @@
+     }
+ 
+ }
++

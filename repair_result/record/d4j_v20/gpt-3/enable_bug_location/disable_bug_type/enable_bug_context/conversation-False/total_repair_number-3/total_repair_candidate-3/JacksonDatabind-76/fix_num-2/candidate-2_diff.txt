@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ protected Object deserializeUsingPropertyBasedWithUnwrapped(JsonParser p,
+-		DeserializationContext ctxt)
++        DeserializationContext ctxt)
+     throws IOException, JsonProcessingException
+ {
+     final PropertyBasedCreator creator = _propertyBasedCreator;
+@@ -25,8 +25,16 @@
+                     continue;
+                 }
+                 while (t == JsonToken.FIELD_NAME) {
++                    String name = p.getCurrentName();
+                     p.nextToken();
+-                    tokens.copyCurrentStructure(p);
++                    // If after build we find more creator params, need to assign them too
++                    SettableBeanProperty prop = creator.findCreatorProperty(name);
++                    if (prop != null) {
++                        buffer.assignParameter(prop, prop.deserialize(p, ctxt));
++                    } else {
++                        tokens.writeFieldName(name);
++                        tokens.copyCurrentStructure(p);
++                    }
+                     t = p.nextToken();
+                 }
+                 tokens.writeEndObject();
+@@ -68,5 +76,7 @@
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

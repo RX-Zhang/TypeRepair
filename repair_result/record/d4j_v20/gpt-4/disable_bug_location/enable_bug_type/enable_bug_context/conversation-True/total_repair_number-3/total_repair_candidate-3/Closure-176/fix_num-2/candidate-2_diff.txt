@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -26,26 +26,25 @@
+       boolean isVarTypeBetter = !isVarDeclaration || var == null || var.isTypeInferred();
+           // Makes it easier to check for NPEs.
+ 
+-      // TODO(nicksantos): This might be a better check once we have
+-      // back-inference of object/array constraints.  It will probably
+-      // introduce more type warnings.  It uses the result type iff it's
+-      // strictly narrower than the declared var type.
+-      //
+-      //boolean isVarTypeBetter = isVarDeclaration &&
+-      //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+-      //     || !resultType.isSubtype(varType));
+-
+-
++      // Add type check before redeclareSimpleVar to avoid null varType
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++      // Defensive type check and set type appropriately
++      if (isVarDeclaration || leftType == null) {
++        left.setJSType(resultType);
++      } else {
++        left.setJSType(null);
++      }
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+-        var.setType(oldType == null ?
+-            resultType : oldType.getLeastSupertype(resultType));
++        // Defensive null checks on oldType and resultType before getLeastSupertype
++        if (oldType == null) {
++          var.setType(resultType);
++        } else if (resultType != null) {
++          var.setType(oldType.getLeastSupertype(resultType));
++        }
+       }
+       break;
+     case Token.GETPROP:
+@@ -59,5 +58,9 @@
+       left.setJSType(resultType);
+       ensurePropertyDefined(left, resultType);
+       break;
++    default:
++      // No action for other types
++      break;
+   }
+ }
++

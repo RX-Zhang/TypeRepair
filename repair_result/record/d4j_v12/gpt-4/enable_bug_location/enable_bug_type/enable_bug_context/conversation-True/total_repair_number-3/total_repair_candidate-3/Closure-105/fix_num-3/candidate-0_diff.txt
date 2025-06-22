@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -83,7 +83,10 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      // Rebuild the join call node to reflect the updated children.
++      parent.replaceChild(n, left);
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

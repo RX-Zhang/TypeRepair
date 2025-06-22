@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testNumericKeys
+- Error: junit.framework.ComparisonFailure: expected:<var x={["010"]:1}> but was:<var x={[10]:1}>
+- Location:     assertPrint("var x = {'010': 1};", "var x={\"010\":1}");

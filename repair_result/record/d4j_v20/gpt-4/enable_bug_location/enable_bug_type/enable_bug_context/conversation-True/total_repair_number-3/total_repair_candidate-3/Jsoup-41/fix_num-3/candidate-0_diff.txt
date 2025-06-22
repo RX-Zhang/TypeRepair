@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -5,5 +5,10 @@
+ 
+     Element element = (Element) o;
+ 
+-    return this == o;
++    // Compare tag and text content for equality
++    if (tag != null ? !tag.equals(element.tag) : element.tag != null) return false;
++    String thisText = this.text();
++    String otherText = element.text();
++    return thisText.equals(otherText);
+ }
++

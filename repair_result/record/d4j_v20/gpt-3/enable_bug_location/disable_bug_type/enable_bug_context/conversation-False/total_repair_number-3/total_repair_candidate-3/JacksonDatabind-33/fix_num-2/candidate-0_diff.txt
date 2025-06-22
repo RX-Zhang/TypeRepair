@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -5,10 +5,16 @@
+     JsonGetter jg = _findAnnotation(a, JsonGetter.class);
+     if (jg != null) {
+         name = jg.value();
++        if (name == null || name.isEmpty()) {
++            return PropertyName.USE_DEFAULT;
++        }
+     } else {
+         JsonProperty pann = _findAnnotation(a, JsonProperty.class);
+         if (pann != null) {
+             name = pann.value();
++            if (name == null || name.isEmpty()) {
++                return PropertyName.USE_DEFAULT;
++            }
+             /* 22-Apr-2014, tatu: Should figure out a better way to do this, but
+              *   it's actually bit tricky to do it more efficiently (meta-annotations
+              *   add more lookups; AnnotationMap costs etc)
+@@ -23,3 +29,4 @@
+     }
+     return PropertyName.construct(name);
+ }
++

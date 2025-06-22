@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -16,8 +16,8 @@
+         if (ZipArchiveInputStream.matches(signature, signatureLength)) {
+             return new ZipArchiveInputStream(in);
+         } else if (JarArchiveInputStream.matches(signature, signatureLength)) {
+-            return new JarArchiveInputStream(in);
+-        } else if (ArArchiveInputStream.matches(signature, signatureLength)) {
++ return new JarArchiveInputStream(in);
++        } else ifArArchiveInputStream.matches(signature, signatureLength)) {
+             return new ArArchiveInputStream(in);
+         } else if (CpioArchiveInputStream.matches(signature, signatureLength)) {
+             return new CpioArchiveInputStream(in);
+@@ -43,16 +43,18 @@
+         // COMPRESS-117 - improve auto-recognition
+         try {
+             TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader));
+-            tais.getNextEntry();
+-            return new TarArchiveInputStream(in);
++            if (tais.getNextEntry() != null) {
++                return new TarArchiveInputStream(in);
++            }
+         } catch (Exception e) { // NOPMD
+-            // can generate IllegalArgumentException as well as IOException
++            // can IllegalArgumentException as well as IOException
+             // autodetection, simply not a TAR
+             // ignored
+         }
+-    } catch (IOException e) {
++ } catch (IOException e) {
+         throw new ArchiveException("Could not use reset and mark operations.", e);
+     }
+ 
+     throw new ArchiveException("No Archiver found for the stream signature");
+ }
++

@@ -1,0 +1,38 @@
+public double solve(double min, double max) throws MaxIterationsExceededException, 
+    FunctionEvaluationException {
+    
+    clearResult();
+    
+    // Input validation for min and max
+    if (min >= max) {
+        throw new IllegalArgumentException("Invalid interval. Min must be less than max." +
+                "  Min: " + min + "  Max: " + max);
+    }
+    
+    double ret = Double.NaN;
+    
+    double yMin = f.value(min);
+    double yMax = f.value(max);
+    
+    // Verify bracketing
+    double sign = yMin * yMax;
+    if (sign >= 0) {
+        // check if either value is close to a zero
+        if (Math.abs(yMin) <= functionValueAccuracy || Math.abs(yMax) <= functionValueAccuracy) {
+            // Either endpoint is close to zero
+            ret = (Math.abs(yMin) <= functionValueAccuracy) ? min : max;
+        } else {
+            // neither value is close to zero and min and max do not bracket root.
+            throw new IllegalArgumentException
+            ("Function values at endpoints do not have different signs." +
+                    "  Endpoints: [" + min + "," + max + "]" + 
+                    "  Values: [" + yMin + "," + yMax + "]");
+        }
+    } else {
+        // solve using only the first endpoint as initial guess
+        ret = solve(min, yMin, max, yMax, min, yMin);
+        // either min or max is a root
+    }
+
+    return ret;
+}

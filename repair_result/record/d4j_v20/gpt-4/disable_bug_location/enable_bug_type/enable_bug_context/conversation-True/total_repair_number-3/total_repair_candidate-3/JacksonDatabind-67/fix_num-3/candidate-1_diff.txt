@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -21,12 +21,11 @@
+         deser = StdKeyDeserializers.findStringBasedKeyDeserializer(config, type);
+     }
+     // and then post-processing
+-    if (deser != null) {
+-        if (_factoryConfig.hasDeserializerModifiers()) {
+-            for (BeanDeserializerModifier mod : _factoryConfig.deserializerModifiers()) {
+-                deser = mod.modifyKeyDeserializer(config, type, deser);
+-            }
++    if (deser != null && _factoryConfig.hasDeserializerModifiers()) {
++        for (BeanDeserializerModifier mod : _factoryConfig.deserializerModifiers()) {
++            deser = mod.modifyKeyDeserializer(config, type, deser);
+         }
+     }
+     return deser;
+ }
++

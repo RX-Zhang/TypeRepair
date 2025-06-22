@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.OptionBuilderTest.testBuilderIsResettedAlways
+- Error: junit.framework.AssertionFailedError: we inherited a description
+- Location:         assertNull("we inherited a description", OptionBuilder.create('x').getDescription());

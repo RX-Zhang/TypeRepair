@@ -1,0 +1,1 @@
+{"ClassName": "FormElement", "Fields": ["private final Elements elements;"], "Methods": ["public Elements elements() { ... }", "public FormElement addElement(Element element) { ... }", "public Connection submit() { ... }", "public List formData() { ... }", "public boolean equals(Object o) { ... }"]}

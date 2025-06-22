@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ protected Object deserializeUsingPropertyBasedWithUnwrapped(JsonParser p,
+-		DeserializationContext ctxt)
++        DeserializationContext ctxt)
+     throws IOException, JsonProcessingException
+ {
+     final PropertyBasedCreator creator = _propertyBasedCreator;
+@@ -24,10 +24,12 @@
+                     wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+                     continue;
+                 }
++                // After building the bean, process all remaining fields as unwrapped tokens
+                 while (t == JsonToken.FIELD_NAME) {
+-                    p.nextToken();
++                    String fieldName = p.getCurrentName();
++                    t = p.nextToken();
++                    tokens.writeFieldName(fieldName);
+                     tokens.copyCurrentStructure(p);
+-                    t = p.nextToken();
+                 }
+                 tokens.writeEndObject();
+                 if (bean.getClass() != _beanType.getRawClass()) {
+@@ -68,5 +70,7 @@
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

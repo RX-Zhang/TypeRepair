@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -48,7 +48,11 @@
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
+         }
++        if (deser == null) {
++            return null;
++        }
+         _deserializers.put(typeId, deser);
+     }
+     return deser;
+ }
++

@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -6,7 +6,14 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharacter = getQuoteCharacter();
++    // If quoteCharacter is null, do not quote
++    if (quoteCharacter == null) {
++        // Just output without quotes
++        out.append(value, start, end);
++        return;
++    }
++    final char quoteChar = quoteCharacter.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +43,11 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // Refine the condition here to better match the original intent of excluding '€' (euro sign)
++            // Do not quote if the first character is the Euro sign
++            if (newRecord && c == '\u20AC') { // Euro symbol
++                quote = false;
++            } else if (newRecord && (c < 0x20 || (c > 0x21 && c < 0x23) || (c > 0x2B && c < 0x2D) || c > 0x7E)) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -53,7 +64,7 @@
+                     pos++;
+                 }
+ 
+-                if (!quote) {
++                if (!quote && pos > offset) {
+                     pos = end - 1;
+                     c = value.charAt(pos);
+                     // Some other chars at the end caused the parser to fail, so for now
+@@ -86,6 +97,7 @@
+ 
+     // Pick up where we left off: pos should be positioned on the first character that caused
+     // the need for encapsulation.
++    pos = offset;
+     while (pos < end) {
+         final char c = value.charAt(pos);
+         if (c == quoteChar) {
+@@ -104,3 +116,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

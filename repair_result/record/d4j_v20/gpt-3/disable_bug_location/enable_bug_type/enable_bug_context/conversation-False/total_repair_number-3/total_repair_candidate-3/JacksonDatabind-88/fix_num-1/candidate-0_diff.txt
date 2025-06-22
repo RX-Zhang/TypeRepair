@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -30,5 +30,17 @@
+     } catch (Exception e) {
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
++    
++    // Ensure that _baseType is not null before using it
++    if (_baseType == null) {
++        throw new IllegalArgumentException("Base type cannot be null");
++    }
++    
++    // Ensure cls is not null before constructing specialized type
++    if (cls == null) {
++        throw new IllegalArgumentException("Class cannot be null for id: " + id);
++    }
++    
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

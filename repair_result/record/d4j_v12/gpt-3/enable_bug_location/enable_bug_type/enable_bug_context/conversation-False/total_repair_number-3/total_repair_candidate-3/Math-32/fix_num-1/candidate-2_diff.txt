@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -4,7 +4,15 @@
+ 
+     if (v.length == 0) {
+         final BSPTree<Euclidean2D> tree = getTree(false);
+-        if ((Boolean) tree.getAttribute()) {
++        Object attribute = tree.getAttribute();
++        boolean coversWholeSpace = false;
++        
++        // Check if the attribute is of type Boolean
++        if (attribute instanceof Boolean) {
++            coversWholeSpace = (Boolean) attribute;
++        }
++
++        if (coversWholeSpace) {
+             // the instance covers the whole space
+             setSize(Double.POSITIVE_INFINITY);
+             setBarycenter(Vector2D.NaN);
+@@ -50,3 +58,4 @@
+     }
+ 
+ }
++

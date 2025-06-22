@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -23,6 +23,7 @@
+     // and then post-processing
+     if (deser != null) {
+         if (_factoryConfig.hasDeserializerModifiers()) {
++            BeanDescription beanDesc = config.introspectClassAnnotations(type.getRawClass());
+             for (BeanDeserializerModifier mod : _factoryConfig.deserializerModifiers()) {
+                 deser = mod.modifyKeyDeserializer(config, type, deser);
+             }
+@@ -30,3 +31,4 @@
+     }
+     return deser;
+ }
++

@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -28,7 +28,7 @@
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+         float labelx = (float) dataArea.getCenterX();
+-        float labely = (float) (state.getCursor() - insets.getBottom() 
++        float labely = (float) (state.getCursor() - insets.getTop() 
+                 - h / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+                 TextAnchor.CENTER, getLabelAngle(), TextAnchor.CENTER);
+@@ -46,7 +46,7 @@
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+         float labelx = (float) dataArea.getCenterX();
+-        float labely = (float) (state.getCursor() + insets.getTop() 
++        float labely = (float) (state.getCursor() + insets.getBottom() 
+                 + h / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+                 TextAnchor.CENTER, getLabelAngle(), TextAnchor.CENTER);
+@@ -63,7 +63,7 @@
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+-        float labelx = (float) (state.getCursor() - insets.getRight() 
++        float labelx = (float) (state.getCursor() - insets.getLeft() 
+                 - w / 2.0);
+         float labely = (float) dataArea.getCenterY();
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+@@ -84,7 +84,7 @@
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+         float labelx = (float) (state.getCursor() 
+-                        + insets.getLeft() + w / 2.0);
++                        + insets.getRight() + w / 2.0);
+         float labely = (float) (dataArea.getY() + dataArea.getHeight() 
+                 / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+@@ -107,3 +107,4 @@
+     return state;
+ 
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -110,6 +110,7 @@
+         NodeTraversal.traverse(this, n, sia);
+       }
+ 
++      // Add the parsed node to the correct root block.
+       jsRoot.addChildToBack(n);
+     }
+ 
+@@ -121,3 +122,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

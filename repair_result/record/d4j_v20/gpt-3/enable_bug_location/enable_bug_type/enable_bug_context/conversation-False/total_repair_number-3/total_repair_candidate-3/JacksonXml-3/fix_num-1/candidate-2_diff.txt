@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -58,8 +58,9 @@
+             _mayBeLeaf = false;
+             _nextToken = JsonToken.FIELD_NAME;
+             _currText = _xmlTokens.getText();
+-            _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+-            _currToken = JsonToken.START_OBJECT;
++            // FIX: Do NOT create child context here; just update current token to FIELD_NAME
++            // The original code created a child context and set START_OBJECT which caused issues
++            _currToken = JsonToken.FIELD_NAME;
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
+@@ -91,3 +92,4 @@
+     }
+     return null;
+ }
++

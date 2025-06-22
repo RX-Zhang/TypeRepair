@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -1,5 +1,9 @@
+ public int compareTo(Fraction object) {
+-    double nOd = doubleValue();
+-    double dOn = object.doubleValue();
+-    return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);
++    if (object == null) {
++        throw new NullPointerException("The fraction to compare must not be null");
++    }
++    int num1 = this.numerator * object.denominator;
++    int num2 = object.numerator * this.denominator;
++    return Integer.compare(num1, num2);
+ }
++

@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -41,14 +41,24 @@
+             return new TarArchiveInputStream(in);
+         }
+         // COMPRESS-117 - improve auto-recognition
++        TarArchiveInputStream tais = null;
+         try {
+-            TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader));
+-            tais.getNextEntry();
+-            return new TarArchiveInputStream(in);
++            tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader, 0, signatureLength));
++            if (tais.getNextEntry() != null) {
++                return new TarArchiveInputStream(in);
++            }
+         } catch (Exception e) { // NOPMD
+             // can generate IllegalArgumentException as well as IOException
+             // autodetection, simply not a TAR
+             // ignored
++        } finally {
++            if (tais != null) {
++                try {
++                    tais.close();
++                } catch (IOException ignored) {
++                    // Ignore
++                }
++            }
+         }
+     } catch (IOException e) {
+         throw new ArchiveException("Could not use reset and mark operations.", e);
+@@ -56,3 +66,4 @@
+ 
+     throw new ArchiveException("No Archiver found for the stream signature");
+ }
++

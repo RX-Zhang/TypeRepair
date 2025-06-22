@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -7,11 +7,14 @@
+   }
+ 
+   for (int i = 1; i < length; i++) {
+-    if (
+-        !Character.isJavaIdentifierPart(s.charAt(i))) {
++    char currentChar = s.charAt(i);
++    // Check if the character is a valid JavaScript identifier part
++    if (!Character.isJavaIdentifierPart(currentChar) || 
++        Character.isISOControl(currentChar)) {
+       return false;
+     }
+   }
+ 
+   return true;
+ }
++

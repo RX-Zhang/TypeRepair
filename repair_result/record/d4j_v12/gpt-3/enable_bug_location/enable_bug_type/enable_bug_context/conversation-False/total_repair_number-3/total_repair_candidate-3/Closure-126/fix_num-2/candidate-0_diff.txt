@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -2,6 +2,10 @@
+ 
+   // Just an 'exit'.
+   if (matchingExitNode(n, exitType, labelName)) {
++    // Don't remove exit nodes inside finally blocks.
++    if (NodeUtil.isFinallyBlock(n.getParent())) {
++      return;
++    }
+     NodeUtil.removeChild(n.getParent(), n);
+     compiler.reportCodeChange();
+     return;
+@@ -34,8 +38,12 @@
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Do NOT minimize exits inside finally block.
++      // This is important to preserve control flow with break/return inside finally.
++      // So we skip processing the finally block entirely here.
++      // Node finallyBlock = n.getLastChild();
++      // tryMinimizeExits(finallyBlock, exitType, labelName);
++      return;
+     }
+   }
+ 
+@@ -94,3 +102,4 @@
+     }
+   }
+ }
++

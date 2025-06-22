@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -19,20 +19,43 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            // handle --foo=bar or -f=bar
++            int equalsPos = arg.indexOf('=');
++            if (equalsPos != -1)
++            {
++                String optName = arg.substring(0, equalsPos);
++                String optValue = arg.substring(equalsPos + 1);
++                String strippedOpt = Util.stripLeadingHyphens(optName);
+ 
+-            if (options.hasOption(opt))
+-            {
+-                tokens.add(arg);
++                if (options.hasOption(strippedOpt))
++                {
++                    tokens.add(optName);
++                    tokens.add(optValue);
++                }
++                else if (options.hasOption(optName))
++                {
++                    tokens.add(optName);
++                    tokens.add(optValue);
++                }
++                else
++                {
++                    eatTheRest = stopAtNonOption;
++                    tokens.add(arg);
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
++                    tokens.add(arg);
++                }
++                else if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
++                {
+                     // the format is a special properties option (-Dproperty=value)
+                     tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg.substring(2));    // property=value
+                 }
+                 else
+                 {
+@@ -57,3 +80,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

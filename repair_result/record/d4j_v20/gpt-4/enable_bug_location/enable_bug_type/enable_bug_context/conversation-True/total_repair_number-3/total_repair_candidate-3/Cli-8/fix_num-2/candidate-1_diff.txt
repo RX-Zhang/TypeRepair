@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -15,18 +15,35 @@
+     // characters
+     final String padding = createPadding(nextLineTabStop);
+ 
++    int offset = pos;
++    int textLen = text.length();
++
+     while (true)
+     {
+-        text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, nextLineTabStop);
++        // skip whitespace at the offset position
++        while (offset < textLen && Character.isWhitespace(text.charAt(offset))) 
++        {
++            offset++;
++        }
++
++        if (offset >= textLen)
++        {
++            return sb;
++        }
++
++        String line = padding + text.substring(offset);
++        pos = findWrapPos(line, width, nextLineTabStop);
+ 
+         if (pos == -1)
+         {
+-            sb.append(text);
++            sb.append(line);
+ 
+             return sb;
+         }
+ 
+-        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        sb.append(rtrim(line.substring(0, pos))).append(defaultNewLine);
++
++        offset += pos - nextLineTabStop;
+     }
+ }
++

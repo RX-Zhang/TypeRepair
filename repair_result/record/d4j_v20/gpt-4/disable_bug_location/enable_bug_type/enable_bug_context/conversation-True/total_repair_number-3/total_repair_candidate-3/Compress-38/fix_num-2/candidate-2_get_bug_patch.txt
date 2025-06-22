@@ -1,0 +1,20 @@
+public boolean isDirectory() {
+    if (file != null) {
+        return file.isDirectory();
+    }
+
+    // Check if this entry is a Pax header to avoid parsing errors
+    if (isPaxHeader()) {
+        return false;
+    }
+
+    if (linkFlag == LF_DIR) {
+        return true;
+    }
+
+    if (getName() != null && getName().endsWith("/")) {
+        return true;
+    }
+
+    return false;
+}

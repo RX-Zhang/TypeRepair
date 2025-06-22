@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+         return x[1];
+     }
+ 
+-    // evaluate first  endpoint
++    // evaluate first endpoint
+     y[0] = computeObjectiveValue(x[0]);
+     if (Precision.equals(y[0], 0.0, 1)) {
+         // return the first endpoint if it is a perfect root.
+@@ -62,8 +62,14 @@
+     double absYB = FastMath.abs(yB);
+     int agingB   = 0;
+ 
++    int evaluations = getMaxEvaluations();
++
+     // search loop
+     while (true) {
++        if (evaluations <= 0) {
++            throw new TooManyEvaluationsException(maximalOrder);
++        }
++        evaluations--;
+ 
+         // check convergence of bracketing interval
+         final double xTol = getAbsoluteAccuracy() +
+@@ -201,3 +207,4 @@
+     }
+ 
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -103,8 +103,8 @@
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                     //    expose as empty Object, not null (or, worse, as used to
+                     //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
+-                    _parsingContext = _parsingContext.getParent();
++                    _currToken = JsonToken.START_OBJECT;
++                    _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+                     _namesToWrap = _parsingContext.getNamesToWrap();
+                     return _currToken;
+                 }
+@@ -132,3 +132,4 @@
+     _throwInternal();
+     return null;
+ }
++

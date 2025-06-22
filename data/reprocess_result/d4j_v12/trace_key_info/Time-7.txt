@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseInto_monthDay_feb29_newYork_startOfYear
+- Error: org.joda.time.IllegalFieldValueException: Cannot parse "2 29": Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         assertEquals(4, f.parseInto(result, "2 29", 0));
+
+
+Test failure 2:
+- Test: org.joda.time.format.TestDateTimeFormatter.testParseInto_monthDay_feb29_tokyo_endOfYear
+- Error: org.joda.time.IllegalFieldValueException: Cannot parse "2 29": Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         assertEquals(4, f.parseInto(result, "2 29", 0));

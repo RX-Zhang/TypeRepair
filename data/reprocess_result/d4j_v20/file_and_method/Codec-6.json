@@ -1,0 +1,1 @@
+{"ClassName": "Base64InputStream", "Fields": ["private final boolean doEncode;", "private final Base64 base64;", "private final byte[] singleByte;"], "Methods": ["public int read() { ... }", "public int read(byte[] b, int offset, int len) { ... }", "public boolean markSupported() { ... }"]}

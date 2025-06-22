@@ -1,0 +1,1 @@
+['getNextTarEntry', 'skipRecordPadding', 'consumeRemainderOfLastBlock']

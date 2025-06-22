@@ -1,0 +1,50 @@
+Test failure 1:
+- Test: org.mockito.internal.util.reflection.GenericMasterTest.shouldDealWithNestedGenerics
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location:         assertEquals(Set.class, m.getGenericType(field("nested")));
+
+
+Test failure 2:
+- Test: org.mockitousage.annotation.CaptorAnnotationBasicTest.shouldUseAnnotatedCaptor
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 3:
+- Test: org.mockitousage.annotation.CaptorAnnotationBasicTest.shouldUseCaptorInOrdinaryWay
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 4:
+- Test: org.mockitousage.annotation.CaptorAnnotationBasicTest.shouldCaptureGenericList
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 5:
+- Test: org.mockitousage.annotation.CaptorAnnotationBasicTest.shouldUseGenericlessAnnotatedCaptor
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 6:
+- Test: org.mockitousage.annotation.CaptorAnnotationTest.shouldScreamWhenWrongTypeForCaptor
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 7:
+- Test: org.mockitousage.annotation.CaptorAnnotationTest.testNormalUsage
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 8:
+- Test: org.mockitousage.annotation.CaptorAnnotationTest.shouldScreamWhenMoreThanOneMockitoAnnotaton
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 9:
+- Test: org.mockitousage.annotation.CaptorAnnotationTest.shouldScreamWhenInitializingCaptorsForNullClass
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location
+
+Test failure 10:
+- Test: org.mockitousage.annotation.CaptorAnnotationTest.shouldLookForAnnotatedCaptorsInSuperClasses
+- Error: java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl cannot be cast to java.lang.Class
+- Location: Unknown location

@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -66,7 +66,7 @@
+           default:
+             if (NodeUtil.isAssignmentOp(parent) &&
+                 parent.getFirstChild() == n) {
+-              isSet = true;
++             Set = true;
+               type = Name.Type.OTHER;
+             }
+         }
+@@ -74,10 +74,9 @@
+       name = n.getString();
+       break;
+     case Token.GETPROP:
+-      // This may be a namespaced name get or set.
+-      if (parent != null) {
+-        switch (parent.getType()) {
+-          case Token.ASSIGN:
++      // This may be a names name get or set.
++      if (parent != null)        switch (parent.getType()) {
++          case Token.AIGN:
+             if (parent.getFirstChild() == n) {
+               isSet = true;
+               type = getValueType(n.getNext());
+@@ -110,6 +109,12 @@
+ 
+   // We are only interested in global names.
+   if (!isGlobalNameReference(name, scope)) {
++    // Fix for the bug: If the node is a catch parameter, consider it defined.
++    // Catch parameters introduce local variable names, so we should not warn on them.
++    if (parent != null && parent.isCatch()) {
++      // No action needed, catch block parameter is valid and defined
++      return;
++    }
+     return;
+   }
+ 
+@@ -123,3 +128,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

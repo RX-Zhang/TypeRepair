@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -193,7 +193,7 @@
+                 oldRes    = tmpVec;
+             }
+             if (checker==null) {
+-            	if (((Math.abs(actRed) <= costRelativeTolerance) &&
++                if (((Math.abs(actRed) <= costRelativeTolerance) &&
+                     (preRed <= costRelativeTolerance) &&
+                     (ratio <= 2.0)) ||
+                    (delta <= parRelativeTolerance * xNorm)) {
+@@ -222,3 +222,4 @@
+     }
+ 
+ }
++

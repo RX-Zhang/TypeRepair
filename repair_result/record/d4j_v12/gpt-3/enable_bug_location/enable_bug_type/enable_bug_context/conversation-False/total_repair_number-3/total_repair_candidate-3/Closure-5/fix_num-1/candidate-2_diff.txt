@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -89,7 +89,6 @@
+       }
+     }
+ 
+-
+     // We have found an acceptable object literal assignment. As
+     // long as there are no other assignments that mess things up,
+     // we can inline.
+@@ -97,3 +96,4 @@
+   }
+   return ret;
+ }
++

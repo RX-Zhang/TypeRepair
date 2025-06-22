@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -29,11 +29,34 @@
+         final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
++            simplex = simplex; // Accept contracted simplex by assigning current simplex
++
++            // check convergence
++            return;
++        }
++
++        // If neither reflection nor contraction improved the simplex,
++        // perform a shrink step to try to improve
++        final RealPointValuePair[] shrunkenSimplex = new RealPointValuePair[simplex.length];
++        final double[] xBest = simplex[0].getPointRef();
++        shrunkenSimplex[0] = simplex[0];
++        for (int i = 1; i < simplex.length; ++i) {
++            final double[] x = simplex[i].getPointRef();
++            final double[] xNew = new double[x.length];
++            for (int j = 0; j < x.length; ++j) {
++                xNew[j] = xBest[j] + gamma * (x[j] - xBest[j]);
++            }
++            shrunkenSimplex[i] = new RealPointValuePair(xNew, Double.NaN, false);
++        }
++        simplex = shrunkenSimplex;
++
++        // Evaluate the shrunken simplex
++        evaluateSimplex(comparator);
+ 
+         // check convergence
+-            return;
+-        }
++        return;
+ 
+     }
+ 
+ }
++

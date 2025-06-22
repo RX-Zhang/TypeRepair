@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -12,7 +12,7 @@
+                 +_class.getName());
+     }
+     */
+-    // 15-Jan-2015, tatu: Not correct; should really re-resolve...
+-    return new SimpleType(subclass, _bindings, _superClass, _superInterfaces,
+-            _valueHandler, _typeHandler, _asStatic);
++    // Use the construct method to create SimpleType with sanity checks
++    return SimpleType.construct(subclass);
+ }
++

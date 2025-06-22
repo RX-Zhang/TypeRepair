@@ -1,0 +1,1 @@
+['isImmutableValue', 'isLiteralValue', 'mayHaveSideEffects', 'functionCallHasSideEffects', 'isNumericResult', 'isBooleanResult']

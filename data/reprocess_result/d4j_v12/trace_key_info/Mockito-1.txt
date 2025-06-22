@@ -1,0 +1,154 @@
+Test failure 1:
+- Test: org.mockito.internal.invocation.InvocationMatcherTest.should_capture_arguments_when_args_count_does_NOT_match
+- Error: java.lang.UnsupportedOperationException
+- Location:         invocationMatcher.captureArgumentsFrom(invocation);
+
+
+Test failure 2:
+- Test: org.mockito.internal.util.reflection.FieldInitializerTest.can_instantiate_class_with_parameterized_constructor
+- Error: java.lang.UnsupportedOperationException
+- Location:         new FieldInitializer(this, field("noDefaultConstructor"), resolver).initialize();
+
+
+Test failure 3:
+- Test: org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest.should_report_failure_if_constructor_throws_exception
+- Error: java.lang.UnsupportedOperationException
+- Location:             new ParameterizedConstructorInstantiator(this, field("withThrowingConstructor"), resolver).instantiate();
+
+
+Test failure 4:
+- Test: org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest.should_fail_if_an_argument_instance_type_do_not_match_wanted_type
+- Error: java.lang.UnsupportedOperationException
+- Location:             new ParameterizedConstructorInstantiator(this, field("withMultipleConstructor"), resolver).instantiate();
+
+
+Test failure 5:
+- Test: org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest.should_instantiate_type_with_vararg_constructor
+- Error: java.lang.UnsupportedOperationException
+- Location:         new ParameterizedConstructorInstantiator(this, field("withVarargConstructor"), resolver).instantiate();
+
+
+Test failure 6:
+- Test: org.mockito.internal.util.reflection.ParameterizedConstructorInstantiatorTest.should_instantiate_type_if_resolver_provide_matching_types
+- Error: java.lang.UnsupportedOperationException
+- Location:         new ParameterizedConstructorInstantiator(this, field("withMultipleConstructor"), resolver).instantiate();
+
+
+Test failure 7:
+- Test: org.mockitousage.basicapi.ResetTest.shouldRemoveAllStubbing
+- Error: java.lang.UnsupportedOperationException
+- Location:         when(mock.objectReturningMethod(200)).thenReturn(200);
+
+
+Test failure 8:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldVerifyWithNullVarArgArray
+- Error: java.lang.UnsupportedOperationException
+- Location:         Mockito.verify(foo).varArgs((String[]) Mockito.anyObject());
+
+
+Test failure 9:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldVerifyWithAnyObject
+- Error: java.lang.UnsupportedOperationException
+- Location:         Mockito.verify(foo).varArgs((String[]) Mockito.anyObject());
+
+
+Test failure 10:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldStubBooleanVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         assertEquals(true, mock.withBooleanVarargs(1));
+
+
+Test failure 11:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldMatchEasilyEmptyVararg
+- Error: java.lang.UnsupportedOperationException
+- Location:         assertEquals(-1, mock.foo());
+
+
+Test failure 12:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldVerifyBooleanVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         verify(mock).withBooleanVarargs(1);
+
+
+Test failure 13:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldStubCorrectlyWhenMixedVarargsUsed
+- Error: java.lang.UnsupportedOperationException
+- Location:         String result = mixedVarargs.doSomething("hello",(String[]) null);
+
+
+Test failure 14:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldStubStringVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         assertEquals("1", mock.withStringVarargsReturningString(1));
+
+
+Test failure 15:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldStubCorrectlyWhenDoubleStringAndMixedVarargsUsed
+- Error: java.lang.UnsupportedOperationException
+- Location:         String result = mixedVarargs.doSomething("one", "two", (String[])null);
+
+
+Test failure 16:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldVerifyStringVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         verify(mock).withStringVarargs(1);
+
+
+Test failure 17:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldVerifyObjectVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         verify(mock).withObjectVarargs(1);
+
+
+Test failure 18:
+- Test: org.mockitousage.bugs.VarargsErrorWhenCallingRealMethodTest.shouldNotThrowAnyException
+- Error: java.lang.UnsupportedOperationException
+- Location:         assertEquals(1, foo.blah("foo", "bar"));
+
+
+Test failure 19:
+- Test: org.mockitousage.bugs.varargs.VarargsAndAnyObjectPicksUpExtraInvocationsTest.shouldVerifyCorrectlyWithAnyVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         verify(table, times(2)).newRow(anyString(), (String[]) anyVararg());
+
+
+Test failure 20:
+- Test: org.mockitousage.bugs.varargs.VarargsAndAnyObjectPicksUpExtraInvocationsTest.shouldVerifyCorrectlyNumberOfInvocationsUsingAnyVarargAndEqualArgument
+- Error: java.lang.UnsupportedOperationException
+- Location:         verify(table, times(2)).newRow(eq("x"), (String[]) anyVararg());
+
+
+Test failure 21:
+- Test: org.mockitousage.bugs.varargs.VarargsNotPlayingWithAnyObjectTest.shouldStubUsingAnyVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         assertEquals("foo", mock.run("a", "b"));
+
+
+Test failure 22:
+- Test: org.mockitousage.matchers.VerificationAndStubbingUsingMatchersTest.shouldVerifyUsingMatchers
+- Error: java.lang.UnsupportedOperationException
+- Location:         assertEquals("stubbed", three.varargsObject(5, "first arg", "second arg"));
+
+
+Test failure 23:
+- Test: org.mockitousage.stubbing.BasicStubbingTest.test_stub_only_not_verifiable
+- Error: java.lang.UnsupportedOperationException
+- Location:         when(localMock.objectReturningMethod(200)).thenReturn(200);
+
+
+Test failure 24:
+- Test: org.mockitousage.stubbing.BasicStubbingTest.should_evaluate_latest_stubbing_first
+- Error: java.lang.UnsupportedOperationException
+- Location:         when(mock.objectReturningMethod(200)).thenReturn(200);
+
+
+Test failure 25:
+- Test: org.mockitousage.stubbing.DeprecatedStubbingTest.shouldEvaluateLatestStubbingFirst
+- Error: java.lang.UnsupportedOperationException
+- Location:         stub(mock.objectReturningMethod(200)).toReturn(200);
+
+
+Test failure 26:
+- Test: org.mockitousage.verification.VerificationInOrderMixedWithOrdiraryVerificationTest.shouldUseEqualsToVerifyMethodVarargs
+- Error: java.lang.UnsupportedOperationException
+- Location:         verify(mockOne, times(2)).varargsObject(1, textOne, textOne);

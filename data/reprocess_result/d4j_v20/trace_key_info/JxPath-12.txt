@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.jxpath.ri.model.ExternalXMLNamespaceTest.testElementDOM
+- Error: org.apache.commons.jxpath.JXPathNotFoundException: No value for xpath: /ElementA/B:ElementB
+- Location:         doTestElement(DocumentContainer.MODEL_DOM);

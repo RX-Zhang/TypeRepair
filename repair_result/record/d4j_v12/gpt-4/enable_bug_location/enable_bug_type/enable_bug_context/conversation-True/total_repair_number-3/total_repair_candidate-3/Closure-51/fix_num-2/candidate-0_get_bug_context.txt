@@ -1,0 +1,1 @@
+['getLastChar', 'add', 'addNumber']

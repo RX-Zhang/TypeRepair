@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -16,14 +16,11 @@
+              */
+             if (am != null) {
+                 _addMixUnders(m, am);
+-                /* Otherwise will have precedence, but must wait
+-                 * until we find the real method (mixIn methods are
+-                 * just placeholder, can't be called)
+-                 */
+             } else {
+                 // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
++                mixIns.add(_constructMethod(m));
+             }
+         }
+     }
+ }
++

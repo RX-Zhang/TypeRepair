@@ -1,0 +1,9 @@
+public static String encodeBase64String(byte[] binaryData) {
+    byte[] encoded = encodeBase64(binaryData, true);
+    // Remove any trailing line separator if present (CRLF or LF)
+    int len = encoded.length;
+    while (len > 0 && (encoded[len - 1] == '\n' || encoded[len - 1] == '\r')) {
+        len--;
+    }
+    return StringUtils.newStringUtf8(len == encoded.length ? encoded : java.util.Arrays.copyOf(encoded, len));
+}

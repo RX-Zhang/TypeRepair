@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.zip.UTF8ZipFilesTest.testReadWinZipArchive
+- Error: junit.framework.AssertionFailedError: InputStream is null
+- Location:             assertCanRead(zf, EURO_FOR_DOLLAR_TXT);

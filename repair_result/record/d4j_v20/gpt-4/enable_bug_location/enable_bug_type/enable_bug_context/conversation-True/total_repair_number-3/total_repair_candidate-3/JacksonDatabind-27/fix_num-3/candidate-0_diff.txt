@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+             // first: let's check to see if this might be part of value with external type id:
+             // 11-Sep-2015, tatu: Important; do NOT pass buffer as last arg, but null,
+             //   since it is not the bean
+-            if (ext.handlePropertyValue(p, ctxt, propName, buffer)) {
++            if (ext.handlePropertyValue(p, ctxt, propName, null)) {
+                 ;
+             } else {
+                 // Last creator property to set?
+@@ -38,7 +38,7 @@
+                         t = p.nextToken();
+                     }
+                     if (bean.getClass() != _beanType.getRawClass()) {
+-                        // !!! 08-Jul-2011, tatu: Could theoretically support; but for now
++                        // !!! 08-Jul-2011, tatu: Could theoretically support but for now
+                         //   it's too complicated, so bail out
+                         throw ctxt.mappingException("Can not create polymorphic instances with unwrapped values");
+                     }
+@@ -82,3 +82,4 @@
+         return null; // never gets here
+     }
+ }
++

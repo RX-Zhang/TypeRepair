@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -30,10 +30,13 @@
+         trailer = buffer[end - 1];
+     }
+ 
++    boolean foundDigit = false;
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
+-            break;
++        // No embedded NULs or spaces allowed in the middle
++        if (currentByte == 0 || currentByte == ' ') {
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -41,8 +44,16 @@
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
++        foundDigit = true;
+         // CheckStyle:MagicNumber ON
++    }
++
++    if (!foundDigit) {
++        // No digits found after trimming spaces and NULs - invalid input
++        throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start-1, (byte) 0));
+     }
+ 
+     return result;
+ }
++

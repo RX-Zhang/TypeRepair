@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -3,7 +3,8 @@
+     def search_from(node):
+         if node in nodesvisited:
+             return False
+-        elif node is goalnode:
++        nodesvisited.add(node)
++        if node is goalnode:
+             return True
+         else:
+             return any(

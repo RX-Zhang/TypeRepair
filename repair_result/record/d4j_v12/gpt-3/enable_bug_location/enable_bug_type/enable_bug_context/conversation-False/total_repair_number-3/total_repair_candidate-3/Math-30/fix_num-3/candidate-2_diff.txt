@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -13,5 +13,15 @@
+ 
+     final NormalDistribution standardNormal = new NormalDistribution(0, 1);
+ 
+-    return 2 * standardNormal.cumulativeProbability(z);
++    // Use two-tailed p-value correctly:
++    // cumulativeProbability(z) gives P(Z <= z),
++    // so 2 * cumulativeProbability(z) is incorrect.
++    // The correct two-tailed p-value is 2 * min(P(Z <= z), P(Z >= z))
++    // = 2 * min(cumulativeProbability(z), 1 - cumulativeProbability(z))
++    double p = standardNormal.cumulativeProbability(z);
++    if (p > 0.5) {
++        p = 1 - p;
++    }
++    return 2 * p;
+ }
++

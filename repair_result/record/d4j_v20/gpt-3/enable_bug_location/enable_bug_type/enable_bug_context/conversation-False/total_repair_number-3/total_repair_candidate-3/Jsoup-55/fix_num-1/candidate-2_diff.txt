@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+             t.emitTagPending();
+             t.transition(Data);
+             break;
+-        case eof:
++        case '\uFFFF': // using the proper constant for end of file
+             t.eofError(this);
+             t.transition(Data);
+             break;
+@@ -15,3 +15,4 @@
+             t.transition(BeforeAttributeName);
+     }
+ }
++

@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVPrinterTest.testHeader
+- Error: junit.framework.AssertionFailedError: expected:<[C1,C2,C3
+]a,b,c
+x,y,z
+- Location:         assertEquals("C1,C2,C3\r\na,b,c\r\nx,y,z\r\n", sw.toString());

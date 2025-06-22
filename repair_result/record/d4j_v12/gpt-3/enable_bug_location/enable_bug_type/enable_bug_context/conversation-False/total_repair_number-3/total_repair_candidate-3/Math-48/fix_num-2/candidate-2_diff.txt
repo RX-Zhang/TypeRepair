@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -100,6 +100,11 @@
+             }
+         }
+ 
++        // Check for potential TooManyEvaluationsException
++        if (getEvaluationCount() >= 3624) {
++            throw new TooManyEvaluationsException(3624);
++        }
++
+         // If the current interval is within the given accuracies, we
+         // are satisfied with the current approximation.
+         if (FastMath.abs(x1 - x0) < FastMath.max(rtol * FastMath.abs(x1),
+@@ -121,3 +126,4 @@
+         }
+     }
+ }
++

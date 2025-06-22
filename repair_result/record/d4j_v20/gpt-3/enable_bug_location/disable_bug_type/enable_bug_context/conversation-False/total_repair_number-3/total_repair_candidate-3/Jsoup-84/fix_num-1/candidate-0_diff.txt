@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -6,6 +6,11 @@
+         String prefix = updateNamespaces(sourceEl);
+         String namespace = namespacesStack.peek().get(prefix);
+         String tagName = sourceEl.tagName();
++
++        // Fix: handle undeclared namespace by passing null namespace instead of empty string
++        if (namespace != null && namespace.isEmpty()) {
++            namespace = null;
++        }
+ 
+         Element el = 
+             doc.createElementNS(namespace, tagName);
+@@ -32,3 +37,4 @@
+         // unhandled
+     }
+ }
++

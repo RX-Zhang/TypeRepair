@@ -1,0 +1,1 @@
+['hasIgnoreMarker', 'findUnwrappingNameTransformer', 'findAndAddVirtualProperties', 'findNameForSerialization']

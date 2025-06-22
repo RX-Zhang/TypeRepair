@@ -1,0 +1,69 @@
+--- 
++++ 
+@@ -5,19 +5,36 @@
+         int start = index + 2;
+         boolean isHex = false;
+ 
++        // Check bounds before accessing charAt(start)
++        if (start >= seqEnd) {
++            return 0;
++        }
++
+         char firstChar = input.charAt(start);
+         if(firstChar == 'x' || firstChar == 'X') {
+             start++;
+             isHex = true;
+ 
+-            // Check there's more than just an x after the &#
++            // Check that after 'x' there is at least one more character
++            if (start >= seqEnd) {
++                return 0;
++            }
+         }
+ 
+         int end = start;
+         // Note that this supports character codes without a ; on the end
+-        while(input.charAt(end) != ';') 
+-        {
++        // We need to be careful about index out of bounds in the while loop
++        while(end < seqEnd && input.charAt(end) != ';') {
+             end++;
++        }
++
++        // If no semicolon found and we've reached the end, we handle as unfinished entity
++        if (end == seqEnd) {
++            // This allows unfinished entity (without semicolon)
++            // but do not proceed if there's no digit to parse
++            if (start == seqEnd) {
++                return 0;
++            }
+         }
+ 
+         int entityValue;
+@@ -28,7 +45,7 @@
+                 entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+             }
+         } catch(NumberFormatException nfe) {
+-        System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
++            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
+             return 0;
+         }
+ 
+@@ -40,8 +57,15 @@
+             out.write(entityValue);
+         }
+ 
+-
+-        return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++        // The length of the entity:
++        // '&' + '#' + optional 'x' + digits + optional ';'
++        // We subtract index from end for the digits count, add 2 + isHex + optional 1 for ';' if present
++        int length = 2 + (end - start) + (isHex ? 1 : 0);
++        if (end < seqEnd && input.charAt(end) == ';') {
++            length += 1;
++        }
++        return length;
+     }
+     return 0;
+ }
++

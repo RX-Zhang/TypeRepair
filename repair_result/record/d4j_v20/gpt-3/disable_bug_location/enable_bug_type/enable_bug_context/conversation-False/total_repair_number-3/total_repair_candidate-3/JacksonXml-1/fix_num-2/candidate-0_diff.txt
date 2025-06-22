@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -56,6 +56,10 @@
+         _mayBeLeaf = true;
+         // Ok: in array context we need to skip reporting field names.
+         // But what's the best way to find next token?
++        // FIX: when in array, should return START_OBJECT instead of FIELD_NAME
++        if (_parsingContext.inArray()) {
++            return (_currToken = JsonToken.START_OBJECT);
++        }
+         return (_currToken = JsonToken.FIELD_NAME);
+     }
+ 
+@@ -132,3 +136,4 @@
+     _throwInternal();
+     return null;
+ }
++

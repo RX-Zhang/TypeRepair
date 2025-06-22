@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -2,6 +2,9 @@
+   Name name = functionNode.getFunctionName();
+   Boolean isUnnamedFunction = false;
+   if (name == null) {
++    // An unnamed function statement is invalid syntax, so report an error.
++    errorReporter.error("unnamed function statement");
++    // To avoid further errors, create a dummy empty name node.
+     name = new Name();
+     name.setIdentifier("");
+     isUnnamedFunction = true;
+@@ -48,3 +51,4 @@
+   node.addChildToBack(bodyNode);
+  return node;
+ }
++

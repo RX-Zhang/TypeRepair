@@ -1,0 +1,50 @@
+--- 
++++ 
+@@ -38,8 +38,7 @@
+             return (_currToken = JsonToken.START_OBJECT);
+         }
+         if (_parsingContext.inArray()) {
+-            // Yup: in array, so this element could be verified; but it won't be
+-            // reported anyway, and we need to process following event.
++            // Yup: in array, so this element could be verified; but it won't be            // reported anyway, and we need to process following event.
+             token = _xmlTokens.next();
+             _mayBeLeaf = true;
+             continue;
+@@ -65,15 +64,17 @@
+         // Simple, except that if this is a leaf, need to suppress end:
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-                // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
++            // expose as empty Object, not null
++            _parsingContext = _parsingContext.getParent();
++            _namesToWrap = _parsingContext.getNamesToWrap();
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         return _currToken;
+-        
++
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+@@ -101,8 +102,8 @@
+             if (_parsingContext.inArray()) {
+                 if (_isEmpty(_currText)) {
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                    //    expose as empty Object, not null (or, worse, as used to
+-                    //    be done, by swallowing the token)
++                    // expose as empty Object, not null (or, worse, as used to
++                    // be done, by swallowing the token)
+                     _currToken = JsonToken.END_ARRAY;
+                     _parsingContext = _parsingContext.getParent();
+                     _namesToWrap = _parsingContext.getNamesToWrap();
+@@ -132,3 +133,4 @@
+     _throwInternal();
+     return null;
+ }
++

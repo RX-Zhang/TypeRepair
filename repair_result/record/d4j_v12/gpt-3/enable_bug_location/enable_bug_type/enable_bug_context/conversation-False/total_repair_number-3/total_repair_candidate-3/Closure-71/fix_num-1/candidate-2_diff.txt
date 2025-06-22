@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -90,5 +90,12 @@
+         }
+       }
+     }
++  } else {
++    // Handle case where objectType is null
++    compiler.report(
++        t.makeError(getprop, BAD_PRIVATE_PROPERTY_ACCESS,
++            propertyName,
++            "Cannot access property of undefined type"));
+   }
+ }
++

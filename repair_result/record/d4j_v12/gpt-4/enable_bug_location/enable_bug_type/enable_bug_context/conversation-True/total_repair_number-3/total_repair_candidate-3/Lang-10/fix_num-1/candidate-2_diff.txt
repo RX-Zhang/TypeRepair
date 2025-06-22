@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -34,8 +34,10 @@
+         case '$':
+         case '.':
+             regex.append('\\');
++            break;  // <- Added break here to fix the logic error
+         }
+         regex.append(c);
+     }
+     return regex;
+ }
++

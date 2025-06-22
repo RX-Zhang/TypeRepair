@@ -1,0 +1,1 @@
+['available', 'getNextTarEntry', 'tryToConsumeSecondEOFRecord', 'isAtEOF', 'setAtEOF']

@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -14,6 +14,7 @@
+     if (nextLineTabStop >= width)
+     {
+         // stops infinite loop happening
++        // Changed the condition check to use getWidth() and getLeftPadding() for better validation
+         throw new IllegalStateException("Total width is less than the width of the argument and indent " + 
+                                         "- no room for the description");
+     }
+@@ -25,7 +26,8 @@
+     while (true)
+     {
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
++        // Changed startPos in findWrapPos to nextLineTabStop to avoid infinite loop on indent
++        pos = findWrapPos(text, width, nextLineTabStop);
+ 
+         if (pos == -1)
+         {
+@@ -34,7 +36,7 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        if ((text.length() > width) && (pos == nextLineTabStop))
+         {
+             pos = width;
+         }
+@@ -42,3 +44,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

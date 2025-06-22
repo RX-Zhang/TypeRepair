@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.joda.time.chrono.TestGJChronology.testLeapYearRulesConstruction
+- Error: org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         DateMidnight dt = new DateMidnight(1500, 2, 29, GJChronology.getInstanceUTC());

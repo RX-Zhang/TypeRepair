@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -6,12 +6,18 @@
+     // need to ensure method is callable (for non-public)
+     AnnotatedMember mutator = propDef.getNonConstructorMutator();
+ 
++    // Prevent forced access to `cause` of Throwable as in buildThrowableDeserializer
+     if (ctxt.canOverrideAccessModifiers()) {
+-        // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;
+-        // never needed and attempts may cause problems on some platforms.
+-        // !!! NOTE: should be handled better for 2.8 and later
++        // Explicitly prevent forced access to 'cause' property of Throwable (or subclasses)
++        if (beanDesc.getBeanClass() != null
++                && Throwable.class.isAssignableFrom(beanDesc.getBeanClass())
++                && "cause".equals(propDef.getName())) {
++            // Do not attempt to override access for cause property to avoid security exceptions
++        } else {
+             mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++        }
+     }
++
+     // note: this works since we know there's exactly one argument for methods
+     BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),
+             propType0, propDef.getWrapperName(),
+@@ -48,3 +54,4 @@
+     }
+     return prop;
+ }
++

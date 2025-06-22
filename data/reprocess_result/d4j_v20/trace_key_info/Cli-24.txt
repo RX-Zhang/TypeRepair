@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.bug.BugCLI162Test.testLongLineChunkingIndentIgnored
+- Error: java.lang.IllegalStateException: Total width is less than the width of the argument and indent - no room for the description
+- Location:         formatter.printHelp(new PrintWriter(sw), 22, this.getClass().getName(), "Header", options, 0, 5, "Footer");

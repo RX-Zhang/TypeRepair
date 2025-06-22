@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -15,6 +15,26 @@
+             }
+             // but not just one
+             // 26-Oct-2012, tatu: As per [databind#94], must allow use of 'defaultImpl'
++            // As per original similar code patterns, before checking defaultType, verify token content is scalar:
++            JsonToken t = _tokens[i].firstToken();
++            if (t.isScalarValue()) { // can't be null as we never store empty buffers
++                JsonParser buffered = _tokens[i].asParser(p);
++                buffered.nextToken();
++                SettableBeanProperty extPropProp = extProp.getProperty();
++                Object result = TypeDeserializer.deserializeIfNatural(buffered, ctxt, extPropProp.getType());
++                if (result != null) {
++                    values[i] = result;
++                    // If creator property, assign it now:
++                    if (extPropProp.getCreatorIndex() >= 0) {
++                        buffer.assignParameter(extPropProp, result);
++                        SettableBeanProperty typeProp = extProp.getTypeProperty();
++                        if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
++                            buffer.assignParameter(typeProp, typeId);
++                        }
++                    }
++                    continue;
++                }
++            }
+             if (!extProp.hasDefaultType()) {
+                 ctxt.reportInputMismatch(_beanType,
+                         "Missing external type id property '%s'",
+@@ -26,8 +46,9 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
+         }
++
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+@@ -55,3 +76,4 @@
+     }
+     return bean;
+ }
++

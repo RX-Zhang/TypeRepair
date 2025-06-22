@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -2,6 +2,9 @@
+ {
+     if (_value == null) {
+         ctxt.defaultSerializeNull(gen);
++    } else if (_value instanceof ContextualSerializable) {
++        // Use SerializerProvider to respect contextual attributes during serialization
++        ((ContextualSerializable) _value).serialize(gen, ctxt, ctxt.getAttribute("myAttr"));
+     } else if (_value instanceof JsonSerializable) {
+         ((JsonSerializable) _value).serialize(gen, ctxt);
+     } else {
+@@ -10,3 +13,4 @@
+         gen.writeObject(_value);
+     }
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -4,8 +4,9 @@
+                              boolean allowStoredEntriesWithDataDescriptor) {
+     zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+     this.useUnicodeExtraFields = useUnicodeExtraFields;
+-    in = new PushbackInputStream(inputStream, buf.capacity());
+-    this.allowStoredEntriesWithDataDescriptor =
+-        allowStoredEntriesWithDataDescriptor;
++    this.allowStoredEntriesWithDataDescriptor = allowStoredEntriesWithDataDescriptor;
++    // PushbackInputStream should be created with a proper buffer size, typically BUFFER_SIZE from ZipArchiveOutputStream
++    in = new PushbackInputStream(inputStream, ZipArchiveOutputStream.BUFFER_SIZE);
+     // haven't read anything so far
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.StringUtilsEqualsIndexOfTest.testEquals
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(StringUtils.equals(fooCs, (CharSequence) new StringBuilder(FOO)));

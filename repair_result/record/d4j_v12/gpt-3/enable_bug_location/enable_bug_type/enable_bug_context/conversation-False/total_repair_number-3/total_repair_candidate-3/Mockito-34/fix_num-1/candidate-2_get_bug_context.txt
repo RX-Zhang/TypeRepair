@@ -1,0 +1,1 @@
+['getInvocation', 'getMatchers', 'matches', 'safelyArgumentsMatch', 'hasSimilarMethod', 'hasSameMethod']

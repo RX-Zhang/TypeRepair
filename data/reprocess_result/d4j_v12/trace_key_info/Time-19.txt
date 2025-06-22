@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.joda.time.TestDateTimeZoneCutover.testDateTimeCreation_london
+- Error: junit.framework.ComparisonFailure: expected:<...1-10-30T01:15:00.000[+01:00]> but was:<...1-10-30T01:15:00.000[Z]>
+- Location:         assertEquals("2011-10-30T01:15:00.000+01:00", base.toString());

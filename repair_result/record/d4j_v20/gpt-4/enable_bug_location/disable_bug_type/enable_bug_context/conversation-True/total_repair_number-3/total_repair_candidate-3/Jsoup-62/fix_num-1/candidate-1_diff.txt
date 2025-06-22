@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -4,7 +4,7 @@
+     for (int pos = stack.size() -1; pos >= 0; pos--) {
+         Element node = stack.get(pos);
+         if (node.nodeName().equals(name)) {
+-            tb.generateImpliedEndTags(name);
++            tb.generateImpliedEndTags();
+             if (!name.equals(tb.currentElement().nodeName()))
+                 tb.error(this);
+             tb.popStackToClose(name);
+@@ -18,3 +18,4 @@
+     }
+     return true;
+ }
++

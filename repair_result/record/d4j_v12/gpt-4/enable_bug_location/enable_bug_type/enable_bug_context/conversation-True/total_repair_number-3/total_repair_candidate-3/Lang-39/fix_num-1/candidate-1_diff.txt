@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -69,9 +69,11 @@
+ 
+     // count the replacement text elements that are larger than their corresponding text being replaced
+     for (int i = 0; i < searchList.length; i++) {
+-        int greater = replacementList[i].length() - searchList[i].length();
+-        if (greater > 0) {
+-            increase += 3 * greater; // assume 3 matches
++        if (replacementList[i] != null) {
++            int greater = replacementList[i].length() - (searchList[i] == null ? 0 : searchList[i].length());
++            if (greater > 0) {
++                increase += 3 * greater; // assume 3 matches
++            }
+         }
+     }
+     // have upper-bound at 20% increase, then let Java take over
+@@ -84,9 +86,12 @@
+         for (int i = start; i < textIndex; i++) {
+             buf.append(text.charAt(i));
+         }
+-        buf.append(replacementList[replaceIndex]);
++        String replacement = replacementList[replaceIndex];
++        if (replacement != null) {
++            buf.append(replacement);
++        }
+ 
+-        start = textIndex + searchList[replaceIndex].length();
++        start = textIndex + (searchList[replaceIndex] == null ? 0 : searchList[replaceIndex].length());
+ 
+         textIndex = -1;
+         replaceIndex = -1;
+@@ -125,3 +130,4 @@
+ 
+     return replaceEach(result, searchList, replacementList, repeat, timeToLive - 1);
+ }
++

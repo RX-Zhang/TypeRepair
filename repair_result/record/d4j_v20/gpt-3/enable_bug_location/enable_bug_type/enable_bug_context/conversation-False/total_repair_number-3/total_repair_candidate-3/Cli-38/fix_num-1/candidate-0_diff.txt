@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ private boolean isShortOption(String token)
+ {
+     // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-    if (!token.startsWith("-") || token.length() == 1)
++    if (!token.startsWith("-") || token.length() < 2) // Changed from length() == 1 to length() < 2
+     {
+         return false;
+     }
+@@ -12,3 +12,4 @@
+     return options.hasShortOption(optName);
+     // check for several concatenated short options
+ }
++

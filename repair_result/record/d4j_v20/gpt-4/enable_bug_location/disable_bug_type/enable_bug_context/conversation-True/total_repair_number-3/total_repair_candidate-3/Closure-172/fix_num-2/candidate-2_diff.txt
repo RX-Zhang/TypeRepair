@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -7,7 +7,12 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
+-      return false;
++    // Use getFunctionAnalysisResults to check if the prototype is actually inferred.
++    AstFunctionContents contents = getFunctionAnalysisResults(n);
++    if (contents != null && contents.getEscapedQualifiedNames().contains(qName)) {
++      return true;
++    }
++    return false;
+   }
+ 
+   boolean inferred = true;
+@@ -47,3 +52,4 @@
+   }
+   return inferred;
+ }
++

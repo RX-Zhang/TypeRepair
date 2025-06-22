@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -5,7 +5,18 @@
+       // The expression to which the assignment is made is evaluated before
+       // the RHS is evaluated (normal left to right evaluation) but the KILL
+       // occurs after the RHS is evaluated.
+-      return VariableLiveness.KILL;
++      // We must still check if the variable is read inside the RHS expression before it is overwritten.
++      // So instead of immediately returning KILL, we continue to check the RHS child node.
++      VariableLiveness rhsState = VariableLiveness.MAYBE_LIVE;
++      Node rhs = n.getParent().getLastChild();
++      if (rhs != n) { // RHS exists and is different from the LHS node itself
++        rhsState = isVariableReadBeforeKill(rhs, variable);
++      }
++      if (rhsState == VariableLiveness.READ) {
++        return VariableLiveness.READ;
++      } else {
++        return VariableLiveness.KILL;
++      }
+     } else {
+       return VariableLiveness.READ;
+     }
+@@ -23,3 +34,4 @@
+   }
+   return VariableLiveness.MAYBE_LIVE;
+ }
++

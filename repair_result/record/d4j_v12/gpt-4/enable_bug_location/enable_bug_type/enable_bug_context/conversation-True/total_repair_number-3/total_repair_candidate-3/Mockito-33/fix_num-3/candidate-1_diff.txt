@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -4,6 +4,7 @@
+     Method m1 = invocation.getMethod();
+     Method m2 = candidate.getMethod();
+     
+-    	/* Avoid unnecessary cloning */
+-    return m1.equals(m2);
++    // Use hasSimilarMethod to better handle generics and forwarding methods
++    return hasSimilarMethod(candidate) && m1.equals(m2);
+ }
++

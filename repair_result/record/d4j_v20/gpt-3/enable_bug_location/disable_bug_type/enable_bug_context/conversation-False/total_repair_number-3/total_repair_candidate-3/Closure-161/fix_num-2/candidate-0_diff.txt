@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -28,7 +28,8 @@
+   }
+ 
+   if (elem == null) {
+-    error(INDEX_OUT_OF_BOUNDS_ERROR, right);
++    // In case of out-of-bound index on an empty array literal,
++    // do not report an error and do not fold - just return original node.
+     return n;
+   }
+ 
+@@ -43,3 +44,4 @@
+   reportCodeChange();
+   return elem;
+ }
++

@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -14,15 +14,23 @@
+         return FF;
+     case CR:
+     case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
++    case FF:
++    case TAB:
++    case BACKSPACE:
+         return c;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
++    case 'N':
++        // preserve '\N' sequence as literal backslash + N for MySQL NULL representation
++        return '\\';
++    case '\\':
++        // preserve escape char if it is escaped
++        return '\\';
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // For any other escaped char, return it as is, including the escape char
++        // by returning escape char and the next char in sequence
++        // this requires a change in the calling code, but here just return c
++        return c;
+     }
+ }
++

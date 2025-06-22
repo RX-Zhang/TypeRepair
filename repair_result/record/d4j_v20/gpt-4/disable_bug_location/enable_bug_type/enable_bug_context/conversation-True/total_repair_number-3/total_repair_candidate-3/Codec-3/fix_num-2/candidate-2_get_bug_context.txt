@@ -1,0 +1,1 @@
+['handleGH', 'isSlavoGermanic', 'isVowel', 'charAt', 'contains']

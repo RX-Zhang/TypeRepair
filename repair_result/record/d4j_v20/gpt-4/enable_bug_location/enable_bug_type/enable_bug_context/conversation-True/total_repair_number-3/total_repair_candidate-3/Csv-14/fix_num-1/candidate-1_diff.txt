@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -6,7 +6,10 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    final char quoteChar = quoteCharObj != null ? quoteCharObj : 0;
++
++    final Character escapeCharObj = getEscapeCharacter();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +39,7 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z')) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -46,7 +49,7 @@
+             } else {
+                 while (pos < end) {
+                     c = value.charAt(pos);
+-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                    if (c == LF || c == CR || (quoteCharObj != null && c == quoteChar) || c == delimChar) {
+                         quote = true;
+                         break;
+                     }
+@@ -95,6 +98,10 @@
+             out.append(value, start, pos + 1);
+             // put the next starting position on the encapsulator so we will
+             // write it out again with the next string (effectively doubling it)
++            start = pos        } else if (escapeCharObj != null && c escapeCharObj.charValue()) {
++            // If escape character set and we found it, write out the chunk up to and including escape char,
++            // and update start to pos so it will be included again
++            out.append(value, start, pos + 1);
+             start = pos;
+         }
+         pos++;
+@@ -104,3 +111,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

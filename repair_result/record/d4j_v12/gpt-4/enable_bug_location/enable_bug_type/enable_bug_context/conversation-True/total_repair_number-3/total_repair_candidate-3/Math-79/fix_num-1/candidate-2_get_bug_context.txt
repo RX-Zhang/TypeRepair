@@ -1,0 +1,1 @@
+['equals', 'distance1', 'distanceInf']

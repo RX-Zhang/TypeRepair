@@ -1,0 +1,14 @@
+def detect_cycle(node):
+    if node is None:  # Boundary check for the input node
+        return False
+    
+    hare = tortoise = node
+    while True:
+        if hare is None or hare.successor is None:  # Check for None to prevent AttributeError
+            return False
+        
+        tortoise = tortoise.successor
+        hare = hare.successor.successor
+        
+        if hare is tortoise:
+            return True

@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -21,7 +21,14 @@
+     if (p.getCurrentToken() == JsonToken.START_ARRAY) {
+         return super.deserializeTypedFromAny(p, ctxt);
+     }
++    // Handle empty string as null if ACCEPT_EMPTY_STRING_AS_NULL_OBJECT is enabled
++    if ((p.getCurrentToken() == JsonToken.VALUE_STRING) && p.getText().isEmpty()) {
++        if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)) {
++            return null;
++        }
++    }
+     ctxt.reportWrongTokenException(p, JsonToken.FIELD_NAME,
+             "missing property '"+_typePropertyName+"' that is to contain type id  (for class "+baseTypeName()+")");
+     return null;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockitointegration.NoJUnitDependenciesTest.pure_mockito_should_not_depend_JUnit
+- Error: junit.framework.AssertionFailedError: 'org.mockito.internal.verification.VerificationOverTimeImpl' has some dependency to JUnit
+- Location:             checkDependency(classLoader_without_JUnit, pureMockitoAPIClass);

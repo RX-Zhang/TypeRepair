@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -14,12 +14,17 @@
+             end = chars.length;
+         } else {
+             if (!letters && !numbers) {
++                start = 0;
+                 end = Integer.MAX_VALUE;
+             } else {
++                start = ' ';
+                 end = 'z' + 1;
+-                start = ' ';                
+             }
+         }
++    }
++
++    if (end <= start) {
++        throw new IllegalArgumentException("Parameter end (" + end + ") must be greater than start (" + start + ")");
+     }
+ 
+     char[] buffer = new char[count];
+@@ -65,3 +70,4 @@
+     }
+     return new String(buffer);
+ }
++

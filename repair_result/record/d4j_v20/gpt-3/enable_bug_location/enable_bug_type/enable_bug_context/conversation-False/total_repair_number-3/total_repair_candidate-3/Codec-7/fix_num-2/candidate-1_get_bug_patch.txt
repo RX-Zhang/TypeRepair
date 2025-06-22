@@ -1,0 +1,9 @@
+public static String encodeBase64String(byte[] binaryData) {
+    byte[] encoded = encodeBase64(binaryData, true);
+    // Trim trailing newline characters that may be appended by encoding with chunking
+    int length = encoded.length;
+    while (length > 0 && (encoded[length - 1] == '\n' || encoded[length - 1] == '\r')) {
+        length--;
+    }
+    return StringUtils.newStringUtf8(encoded, 0, length);
+}

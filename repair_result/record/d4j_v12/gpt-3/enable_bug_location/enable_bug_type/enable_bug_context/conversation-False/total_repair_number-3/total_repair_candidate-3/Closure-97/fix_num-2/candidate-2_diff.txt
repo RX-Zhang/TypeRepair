@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -51,6 +51,11 @@
+             Node.tokenToName(n.getType()));
+     }
+ 
++    // Handle the case for unsigned right shift correctly
++    if (n.getType() == Token.URSH && lvalInt < 0) {
++      result += 0x100000000L; // Adjust for the unsigned shift
++    }
++
+     Node newNumber = Node.newNumber(result);
+     n.getParent().replaceChild(n, newNumber);
+     reportCodeChange();
+@@ -60,3 +65,4 @@
+ 
+   return n;
+ }
++

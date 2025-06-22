@@ -1,0 +1,1 @@
+['getWidth', 'getLeftPadding', 'getDescPadding', 'findWrapPos', 'createPadding']

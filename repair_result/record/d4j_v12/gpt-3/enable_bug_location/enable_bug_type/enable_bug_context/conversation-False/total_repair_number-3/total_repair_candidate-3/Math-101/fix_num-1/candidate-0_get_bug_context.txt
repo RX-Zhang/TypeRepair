@@ -1,0 +1,1 @@
+['format', 'getImaginaryCharacter', 'getRealFormat', 'parseAndIgnoreWhitespace', 'parseNextCharacter', 'parseNumber']

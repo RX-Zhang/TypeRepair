@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -11,7 +11,6 @@
+         //    compatibility -- needed later anyway, and not doing so may open
+         //    security issues.
+         JavaType t = tf.constructFromCanonical(id);
+-            // Probably cleaner to have a method in `TypeFactory` but can't add in patch
+         return t;
+     }
+     Class<?> cls;
+@@ -30,5 +29,11 @@
+     } catch (Exception e) {
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
+-    return tf.constructSpecializedType(_baseType, cls);
++    // Ensure that cls is not null before calling constructSpecializedType 
++    if (cls != null) {
++        return tf.constructSpecializedType(_baseType, cls);
++    } else {
++        throw new IllegalArgumentException("Class not found for id: " + id);
++    }
+ }
++

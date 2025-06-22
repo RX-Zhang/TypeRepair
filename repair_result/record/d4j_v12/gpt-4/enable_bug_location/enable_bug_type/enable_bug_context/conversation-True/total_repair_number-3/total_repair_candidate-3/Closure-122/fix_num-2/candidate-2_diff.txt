@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,8 +1,15 @@
+ private void handleBlockComment(Comment comment) {
+-  if (comment.getValue().indexOf("/* @") != -1 || comment.getValue().indexOf("\n * @") != -1) {
++  String value = comment.getValue();
++  // Check if the comment starts with '/**' indicating a JSDoc comment, skip those.
++  if (value.startsWith("/**")) {
++    return;
++  }
++  // Check if the comment contains annotations starting with '@'
++  if (value.indexOf("@") != -1) {
+     errorReporter.warning(
+         SUSPICIOUS_COMMENT_WARNING,
+         sourceName,
+         comment.getLineno(), "", 0);
+   }
+ }
++

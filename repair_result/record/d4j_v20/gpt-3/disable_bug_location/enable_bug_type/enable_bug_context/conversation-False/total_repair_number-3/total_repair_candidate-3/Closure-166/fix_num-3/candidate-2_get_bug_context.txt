@@ -1,0 +1,1 @@
+['hasProperty', 'getOwnPropertyNames', 'collectPropertyNames', 'getPropertyType', 'defineProperty', 'matchRecordTypeConstraint']

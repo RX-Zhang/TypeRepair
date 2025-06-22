@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -7,11 +7,20 @@
+   int ordinal = 0;
+   Node parameter = null;
+   Node argument = null;
+-  while (arguments.hasNext() &&
+-         parameters.hasNext()) {
+-    // If there are no parameters left in the list, then the while loop
+-    // above implies that this must be a var_args function.
++
++  boolean isVarArgs = functionType.isVarArgs();
++
++  while (arguments.hasNext()) {
++    if (parameters.hasNext()) {
+       parameter = parameters.next();
++    } else {
++      // If there are no parameters left in the list, then the while loop
++      // above implies that this must be a var_args function.
++      if (!isVarArgs) {
++        break;
++      }
++      parameter = functionType.getVarArgsType();
++    }
+     argument = arguments.next();
+     ordinal++;
+ 
+@@ -30,3 +39,4 @@
+             " and no more than " + maxArgs + " argument(s)" : "");
+   }
+ }
++

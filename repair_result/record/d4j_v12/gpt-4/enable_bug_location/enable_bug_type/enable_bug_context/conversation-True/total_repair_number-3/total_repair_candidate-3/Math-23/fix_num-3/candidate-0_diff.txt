@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -73,11 +73,12 @@
+ 
+                     // f must not be evaluated too close to a or b.
+                     if (u - a < tol2 || b - u < tol2) {
+-                        if (x <= m) {
++                        if (x < m) {
+                             d = tol1;
+                         } else {
+                             d = -tol1;
+                         }
++                        u = x + d;
+                     }
+                 } else {
+                     // Golden section step.
+@@ -87,6 +88,7 @@
+                         e = a - x;
+                     }
+                     d = GOLDEN_SECTION * e;
++                    u = x + d;
+                 }
+             } else {
+                 // Golden section step.
+@@ -96,6 +98,7 @@
+                     e = a - x;
+                 }
+                 d = GOLDEN_SECTION * e;
++                u = x + d;
+             }
+ 
+             // Update by at least "tol1".
+@@ -105,8 +108,6 @@
+                 } else {
+                     u = x - tol1;
+                 }
+-            } else {
+-                u = x + d;
+             }
+ 
+             double fu = computeObjectiveValue(u);
+@@ -157,11 +158,9 @@
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return
+-                        best(current,
+-                             previous,
+-                        isMinim);
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

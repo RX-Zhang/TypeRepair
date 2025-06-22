@@ -1,0 +1,1 @@
+['getNextZipEntry', 'getNextEntry', 'close', 'closeEntry', 'fill']

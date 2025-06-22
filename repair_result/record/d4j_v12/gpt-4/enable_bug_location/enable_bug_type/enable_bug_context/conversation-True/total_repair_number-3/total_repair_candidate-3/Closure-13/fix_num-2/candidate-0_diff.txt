@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -11,16 +11,17 @@
+   do {
+     Node c = node.getFirstChild();
+     while(c != null) {
++      Node next = c.getNext();  // Move this line up here to prevent skipping nodes
+       traverse(c);
+-      Node next = c.getNext();
+       c = next;
+     }
+ 
+     visit(node);
+     visits++;
+ 
+-    Preconditions.checkState(visits < 10000, "too many interations");
++    Preconditions.checkState(visits < 10000, "too many iterations");
+   } while (shouldRetraverse(node));
+ 
+   exitNode(node);
+ }
++

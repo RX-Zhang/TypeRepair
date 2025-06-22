@@ -1,0 +1,24 @@
+public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+{
+    // Use deserializeWithType to handle cases where type information is expected
+    return deserializeWithType(p, ctxt, null);
+}
+
+public Object deserializeWithType(JsonParser p, DeserializationContext ctxt,
+        TypeDeserializer typeDeserializer) throws IOException
+{
+    if (typeDeserializer == null) {
+        // Just skip the children tokens for unknown types
+        p.skipChildren();
+        return null;
+    }
+
+    switch (p.getCurrentTokenId()) {
+    case JsonTokenId.ID_START_ARRAY:
+    case JsonTokenId.ID_START_OBJECT:
+    case JsonTokenId.ID_FIELD_NAME:
+        return typeDeserializer.deserializeTypedFromAny(p, ctxt);
+    default:
+        return null;
+    }
+}

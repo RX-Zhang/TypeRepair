@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -6,7 +6,11 @@
+     return null;
+   case NUMBER:
+     return new LazilyParsedNumber(in.nextString());
++  case STRING:
++    // Handle string representation of numbers
++    return new LazilyParsedNumber(in.nextString());
+   default:
+     throw new JsonSyntaxException("Expecting number, got: " + jsonToken);
+   }
+ }
++

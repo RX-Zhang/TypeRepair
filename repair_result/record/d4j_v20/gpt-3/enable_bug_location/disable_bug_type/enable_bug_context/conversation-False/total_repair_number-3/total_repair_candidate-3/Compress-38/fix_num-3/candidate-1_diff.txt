@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,9 +7,8 @@
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
+-        return true;
+-    }
++    String name = getName();
++    // Defensive check for null and normalize trailing slash
++    return name != null && (name.endsWith("/"));
++}
+ 
+-    return false;
+-}

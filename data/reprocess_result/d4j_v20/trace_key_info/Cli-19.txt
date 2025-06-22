@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.PosixParserTest.testUnrecognizedOption2
+- Error: junit.framework.AssertionFailedError: UnrecognizedOptionException wasn't thrown
+- Location:             fail("UnrecognizedOptionException wasn't thrown");

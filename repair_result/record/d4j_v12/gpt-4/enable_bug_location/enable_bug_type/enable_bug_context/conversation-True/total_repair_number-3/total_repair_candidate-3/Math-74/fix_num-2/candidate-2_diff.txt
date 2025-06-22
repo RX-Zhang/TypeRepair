@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -103,6 +103,7 @@
+             } else {
+                 // reject the step to match exactly the next switch time
+                 hNew = dt;
++                continue;
+             }
+         } else {
+           // accept the step
+@@ -166,3 +167,4 @@
+   return stopTime;
+ 
+ }
++

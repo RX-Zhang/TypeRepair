@@ -1,0 +1,1 @@
+['getMean', 'getVariance', 'getGeometricMean', 'setGeoMeanImpl', 'setMeanImpl', 'setVarianceImpl']

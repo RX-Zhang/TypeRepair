@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -122,5 +122,11 @@
+                 throw new MathInternalError();
+             }
+         }
++
++        // Add a boundary check to prevent TooManyEvaluationsException
++        if (getEvaluations() >= maxEval) {
++            throw new TooManyEvaluationsException(maxEval);
++        }
+     }
+ }
++

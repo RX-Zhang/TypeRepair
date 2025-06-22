@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -23,7 +23,7 @@
+         } else if ("checkbox".equalsIgnoreCase(type) || "radio".equalsIgnoreCase(type)) {
+             // only add checkbox or radio if they have the checked attribute
+             if (el.hasAttr("checked")) {
+-                final String val = el.val();
++                String val = el.hasAttr("value") ? el.val() : "on"; // default to "on" if no value attribute
+                 data.add(HttpConnection.KeyVal.create(name, val));
+             }
+         } else {
+@@ -32,3 +32,4 @@
+     }
+     return data;
+ }
++

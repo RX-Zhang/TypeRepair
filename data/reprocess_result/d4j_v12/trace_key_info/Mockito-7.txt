@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockitousage.bugs.deepstubs.DeepStubFailingWhenGenricNestedAsRawTypeTest.discoverDeepMockingOfGenerics
+- Error: org.mockito.exceptions.base.MockitoException: Raw extraction not supported for : 'null'
+- Location:     when(myMock1.getNested().getNested().returnSomething()).thenReturn("Hello World.");

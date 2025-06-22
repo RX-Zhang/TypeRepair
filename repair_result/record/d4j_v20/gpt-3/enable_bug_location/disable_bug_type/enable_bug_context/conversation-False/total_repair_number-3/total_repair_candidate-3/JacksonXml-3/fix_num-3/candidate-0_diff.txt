@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -57,6 +57,7 @@
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+             _nextToken = JsonToken.FIELD_NAME;
++            // Correctly set _currText before creating new object context
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
+@@ -91,3 +92,4 @@
+     }
+     return null;
+ }
++

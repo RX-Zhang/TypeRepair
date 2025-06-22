@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -10,7 +10,6 @@
+   Map<TemplateType, JSType> inferred = 
+       inferTemplateTypesFromParameters(fnType, n);
+ 
+-
+   // Replace all template types. If we couldn't find a replacement, we
+   // replace it with UNKNOWN.
+   TemplateTypeReplacer replacer = new TemplateTypeReplacer(
+@@ -19,10 +18,15 @@
+ 
+   FunctionType replacementFnType = fnType.visit(replacer)
+       .toMaybeFunctionType();
+-  Preconditions.checkNotNull(replacementFnType);
++  
++  // Added boundary check to prevent RuntimeError
++  if (replacementFnType == null) {
++    return false; // Handle case where replacementFnType is null
++  }
+ 
+   callTarget.setJSType(replacementFnType);
+   n.setJSType(replacementFnType.getReturnType());
+ 
+   return replacer.madeChanges;
+ }
++

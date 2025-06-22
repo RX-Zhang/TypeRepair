@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang.NumberUtilsTest.testLang457
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 0
+- Location:                 NumberUtils.createNumber(badInputs[i]);

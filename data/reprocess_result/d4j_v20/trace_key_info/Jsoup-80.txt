@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.XmlTreeBuilderTest.handlesDodgyXmlDecl
+- Error: java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+- Location:         Document doc = Jsoup.parse(xml, "", Parser.xmlParser());

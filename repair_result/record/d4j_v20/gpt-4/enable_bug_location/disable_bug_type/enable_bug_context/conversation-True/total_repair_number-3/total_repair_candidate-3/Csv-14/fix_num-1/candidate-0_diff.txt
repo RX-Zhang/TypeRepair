@@ -1,0 +1,93 @@
+--- 
++++ 
+@@ -7,6 +7,7 @@
+ 
+     final char delimChar = getDelimiter();
+     final char quoteChar = getQuoteCharacter().charValue();
++    final Character escapeChar = getEscapeCharacter();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -25,23 +26,15 @@
+         return;
+     case MINIMAL:
+         if (len <= 0) {
+-            // always quote an empty token that is the first
+-            // on the line, as it may be the only thing on the
+-            // line. If it were not quoted in that case,
+-            // an empty line has no tokens.
+             if (newRecord) {
+                 quote = true;
+             }
+         } else {
+             char c = value.charAt(pos);
+ 
+-            // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z')) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+-                // Some other chars at the start of a value caused the parser to fail, so for now
+-                // encapsulate if we start in anything less than '#'. We are being conservative
+-                // by including the default comment char too.
+                 quote = true;
+             } else {
+                 while (pos < end) {
+@@ -56,8 +49,6 @@
+                 if (!quote) {
+                     pos = end - 1;
+                     c = value.charAt(pos);
+-                    // Some other chars at the end caused the parser to fail, so for now
+-                    // encapsulate if we end in anything less than ' '
+                     if (c <= SP) {
+                         quote = true;
+                     }
+@@ -66,7 +57,6 @@
+         }
+ 
+         if (!quote) {
+-            // no encapsulation needed - write out the original value
+             out.append(value, start, end);
+             return;
+         }
+@@ -76,31 +66,29 @@
+     }
+ 
+     if (!quote) {
+-        // no encapsulation needed - write out the original value
+         out.append(value, start, end);
+         return;
+     }
+ 
+-    // we hit something that needed encapsulation
+     out.append(quoteChar);
+ 
+-    // Pick up where we left off: pos should be positioned on the first character that caused
+-    // the need for encapsulation.
+     while (pos < end) {
+         final char c = value.charAt(pos);
+         if (c == quoteChar) {
+-            // write out the chunk up until this point
+-
+-            // add 1 to the length to write out the encapsulator also
+             out.append(value, start, pos + 1);
+-            // put the next starting position on the encapsulator so we will
+-            // write it out again with the next string (effectively doubling it)
+-            start = pos;
++            // escape the quote character by doubling it
++            out.append(quoteChar);
++            start = pos + 1;
++        } else if (escapeChar != null && c == escapeChar) {
++            // Escape character itself should be doubled if present and no quoting mode is NONE
++            out.append(value, start, pos + 1);
++            out.append(escapeChar);
++            start = pos + 1;
+         }
+         pos++;
+     }
+ 
+-    // write the last segment
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

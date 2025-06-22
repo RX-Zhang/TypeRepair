@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -18,21 +18,46 @@
+         } else if ("linkpath".equals(key)){
+             currEntry.setLinkName(val);
+         } else if ("gid".equals(key)){
+-            currEntry.setGroupId(Integer.parseInt(val));
++            try {
++                currEntry.setGroupId(Long.parseLong(val)); // Changed to Long.parseLong
++            } catch (NumberFormatException e) {
++                throw new IllegalArgumentException("Invalid gid value: " + val, e);
++            }
+         } else if ("gname".equals(key)){
+             currEntry.setGroupName(val);
+         } else if ("uid".equals(key)){
+-            currEntry.setUserId(Integer.parseInt(val));
++            try {
++                currEntry.setUserId(Long.parseLong(val)); // Changed to Long.parseLong
++            } catch (NumberFormatException e) {
++                throw new IllegalArgumentException("Invalid uid value: " + val, e);
++            }
+         } else if ("uname".equals(key)){
+             currEntry.setUserName(val);
+         } else if ("size".equals(key)){
+-            currEntry.setSize(Long.parseLong(val));
++            try {
++                currEntry.setSize(Long.parseLong(val));
++            } catch (NumberFormatException e) {
++                throw new IllegalArgumentException("Invalid size value: " + val, e);
++            }
+         } else if ("mtime".equals(key)){
+-            currEntry.setModTime((long) (Double.parseDouble(val) * 1000));
++            try {
++                currEntry.setModTime((long) (Double.parseDouble(val) * 1000));
++            } catch (NumberFormatException e) {
++                throw new IllegalArgumentException("Invalid mtime value: " + val, e);
++            }
+         } else if ("SCHILY.devminor".equals(key)){
+-            currEntry.setDevMinor(Integer.parseInt(val));
++            try {
++                currEntry.setDevMinor(Integer.parseInt(val));
++            } catch (NumberFormatException e) {
++                throw new IllegalArgumentException("Invalid SCHILY.devminor value: " + val, e);
++            }
+         } else if ("SCHILY.devmajor".equals(key)){
+-            currEntry.setDevMajor(Integer.parseInt(val));
++            try {
++                currEntry.setDevMajor(Integer.parseInt(val));
++            } catch (NumberFormatException e) {
++                throw new IllegalArgumentException("Invalid SCHILY.devmajor value: " + val, e);
++            }
+         }
+     }
+ }
++

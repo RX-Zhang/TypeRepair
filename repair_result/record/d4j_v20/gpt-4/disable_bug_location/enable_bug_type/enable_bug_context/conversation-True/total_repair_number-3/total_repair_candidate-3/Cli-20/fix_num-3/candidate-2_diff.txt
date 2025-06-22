@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -37,7 +37,7 @@
+             {
+                 processOptionToken(token, stopAtNonOption);
+             }
+-            else if (options.hasOption(token))
++            else if (options.hasOption(token.substring(0,2))) // fix here: check only the first option character with '-'
+             {
+                 tokens.add(token);
+             }
+@@ -61,3 +61,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

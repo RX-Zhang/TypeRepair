@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -40,8 +40,12 @@
+     } else if (raw == Currency.class) {
+         FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+         return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
++    // Added support for CharSequence keys by delegating to StringKD, since CharSequence is an interface
++    } else if (CharSequence.class.isAssignableFrom(raw)) {
++        return StringKD.forType(String.class);
+     } else {
+         return null;
+     }
+     return new StdKeyDeserializer(kind, raw);
+ }
++

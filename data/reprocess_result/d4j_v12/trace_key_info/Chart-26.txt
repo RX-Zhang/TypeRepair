@@ -1,0 +1,130 @@
+Test failure 1:
+- Test: org.jfree.chart.junit.AreaChartTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 2:
+- Test: org.jfree.chart.junit.BarChart3DTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 3:
+- Test: org.jfree.chart.junit.BarChartTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 4:
+- Test: org.jfree.chart.junit.GanttChartTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 5:
+- Test: org.jfree.chart.junit.GanttChartTests.testDrawWithNullInfo2
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 6:
+- Test: org.jfree.chart.junit.LineChart3DTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 7:
+- Test: org.jfree.chart.junit.LineChartTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 8:
+- Test: org.jfree.chart.junit.StackedAreaChartTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 9:
+- Test: org.jfree.chart.junit.StackedBarChart3DTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 10:
+- Test: org.jfree.chart.junit.StackedBarChartTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 11:
+- Test: org.jfree.chart.junit.WaterfallChartTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 12:
+- Test: org.jfree.chart.plot.junit.CategoryPlotTests.test1654215
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 13:
+- Test: org.jfree.chart.plot.junit.CategoryPlotTests.testSerialization3
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(passed);
+
+
+Test failure 14:
+- Test: org.jfree.chart.plot.junit.CategoryPlotTests.testSerialization4
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(passed);
+
+
+Test failure 15:
+- Test: org.jfree.chart.renderer.category.junit.BoxAndWhiskerRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 16:
+- Test: org.jfree.chart.renderer.category.junit.GroupedStackedBarRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 17:
+- Test: org.jfree.chart.renderer.category.junit.IntervalBarRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 18:
+- Test: org.jfree.chart.renderer.category.junit.LayeredBarRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 19:
+- Test: org.jfree.chart.renderer.category.junit.LevelRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 20:
+- Test: org.jfree.chart.renderer.category.junit.MinMaxCategoryRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 21:
+- Test: org.jfree.chart.renderer.category.junit.StatisticalBarRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);
+
+
+Test failure 22:
+- Test: org.jfree.chart.renderer.category.junit.StatisticalLineAndShapeRendererTests.testDrawWithNullInfo
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(success);

@@ -1,0 +1,27 @@
+public Dfp multiply(final int x) {
+        // Handle special cases for NaN and infinity before calling multiplyFast
+        if (nans != FINITE) {
+            if (isNaN()) {
+                return this;
+            }
+
+            if (nans == INFINITE) {
+                if (x == 0) {
+                    field.setIEEEFlagsBits(DfpField.FLAG_INVALID);
+                    return dotrap(DfpField.FLAG_INVALID, MULTIPLY_TRAP, newInstance(getZero()), newInstance(getZero()));
+                }
+                Dfp result = newInstance(this);
+                return result;
+            }
+        }
+
+        // range check x
+        if (x < 0 || x >= RADIX) {
+            field.setIEEEFlagsBits(DfpField.FLAG_INVALID);
+            Dfp result = newInstance(getZero());
+            result.nans = QNAN;
+            return dotrap(DfpField.FLAG_INVALID, MULTIPLY_TRAP, newInstance(getZero()), result);
+        }
+
+        return multiplyFast(x);
+}

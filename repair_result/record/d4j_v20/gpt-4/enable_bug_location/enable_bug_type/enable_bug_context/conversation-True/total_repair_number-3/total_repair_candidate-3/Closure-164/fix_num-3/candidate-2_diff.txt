@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -7,6 +7,11 @@
+ 
+   // This is described in Draft 2 of the ES4 spec,
+   // Section 3.4.7: Subtyping Function Types.
++
++  // If either has unknown parameters or return types, fall back on equivalence
++  if (this.hasUnknownParamsOrReturn() || that.hasUnknownParamsOrReturn()) {
++    return this.isEquivalentTo(that);
++  }
+ 
+   // this.returnType <: that.returnType (covariant)
+   if (!this.returnType.isSubtype(that.returnType)) {
+@@ -48,11 +53,11 @@
+     boolean thatIsVarArgs = thatParam.isVarArgs();
+ 
+     // "that" can't be a supertype, because it's missing a required argument.
+-      // NOTE(nicksantos): In our type system, we use {function(...?)} and
+-      // {function(...NoType)} to to indicate that arity should not be
+-      // checked. Strictly speaking, this is not a correct formulation,
+-      // because now a sub-function can required arguments that are var_args
+-      // in the super-function. So we special-case this.
++    // NOTE(nicksantos): In our type system, we use {function(...?)} and
++    // {function(...NoType)} to to indicate that arity should not be
++    // checked. Strictly speaking, this is not a correct formulation,
++    // because now a sub-function can required arguments that are var_args
++    // in the super-function. So we special-case this.
+ 
+     // don't advance if we have variable arguments
+     if (!thisIsVarArgs) {
+@@ -69,7 +74,18 @@
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
++  // "that" can't be a supertype, because it's missing a required argument.
++  // Check if that has more required parameters than this
++  if (thatParam != null) {
++    // If remaining parameters in "that" are required and "this" is missing them, return false
++    while (thatParam != null) {
++      if (!thatParam.isOptionalArg() && !thatParam.isVarArgs()) {
++        return false;
++      }
++      thatParam = thatParam.getNext();
++    }
++  }
+ 
+   return true;
+ }
++

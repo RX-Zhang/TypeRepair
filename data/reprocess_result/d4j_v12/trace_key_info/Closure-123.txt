@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testPrintInOperatorInForLoop
+- Error: junit.framework.ComparisonFailure: expected:<for(a=c?0:[(0 in d)];;)foo()> but was:<for(a=c?0:[0 in d];;)foo()>
+- Location:     assertPrintSame("for(a=c?0:(0 in d);;)foo()");

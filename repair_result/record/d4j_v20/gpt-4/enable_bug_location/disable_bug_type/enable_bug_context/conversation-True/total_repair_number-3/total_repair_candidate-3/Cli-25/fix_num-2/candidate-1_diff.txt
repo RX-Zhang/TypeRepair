@@ -1,0 +1,68 @@
+--- 
++++ 
+@@ -1,15 +1,20 @@
+ protected StringBuffer renderWrappedText(StringBuffer sb, int width, 
+                                          int nextLineTabStop, String text)
+ {
+-    int pos = findWrapPos(text, width, 0);
++    int pos = 0;
+ 
+-    if (pos == -1)
++    // first line does not have padding so find wrap position normally
++    int wrapPos = findWrapPos(text, width, pos);
++
++    if (wrapPos == -1)
+     {
+         sb.append(rtrim(text));
+ 
+         return sb;
+     }
+-    sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++
++    // first line
++    sb.append(rtrim(text.substring(pos, wrapPos))).append(defaultNewLine);
+ 
+     if (nextLineTabStop >= width)
+     {
+@@ -17,27 +22,33 @@
+         nextLineTabStop = width - 1;
+     }
+ 
+-    // all following lines must be padded with nextLineTabStop space 
+-    // characters
++    // create padding to be used on each subsequent line
+     final String padding = createPadding(nextLineTabStop);
+ 
++    pos = wrapPos;
++
++    // while more text to render
+     while (true)
+     {
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
+ 
+-        if (pos == -1)
++        wrapPos = findWrapPos(text, width, 0);
++
++        if (wrapPos == -1)
+         {
+             sb.append(text);
+ 
+             return sb;
+         }
+-        
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++
++        if ( (text.length() > width) && (wrapPos == nextLineTabStop - 1) ) 
+         {
+-            pos = width;
++            wrapPos = width;
+         }
+ 
+-        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        sb.append(rtrim(text.substring(0, wrapPos))).append(defaultNewLine);
++
++        pos = wrapPos;
+     }
+ }
++

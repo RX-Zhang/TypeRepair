@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.joda.time.TestDuration_Basics.testToPeriod_fixedZone
+- Error: junit.framework.AssertionFailedError: expected:<0> but was:<64>
+- Location:             assertEquals(0, test.getWeeks());
+
+
+Test failure 2:
+- Test: org.joda.time.TestPeriod_Constructors.testConstructor_long_fixedZone
+- Error: junit.framework.AssertionFailedError: expected:<0> but was:<64>
+- Location:             assertEquals(0, test.getWeeks());

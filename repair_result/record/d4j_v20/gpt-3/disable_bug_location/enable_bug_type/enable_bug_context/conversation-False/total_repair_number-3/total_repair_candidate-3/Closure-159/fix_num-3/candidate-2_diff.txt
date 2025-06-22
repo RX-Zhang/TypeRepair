@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -5,7 +5,10 @@
+   if (node.getType() == Token.CALL) {
+     Node child = node.getFirstChild();
+     if (child.getType() == Token.NAME) {
+-      changed.add(child.getString());
++      // Only add function names that are not properties (e.g., foo.bar)
++      if (child.getNext() == null || child.getNext().getType() != Token.GETPROP) {
++        changed.add(child.getString());
++      }
+     }
+   }
+ 
+@@ -13,3 +16,4 @@
+     findCalledFunctions(c, changed);
+   }
+ }
++

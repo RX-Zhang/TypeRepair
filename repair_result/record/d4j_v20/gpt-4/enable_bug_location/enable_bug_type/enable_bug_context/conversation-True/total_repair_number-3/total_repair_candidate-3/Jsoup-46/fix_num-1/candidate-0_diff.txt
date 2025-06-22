@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -35,7 +35,7 @@
+                     break;
+                 case 0xA0:
+                     if (escapeMode != EscapeMode.xhtml)
+-                        accum.append("&nbsp;");
++                        accum.append("&#xa0;"); // fix: use numeric escape instead of &nbsp;
+                     else
+                         accum.append(c);
+                     break;
+@@ -74,3 +74,4 @@
+         }
+     }
+ }
++

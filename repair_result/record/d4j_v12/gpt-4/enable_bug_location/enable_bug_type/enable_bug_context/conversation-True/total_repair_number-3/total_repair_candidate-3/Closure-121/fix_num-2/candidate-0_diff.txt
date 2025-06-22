@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -36,7 +36,9 @@
+       // the variable declaration.
+       Node value = init.getAssignedValue();
+       Preconditions.checkNotNull(value);
+-      inlineWellDefinedVariable(v, value, referenceInfo.references);
++      // Ensure the single read reference is also included for correctness
++      List<Reference> allRefs = referenceInfo.references;
++      inlineWellDefinedVariable(v, value, allRefs);
+       staleVars.add(v);
+     }
+   }
+@@ -72,3 +74,4 @@
+     }
+   }
+ }
++

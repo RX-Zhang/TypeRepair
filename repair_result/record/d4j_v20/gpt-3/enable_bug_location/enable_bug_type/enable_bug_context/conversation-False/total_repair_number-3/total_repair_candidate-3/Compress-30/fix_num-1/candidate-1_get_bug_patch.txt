@@ -1,0 +1,31 @@
+public int read(final byte[] dest, final int offs, final int len)
+    throws IOException {
+    if (offs < 0) {
+        throw new IndexOutOfBoundsException("offs(" + offs + ") < 0.");
+    }
+    if (len < 0) {
+        throw new IndexOutOfBoundsException("len(" + len + ") < 0.");
+    }
+    if (offs + len > dest.length) {
+        throw new IndexOutOfBoundsException("offs(" + offs + ") + len("
+                                            + len + ") > dest.length(" + dest.length + ").");
+    }
+    if (this.in == null) {
+        throw new IOException("stream closed");
+    }
+
+    final int hi = offs + len;
+    int destOffs = offs;
+    int b;
+    while (destOffs < hi && ((b = read0()) >= 0)) {
+        dest[destOffs++] = (byte) b;
+        count(1);
+    }
+
+    // Ensure that if no bytes were read, we return 0 instead of -1
+    if (destOffs == offs) {
+        return 0; // No bytes read
+    }
+    
+    return destOffs - offs; // Return the number of bytes read
+}

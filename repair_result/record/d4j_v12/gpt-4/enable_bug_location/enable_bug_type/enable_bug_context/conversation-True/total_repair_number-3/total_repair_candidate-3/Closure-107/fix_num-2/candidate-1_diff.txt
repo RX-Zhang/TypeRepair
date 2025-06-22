@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -53,8 +53,12 @@
+     // In ADVANCED mode, goog.getMsg is going to be renamed anyway,
+     // so we might as well inline it. But shut off the i18n warnings,
+     // because the user didn't really ask for i18n.
+-    options.messageBundle = new EmptyMessageBundle();
++    //
++    // FIX: Use the proper message bundle that allows no warnings instead of EmptyMessageBundle,
++    // to prevent warnings about message initialization.
++    options.messageBundle = new InlinedMessageBundle();
+   }
+ 
+   return options;
+ }
++

@@ -1,0 +1,73 @@
+--- 
++++ 
+@@ -14,8 +14,6 @@
+     Number whole = getWholeFormat().parse(source, pos);
+     if (whole == null) {
+         // invalid integer number
+-        // set index back to initial, error index should already be set
+-        // character examined.
+         pos.setIndex(initialIndex);
+         return null;
+     }
+@@ -27,13 +25,16 @@
+     Number num = getNumeratorFormat().parse(source, pos);
+     if (num == null) {
+         // invalid integer number
+-        // set index back to initial, error index should already be set
+-        // character examined.
+         pos.setIndex(initialIndex);
+         return null;
+     }
+-    
+-        // minus signs should be leading, invalid expression
++
++    // Validate that there are no leading minus signs
++    if (source.charAt(initialIndex) == '-') {
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(initialIndex);
++        return null;
++    }
+ 
+     // parse '/'
+     int startIndex = pos.getIndex();
+@@ -41,15 +42,12 @@
+     switch (c) {
+     case 0 :
+         // no '/'
+-        // return num as a fraction
+         return new Fraction(num.intValue(), 1);
+     case '/' :
+         // found '/', continue parsing denominator
+         break;
+     default :
+         // invalid '/'
+-        // set index back to initial, error index should be the last
+-        // character examined.
+         pos.setIndex(initialIndex);
+         pos.setErrorIndex(startIndex);
+         return null;
+@@ -62,16 +60,20 @@
+     Number den = getDenominatorFormat().parse(source, pos);
+     if (den == null) {
+         // invalid integer number
+-        // set index back to initial, error index should already be set
+-        // character examined.
+         pos.setIndex(initialIndex);
+         return null;
+     }
+-    
+-        // minus signs must be leading, invalid
++
++    // Validate that there are no leading minus signs
++    if (source.charAt(initialIndex + whole.toString().length() + num.toString().length() + 2) == '-') {
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(initialIndex + whole.toString().length() + num.toString().length() + 1);
++        return null;
++    }
+ 
+     int w = whole.intValue();
+     int n = num.intValue();
+     int d = den.intValue();
+     return new Fraction(((Math.abs(w) * d) + n) * MathUtils.sign(w), d);
+ }
++

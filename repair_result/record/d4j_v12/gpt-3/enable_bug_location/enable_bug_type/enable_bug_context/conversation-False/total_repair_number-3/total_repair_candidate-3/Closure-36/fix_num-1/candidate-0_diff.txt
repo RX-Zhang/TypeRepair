@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -33,7 +33,10 @@
+   //   f(a)
+   // is ok.
+   Node value = initialization.getAssignedValue();
+-  Preconditions.checkState(value != null);
++  if (value == null) {
++    return false; // Added boundary check to prevent null value
++  }
++  
+   if (value.isGetProp()
+       && reference.getParent().isCall()
+       && reference.getParent().getFirstChild() == reference.getNode()) {
+@@ -42,7 +45,7 @@
+ 
+   if (value.isFunction()) {
+     Node callNode = reference.getParent();
+-    if (reference.getParent().isCall()) {
++    if (callNode.isCall()) {
+       CodingConvention convention = compiler.getCodingConvention();
+       // Bug 2388531: Don't inline subclass definitions into class defining
+       // calls as this confused class removing logic.
+@@ -60,3 +63,4 @@
+   return canMoveAggressively(value) ||
+       canMoveModerately(initialization, reference);
+ }
++

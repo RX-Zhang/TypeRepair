@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -20,11 +20,14 @@
+     // all following lines must be padded with nextLineTabStop space 
+     // characters
+     final String padding = createPadding(nextLineTabStop);
++    int offset = 0;
+ 
+     while (true)
+     {
++        // Adjust offset to avoid infinite loop
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
++        offset = padding.length();
++        pos = findWrapPos(text, width, offset);
+ 
+         if (pos == -1)
+         {
+@@ -32,8 +35,8 @@
+ 
+             return sb;
+         }
+-        
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++
++        if ((text.length() > width) && (pos == nextLineTabStop))
+         {
+             pos = width;
+         }
+@@ -41,3 +44,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

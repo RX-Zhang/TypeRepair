@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,4 +1,9 @@
+ static boolean isValidDefineValue(Node val, Set<String> defines) {
++  if (val == null) {
++    // Input validation for null values
++    return false;
++  }
++  
+   switch (val.getType()) {
+     case Token.STRING:
+     case Token.NUMBER:
+@@ -11,8 +16,10 @@
+     case Token.BITNOT:
+     case Token.BITOR:
+     case Token.BITXOR:
++      return isValidDefineValue(val.getFirstChild(), defines) && 
++             isValidDefineValue(val.getSecondChild(), defines);
+ 
+-    // Uniary operators are valid if the child is valid.
++    // Unary operators are valid if the child is valid.
+     case Token.NOT:
+     case Token.NEG:
+       return isValidDefineValue(val.getFirstChild(), defines);
+@@ -26,3 +33,4 @@
+   }
+   return false;
+ }
++

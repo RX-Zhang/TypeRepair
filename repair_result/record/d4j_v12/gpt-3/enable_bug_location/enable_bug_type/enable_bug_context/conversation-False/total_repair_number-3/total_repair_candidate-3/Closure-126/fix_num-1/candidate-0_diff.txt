@@ -1,0 +1,54 @@
+--- 
++++ 
+@@ -2,8 +2,25 @@
+ 
+   // Just an 'exit'.
+   if (matchingExitNode(n, exitType, labelName)) {
+-    NodeUtil.removeChild(n.getParent(), n);
+-    compiler.reportCodeChange();
++    // Only remove the node if it is safe to do so.
++    // If the exit is inside a finally block, do not remove it.
++    Node parent = n.getParent();
++    if (parent != null) {
++      // Check if the node is inside a finally block.
++      // Walk up the tree to see if any ancestor is a try with finally containing this node.
++      for (Node ancestor = n.getParent(); ancestor != null; ancestor = ancestor.getParent()) {
++        if (ancestor.isTry() && NodeUtil.hasFinally(ancestor)) {
++          Node finallyBlock = ancestor.getLastChild();
++          if (NodeUtil.isAncestor(finallyBlock, n)) {
++            // Inside finally - do not remove
++            // Just return without change
++            return;
++          }
++        }
++      }
++      NodeUtil.removeChild(parent, n);
++      compiler.reportCodeChange();
++    }
+     return;
+   }
+ 
+@@ -33,10 +50,14 @@
+      * can cause problems if it changes the completion type of the finally
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+-    if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
+-    }
++    // Do NOT minimize exits in finally blocks
++    // So, remove the call to tryMinimizeExits on finally block here.
++    // Previously it was:
++    // if (NodeUtil.hasFinally(n)) {
++    //   Node finallyBlock = n.getLastChild();
++    //   tryMinimizeExits(finallyBlock, exitType, labelName);
++    // }
++    return;
+   }
+ 
+   // Just a 'label'.
+@@ -94,3 +115,4 @@
+     }
+   }
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -81,9 +81,14 @@
+       }
+       arrayNode.detachChildren();
+       for (Node node : arrayFoldedChildren) {
+-        arrayNode.addChildToBack(node);
++        if (node.getType() == Token.STRING) {
++          arrayNode.addChildToBack(node);
++        } else {
++          arrayNode.addChildToBack(Node.newString(NodeUtil.getStringValue(node)));
++        }
+       }
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

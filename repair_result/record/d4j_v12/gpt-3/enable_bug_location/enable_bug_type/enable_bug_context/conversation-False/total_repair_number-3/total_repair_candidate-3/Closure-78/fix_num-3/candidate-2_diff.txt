@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+   double result;
+ 
+   // TODO(johnlenz): Handle NaN with unknown value. BIT ops convert NaN
+-  // to zero so this is a little akward here.
++  // to zero so this is a little awkward here.
+ 
+   Double lValObj = NodeUtil.getNumberValue(left);
+   if (lValObj == null) {
+@@ -61,6 +61,11 @@
+       throw new Error("Unexpected arithmetic operator");
+   }
+ 
++  // Ensure we check for NaN before using the result in a length check
++  if (Double.isNaN(result)) {
++    return Node.newString(Token.NAME, "NaN");
++  }
++
+   // TODO(johnlenz): consider removing the result length check.
+   // length of the left and right value plus 1 byte for the operator.
+   if (String.valueOf(result).length() <=
+@@ -71,8 +76,6 @@
+       Math.abs(result) <= MAX_FOLD_NUMBER) {
+     Node newNumber = Node.newNumber(result);
+     return newNumber;
+-  } else if (Double.isNaN(result)) {
+-    return Node.newString(Token.NAME, "NaN");
+   } else if (result == Double.POSITIVE_INFINITY) {
+     return Node.newString(Token.NAME, "Infinity");
+   } else if (result == Double.NEGATIVE_INFINITY) {
+@@ -81,3 +84,4 @@
+ 
+   return null;
+ }
++

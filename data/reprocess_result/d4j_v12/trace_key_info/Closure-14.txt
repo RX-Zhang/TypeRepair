@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CheckMissingReturnTest.testIssue779
+- Error: junit.framework.AssertionFailedError: Unexpected error(s): JSC_MISSING_RETURN_STATEMENT. Missing return statement. Function expected to return number. at testcode line 1 : 24 expected:<0> but was:<1>
+- Location:     testNotMissing(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.ControlFlowAnalysisTest.testDeepNestedFinally
+- Error: junit.framework.AssertionFailedError: No cross edges found
+- Location:     assertCrossEdge(cfg, Token.IF, Token.BLOCK, Branch.ON_EX);
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.ControlFlowAnalysisTest.testDeepNestedBreakwithFinally
+- Error: junit.framework.AssertionFailedError: No cross edges found
+- Location:     assertCrossEdge(cfg, Token.BLOCK, Token.BLOCK, Branch.ON_EX);

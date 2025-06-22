@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,6 +1,8 @@
+ private InputStream getCurrentStream() throws IOException {
+     if (deferredBlockStreams.isEmpty()) {
+-        throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++        // Defensive check: instead of throwing exception, return an empty stream
++        // This handles cases where the current entry has size 0 and no stream was created
++        return new BoundedInputStream(new ByteArrayInputStream(new byte[0]), 0);
+     }
+     
+     while (deferredBlockStreams.size() > 1) {
+@@ -14,3 +16,4 @@
+ 
+     return deferredBlockStreams.get(0);
+ }
++

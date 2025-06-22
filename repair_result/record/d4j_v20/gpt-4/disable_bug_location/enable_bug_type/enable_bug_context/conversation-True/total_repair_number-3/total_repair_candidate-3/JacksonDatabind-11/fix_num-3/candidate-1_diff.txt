@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -23,6 +23,9 @@
+      *   current type (for method) since it will be masked.
+      */
+     Type[] bounds = type.getBounds();
++    if (bounds == null || bounds.length == 0) {
++        return _unknownType();
++    }
+ 
+     // With type variables we must use bound information.
+     // Theoretically this gets tricky, as there may be multiple
+@@ -40,3 +43,4 @@
+     context._addPlaceholder(name);
+     return _constructType(bounds[0], context);
+ }
++

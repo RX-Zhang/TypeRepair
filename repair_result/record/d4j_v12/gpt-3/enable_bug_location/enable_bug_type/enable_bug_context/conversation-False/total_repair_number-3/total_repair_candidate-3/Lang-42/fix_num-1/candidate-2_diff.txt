@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -2,14 +2,24 @@
+     int len = str.length();
+     for (int i = 0; i < len; i++) {
+         char c = str.charAt(i);
+-        String entityName = this.entityName(c);
++        int codepoint;
++
++        // Check if current char is a high surrogate and next char is a low surrogate to form a supplementary codepoint
++        if (Character.isHighSurrogate(c) && i + 1 < len && Character.isLowSurrogate(str.charAt(i + 1))) {
++            codepoint = Character.toCodePoint(c, str.charAt(i + 1));
++            i++; // skip the low surrogate as it is already processed
++        } else {
++            codepoint = c;
++        }
++
++        String entityName = this.entityName(codepoint);
+         if (entityName == null) {
+-            if (c > 0x7F) {
++            if (codepoint > 0x7F) {
+                 writer.write("&#");
+-                writer.write(Integer.toString(c, 10));
++                writer.write(Integer.toString(codepoint, 10));
+                 writer.write(';');
+             } else {
+-                writer.write(c);
++                writer.write((char)codepoint);
+             }
+         } else {
+             writer.write('&');
+@@ -18,3 +28,4 @@
+         }
+     }
+ }
++

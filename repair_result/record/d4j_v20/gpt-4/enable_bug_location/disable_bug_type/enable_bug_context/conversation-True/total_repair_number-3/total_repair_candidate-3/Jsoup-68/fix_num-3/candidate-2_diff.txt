@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,6 +1,7 @@
+ private boolean inSpecificScope(String[] targetNames, String[] baseTypes, String[] extraTypes) {
+-    // https://html.spec.whatwg.org/multipage/parsing.html#has-an-element-in-the-specific-scope
+-    int bottom = stack.size() -1;
++    // https://html.spec.whatwg.org/multipage/par.html#has-an-element-in-the-specific-scope
++    ArrayList<Element> stack = getStack();
++    int bottom = stack.size() - 1;
+     if (bottom > MaxScopeSearchDepth) {
+         bottom = MaxScopeSearchDepth;
+     }
+@@ -19,3 +20,4 @@
+     //Validate.fail("Should not be reachable"); // would end up false because hitting 'html' at root (basetypes)
+     return false;
+ }
++

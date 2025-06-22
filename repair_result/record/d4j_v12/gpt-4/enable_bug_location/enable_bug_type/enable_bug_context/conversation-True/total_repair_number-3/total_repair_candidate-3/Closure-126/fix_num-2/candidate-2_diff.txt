@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -32,11 +32,15 @@
+     /* Don't try to minimize the exits of finally blocks, as this
+      * can cause problems if it changes the completion type of the finally
+      * block. See ECMA 262 Sections 8.9 & 12.14
++     *
++     * FIXED: Do not process finally block to avoid removing important exits like break in finally.
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
++      // intentionally do NOT process finally block to avoid incorrect removal
++      // Node finallyBlock = n.getLastChild();
++      // tryMinimizeExits(finallyBlock, exitType, labelName);
+     }
++    return;
+   }
+ 
+   // Just a 'label'.
+@@ -94,3 +98,4 @@
+     }
+   }
+ }
++

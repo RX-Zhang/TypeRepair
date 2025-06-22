@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,8 +4,10 @@
+     return false;
+   }
+ 
++  BasicBlock assignmentBlock = ref.getBasicBlock();
++
+   // Make sure this assignment is not in a loop.
+-  for (BasicBlock block = ref.getBasicBlock();
++  for (BasicBlock block = assignmentBlock;
+        block != null; block = block.getParent()) {
+     if (block.isFunction) {
+       break;
+@@ -16,3 +18,4 @@
+ 
+   return true;
+ }
++

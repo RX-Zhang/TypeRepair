@@ -1,0 +1,117 @@
+--- 
++++ 
+@@ -9,16 +9,18 @@
+     // If all the conditions matches then check for scalar / non-scalar property
+     if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+         //if not scalar and ended successfully, and !includePath, then return null
+-            if (_currToken.isStructEnd()) {
+-                if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
+-                }
+-            } else if (_currToken.isScalarValue()) {
+-                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                // then return null 
+-                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
+-                }
++        if (_currToken.isStructEnd()) {
++            if (_headContext.isStartHandled()) {
++                _currToken = null;
++                return null;
++            }
++        } else if (_currToken.isScalarValue()) {
++            //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++            // then return null 
++            if (_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                _currToken = null;
++                return null;
++            }
+         }
+     }
+     // Anything buffered?
+@@ -36,12 +38,12 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
++                    // This check corrected to ensure proper token returned
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 // Almost! Most likely still have the current token;
+                 // with the sole exception of 
+                 /*
+@@ -66,8 +68,8 @@
+     JsonToken t = delegate.nextToken();
+     if (t == null) {
+         // no strict need to close, since we have no state here
+-        _currToken = t;
+-        return t;
++        _currToken = null;
++        return null;
+     }
+ 
+     // otherwise... to include or not?
+@@ -102,10 +104,9 @@
+         
+         // Also: only need buffering if parent path to be included
+         if (_includePath) {
+-            t = _nextTokenWithBuffering(_headContext);
+-            if (t != null) {
+-                _currToken = t;
+-                return t;
++            JsonToken bufferedToken = _nextTokenWithBuffering(_headContext);
++            if (bufferedToken != null) {
++                return (_currToken = bufferedToken);
+             }
+         }
+         break;
+@@ -137,10 +138,9 @@
+         _headContext = _headContext.createChildObjectContext(f, false);
+         // Also: only need buffering if parent path to be included
+         if (_includePath) {
+-            t = _nextTokenWithBuffering(_headContext);
+-            if (t != null) {
+-                _currToken = t;
+-                return t;
++            JsonToken bufferedToken = _nextTokenWithBuffering(_headContext);
++            if (bufferedToken != null) {
++                return (_currToken = bufferedToken);
+             }
+         }
+         // note: inclusion of surrounding Object handled separately via
+@@ -160,6 +160,8 @@
+             if (returnEnd) {
+                 return (_currToken = t);
+             }
++            // If not returning, set current token to null so tokens do not get stuck at null unexpectedly
++            _currToken = null;
+         }
+         break;
+ 
+@@ -198,10 +200,9 @@
+                 }
+             }
+             if (_includePath) {
+-                t = _nextTokenWithBuffering(_headContext);
+-                if (t != null) {
+-                    _currToken = t;
+-                    return t;
++                JsonToken bufferedToken = _nextTokenWithBuffering(_headContext);
++                if (bufferedToken != null) {
++                    return (_currToken = bufferedToken);
+                 }
+             }
+             break;
+@@ -226,3 +227,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

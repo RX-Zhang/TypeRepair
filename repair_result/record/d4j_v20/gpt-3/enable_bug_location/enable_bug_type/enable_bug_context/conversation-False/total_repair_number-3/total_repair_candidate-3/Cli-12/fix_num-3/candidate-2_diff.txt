@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
+ {
+-    List tokens = new ArrayList();
++    List<String> tokens = new ArrayList<>();
+ 
+     boolean eatTheRest = false;
+ 
+@@ -52,8 +52,10 @@
+             {
+                 tokens.add(arguments[i]);
+             }
++            break; // Break to avoid an infinite loop
+         }
+     }
+ 
+-    return (String[]) tokens.toArray(new String[tokens.size()]);
++    return tokens.toArray(new String[0]);
+ }
++

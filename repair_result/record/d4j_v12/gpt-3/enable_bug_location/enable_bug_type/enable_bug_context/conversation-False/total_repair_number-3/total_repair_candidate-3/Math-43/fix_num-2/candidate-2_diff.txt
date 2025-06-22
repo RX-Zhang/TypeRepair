@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -7,14 +7,15 @@
+     secondMoment.increment(value);
+     // If mean, variance or geomean have been overridden,
+     // need to increment these
+-    if (!(meanImpl instanceof Mean)) {
++    if (!(meanImpl instanceof Mean) && n > 0) {
+         meanImpl.increment(value);
+     }
+-    if (!(varianceImpl instanceof Variance)) {
++    if (!(varianceImpl instanceof Variance) && n > 0) {
+         varianceImpl.increment(value);
+     }
+-    if (!(geoMeanImpl instanceof GeometricMean)) {
++    if (!(geoMeanImpl instanceof GeometricMean) && n > 0) {
+         geoMeanImpl.increment(value);
+     }
+     n++;
+ }
++

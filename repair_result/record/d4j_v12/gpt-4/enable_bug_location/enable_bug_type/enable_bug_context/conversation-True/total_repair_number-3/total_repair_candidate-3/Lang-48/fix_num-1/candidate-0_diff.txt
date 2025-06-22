@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -9,10 +9,15 @@
+         this.setEquals(false);
+         return this;
+     }
++    if (lhs instanceof BigDecimal && rhs instanceof BigDecimal) {
++        // Handle BigDecimal separately to ignore scale differences
++        isEquals = ((BigDecimal) lhs).compareTo((BigDecimal) rhs) == 0;
++        return this;
++    }
+     Class lhsClass = lhs.getClass();
+     if (!lhsClass.isArray()) {
+-            // The simple case, not an array, just test the element
+-            isEquals = lhs.equals(rhs);
++        // The simple case, not an array, just test the element
++        isEquals = lhs.equals(rhs);
+     } else if (lhs.getClass() != rhs.getClass()) {
+         // Here when we compare different dimensions, for example: a boolean[][] to a boolean[] 
+         this.setEquals(false);
+@@ -41,3 +46,4 @@
+     }
+     return this;
+ }
++

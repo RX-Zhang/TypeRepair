@@ -1,0 +1,1 @@
+['getRowCount', 'getLegendItem', 'getLegendItems']

@@ -1,0 +1,16 @@
+private void writeBits(final DataOutput header, final BitSet bits, final int length) throws IOException {
+    int cache = 0;
+    int shift = 7;
+    for (int i = 0; i < length; i++) {
+        cache |= ((bits.get(i) ? 1 : 0) << shift);
+        --shift;
+        if (shift < 0) {  // Fix condition from shift == 0 to shift < 0 to correctly write a full byte after 8 bits
+            header.write(cache);
+            shift = 7;
+            cache = 0;
+        }
+    }
+    if (shift != 7) {  // Fix condition to write remaining bits if any (shift reset means no bits pending)
+        header.write(cache);
+    }
+}

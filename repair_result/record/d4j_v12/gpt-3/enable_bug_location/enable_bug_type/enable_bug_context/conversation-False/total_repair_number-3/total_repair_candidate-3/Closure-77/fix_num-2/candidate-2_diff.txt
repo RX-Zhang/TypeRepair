@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -41,9 +41,11 @@
+         }
+         break;
+       default:
+-        // If we're given an outputCharsetEncoder, then check if the
+-        //  character can be represented in this character set.
+-        if (outputCharsetEncoder != null) {
++        // If the character is a representation of null or unprintable,
++        // treat it accordingly.
++        if (c == '\0') {
++          sb.append("\\0");
++        } else if (outputCharsetEncoder != null) {
+           if (outputCharsetEncoder.canEncode(c)) {
+             sb.append(c);
+           } else {
+@@ -68,3 +70,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

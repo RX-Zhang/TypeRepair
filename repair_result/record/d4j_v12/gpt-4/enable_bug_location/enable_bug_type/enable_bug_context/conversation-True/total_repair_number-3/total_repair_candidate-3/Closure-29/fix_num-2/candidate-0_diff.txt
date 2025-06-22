@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -24,7 +24,7 @@
+       // We short-circuit this problem by bailing out if we see a reference
+       // to a property that isn't defined on the object literal. This
+       // isn't a perfect algorithm, but it should catch most cases.
+-      continue;
++      return false;
+     }
+ 
+     // Only rewrite VAR declarations or simple assignment statements
+@@ -84,3 +84,4 @@
+   }
+   return ret;
+ }
++

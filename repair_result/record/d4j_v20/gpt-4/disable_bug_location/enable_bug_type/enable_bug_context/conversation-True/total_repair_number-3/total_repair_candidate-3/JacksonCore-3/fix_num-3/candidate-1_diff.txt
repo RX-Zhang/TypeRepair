@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -8,8 +8,11 @@
+     _objectCodec = codec;
+     _symbols = sym;
+     _inputBuffer = inputBuffer;
+-    _inputPtr = start;
++    _inputPtr = 0; // reset to 0 to reflect start of buffer relative to input
+     _inputEnd = end;
++    // Adjust _currInputProcessed to account for offset 'start' being trimmed
++    _currInputProcessed = start;
+     // If we have offset, need to omit that from byte offset, so:
+     _bufferRecyclable = bufferRecyclable;
+ }
++

@@ -1,0 +1,1 @@
+{"ClassName": "NullifyingDeserializer", "Fields": ["private static final long serialVersionUID;", "public static final NullifyingDeserializer instance;"], "Methods": ["public Object deserialize(JsonParser p, DeserializationContext ctxt) { ... }", "public Object deserializeWithType(JsonParser p, DeserializationContext ctxt, TypeDeserializer typeDeserializer) { ... }"]}

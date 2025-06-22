@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.convert.TestMapConversions.testMapToProperties
+- Error: junit.framework.ComparisonFailure: expected:<129> but was:<null>
+- Location:         assertEquals("129", props.getProperty("A"));
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.databind.deser.TestMapDeserialization.testReadProperties
+- Error: junit.framework.ComparisonFailure: expected:<123> but was:<null>
+- Location:         assertEquals("123", props.getProperty("b"));
+
+
+Test failure 3:
+- Test: com.fasterxml.jackson.databind.type.TestTypeFactory.testProperties
+- Error: junit.framework.AssertionFailedError: expected same:<class java.lang.String> was not:<class java.lang.Object>
+- Location:         assertSame(String.class, ((MapType) t).getKeyType().getRawClass());

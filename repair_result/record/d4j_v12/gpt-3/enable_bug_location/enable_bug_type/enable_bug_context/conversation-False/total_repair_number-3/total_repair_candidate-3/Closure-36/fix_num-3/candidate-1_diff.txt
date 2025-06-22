@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -42,7 +42,7 @@
+ 
+   if (value.isFunction()) {
+     Node callNode = reference.getParent();
+-    if (reference.getParent().isCall()) {
++    if (callNode.isCall()) {
+       CodingConvention convention = compiler.getCodingConvention();
+       // Bug 2388531: Don't inline subclass definitions into class defining
+       // calls as this confused class removing logic.
+@@ -54,9 +54,20 @@
+ 
+       // issue 668: Don't inline singleton getter methods
+       // calls as this confused class removing logic.
++      // Adding a check to prevent inlining singleton getters
++      if (isSingletonGetter(callNode)) {
++        return false;
++      }
+     }
+   }
+ 
+   return canMoveAggressively(value) ||
+       canMoveModerately(initialization, reference);
+ }
++
++private boolean isSingletonGetter(Node callNode) {
++  // Implement logic to determine if the callNode is a singleton getter
++  // This is a placeholder for the actual implementation
++  return false; // Replace with actual check
++}
++

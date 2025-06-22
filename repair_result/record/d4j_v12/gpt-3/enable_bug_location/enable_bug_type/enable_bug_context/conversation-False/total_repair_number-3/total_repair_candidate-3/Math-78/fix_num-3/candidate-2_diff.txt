@@ -1,0 +1,73 @@
+--- 
++++ 
+@@ -5,8 +5,8 @@
+ 
+         forward = interpolator.isForward();
+         final double t1 = interpolator.getCurrentTime();
+-        final int    n  = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
+-        final double h  = (t1 - t0) / n;
++        final int n = Math.max(1, (int) Math.ceil(Math.abs(t1 - t0) / maxCheckInterval));
++        final double h = (t1 - t0) / n;
+ 
+         double ta = t0;
+         double ga = g0;
+@@ -22,15 +22,20 @@
+             if (g0Positive ^ (gb >= 0)) {
+                 // there is a sign change: an event is expected during this step
+ 
+-                    // this is a corner case:
+-                    // - there was an event near ta,
+-                    // - there is another event between ta and tb
+-                    // - when ta was computed, convergence was reached on the "wrong side" of the interval
+-                    // this implies that the real sign of ga is the same as gb, so we need to slightly
+-                    // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+-                    // about bracketing
+-                        // this should never happen
+-                     
++                // this is a corner case:
++                // - there was an event near ta,
++                // - there is another event between ta and tb
++                // - when ta was computed, convergence was reached on the "wrong side" of the interval
++                // this implies that the real sign of ga is the same as gb, so we need to slightly
++                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
++                // about bracketing
++                if ((Math.abs(gb) < convergence) && (Math.abs(ga) < convergence)) {
++                    // Both values are very small; adjust ta to avoid singularities
++                    ta = tb;
++                    ga = gb;
++                    continue;
++                }
++
+                 // variation direction, with respect to the integration direction
+                 increasing = gb >= ga;
+ 
+@@ -49,7 +54,14 @@
+                 final BrentSolver solver = new BrentSolver();
+                 solver.setAbsoluteAccuracy(convergence);
+                 solver.setMaximalIterationCount(maxIterationCount);
+-                final double root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
++
++                double root;
++                try {
++                    root = (ta <= tb) ? solver.solve(f, ta, tb) : solver.solve(f, tb, ta);
++                } catch (MathRuntimeException e) {
++                    throw new EventException("Failed to find root, check if function values at endpoints have different signs.", e);
++                }
++
+                 if ((Math.abs(root - ta) <= convergence) &&
+                      (Math.abs(root - previousEventTime) <= convergence)) {
+                     // we have either found nothing or found (again ?) a past event, we simply ignore it
+@@ -80,7 +92,7 @@
+         }
+ 
+         // no event during the whole step
+-        pendingEvent     = false;
++        pendingEvent = false;
+         pendingEventTime = Double.NaN;
+         return false;
+ 
+@@ -95,3 +107,4 @@
+     }
+ 
+ }
++

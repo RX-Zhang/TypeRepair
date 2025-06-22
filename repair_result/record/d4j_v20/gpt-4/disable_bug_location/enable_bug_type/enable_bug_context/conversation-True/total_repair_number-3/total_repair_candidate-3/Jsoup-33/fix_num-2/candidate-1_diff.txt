@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -4,7 +4,7 @@
+     if (startTag.isSelfClosing()) {
+         Element el = insertEmpty(startTag);
+         stack.add(el);
+-        tokeniser.emit(new Token.EndTag(el.tagName()));  // ensure we get out of whatever state we are in. emitted for yielded processing
++        tokeniser.emit(new Token.EndTag(startTag.name()));  // ensure we get out of whatever state we are in. emitted for yielded processing
+         return el;
+     }
+     
+@@ -12,3 +12,4 @@
+     insert(el);
+     return el;
+ }
++

@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -2,5 +2,7 @@
+     if (isEmpty())
+         return false;
+     char c = input[pos];
+-    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
++    // Accept any character that is a Unicode letter (not just ASCII letters)
++    return Character.isLetter(c);
+ }
++

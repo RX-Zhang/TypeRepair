@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,8 +8,11 @@
+     _objectCodec = codec;
+     _symbols = sym;
+     _inputBuffer = inputBuffer;
+-    _inputPtr = start;
++    _inputPtr = 0;  // Reset pointer to 0 since offset should not affect location reporting
+     _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
++    // If we have offset, need to add that from processed bytes, not from pointer start
++    _currInputProcessed = start;  // Store offset here for correct byte offset calculation
++
+     _bufferRecyclable = bufferRecyclable;
+ }
++

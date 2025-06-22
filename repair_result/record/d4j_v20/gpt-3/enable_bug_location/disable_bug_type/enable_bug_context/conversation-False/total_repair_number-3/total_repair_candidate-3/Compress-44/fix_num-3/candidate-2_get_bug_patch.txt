@@ -1,0 +1,10 @@
+public ChecksumCalculatingInputStream(final Checksum checksum, final InputStream in) {
+    if (checksum == null) {
+        throw new IllegalArgumentException("Checksum must not be null");
+    }
+    if (in == null) {
+        throw new IllegalArgumentException("Input stream must not be null");
+    }
+    this.checksum = checksum;
+    this.in = in;
+}

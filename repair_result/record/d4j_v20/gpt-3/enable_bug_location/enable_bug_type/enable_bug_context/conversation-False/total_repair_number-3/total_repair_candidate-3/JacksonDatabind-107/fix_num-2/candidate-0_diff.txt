@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -15,12 +15,13 @@
+             if (deser == null) {
+                 // 10-May-2016, tatu: We may get some help...
+                 JavaType actual = _handleUnknownTypeId(ctxt, typeId);
+-                if (actual == null) { // what should this be taken to mean?
++                if (actual == null) { // better to not return null deserializer
+                     // 17-Jan-2019, tatu: As per [databind#2221], better NOT return `null` but...
+-                    return null;
++                    deser = NullifyingDeserializer.instance;
++                } else {
++                    // use the deserializer for handled type
++                    deser = ctxt.findContextualValueDeserializer(actual, _property);
+                 }
+-                // ... would this actually work?
+-                deser = ctxt.findContextualValueDeserializer(actual, _property);
+             }
+         } else {
+             /* 16-Dec-2010, tatu: Since nominal type we get here has no (generic) type parameters,
+@@ -52,3 +53,4 @@
+     }
+     return deser;
+ }
++

@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -4,11 +4,18 @@
+     if (valueToAdd == 0) {
+         return values;
+     }
+-        // month is largest field and being added to, such as month-day
++    // month is largest field and being added to, such as month-day
+     if (DateTimeUtils.isContiguous(partial)) {
+         long instant = 0L;
+         for (int i = 0, isize = partial.size(); i < isize; i++) {
+             instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
++        }
++        // Adjust for leap years
++        int newMonth = iChronology.getMonthOfYear(instant) + valueToAdd;
++        if (newMonth > iMax) {
++            newMonth = iMax;
++        } else if (newMonth < 1) {
++            newMonth = 1;
+         }
+         instant = add(instant, valueToAdd);
+         return iChronology.get(partial, instant);
+@@ -16,3 +23,4 @@
+         return super.add(partial, fieldIndex, values, valueToAdd);
+     }
+ }
++

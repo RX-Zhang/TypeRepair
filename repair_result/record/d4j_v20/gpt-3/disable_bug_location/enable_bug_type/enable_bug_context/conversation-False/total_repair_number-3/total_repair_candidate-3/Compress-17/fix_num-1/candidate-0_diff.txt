@@ -1,0 +1,64 @@
+--- 
++++ 
+@@ -7,7 +7,12 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
++    // Skip leading nulls
++    while (start < end && buffer[start] == 0) {
++        start++;
++    }
++
++    if (start == end) {
+         return 0L;
+     }
+ 
+@@ -20,31 +25,38 @@
+         }
+     }
+ 
++    if (start == end) {
++        return 0L;
++    }
++
+     // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
++    byte trailer = buffer[end - 1];
+     if (trailer == 0 || trailer == ' '){
+         end--;
+     } else {
+         throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
++                exceptionMessage(buffer, offset, length, end - 1, trailer));
+     }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++
++    // May have additional trailing NULs or spaces
++    while (end > start) {
++        trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' ') {
++            end--;
++        } else {
++            break;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+-        // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+     }
+ 
+     return result;
+ }
++

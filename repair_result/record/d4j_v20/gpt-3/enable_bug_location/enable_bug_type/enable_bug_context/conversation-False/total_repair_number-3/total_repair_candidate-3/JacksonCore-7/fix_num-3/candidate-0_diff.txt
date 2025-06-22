@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -3,7 +3,7 @@
+     if (_type == TYPE_OBJECT) {
+         _gotName = false;
+         ++_index;
+-        return STATUS_OK_AFTER_COLON;
++        return STATUS_OK_AFTER_COMMA;  // Should return after comma, not after colon, since value comes after field name colon
+     }
+ 
+     // Ok, array?
+@@ -18,3 +18,4 @@
+     ++_index;
+     return (_index == 0) ? STATUS_OK_AS_IS : STATUS_OK_AFTER_SPACE;
+ }
++

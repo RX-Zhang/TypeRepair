@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -32,8 +32,13 @@
+       report(t, n, CONSTRUCTOR_NOT_CALLABLE, childType.toString());
+     }
+ 
+-    // Functions with explcit 'this' types must be called in a GETPROP
++    // Functions with explicit 'this' types must be called in a GETPROP
+     // or GETELEM.
++  
++    // Verify that the function is called with the appropriate 'this' context
++    if (functionType.getTypeOfThis().isUnknownType()) {
++      report(t, n, EXPECTED_THIS_TYPE, childType.toString());
++    }
+ 
+     visitParameterList(t, n, functionType);
+     ensureTyped(t, n, functionType.getReturnType());
+@@ -45,3 +50,4 @@
+   // supported by IE.  Either say something about the return type or warn
+   // about the non-portability of the call or both.
+ }
++

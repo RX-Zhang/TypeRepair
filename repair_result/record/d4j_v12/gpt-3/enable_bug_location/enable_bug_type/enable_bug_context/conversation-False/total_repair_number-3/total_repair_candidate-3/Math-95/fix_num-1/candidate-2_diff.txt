@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,7 +1,10 @@
+ protected double getInitialDomain(double p) {
+-    double ret;
+     double d = getDenominatorDegreesOfFreedom();
+-        // use mean
+-        ret = d / (d - 2.0);
+-    return ret;
++    // If denominator degrees of freedom <= 2, mean is undefined; return a positive default instead
++    if (d <= 2.0) {
++        return 1.0;
++    }
++    // use mean
++    return d / (d - 2.0);
+ }
++

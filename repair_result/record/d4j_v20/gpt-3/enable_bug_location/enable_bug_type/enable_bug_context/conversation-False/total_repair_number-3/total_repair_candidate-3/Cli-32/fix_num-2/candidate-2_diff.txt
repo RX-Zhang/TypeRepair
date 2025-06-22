@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -13,9 +13,8 @@
+         return -1;
+     }
+ 
+-
+     // look for the last whitespace character before startPos+width
+-    pos = startPos + width;
++    pos = Math.min(startPos + width, text.length() - 1); // ensure pos is within bounds
+ 
+     char c;
+ 
+@@ -33,10 +32,11 @@
+     
+     // if we didn't find one, simply chop at startPos+width
+     pos = startPos + width;
+-    while ((pos <= text.length()) && ((c = text.charAt(pos)) != ' ')
++    while ((pos < text.length()) && ((c = text.charAt(pos)) != ' ')
+            && (c != '\n') && (c != '\r'))
+     {
+         ++pos;
+     }        
+     return pos == text.length() ? -1 : pos;
+ }
++

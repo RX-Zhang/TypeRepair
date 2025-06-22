@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -7,9 +7,10 @@
+   }
+ 
+   attachLiteralTypes(n);
++
+   switch (n.getType()) {
+     case Token.FUNCTION:
+-      if (parent.getType() == Token.NAME) {
++      if (parent.getType() == Token.NAME || parent.getType() == Token.GETPROP) {
+         return;
+       }
+       defineDeclaredFunction(n, parent);
+@@ -22,3 +23,4 @@
+       break;
+   }
+ }
++

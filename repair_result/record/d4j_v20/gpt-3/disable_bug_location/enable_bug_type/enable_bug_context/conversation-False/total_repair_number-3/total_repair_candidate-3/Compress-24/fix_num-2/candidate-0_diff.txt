@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -24,17 +24,18 @@
+     // The ustar and POSIX tar specs require a trailing NUL or
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
++    while (end > start) {
++        byte trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' ') {
++            end--;
++        } else {
++            break;
++        }
+     }
+-    trailer = buffer[end - 1];
+-    while (start < end - 1 && (trailer == 0 || trailer == ' ')) {
+-        end--;
+-        trailer = buffer[end - 1];
++    
++    if (end <= start) {
++        // No valid octal digits found
++        return 0L;
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -50,3 +51,4 @@
+ 
+     return result;
+ }
++

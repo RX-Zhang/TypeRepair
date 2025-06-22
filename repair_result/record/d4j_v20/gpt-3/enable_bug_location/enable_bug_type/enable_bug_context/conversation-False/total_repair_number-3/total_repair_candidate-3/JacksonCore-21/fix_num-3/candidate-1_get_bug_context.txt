@@ -1,0 +1,1 @@
+['getCurrentToken', 'hasCurrentToken', 'hasToken', 'isExpectedStartArrayToken', 'isExpectedStartObjectToken', 'getParsingContext', 'getCurrentName', 'clearCurrentToken', 'getLastClearedToken', 'nextToken']

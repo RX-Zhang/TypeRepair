@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -1,7 +1,15 @@
+ public static int gcd(int u, int v) {
+-    if (u * v == 0) {
+-        return (Math.abs(u) + Math.abs(v));
++    // handle cases where either u or v is zero
++    if (u == 0 && v == 0) {
++        return 0;
+     }
++    if (u == 0) {
++        return Math.abs(v);
++    }
++    if (v == 0) {
++        return Math.abs(u);
++    }
++
+     // keep u and v negative, as negative integers range down to
+     // -2^31, while positive numbers can only be as large as 2^31-1
+     // (i.e. we can't necessarily negate a negative number without
+@@ -48,3 +56,4 @@
+     } while (t != 0);
+     return -u * (1 << k); // gcd is u*2^k
+ }
++

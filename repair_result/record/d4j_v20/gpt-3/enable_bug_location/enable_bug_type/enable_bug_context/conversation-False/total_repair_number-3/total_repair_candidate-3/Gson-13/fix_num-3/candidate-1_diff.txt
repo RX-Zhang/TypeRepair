@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -72,8 +72,12 @@
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
++        // Fix here: allow leading zero if it's the only digit, to support "-0".
+         if (value == 0) {
+-          return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++          // Only reject leading zero if there is more than one digit and no decimal or exponent yet.
++          if (i > 0 && last != NUMBER_CHAR_DECIMAL && last != NUMBER_CHAR_EXP_E && last != NUMBER_CHAR_EXP_SIGN && last != NUMBER_CHAR_EXP_DIGIT) {
++            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++          }
+         }
+         long newValue = value * 10 - (c - '0');
+         fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+@@ -100,3 +104,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

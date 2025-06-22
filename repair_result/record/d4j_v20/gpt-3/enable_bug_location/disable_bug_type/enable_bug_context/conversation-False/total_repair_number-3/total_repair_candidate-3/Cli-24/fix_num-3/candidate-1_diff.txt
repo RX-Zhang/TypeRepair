@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -29,12 +29,12 @@
+ 
+         if (pos == -1)
+         {
+-            sb.append(text);
++            sb.append(rtrim(text));
+ 
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        if ( (text.length() > width) && (pos == nextLineTabStop) ) 
+         {
+             pos = width;
+         }
+@@ -42,3 +42,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

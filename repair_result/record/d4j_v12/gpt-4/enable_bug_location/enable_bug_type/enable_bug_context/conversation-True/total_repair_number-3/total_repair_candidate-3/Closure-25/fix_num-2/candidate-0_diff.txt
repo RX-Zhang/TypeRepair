@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -22,8 +22,18 @@
+     }
+   }
+   n.setJSType(type);
++  // Perform backwards inference on constructor arguments to update argument types
++  if (type != null && type.isRecordType() && constructor != null) {
++    if (constructor.getType() == Token.CALL || constructor.getType() == Token.NEW) {
++      FunctionType fnType = constructorType.toMaybeFunctionType();
++      if (fnType != null) {
++        backwardsInferenceFromCallSite(n, fnType);
++      }
++    }
++  }
+   for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
+     scope = traverse(arg, scope);
+   }
+   return scope;
+ }
++

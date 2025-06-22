@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -43,8 +43,9 @@
+         if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+             String testPI = ((ProcessingInstructionTest) test).getTarget();
+             String nodePI = ((ProcessingInstruction) node).getTarget();
+-            return testPI.equals(nodePI);
++            return equalStrings(testPI, nodePI);
+         }
+     }
+     return false;
+ }
++

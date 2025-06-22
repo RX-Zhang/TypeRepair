@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,7 +1,17 @@
+ private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+     for (Attribute attribute : source.attributes()) {
+-        // valid xml attribute names are: ^[a-zA-Z_:][-a-zA-Z0-9_:.]
+-        String key = attribute.getKey().replaceAll("[^-a-zA-Z0-9_:.]", "");
+-            el.setAttribute(key, attribute.getValue());
++        String key = attribute.getKey();
++        // Remove invalid characters from the attribute name (name must start with a letter or _ or :)
++        // and subsequent characters can be letters, digits, '-', '_', '.', or ':'. 
++        // But XML names cannot start with a digit or '-'.
++        // First filter out invalid characters:
++        key = key.replaceAll("[^a-zA-Z0-9_:\\-\\.]", "");
++        // Then ensure the first character is valid for XML names:
++        if (key.isEmpty() || !Character.isLetter(key.charAt(0)) && key.charAt(0) != '_' && key.charAt(0) != ':') {
++            // skip this attribute if the key is invalid to avoid DOMException
++            continue;
++        }
++        el.setAttribute(key, attribute.getValue());
+     }
+ }
++

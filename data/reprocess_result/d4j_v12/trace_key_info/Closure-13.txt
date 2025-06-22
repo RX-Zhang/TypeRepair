@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.IntegrationTest.testIssue787
+- Error: junit.framework.AssertionFailedError: 
+Expected: function some_function(){var a,b;any_expression&&(b=external_ref,a=function(){return b()});return{method1:function(){a&&a();return!0},method2:function(){return!1}}}
+Result: function some_function(){var a,b;any_expression&&(b=external_ref,a=function(){return b()});return{method1:function(){a&&a();return true},method2:function(){return false}}}
+- Location:     test(options, code, result);

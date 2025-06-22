@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -2,5 +2,8 @@
+     tb.insert(startTag);
+     tb.tokeniser.transition(TokeniserState.Rawtext);
+     tb.markInsertionMode();
++    // Corrected the control flow to ensure proper handling of new tokens
+     tb.transition(Text);
++    tb.tokeniser.transition(TokeniserState.Data); // Added transition to Data state after handling Rawtext
+ }
++

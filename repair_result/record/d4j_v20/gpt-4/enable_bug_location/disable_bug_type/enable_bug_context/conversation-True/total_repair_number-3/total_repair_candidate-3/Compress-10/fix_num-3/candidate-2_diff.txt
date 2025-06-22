@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -5,6 +5,7 @@
+     // the hashcode - see COMPRESS-164
+     // Map needs to be reconstructed in order to keep central
+     // directory order
++    Map<ZipArchiveEntry, OffsetEntry> newEntries = new LinkedHashMap<>();
+     for (ZipArchiveEntry ze : entries.keySet()) {
+         OffsetEntry offsetEntry = entries.get(ze);
+         long offset = offsetEntry.headerOffset;
+@@ -39,5 +40,9 @@
+                 nameMap.put(ze.getName(), ze);
+             }
+         }
++        newEntries.put(ze, offsetEntry);
+     }
++    entries.clear();
++    entries.putAll(newEntries);
+ }
++

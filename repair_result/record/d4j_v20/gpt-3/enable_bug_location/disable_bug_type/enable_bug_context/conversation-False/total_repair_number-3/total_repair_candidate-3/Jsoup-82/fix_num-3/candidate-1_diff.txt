@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -50,15 +50,43 @@
+             }
+         }
+         foundCharset = validateCharset(foundCharset);
+-        if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
++
++        // Fix here: if foundCharset cannot encode, fallback to UTF-8
++        if (foundCharset != null) {
++            try {
++                Charset cs = Charset.forName(foundCharset);
++                if (!cs.newEncoder().canEncode()) {
++                    foundCharset = null; // fallback flag
++                }
++            } catch (Exception e) {
++                foundCharset = null; // fallback flag
++            }
++        }
++
++        if (foundCharset == null) foundCharset = defaultCharset;
++
++        if (!foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+             charsetName = foundCharset;
+             doc = null;
+         } else if (!fullyRead) {
+             doc = null;
++            charsetName = foundCharset;
++        } else {
++            charsetName = foundCharset;
+         }
+     } else { // specified by content type header (or by user on file load)
+         Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
++
++        // Fix here: If specified charset charsetName is not encodable, fallback to UTF-8
++        try {
++            Charset cs = Charset.forName(charsetName);
++            if (!cs.newEncoder().canEncode()) {
++                charsetName = "UTF-8";
++            }
++        } catch (Exception e) {
++            charsetName = "UTF-8";
++        }
+     }
+     if (doc == null) {
+         if (charsetName == null)
+@@ -74,8 +102,9 @@
+         }
+         Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
+     }
+     input.close();
+     return doc;
+ }
++

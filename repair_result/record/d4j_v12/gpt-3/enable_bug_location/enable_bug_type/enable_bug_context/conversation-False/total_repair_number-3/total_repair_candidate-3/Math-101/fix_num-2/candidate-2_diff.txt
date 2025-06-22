@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -55,9 +55,15 @@
+     int n = getImaginaryCharacter().length();
+     startIndex = pos.getIndex();
+     int endIndex = startIndex + n;
+-    if (
+-        source.substring(startIndex, endIndex).compareTo(
+-        getImaginaryCharacter()) != 0) {
++
++    // Boundary check for substring
++    if (endIndex > source.length()) {
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(startIndex);
++        return null;
++    }
++
++    if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {
+         // set index back to initial, error index should be the start index
+         // character examined.
+         pos.setIndex(initialIndex);
+@@ -68,3 +74,4 @@
+ 
+     return new Complex(re.doubleValue(), im.doubleValue() * sign);
+ }
++

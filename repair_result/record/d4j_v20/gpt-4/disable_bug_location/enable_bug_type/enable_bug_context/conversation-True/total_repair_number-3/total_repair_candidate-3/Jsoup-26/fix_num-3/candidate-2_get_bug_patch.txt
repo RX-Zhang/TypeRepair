@@ -1,0 +1,13 @@
+public Document clean(Document dirtyDocument) {
+    Validate.notNull(dirtyDocument);
+
+    if (dirtyDocument.body() == null) {
+        // If body is null, create an empty shell and return it
+        return Document.createShell(dirtyDocument.baseUri());
+    }
+
+    Document clean = Document.createShell(dirtyDocument.baseUri());
+    copySafeNodes(dirtyDocument.body(), clean.body());
+
+    return clean;
+}

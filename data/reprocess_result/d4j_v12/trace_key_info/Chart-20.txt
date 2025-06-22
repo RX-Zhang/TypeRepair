@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.chart.plot.junit.ValueMarkerTests.test1808376
+- Error: junit.framework.AssertionFailedError: expected:<java.awt.Color[r=0,g=0,b=255]> but was:<java.awt.Color[r=255,g=0,b=0]>
+- Location:         assertEquals(Color.blue, m.getOutlinePaint());

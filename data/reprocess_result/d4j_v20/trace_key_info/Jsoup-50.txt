@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.helper.DataUtilTest.supportsBOMinFiles
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(doc.title().contains("UTF-16BE"));

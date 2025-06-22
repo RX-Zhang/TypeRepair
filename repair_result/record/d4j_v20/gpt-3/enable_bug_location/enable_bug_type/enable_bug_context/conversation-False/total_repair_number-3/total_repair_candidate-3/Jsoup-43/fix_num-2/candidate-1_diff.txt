@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -4,8 +4,10 @@
+ 
+     for (int i = 0; i < elements.size(); i++) {
+         E element = elements.get(i);
+-        if (element.equals(search))
++        if (element.equals(search)) {
+             return i;
++        }
+     }
+-    return null;
++    return -1; // Changed from null to -1 to indicate not found
+ }
++

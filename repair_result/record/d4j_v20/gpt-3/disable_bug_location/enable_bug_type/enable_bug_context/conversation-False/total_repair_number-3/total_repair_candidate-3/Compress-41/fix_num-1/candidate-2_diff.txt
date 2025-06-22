@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -104,3 +104,4 @@
+     entriesRead++;
+     return current.entry;
+ }
++

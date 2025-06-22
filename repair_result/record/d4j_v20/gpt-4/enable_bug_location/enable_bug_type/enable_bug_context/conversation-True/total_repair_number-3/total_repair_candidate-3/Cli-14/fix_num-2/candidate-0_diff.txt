@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+ 
+         // if the child option is present then validate it
+         if (commandLine.hasOption(option)) {
+-            if (++present > maximum) {
++            if (++present > getMaximum()) {
+                 unexpected = option;
+ 
+                 break;
+@@ -34,7 +34,7 @@
+     }
+ 
+     // too few option
+-    if (present < minimum) {
++    if (present < getMinimum()) {
+         throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+     }
+ 
+@@ -44,3 +44,4 @@
+         option.validate(commandLine);
+     }
+ }
++

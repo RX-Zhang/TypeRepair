@@ -1,0 +1,77 @@
+--- 
++++ 
+@@ -3,6 +3,7 @@
+     double[] w = new double[5];
+     double[] h = new double[5];
+     w[0] = constraint.getWidth();
++    
+     if (this.topBlock != null) {
+         RectangleConstraint c1 = new RectangleConstraint(w[0], null,
+                 LengthConstraintType.FIXED, 0.0,
+@@ -11,15 +12,27 @@
+         Size2D size = this.topBlock.arrange(g2, c1);
+         h[0] = size.height;
+     }
++    
+     w[1] = w[0];
++    
+     if (this.bottomBlock != null) {
++        double bottomHeight = constraint.getHeight() - h[0];
++        if (bottomHeight < 0) {
++            throw new RuntimeException("Invalid height for bottom block: " + bottomHeight);
++        }
++        
+         RectangleConstraint c2 = new RectangleConstraint(w[0], null,
+-                LengthConstraintType.FIXED, 0.0, new Range(0.0,
+-                constraint.getHeight() - h[0]), LengthConstraintType.RANGE);
++                LengthConstraintType.FIXED, 0.0, new Range(0.0, bottomHeight),
++                LengthConstraintType.RANGE);
+         Size2D size = this.bottomBlock.arrange(g2, c2);
+         h[1] = size.height;
+     }
++    
+     h[2] = constraint.getHeight() - h[1] - h[0];
++    if (h[2] < 0) {
++        throw new RuntimeException("Invalid height for center block: " + h[2]);
++    }
++    
+     if (this.leftBlock != null) {
+         RectangleConstraint c3 = new RectangleConstraint(0.0,
+                 new Range(0.0, constraint.getWidth()),
+@@ -28,17 +41,30 @@
+         Size2D size = this.leftBlock.arrange(g2, c3);
+         w[2] = size.width;
+     }
++    
+     h[3] = h[2];
++    
+     if (this.rightBlock != null) {
++        double rightWidthConstraint = constraint.getWidth() - w[2];
++        if (rightWidthConstraint < 0) {
++            throw new RuntimeException("Invalid width for right block: " + rightWidthConstraint);
++        }
++        
+         RectangleConstraint c4 = new RectangleConstraint(0.0,
+-                new Range(0.0, constraint.getWidth() - w[2]),
++                new Range(0.0, rightWidthConstraint),
+                 LengthConstraintType.RANGE, h[2], null,
+                 LengthConstraintType.FIXED);
+         Size2D size = this.rightBlock.arrange(g2, c4);
+         w[3] = size.width;
+     }
++    
+     h[4] = h[2];
+     w[4] = constraint.getWidth() - w[3] - w[2];
++    
++    if (w[4] < 0) {
++        throw new RuntimeException("Invalid width for center block: " + w[4]);
++    }
++    
+     RectangleConstraint c5 = new RectangleConstraint(w[4], h[4]);
+     if (this.centerBlock != null) {
+         this.centerBlock.arrange(g2, c5);
+@@ -66,3 +92,4 @@
+     }
+     return new Size2D(constraint.getWidth(), constraint.getHeight());
+ }
++

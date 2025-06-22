@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ private void visitNew(NodeTraversal t, Node n) {
+   Node constructor = n.getFirstChild();
+   JSType type = getJSType(constructor).restrictByNotNullOrUndefined();
+-  if (type.isConstructor() || type.isEmptyType() || type.isUnknownType()) {
++  if (type.isConstructor() || type.isUnknownType() || type.isEmptyType()) {
+     FunctionType fnType = type.toMaybeFunctionType();
+     if (fnType != null) {
+       visitParameterList(t, n, fnType);
+@@ -14,3 +14,4 @@
+     ensureTyped(t, n);
+   }
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.ValueTest.testPropertyOptionFlags
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue( cmd.hasOption("e") ); // this option accepts as argument

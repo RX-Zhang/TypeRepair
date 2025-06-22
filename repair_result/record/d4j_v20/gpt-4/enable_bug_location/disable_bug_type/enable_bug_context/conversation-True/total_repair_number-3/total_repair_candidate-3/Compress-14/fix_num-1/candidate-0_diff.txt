@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -34,12 +34,14 @@
+         end--;
+     } else {
+         throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
++                exceptionMessage(buffer, offset, length, end - 1, trailer));
+     }
+     // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    if (end > start) {
++        trailer = buffer[end-1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -55,3 +57,4 @@
+ 
+     return result;
+ }
++

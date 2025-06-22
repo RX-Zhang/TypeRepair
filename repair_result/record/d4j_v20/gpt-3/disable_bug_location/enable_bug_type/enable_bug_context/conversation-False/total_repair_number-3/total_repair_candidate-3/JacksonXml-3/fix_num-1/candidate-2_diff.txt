@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -56,7 +56,7 @@
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            _nextToken = JsonToken.FIELD_NAME;
++            _nextToken = JsonToken.VALUE_STRING;
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
+@@ -91,3 +91,4 @@
+     }
+     return null;
+ }
++

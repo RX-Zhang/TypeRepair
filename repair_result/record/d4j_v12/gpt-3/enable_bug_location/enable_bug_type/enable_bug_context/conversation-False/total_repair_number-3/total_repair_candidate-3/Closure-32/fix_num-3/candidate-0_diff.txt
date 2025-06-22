@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -23,10 +23,6 @@
+   token = next();
+ 
+   boolean ignoreStar = false;
+-
+-  // Track the start of the line to count whitespace that
+-  // the tokenizer skipped. Because this case is rare, it's easier
+-  // to do this here than in the tokenizer.
+ 
+   do {
+     switch (token) {
+@@ -58,14 +54,10 @@
+         ignoreStar = false;
+         state = State.SEARCHING_ANNOTATION;
+ 
+-            // All tokens must be separated by a space.
+-
++        // All tokens must be separated by a space.
+         if (token == JsDocToken.EOC ||
+             token == JsDocToken.EOF ||
+-            // When we're capturing a license block, annotations
+-            // in the block are ok.
+-            (token == JsDocToken.ANNOTATION &&
+-             option != WhitespaceOption.PRESERVE)) {
++            (token == JsDocToken.ANNOTATION && option != WhitespaceOption.PRESERVE)) {
+           String multilineText = builder.toString();
+ 
+           if (option != WhitespaceOption.PRESERVE) {
+@@ -91,7 +83,7 @@
+         line = stream.getRemainingJSDocLine();
+ 
+         if (option != WhitespaceOption.PRESERVE) {
+-          line = trimEnd(line);
++          line = line.trim();
+         }
+ 
+         builder.append(line);
+@@ -99,3 +91,4 @@
+     }
+   } while (true);
+ }
++

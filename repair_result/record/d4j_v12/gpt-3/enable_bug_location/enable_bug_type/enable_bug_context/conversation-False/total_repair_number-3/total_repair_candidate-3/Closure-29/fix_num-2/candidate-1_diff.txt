@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+     //
+     if (parent.isGetProp()) {
+       Preconditions.checkState(parent.getFirstChild() == name);
+-      // A call target maybe using the object as a 'this' value.
++      // A call target may be using the object as a 'this' value.
+       if (gramps.isCall()
+           && gramps.getFirstChild() == parent) {
+         return false;
+@@ -43,7 +43,7 @@
+       return false;
+     }
+ 
+-    // Make sure that the value is not self-refential. IOW,
++    // Make sure that the value is not self-referential. IOW,
+     // disallow things like x = {b: x.a}.
+     //
+     // TODO: Only exclude unorderable self-referential
+@@ -58,7 +58,6 @@
+         // ES5 get/set not supported.
+         return false;
+       }
+-
+ 
+       Node childVal = child.getFirstChild();
+       // Check if childVal is the parent of any of the passed in
+@@ -76,7 +75,6 @@
+       }
+     }
+ 
+-
+     // We have found an acceptable object literal assignment. As
+     // long as there are no other assignments that mess things up,
+     // we can inline.
+@@ -84,3 +82,4 @@
+   }
+   return ret;
+ }
++

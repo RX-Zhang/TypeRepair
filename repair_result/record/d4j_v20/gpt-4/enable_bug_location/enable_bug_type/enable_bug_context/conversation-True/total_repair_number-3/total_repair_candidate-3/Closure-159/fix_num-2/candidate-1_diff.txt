@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,9 +7,13 @@
+     if (child.getType() == Token.NAME) {
+       changed.add(child.getString());
+     }
++  } else if (node.getType() == Token.EXPR_RESULT) {
++    // Inline functions may be called without being inside a CALL node
++    findCalledFunctions(node.getFirstChild(), changed);
+   }
+ 
+   for (Node c = node.getFirstChild(); c != null; c = c.getNext()) {
+     findCalledFunctions(c, changed);
+   }
+ }
++

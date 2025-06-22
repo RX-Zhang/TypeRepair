@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -8,6 +8,9 @@
+     for (int i = 0; i < inAvail; i++) {
+         if (buffer == null || buffer.length - pos < decodeSize) {
+             resizeBuffer();
++        }
++        if (inPos >= in.length) { // Boundary check for inPos
++            throw new ArrayIndexOutOfBoundsException("inPos exceeds input array length");
+         }
+         byte b = in[inPos++];
+         if (b == PAD) {
+@@ -34,7 +37,6 @@
+     // EOF (-1) and first time '=' character is encountered in stream.
+     // This approach makes the '=' padding characters completely optional.
+     if (eof && modulus != 0) {
+-        
+         x = x << 6;
+         switch (modulus) {
+             case 2 :
+@@ -48,3 +50,4 @@
+         }
+     }
+ }
++

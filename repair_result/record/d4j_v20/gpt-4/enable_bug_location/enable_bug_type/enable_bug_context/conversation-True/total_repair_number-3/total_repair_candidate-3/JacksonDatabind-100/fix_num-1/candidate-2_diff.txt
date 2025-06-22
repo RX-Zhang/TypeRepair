@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -16,7 +16,11 @@
+                 return (byte[]) ob;
+             }
+         }
++        if (n.isTextual()) {
++            return b64variant.decode(n.textValue());
++        }
+     }
+     // otherwise return null to mark we have no binary content
+     return null;
+ }
++

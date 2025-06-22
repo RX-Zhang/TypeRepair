@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -38,6 +38,8 @@
+     }
+     else
+     {
+-        return null;
++        // Throw ParseException if type is not supported
++        throw new ParseException("Cannot convert " + str + " to class " + clazz.getName());
+     }
+ }
++

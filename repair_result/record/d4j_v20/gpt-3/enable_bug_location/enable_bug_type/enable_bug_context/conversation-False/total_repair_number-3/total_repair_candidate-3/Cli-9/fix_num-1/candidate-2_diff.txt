@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     throws MissingOptionException
+ {
+     // if there are required options that have not been
+-    // processsed
++    // processed
+     if (getRequiredOptions().size() > 0)
+     {
+         Iterator iter = getRequiredOptions().iterator();
+@@ -10,13 +10,16 @@
+         buff.append(getRequiredOptions().size() == 1 ? "" : "s");
+         buff.append(": ");
+ 
+-
+         // loop through the required options
+         while (iter.hasNext())
+         {
+             buff.append(iter.next());
++            if (iter.hasNext()) {
++                buff.append(", "); // Add comma for separation
++            }
+         }
+ 
+         throw new MissingOptionException(buff.toString());
+     }
+ }
++

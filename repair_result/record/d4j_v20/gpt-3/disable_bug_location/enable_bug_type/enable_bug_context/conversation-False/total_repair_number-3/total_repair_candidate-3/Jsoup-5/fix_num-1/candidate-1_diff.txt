@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -3,6 +3,15 @@
+     String key = tq.consumeAttributeKey();
+     String value = "";
+     tq.consumeWhitespace();
++
++    if (key.length() == 0) {
++        // no valid key found - consume a character to avoid infinite loop but do not create attribute
++        if (!tq.isEmpty()) {
++            tq.consume();
++        }
++        return null;
++    }
++
+     if (tq.matchChomp("=")) {
+         tq.consumeWhitespace();
+ 
+@@ -20,11 +29,7 @@
+         }
+         tq.consumeWhitespace();
+     }
+-    if (key.length() != 0)
+-        return Attribute.createFromEncoded(key, value);
+-    else {
+-        tq.consume();
+-            
+-        return null;
+-    }
++
++    return Attribute.createFromEncoded(key, value);
+ }
++

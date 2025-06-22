@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -143,25 +143,20 @@
+                 } else {
+                     b = u;
+                 }
+-                if (fu <= fw ||
+-                    Precision.equals(w, x)) {
++                if (fu < fw || Precision.equals(w, x)) {
+                     v = w;
+                     fv = fw;
+                     w = u;
+                     fw = fu;
+-                } else if (fu <= fv ||
+-                           Precision.equals(v, x) ||
+-                           Precision.equals(v, w)) {
++                } else if (fu < fv || Precision.equals(v, x) || Precision.equals(v, w)) {
+                     v = u;
+                     fv = fu;
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return
+-                        best(current,
+-                             previous,
+-                        isMinim);
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

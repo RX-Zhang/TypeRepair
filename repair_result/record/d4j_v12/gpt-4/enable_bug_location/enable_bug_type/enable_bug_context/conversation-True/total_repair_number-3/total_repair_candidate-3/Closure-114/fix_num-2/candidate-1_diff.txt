@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -25,7 +25,12 @@
+       // caller expression, but it could be nested deeper in the caller and
+       // we would still get a bug.
+       // See testAssignWithCall2 for an example of this.
+-      recordDepScope(recordNode, ns);
++      if (!NodeUtil.isExpressionNode(parent) || !valueConsumedByParent(n, parent)) {
++        recordDepScope(recordNode, ns);
++      } else {
++        recordDepScope(nameNode, ns);
++      }
+     }
+   }
+ }
++

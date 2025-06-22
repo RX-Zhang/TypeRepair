@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -4,8 +4,10 @@
+                              boolean allowStoredEntriesWithDataDescriptor) {
+     zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+     this.useUnicodeExtraFields = useUnicodeExtraFields;
++    this.buf = ByteBuffer.allocate(ZipArchiveOutputStream.BUFFER_SIZE);
+     in = new PushbackInputStream(inputStream, buf.capacity());
+     this.allowStoredEntriesWithDataDescriptor =
+         allowStoredEntriesWithDataDescriptor;
+     // haven't read anything so far
+ }
++

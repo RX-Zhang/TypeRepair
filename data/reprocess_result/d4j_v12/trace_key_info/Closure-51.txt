@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testIssue582
+- Error: junit.framework.ComparisonFailure: expected:<var x=[-0.]0> but was:<var x=[]0>
+- Location:     assertPrint("var x = -0.0;", "var x=-0.0");

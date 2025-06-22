@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -18,4 +18,7 @@
+         if (next == firstFound)
+             break;
+     }
++    // After removing elements up to firstFound, push firstFound back onto stack
++    stack.add(firstFound);
+ }
++

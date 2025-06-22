@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -24,8 +24,13 @@
+       // FYI: this fixes only the specific case where the assignment is the
+       // caller expression, but it could be nested deeper in the caller and
+       // we would still get a bug.
+-      // See testAssignWithCall2 for an example of this.
+-      recordDepScope(recordNode, ns);
++      // See testAssignWithCall for an example of this.
++      if (parent.isAssign() && parent.getFirstChild() == n) {
++        recordDepScope(recordNode, ns);
++      } else {
++        recordDepScope(nameNode, ns);
++      }
+     }
+   }
+ }
++

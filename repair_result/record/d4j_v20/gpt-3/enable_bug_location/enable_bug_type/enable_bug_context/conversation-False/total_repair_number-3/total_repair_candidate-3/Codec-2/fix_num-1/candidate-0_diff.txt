@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -11,21 +11,22 @@
+         }
+         switch (modulus) {
+             case 1:
+-                buf[pos++] = encodeTable[(x >> 2) & MASK_6BITS];
+-                buf[pos++] = encodeTable[(x << 4) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 16) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+                 // URL-SAFE skips the padding to further reduce size.
+                 if (encodeTable == STANDARD_ENCODE_TABLE) {
+-                    buf[pos++] = PAD;
+                     buf[pos++] = PAD;
+                 }
+                 break;
+ 
+             case 2:
+-                buf[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
+-                buf[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+-                buf[pos++] = encodeTable[(x << 2) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 18) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 12) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 6) & MASK_6BITS];
+                 // URL-SAFE skips the padding to further reduce size.
+                 if (encodeTable == STANDARD_ENCODE_TABLE) {
++                    buf[pos++] = PAD;
+                     buf[pos++] = PAD;
+                 }
+                 break;
+@@ -58,3 +59,4 @@
+         }
+     }
+ }
++

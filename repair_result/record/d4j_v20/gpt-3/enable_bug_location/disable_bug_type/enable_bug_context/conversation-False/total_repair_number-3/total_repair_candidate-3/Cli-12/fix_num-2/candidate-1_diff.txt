@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -19,20 +19,41 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            // Handle options with an '=' sign, e.g. --foo=bar or -f=bar
++            int pos = arg.indexOf('=');
++            String opt = null;
++            String value = null;
++            if (pos != -1)
++            {
++                opt = arg.substring(0, pos);
++                value = arg.substring(pos + 1);
+ 
+-            if (options.hasOption(opt))
+-            {
+-                tokens.add(arg);
++                String strippedOpt = Util.stripLeadingHyphens(opt);
++
++                if (options.hasOption(strippedOpt))
++                {
++                    tokens.add(opt);
++                    tokens.add(value);
++                }
++                else
++                {
++                    // Not a recognized option, treat as a whole argument
++                    tokens.add(arg);
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String stripped = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(stripped))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg);
++                }
++                else if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
++                {
++                    // special properties option (e.g. -Dproperty=value)
++                    tokens.add(arg.substring(0, 2));
++                    tokens.add(arg.substring(2));
+                 }
+                 else
+                 {
+@@ -57,3 +78,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

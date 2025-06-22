@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ protected Object deserializeUsingPropertyBasedWithUnwrapped(JsonParser p,
+-		DeserializationContext ctxt)
++        DeserializationContext ctxt)
+     throws IOException, JsonProcessingException
+ {
+     final PropertyBasedCreator creator = _propertyBasedCreator;
+@@ -19,7 +19,7 @@
+                 t = p.nextToken();
+                 Object bean;
+                 try {
+-                    bean = creator.build(ctxt, buffer);
++                    bean = finishBuild(ctxt, buffer);
+                 } catch (Exception e) {
+                     wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+                     continue;
+@@ -62,11 +62,12 @@
+ 
+     // We hit END_OBJECT, so:
+     Object bean;
+-    // !!! 15-Feb-2012, tatu: Need to modify creator to use Builder!
++    // modified to use finishBuild instead of creator.build directly
+     try {
+-        bean = creator.build(ctxt, buffer);
++        bean = finishBuild(ctxt, buffer);
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

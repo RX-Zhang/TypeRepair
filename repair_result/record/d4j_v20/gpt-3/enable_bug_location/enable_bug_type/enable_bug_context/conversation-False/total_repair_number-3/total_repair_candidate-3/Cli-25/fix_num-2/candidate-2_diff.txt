@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -33,7 +33,8 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        // Corrected the logical expression to ensure proper wrapping
++        if ( (text.length() > width) && (pos >= nextLineTabStop) && (pos != width) ) 
+         {
+             pos = width;
+         }
+@@ -41,3 +42,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

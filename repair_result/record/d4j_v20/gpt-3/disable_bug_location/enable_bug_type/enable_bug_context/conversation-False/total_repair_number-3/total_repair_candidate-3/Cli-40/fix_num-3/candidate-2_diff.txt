@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -38,6 +38,8 @@
+     }
+     else
+     {
+-        return null;
++        // Throw a ParseException instead of returning null to handle unsupported types appropriately
++        throw new ParseException("Unsupported class: " + clazz.getName());
+     }
+ }
++

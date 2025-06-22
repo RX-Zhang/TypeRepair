@@ -1,0 +1,20 @@
+private boolean isShortOption(String token)
+{
+    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+    return token.startsWith("-") && token.length() >= 2 && options.hasShortOption(token.substring(1, 2));
+}
+
+// This method should also handle the case where the option may have additional characters
+// after the first character, which is not being checked in the current implementation.
+// Therefore, we need to ensure that the token is valid as a short option considering
+// the entire token length and its characters.
+
+private boolean isShortOption(String token)
+{
+    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+    if (token.startsWith("-") && token.length() >= 2) {
+        String shortOpt = token.substring(1);
+        return options.hasShortOption(shortOpt) || shortOpt.chars().allMatch(ch -> options.hasShortOption(String.valueOf((char) ch)));
+    }
+    return false;
+}

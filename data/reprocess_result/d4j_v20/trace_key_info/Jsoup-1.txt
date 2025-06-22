@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.ParserTest.createsStructureFromBodySnippet
+- Error: junit.framework.AssertionFailedError: expected:<[foo bar baz]> but was:<[bar baz foo]>
+- Location:         assertEquals ("foo bar baz", doc.text());

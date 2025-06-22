@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.ser.TestMapSerialization.testClassKey
+- Error: junit.framework.ComparisonFailure: expected:<{"[]java.lang.String":2}> but was:<{"[class ]java.lang.String":2}>
+- Location:         assertEquals(aposToQuotes("{'java.lang.String':2}"), json);

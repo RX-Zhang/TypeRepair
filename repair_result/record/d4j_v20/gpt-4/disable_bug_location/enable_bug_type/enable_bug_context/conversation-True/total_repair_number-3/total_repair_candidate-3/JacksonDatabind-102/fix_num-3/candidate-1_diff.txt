@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -34,6 +34,7 @@
+     final boolean hasTZ = format.hasTimeZone();
+     final boolean asString = (shape == JsonFormat.Shape.STRING);
+ 
++    // Changed condition here: if none of the below, just return this
+     if (!hasLocale && !hasTZ && !asString) {
+         return this;
+     }
+@@ -56,8 +57,8 @@
+     //    So: require it be `SimpleDateFormat`; can't config other types
+     if (!(df0 instanceof SimpleDateFormat)) {
+         serializers.reportBadDefinition(handledType(), String.format(
+-"Configured `DateFormat` (%s) not a `SimpleDateFormat`; cannot configure `Locale` or `TimeZone`",
+-getClass().getName()));
++            "Configured `DateFormat` (%s) not a `SimpleDateFormat`; cannot configure `Locale` or `TimeZone`",
++            df0.getClass().getName()));
+     }
+     SimpleDateFormat df = (SimpleDateFormat) df0;
+     if (hasLocale) {
+@@ -73,3 +74,4 @@
+     }
+     return withFormat(Boolean.FALSE, df);
+ }
++

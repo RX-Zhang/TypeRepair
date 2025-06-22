@@ -1,0 +1,1 @@
+['renderWrappedText', 'findWrapPos', 'createPadding', 'rtrim']

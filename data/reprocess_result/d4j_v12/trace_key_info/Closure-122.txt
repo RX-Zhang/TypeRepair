@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.parsing.ParserTest.testSuspiciousBlockCommentWarning3
+- Error: junit.framework.AssertionFailedError
+- Location:     parse("/* \n *@type {number} */ var x = 3;", SUSPICIOUS_COMMENT_WARNING);
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.parsing.ParserTest.testSuspiciousBlockCommentWarning4
+- Error: junit.framework.AssertionFailedError
+- Location:     parse(
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.parsing.ParserTest.testSuspiciousBlockCommentWarning5
+- Error: junit.framework.AssertionFailedError
+- Location:     parse(

@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -16,7 +16,13 @@
+         return 0;
+     }
+ 
+-    if (p1 != null && p1.equals(p2)) {
++    if (p1 == null || p2 == null) {
++        throw new JXPathException(
++                "Cannot compare pointers that do not belong to the same tree: '"
++                        + p1 + "' and '" + p2 + "'");
++    }
++
++    if (p1.equals(p2)) {
+         return 0;
+     }
+ 
+@@ -30,5 +36,6 @@
+         return r;
+     }
+ 
+-    return p1.parent.compareChildNodePointers(p1, p2);
++    return p1.compareChildNodePointers(p1, p2);
+ }
++

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -28,10 +28,17 @@
+     boolean inverted = false;
+ 
+     // Keep finding better approximations.
++    int evaluations = 0; // Counter for function evaluations
+     while (true) {
++        // Check for maximum evaluations
++        if (evaluations >= maxEval) {
++            throw new TooManyEvaluationsException(maxEval);
++        }
++
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
++        evaluations++; // Increment the evaluation counter
+ 
+         // If the new approximation is the exact root, return it. Since
+         // this is not an under-approximation or an over-approximation,
+@@ -60,6 +67,7 @@
+                 if (x == x1) {
+                     x0 = 0.5 * (x0 + x1 - FastMath.max(rtol * FastMath.abs(x1), atol));
+                     f0 = computeObjectiveValue(x0);
++                    evaluations++; // Increment the evaluation counter
+                 }
+                 break;
+             default:
+@@ -124,3 +132,4 @@
+         }
+     }
+ }
++

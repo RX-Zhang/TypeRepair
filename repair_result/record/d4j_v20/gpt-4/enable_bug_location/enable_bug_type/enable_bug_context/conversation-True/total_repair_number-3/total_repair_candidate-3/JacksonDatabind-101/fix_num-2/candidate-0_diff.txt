@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -33,6 +33,7 @@
+                 // if so, need to copy all remaining tokens into buffer
+                 while (t == JsonToken.FIELD_NAME) {
+                     // NOTE: do NOT skip name as it needs to be copied; `copyCurrentStructure` does that
++                    tokens.writeFieldName(p.getCurrentName());
+                     p.nextToken();
+                     tokens.copyCurrentStructure(p);
+                     t = p.nextToken();
+@@ -97,5 +98,7 @@
+         wrapInstantiationProblem(e, ctxt);
+         return null; // never gets here
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -23,8 +23,10 @@
+       // sure we back-infer the <string> element constraint on
+       // the left hand side, so we use the left hand side.
+ 
+-      boolean isVarTypeBetter = !isVarDeclaration || var == null || var.isTypeInferred();
+-          // Makes it easier to check for NPEs.
++      // Fix logical error: isVarTypeBetter should only be true if var is null
++      // or var type is inferred, and NOT if it is a var declaration with children,
++      // so we negate the previous expression.
++      boolean isVarTypeBetter = !isVarDeclaration && (var == null || var.isTypeInferred());
+ 
+       // TODO(nicksantos): This might be a better check once we have
+       // back-inference of object/array constraints.  It will probably
+@@ -61,3 +63,4 @@
+       break;
+   }
+ }
++

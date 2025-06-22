@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -12,12 +12,13 @@
+         String namespaceURI = nodeNameTest.getNamespaceURI();
+         boolean wildcard = nodeNameTest.isWildcard();
+         String testPrefix = testName.getPrefix();
+-        if (wildcard && testPrefix == null) {
++
++        if (wildcard && testName.getName().equals("*")) {
++            // Wildcard for name, disregard prefix
+             return true;
+         }
+-        if (wildcard
+-            || testName.getName()
+-                    .equals(DOMNodePointer.getLocalName(node))) {
++
++        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+             String nodeNS = DOMNodePointer.getNamespaceURI(node);
+             return equalStrings(namespaceURI, nodeNS);
+         }
+@@ -48,3 +49,4 @@
+     }
+     return false;
+ }
++

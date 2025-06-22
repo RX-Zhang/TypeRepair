@@ -1,0 +1,52 @@
+{
+  "SyntaxError": {
+    "description": "Errors that occur when the code does not conform to the syntax rules of the programming language.",
+    "examples": ["Missing colon", "Unmatched brackets", "Misspelled keyword"],
+    "repair_prompt": "Identify and fix the syntax issue by completing missing elements such as colons, brackets, or keywords."
+  },
+  "ExecutionError": {
+    "description": "Errors that occur during program execution, such as invalid operations or resource access failures.",
+    "examples": ["Division by zero", "Null pointer dereference", "File not found"],
+    "repair_prompt": "Please add exception handling or boundary checks to prevent the error from occurring at runtime."
+  },
+  "LogicalError": {
+    "description": "Errors where the code runs without crashing but produces incorrect or unintended results.",
+    "examples": ["Incorrect formula", "Wrong loop condition", "Faulty branching logic"],
+    "repair_prompt": "Please analyze the intended behavior and correct the logical expressions or control flow accordingly."
+  },
+  "ResourceManagementError": {
+    "description": "Errors related to improper use or release of system resources such as memory, files, or network connections.",
+    "examples": ["Unclosed file handle", "Memory leak", "Unreleased lock"],
+    "repair_prompt": "Please ensure all acquired resources are properly released after use, especially in exceptional cases."
+  },
+  "TypeMismatchError": {
+    "description": "Errors caused by using a value of an unexpected or incompatible data type.",
+    "examples": ["Adding string with integer", "Invalid type casting", "Passing wrong type to function"],
+    "repair_prompt": "Please verify and convert variable types before performing operations to avoid type-related issues."
+  },
+  "APIUsageError": {
+    "description": "Errors due to misuse of functions, libraries, or external APIs.",
+    "examples": ["Incorrect parameter order", "Using deprecated API", "Misinterpreting return values"],
+    "repair_prompt": "Please review the API documentation and adjust the usage to match expected input and output behaviors."
+  },
+  "ConcurrencyIssue": {
+    "description": "Errors that arise in multi-threaded or parallel execution environments.",
+    "examples": ["Race condition", "Deadlock", "Shared state corruption"],
+    "repair_prompt": "Please implement proper synchronization mechanisms (e.g., locks, atomic operations) to manage shared resources safely."
+  },
+  "ConfigurationIssue": {
+    "description": "Errors caused by incorrect or missing configuration settings.",
+    "examples": ["Wrong port number", "Missing environment variables", "Invalid JSON/YAML structure"],
+    "repair_prompt": "Please validate the configuration files and ensure all required parameters are correctly formatted and present."
+  },
+  "InputValidationIssue": {
+    "description": "Errors due to insufficient or incorrect validation of user or external inputs.",
+    "examples": ["SQL injection", "XSS vulnerability", "Unexpected input format"],
+    "repair_prompt": "Please implement robust input validation and sanitization for all external or user-provided data."
+  },
+  "EfficiencyIssue": {
+    "description": "Errors that result in inefficient execution or excessive resource consumption.",
+    "examples": ["Excessive time complexity", "Redundant computation", "High memory usage"],
+    "repair_prompt": "Please optimize algorithms, reduce unnecessary operations, and efficiently manage memory and I/O."
+  }
+}

@@ -1,0 +1,67 @@
+--- 
++++ 
+@@ -8,19 +8,19 @@
+     // check for no buffered context _exposedContext - null
+     // If all the conditions matches then check for scalar / non-scalar property
+     if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+-        //if not scalar and ended successfully, and !includePath, then return null
+-            if (_currToken.isStructEnd()) {
+-                if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
+-                }
+-            } else if (_currToken.isScalarValue()) {
+-                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                // then return null 
+-                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
+-                }
+-        }
+-    }
++        // if current token is end of a structure and start was handled, clear token
++        if (_currToken.isStructEnd()) {
++            if (_headContext.isStartHandled()) {
++                return (_currToken = null);
++            }
++        } else if (_currToken.isScalarValue()) {
++            // if scalar, and start not handled, and filter is INCLUDE_ALL, clear token
++            if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                return (_currToken = null);
++            }
++        }
++    }
++
+     // Anything buffered?
+     TokenFilterContext ctxt = _exposedContext;
+ 
+@@ -36,12 +36,11 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 // Almost! Most likely still have the current token;
+                 // with the sole exception of 
+                 /*
+@@ -72,7 +71,7 @@
+ 
+     // otherwise... to include or not?
+     TokenFilter f;
+-    
++
+     switch (t.id()) {
+     case ID_START_ARRAY:
+         f = _itemFilter;
+@@ -226,3 +225,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

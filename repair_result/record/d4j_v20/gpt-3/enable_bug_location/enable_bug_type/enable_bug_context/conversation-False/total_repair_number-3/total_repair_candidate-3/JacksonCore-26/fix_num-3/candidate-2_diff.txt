@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -12,10 +12,11 @@
+         _reportError("Already closed, can not feed more input");
+     }
+     // Time to update pointers first
+-    _currInputProcessed += _origBufferLen;
++    // Fixing the logical error here by updating _currInputProcessed with the correct value
++    _currInputProcessed += (_inputEnd - _inputPtr);
+ 
+     // Also need to adjust row start, to work as if it extended into the past wrt new buffer
+-    _currInputRowStart = start - (_inputEnd - _currInputRowStart);
++    _currInputRowStart = start;
+ 
+     // And then update buffer settings
+     _inputBuffer = buf;
+@@ -23,3 +24,4 @@
+     _inputEnd = end;
+     _origBufferLen = end - start;
+ }
++

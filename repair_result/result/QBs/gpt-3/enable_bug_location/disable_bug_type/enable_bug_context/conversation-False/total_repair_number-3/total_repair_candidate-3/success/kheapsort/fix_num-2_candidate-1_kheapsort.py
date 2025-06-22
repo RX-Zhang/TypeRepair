@@ -1,0 +1,19 @@
+def kheapsort(arr, k):
+    import heapq
+    if k == 0:
+        # If k=0, just yield sorted array
+        for x in sorted(arr):
+            yield x
+        return
+    heap = arr[:k]
+    heapq.heapify(heap)
+    for x in arr[k:]:
+        # Push new element and pop smallest if new is bigger
+        if x > heap[0]:
+            heapq.heapreplace(heap, x)
+        else:
+            yield x
+    # The heap contains k largest elements, yield them in ascending order
+    sorted_heap = sorted(heap)
+    for x in sorted_heap:
+        yield x

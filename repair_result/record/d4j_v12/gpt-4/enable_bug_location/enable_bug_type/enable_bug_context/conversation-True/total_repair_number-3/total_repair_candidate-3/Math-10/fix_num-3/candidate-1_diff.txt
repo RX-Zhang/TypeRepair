@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -10,7 +10,8 @@
+     add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2
+     rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)
+ 
+-    if (x[xOffset] >= 0) {
++    if ((x[xOffset] > 0) ||
++       (x[xOffset] == 0.0 && y[yOffset] >= 0.0)) {
+ 
+         // compute atan2(y, x) = 2 atan(y / (r + x))
+         add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x
+@@ -37,3 +38,4 @@
+     // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
+ 
+ }
++

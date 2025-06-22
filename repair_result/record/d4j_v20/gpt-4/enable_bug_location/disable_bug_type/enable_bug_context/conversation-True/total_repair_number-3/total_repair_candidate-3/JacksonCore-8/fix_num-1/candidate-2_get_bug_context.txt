@@ -1,0 +1,1 @@
+['resetWithEmpty', 'contentsAsString', 'contentsAsArray']

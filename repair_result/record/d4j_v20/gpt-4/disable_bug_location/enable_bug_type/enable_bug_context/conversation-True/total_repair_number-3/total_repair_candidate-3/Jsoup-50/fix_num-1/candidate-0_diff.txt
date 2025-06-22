@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -16,20 +16,21 @@
+             }
+             if (foundCharset == null && meta.hasAttr("charset")) {
+                 try {
+-                    if (Charset.isSupported(meta.attr("charset"))) {
+-                        foundCharset = meta.attr("charset");
++                    String charsetAttr = meta.attr("charset");
++                    if (Charset.isSupported(charsetAttr)) {
++                        foundCharset = charsetAttr;
+                     }
+                 } catch (IllegalCharsetNameException e) {
+                     foundCharset = null;
+                 }
+             }
+ 
+-            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
++            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode
+                 foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                doc = null;
++                doc = parser.parseInput(docData, baseUri);
+             }
+         }
+     } else { // specified by content type header (or by user on file load)
+@@ -41,7 +42,7 @@
+         docData = Charset.forName(defaultCharset).decode(byteData).toString();
+         docData = docData.substring(1);
+         charsetName = defaultCharset;
+-        doc = null;
++        doc = parser.parseInput(docData, baseUri);
+     }
+     if (doc == null) {
+         doc = parser.parseInput(docData, baseUri);
+@@ -49,3 +50,4 @@
+     }
+     return doc;
+ }
++

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -79,6 +79,11 @@
+           return null;
+         }
+       }
++      // After managing dependencies, ensure modules are not empty
++      fillEmptyModules(modules);
++      // Important to rebuild inputs from modules after fillEmptyModules
++      rebuildInputsFromModules();
++      staleInputs = false; // reset staleInputs since we refreshed inputs
+     }
+ 
+     for (CompilerInput input : inputs) {
+@@ -150,3 +155,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

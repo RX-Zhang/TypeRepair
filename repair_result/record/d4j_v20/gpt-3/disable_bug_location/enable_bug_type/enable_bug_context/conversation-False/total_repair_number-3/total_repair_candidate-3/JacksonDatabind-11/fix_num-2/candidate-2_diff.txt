@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -38,5 +38,10 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
++    if (bounds.length == 0) {
++        // Defensive fallback to Object.class type if no bounds available
++        return _constructType(Object.class, context);
++    }
+     return _constructType(bounds[0], context);
+ }
++

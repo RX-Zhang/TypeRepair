@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+     Class<TypeAdapter<?>> typeAdapterClass = (Class<TypeAdapter<?>>) value;
+     typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterClass)).construct();
+   } else if (TypeAdapterFactory.class.isAssignableFrom(value)) {
+-    Class<TypeAdapterFactory> typeAdapterFactory = (Class<TypeAdapterFactory>) value;
++    Class<? extends TypeAdapterFactory> typeAdapterFactory = (Class<? extends TypeAdapterFactory>) value;
+     typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterFactory))
+         .construct()
+         .create(gson, fieldType);
+@@ -14,6 +14,9 @@
+     throw new IllegalArgumentException(
+         "@JsonAdapter value must be TypeAdapter or TypeAdapterFactory reference.");
+   }
++  if (typeAdapter != null) {
+     typeAdapter = typeAdapter.nullSafe();
++  }
+   return typeAdapter;
+ }
++

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -3,6 +3,11 @@
+   // If GETPROP/GETELEM is used as assignment target the array literal is
+   // acting as a temporary we can't fold it here:
+   //    "[][0] += 1"
++  if (parent.isAssign() && n == parent.getFirstChild()) {
++    // If the GETELEM node is on the left side of an assignment,
++    // we should not fold it.
++    return n;
++  }
+ 
+   if (right.getType() != Token.NUMBER) {
+     // Sometimes people like to use complex expressions to index into
+@@ -28,7 +33,8 @@
+   }
+ 
+   if (elem == null) {
+-    error(INDEX_OUT_OF_BOUNDS_ERROR, right);
++    // Instead of erroring, for empty arrays allow fallthrough
++    // that leaves the node as is.
+     return n;
+   }
+ 
+@@ -43,3 +49,4 @@
+   reportCodeChange();
+   return elem;
+ }
++

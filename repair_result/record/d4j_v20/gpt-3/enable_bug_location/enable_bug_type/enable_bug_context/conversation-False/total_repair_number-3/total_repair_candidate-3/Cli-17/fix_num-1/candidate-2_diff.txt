@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -9,21 +9,23 @@
+             tokens.add("-" + ch);
+             currentOption = options.getOption(ch);
+ 
+-            if (currentOption.hasArg() && (token.length() != (i + 1)))
++            if (currentOption.hasArg() && (i + 1 < token.length()))
+             {
+                 tokens.add(token.substring(i + 1));
+-
+                 break;
+             }
+         }
+         else if (stopAtNonOption)
+         {
+             process(token.substring(i));
++            eatTheRest = true; // Set eatTheRest to true to indicate non-option encountered
++            break; // Exit the loop after processing non-option
+         }
+         else
+         {
+-            tokens.add(token);
+-            break;
++            tokens.add(token); // Added this line to handle cases where we just want to add the token
++            break; // Exit the loop
+         }
+     }
+ }
++

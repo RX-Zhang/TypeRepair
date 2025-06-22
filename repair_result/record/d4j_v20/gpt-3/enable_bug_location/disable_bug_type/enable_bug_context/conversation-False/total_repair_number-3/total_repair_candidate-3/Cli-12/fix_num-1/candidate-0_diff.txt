@@ -1,0 +1,68 @@
+--- 
++++ 
+@@ -19,26 +19,39 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            String opt = arg;
++            int pos = arg.indexOf('=');
+ 
+-            if (options.hasOption(opt))
++            if (pos != -1)
+             {
+-                tokens.add(arg);
++                opt = arg.substring(0, pos);
++            }
++
++            String strippedOpt = Util.stripLeadingHyphens(opt);
++
++            if (options.hasOption(strippedOpt))
++            {
++                if (pos != -1)
++                {
++                    tokens.add(opt);
++                    tokens.add(arg.substring(pos + 1));
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
++            }
++            else if (arg.length() > 1 && options.hasOption(arg.substring(0,2)))
++            {
++                // the format is --foo=value or -foo=value
++                // the format is a special properties option (-Dproperty=value)
++                tokens.add(arg.substring(0, 2)); // -D
++                tokens.add(arg.substring(2));
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
+-                {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
+-                }
+-                else
+-                {
+-                    eatTheRest = stopAtNonOption;
+-                    tokens.add(arg);
+-                }
++                eatTheRest = stopAtNonOption;
++                tokens.add(arg);
+             }
+         }
+         else
+@@ -52,8 +65,10 @@
+             {
+                 tokens.add(arguments[i]);
+             }
++            break;
+         }
+     }
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

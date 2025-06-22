@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -2,6 +2,7 @@
+ 	int totalRead = 0;
+ 
+     if (hasHitEOF || entryOffset >= entrySize) {
++        setAtEOF(true);
+         return -1;
+     }
+ 
+@@ -15,10 +16,15 @@
+     count(totalRead);
+     
+     if (totalRead == -1) {
+-        hasHitEOF = true;
++        setAtEOF(true);
+     } else {
+         entryOffset += totalRead;
++        if (entryOffset >= entrySize) {
++            consumeRemainderOfLastBlock();
++            setAtEOF(true);
++        }
+     }
+ 
+     return totalRead;
+ }
++

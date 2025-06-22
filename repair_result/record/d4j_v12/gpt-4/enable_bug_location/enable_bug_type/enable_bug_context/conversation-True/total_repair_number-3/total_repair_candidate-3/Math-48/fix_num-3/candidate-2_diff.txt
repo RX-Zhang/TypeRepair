@@ -1,0 +1,149 @@
+--- 
++++ 
+@@ -27,11 +27,22 @@
+     // larger than the right bound.
+     boolean inverted = false;
+ 
++    // Keep track of the number of function evaluations
++    // to throw TooManyEvaluationsException when exceeded.
++    int evaluations = 2; // already evaluated at x0 and x1
++
+     // Keep finding better approximations.
+     while (true) {
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
++        evaluations++;
++        // Check max evaluations
++        if (evaluations > getMaxEvaluations()) {
++            throw new org.apache.commons.math.exception.TooManyEvaluationsException(
++                getMaxEvaluations()
++            );
++        }
+ 
+         // If the new approximation is the exact root, return it. Since
+         // this is not an under-approximation or an over-approximation,
+@@ -49,19 +60,23 @@
+             inverted = !inverted;
+         } else {
+             switch (method) {
+-            case ILLINOIS:
+-                f0 *= 0.5;
+-                break;
+-            case PEGASUS:
+-                f0 *= f1 / (f1 + fx);
+-                break;
+-            case REGULA_FALSI:
+-                // Detect early that algorithm is stuck, instead of waiting
+-                // for the maximum number of iterations to be exceeded.
+-                break;
+-            default:
+-                // Should never happen.
+-                throw new MathInternalError();
++                case ILLINOIS:
++                    f0 *= 0.5;
++                    break;
++                case PEGASUS:
++                    f0 *= f1 / (f1 + fx);
++                    break;
++                case REGULA_FALSI:
++                    // Detect early that algorithm is stuck, instead of waiting
++                    // for the maximum number of iterations to be exceeded.
++                    // This is to prevent infinite loop
++                    if (FastMath.abs(x - x1) < atol && FastMath.abs(fx - f1) < ftol) {
++                        return x1;
++                    }
++                    break;
++                default:
++                    // Should never happen.
++                    throw new MathInternalError();
+             }
+         }
+         // Update from [x0, x1] to [x0, x].
+@@ -73,30 +88,30 @@
+         // the root than we already are.
+         if (FastMath.abs(f1) <= ftol) {
+             switch (allowed) {
+-            case ANY_SIDE:
+-                return x1;
+-            case LEFT_SIDE:
+-                if (inverted) {
++                case ANY_SIDE:
+                     return x1;
+-                }
+-                break;
+-            case RIGHT_SIDE:
+-                if (!inverted) {
+-                    return x1;
+-                }
+-                break;
+-            case BELOW_SIDE:
+-                if (f1 <= 0) {
+-                    return x1;
+-                }
+-                break;
+-            case ABOVE_SIDE:
+-                if (f1 >= 0) {
+-                    return x1;
+-                }
+-                break;
+-            default:
+-                throw new MathInternalError();
++                case LEFT_SIDE:
++                    if (inverted) {
++                        return x1;
++                    }
++                    break;
++                case RIGHT_SIDE:
++                    if (!inverted) {
++                        return x1;
++                    }
++                    break;
++                case BELOW_SIDE:
++                    if (f1 <= 0) {
++                        return x1;
++                    }
++                    break;
++                case ABOVE_SIDE:
++                    if (f1 >= 0) {
++                        return x1;
++                    }
++                    break;
++                default:
++                    throw new MathInternalError();
+             }
+         }
+ 
+@@ -105,19 +120,20 @@
+         if (FastMath.abs(x1 - x0) < FastMath.max(rtol * FastMath.abs(x1),
+                                                  atol)) {
+             switch (allowed) {
+-            case ANY_SIDE:
+-                return x1;
+-            case LEFT_SIDE:
+-                return inverted ? x1 : x0;
+-            case RIGHT_SIDE:
+-                return inverted ? x0 : x1;
+-            case BELOW_SIDE:
+-                return (f1 <= 0) ? x1 : x0;
+-            case ABOVE_SIDE:
+-                return (f1 >= 0) ? x1 : x0;
+-            default:
+-                throw new MathInternalError();
++                case ANY_SIDE:
++                    return x1;
++                case LEFT_SIDE:
++                    return inverted ? x1 : x0;
++                case RIGHT_SIDE:
++                    return inverted ? x0 : x1;
++                case BELOW_SIDE:
++                    return (f1 <= 0) ? x1 : x0;
++                case ABOVE_SIDE:
++                    return (f1 >= 0) ? x1 : x0;
++                default:
++                    throw new MathInternalError();
+             }
+         }
+     }
+ }
++

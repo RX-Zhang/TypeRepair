@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -53,7 +53,8 @@
+           return false;
+         }
+         Node llhs = lhs.getFirstChild();
+-        if (llhs.getType() == Token.GETPROP &&
++        if (NodeUtil.isGet(llhs) &&
++            llhs.getType() == Token.GETPROP &&
+             llhs.getLastChild().getString().equals("prototype")) {
+           return false;
+         }
+@@ -63,3 +64,4 @@
+ 
+   return true;
+ }
++

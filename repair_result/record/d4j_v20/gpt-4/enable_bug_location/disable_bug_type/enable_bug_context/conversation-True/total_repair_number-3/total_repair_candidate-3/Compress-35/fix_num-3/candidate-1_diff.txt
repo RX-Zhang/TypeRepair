@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -1,21 +1,22 @@
+ public static boolean verifyCheckSum(byte[] header) {
+     long storedSum = 0;
+-    long unsignedSum = 0;
+-    long signedSum = 0;
++    // Use TarUtils.parseOctal to parse the stored checksum in the header at the checksum offset.
++    try {
++        storedSum = TarUtils.parseOctal(header, CHKSUM_OFFSET, CHKSUMLEN);
++    } catch (IllegalArgumentException e) {
++        return false;
++    }
+ 
+-    int digits = 0;
++    long computedSum = 0;
+     for (int i = 0; i < header.length; i++) {
+         byte b = header[i];
+-        if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {
+-            if ('0' <= b && b <= '7' && digits++ < 6) {
+-                storedSum = storedSum * 8 + b - '0';
+-            } else if (digits > 0) {
+-                digits = 6;
+-            }
+-            b = ' ';
++        if (i >= CHKSUM_OFFSET && i < CHKSUM_OFFSET + CHKSUMLEN) {
++            // Checksum field is treated as space characters (0x20) while computing the sum
++            b = 0x20;
+         }
+-        unsignedSum += 0xff & b;
+-        signedSum += b;
++        computedSum += (b & 0xff);
+     }
+-    return storedSum == unsignedSum || storedSum == signedSum;
++
++    return storedSum == computedSum;
+ }
++

@@ -1,0 +1,1 @@
+{"ClassName": "DiscreteDistribution", "Fields": ["protected final RandomGenerator random;", "private final List singletons;", "private final double[] probabilities;"], "Methods": ["public void reseedRandomGenerator(long seed) { ... }", " double probability(T x) { ... }", "public List getSamples() { ... }", "public T sample() { ... }", "public T[] sample(int sampleSize) { ... }"]}

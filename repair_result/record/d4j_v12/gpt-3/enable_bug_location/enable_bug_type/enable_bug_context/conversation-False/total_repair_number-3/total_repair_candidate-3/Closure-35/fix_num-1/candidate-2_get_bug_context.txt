@@ -1,0 +1,1 @@
+['traverseObjectLiteral', 'updateTypeOfParameters', 'inferPropertyTypesToMatchConstraint', 'getPropertyType']

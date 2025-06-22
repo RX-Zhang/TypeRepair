@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -33,12 +33,11 @@
+                 // if so, need to copy all remaining tokens into buffer
+                 while (t == JsonToken.FIELD_NAME) {
+                     // NOTE: do NOT skip name as it needs to be copied; `copyCurrentStructure` does that
++                    tokens.writeFieldName(p.getCurrentName());
+                     p.nextToken();
+                     tokens.copyCurrentStructure(p);
+                     t = p.nextToken();
+                 }
+-                // 28-Aug-2018, tatu: Let's add sanity check here, easier to catch off-by-some
+-                //    problems if we maintain invariants
+                 tokens.writeEndObject();
+                 if (bean.getClass() != _beanType.getRawClass()) {
+                     // !!! 08-Jul-2011, tatu: Could probably support; but for now
+@@ -97,5 +96,7 @@
+         wrapInstantiationProblem(e, ctxt);
+         return null; // never gets here
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

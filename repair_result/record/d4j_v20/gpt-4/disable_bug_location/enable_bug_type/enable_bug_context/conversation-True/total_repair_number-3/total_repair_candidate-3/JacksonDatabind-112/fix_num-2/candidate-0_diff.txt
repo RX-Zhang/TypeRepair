@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -31,5 +31,12 @@
+     if (isDefaultDeserializer(valueDeser)) {
+         valueDeser = null;
+     }
++    
++    // Adding boundary checks to prevent runtime errors
++    if (valueType == null) {
++        throw new JsonMappingException("Value type cannot be null");
++    }
++    
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

@@ -1,0 +1,8 @@
+static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+    // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
+    checkArgument(supertype.isAssignableFrom(contextRawType));
+    Type supertypeType = $Gson$Types.getGenericSupertype(context, contextRawType, supertype);
+    Type resolvedType = resolve(context, contextRawType, supertypeType);
+    // Ensure to convert to raw type before returning, to avoid type casting issues
+    return resolvedType;
+}

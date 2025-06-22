@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -5,7 +5,6 @@
+   }
+ 
+   Node block = fnNode.getLastChild();
+-
+ 
+   // CALL NODE: [ NAME, ARG1, ARG2, ... ]
+   Node cArg = callNode.getFirstChild().getNext();
+@@ -59,3 +58,4 @@
+ 
+   return CanInlineResult.YES;
+ }
++

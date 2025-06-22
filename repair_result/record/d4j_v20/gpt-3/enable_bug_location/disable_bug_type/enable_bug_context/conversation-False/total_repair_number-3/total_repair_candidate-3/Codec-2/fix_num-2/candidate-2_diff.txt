@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -4,7 +4,7 @@
+     }
+     // inAvail < 0 is how we're informed of EOF in the underlying data we're
+     // encoding.
+-    if (inAvail < 0) {
++    if (inAvail <= 0) { // Changed from < 0 to <= 0 to handle edge cases properly
+         eof = true;
+         if (buf == null || buf.length - pos < encodeSize) {
+             resizeBuf();
+@@ -58,3 +58,4 @@
+         }
+     }
+ }
++

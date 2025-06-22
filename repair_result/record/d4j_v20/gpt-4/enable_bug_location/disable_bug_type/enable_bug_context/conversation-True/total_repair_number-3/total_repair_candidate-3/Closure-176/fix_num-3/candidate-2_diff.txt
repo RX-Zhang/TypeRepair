@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -39,8 +39,10 @@
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++
++      // Fix: When the left side is a var declaration, set the JSType to resultType.
++      // Otherwise, preserve old leftType. Avoid setting to null unnecessarily.
++      left.setJSType(isVarDeclaration ? resultType : leftType);
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -61,3 +63,4 @@
+       break;
+   }
+ }
++

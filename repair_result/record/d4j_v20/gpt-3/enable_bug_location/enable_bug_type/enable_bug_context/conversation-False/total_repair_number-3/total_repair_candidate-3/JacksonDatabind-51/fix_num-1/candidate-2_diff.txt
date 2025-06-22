@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+                     // TODO: try to figure out something better
+                     return null;
+                 }
+-                // ... would this actually work?
++                // Ensure the actual type is checked for compatibility
+                 deser = ctxt.findContextualValueDeserializer(actual, _property);
+             }
+         } else {
+@@ -42,11 +42,16 @@
+                 //   generic type with custom type resolvers. If so, should try to retain them.
+                 //  Whether this is sufficient to avoid problems remains to be seen, but for
+                 //  now it should improve things.
+-                    type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
++                type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
++        }
++        // Check for null deserializer
++        if (deser == null) {
++            throw new JsonMappingException("Deserializer not found for typeId: " + typeId);
+         }
+         _deserializers.put(typeId, deser);
+     }
+     return deser;
+ }
++

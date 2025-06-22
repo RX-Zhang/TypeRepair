@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -27,11 +27,19 @@
+     // larger than the right bound.
+     boolean inverted = false;
+ 
++    // Keep track of number of evaluations.
++    // Check maxEval from getMaxEvaluations() method to avoid infinite loop
++    int evaluations = 2; // f0 and f1 evaluated
++
+     // Keep finding better approximations.
+     while (true) {
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
++        evaluations++;
++        if (evaluations > getMaxEvaluations()) {
++            throw new org.apache.commons.math.exception.TooManyEvaluationsException(getMaxEvaluations());
++        }
+ 
+         // If the new approximation is the exact root, return it. Since
+         // this is not an under-approximation or an over-approximation,
+@@ -60,6 +68,10 @@
+                 if (x == x1) {
+                     x0 = 0.5 * (x0 + x1 - FastMath.max(rtol * FastMath.abs(x1), atol));
+                     f0 = computeObjectiveValue(x0);
++                    evaluations++;
++                    if (evaluations > getMaxEvaluations()) {
++                        throw new org.apache.commons.math.exception.TooManyEvaluationsException(getMaxEvaluations());
++                    }
+                 }
+                 break;
+             default:
+@@ -124,3 +136,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -18,12 +18,11 @@
+         swap[r] = r;
+         for (int i = r + 1; i < order; ++i) {
+             int ii  = index[i];
+-            int isi = index[swap[i]];
++            int isi = index[swap[r]]; // Fixed: should use swap[r] instead of swap[i]
+             if (c[ii][ii] > c[isi][isi]) {
+                 swap[r] = i;
+             }
+         }
+-
+ 
+         // swap elements
+         if (swap[r] != r) {
+@@ -83,8 +82,9 @@
+     root = MatrixUtils.createRealMatrix(order, r);
+     for (int i = 0; i < order; ++i) {
+         for (int j = 0; j < r; ++j) {
+-            root.setEntry(index[i], j, b[i][j]);
++            root.setEntry(i, j, b[i][j]); // Fixed: should use i instead of index[i]
+         }
+     }
+ 
+ }
++

@@ -1,0 +1,9 @@
+--- 
++++ 
+@@ -1,4 +1,5 @@
+ public String generateToolTipFragment(String toolTipText) {
+-    return " title=\"" + toolTipText
++    return " title=\"" + toolTipText.replace("\"", "&quot;")
+         + "\" alt=\"\"";
+ }
++

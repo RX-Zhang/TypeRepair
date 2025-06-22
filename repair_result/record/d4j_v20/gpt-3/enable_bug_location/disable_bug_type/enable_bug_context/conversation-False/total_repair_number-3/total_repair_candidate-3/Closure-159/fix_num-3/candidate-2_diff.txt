@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -6,6 +6,12 @@
+     Node child = node.getFirstChild();
+     if (child.getType() == Token.NAME) {
+       changed.add(child.getString());
++    } else if (child.getType() == Token.GETPROP) {
++      // If it's a method call like obj.method(), get the property name
++      Node nameNode = child.getLastChild();
++      if (nameNode != null && nameNode.getType() == Token.STRING) {
++        changed.add(nameNode.getString());
++      }
+     }
+   }
+ 
+@@ -13,3 +19,4 @@
+     findCalledFunctions(c, changed);
+   }
+ }
++

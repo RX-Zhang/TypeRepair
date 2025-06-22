@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -25,7 +25,11 @@
+       // caller expression, but it could be nested deeper in the caller and
+       // we would still get a bug.
+       // See testAssignWithCall2 for an example of this.
+-      recordDepScope(recordNode, ns);
++      List<NameInformation> depScopes = getDependencyScope(recordNode);
++      if (depScopes.isEmpty()) {
++        recordDepScope(recordNode, ns);
++      }
+     }
+   }
+ }
++

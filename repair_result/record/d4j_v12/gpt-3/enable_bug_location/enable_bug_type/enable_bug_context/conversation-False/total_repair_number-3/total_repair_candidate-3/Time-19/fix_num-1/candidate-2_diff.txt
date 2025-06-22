@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+     if (offsetLocal != offsetAdjusted) {
+         // we need to ensure that time is always after the DST gap
+         // this happens naturally for positive offsets, but not for negative
+-        if ((offsetLocal - offsetAdjusted) < 0) {
++        if ((offsetLocal - offsetAdjusted) > 0) {
+             // if we just return offsetAdjusted then the time is pushed
+             // back before the transition, whereas it should be
+             // on or after the transition
+@@ -18,15 +18,16 @@
+                 return offsetLocal;
+             }
+         }
+-    } else if (offsetLocal > 0) {
++    } else if (offsetLocal < 0) {
+         long prev = previousTransition(instantAdjusted);
+         if (prev < instantAdjusted) {
+             int offsetPrev = getOffset(prev);
+             int diff = offsetPrev - offsetLocal;
+-            if (instantAdjusted - prev <= diff) {
++            if ((instantAdjusted - prev) <= diff) {
+                 return offsetPrev;
+             }
+         }
+     }
+     return offsetAdjusted;
+ }
++

@@ -1,0 +1,17 @@
+public final Object computeValue(EvalContext context) {
+    Object left = args[0].computeValue(context);
+    Object right = args[1].computeValue(context);
+
+    left = reduce(left);
+    right = reduce(right);
+
+    if (left instanceof Iterator || right instanceof Iterator) {
+        // If either operand is an empty iterator, return FALSE for relational operations
+        if ((left instanceof Iterator && !((Iterator) left).hasNext()) ||
+            (right instanceof Iterator && !((Iterator) right).hasNext())) {
+            return Boolean.FALSE;
+        }
+    }
+
+    return compute(left, right) ? Boolean.TRUE : Boolean.FALSE;
+}

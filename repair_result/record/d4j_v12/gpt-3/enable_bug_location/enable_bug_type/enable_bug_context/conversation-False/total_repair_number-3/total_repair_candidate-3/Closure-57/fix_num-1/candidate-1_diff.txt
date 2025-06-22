@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+       String qualifiedName = callee.getQualifiedName();
+       if (functionName.equals(qualifiedName)) {
+         Node target = callee.getNext();
+-        if (target != null) {
++        if (target != null && target.getType() == Token.STRING) { // Added check for STRING type
+           className = target.getString();
+         }
+       }
+@@ -15,3 +15,4 @@
+   }
+   return className;
+ }
++

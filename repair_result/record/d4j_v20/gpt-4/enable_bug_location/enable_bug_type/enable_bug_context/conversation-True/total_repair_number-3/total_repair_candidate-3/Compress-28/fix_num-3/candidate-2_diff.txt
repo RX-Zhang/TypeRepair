@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -15,10 +15,12 @@
+     count(totalRead);
+     
+     if (totalRead == -1) {
+-        hasHitEOF = true;
++        consumeRemainderOfLastBlock();
++        setAtEOF(true);
+     } else {
+         entryOffset += totalRead;
+     }
+ 
+     return totalRead;
+ }
++

@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.codec.binary.Base64InputStreamTest.testCodec98NPE
+- Error: java.lang.NullPointerException
+- Location:         stream.close();
+
+
+Test failure 2:
+- Test: org.apache.commons.codec.binary.Base64OutputStreamTest.testCodec98NPE
+- Error: java.lang.NullPointerException
+- Location:         stream.close();

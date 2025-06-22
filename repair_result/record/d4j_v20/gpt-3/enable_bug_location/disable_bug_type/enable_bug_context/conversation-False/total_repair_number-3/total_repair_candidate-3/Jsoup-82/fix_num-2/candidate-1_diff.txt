@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -64,8 +64,8 @@
+         if (charsetName == null)
+             charsetName = defaultCharset;
+         BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetName), bufferSize);
+-        if (bomCharset != null && bomCharset.offset) // creating the buffered reader ignores the input pos, so must skip here
+-            reader.skip(1);
++        if (bomCharset != null && bomCharset.offset > 0) // creating the buffered reader ignores the input pos, so must skip here
++            reader.skip(bomCharset.offset);
+         try {
+             doc = parser.parseInput(reader, baseUri);
+         } catch (UncheckedIOException e) {
+@@ -74,8 +74,38 @@
+         }
+         Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        if (!charset.canEncode()) {
++            charset = Charset.forName("UTF-8");
++            doc.outputSettings().charset(charset);
++
++            Element meta = doc.selectFirst("meta[charset]");
++            if (meta != null) {
++                meta.attr("charset", charset.name());
++            } else {
++                meta = doc.selectFirst("meta[http-equiv=content-type]");
++                if (meta != null) {
++                    // replace charset in content attribute
++                    String content = meta.attr("content");
++                    if (content.toLowerCase(Locale.ENGLISH).contains("charset=")) {
++                        content = content.replaceAll("(?i)charset=\\S+", "charset=" + charset.name());
++                        meta.attr("content", content);
++                    } else {
++                        meta.attr("content", content + "; charset=" + charset.name());
++                    }
++                } else {
++                    // add new meta charset
++                    Element head = doc.head();
++                    if (head == null) {
++                        head = doc.prependElement("head");
++                    }
++                    head.prependElement("meta").attr("charset", charset.name());
++                }
++            }
++        }
+     }
+     input.close();
+     return doc;
+ }
++

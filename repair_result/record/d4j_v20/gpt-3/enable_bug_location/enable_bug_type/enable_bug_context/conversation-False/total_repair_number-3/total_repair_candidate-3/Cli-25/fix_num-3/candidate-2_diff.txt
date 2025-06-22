@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -29,15 +29,21 @@
+         if (pos == -1)
+         {
+             sb.append(text);
+-
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        // Corrected logical error in the condition to handle wrapping
++        if ( (text.length() > width) && (pos >= width) ) 
+         {
+             pos = width;
+         }
+ 
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++
++        // Prepare for the next iteration
++        if (pos >= text.length()) {
++            break; // Exit loop if pos goes beyond text length
++        }
+     }
+ }
++

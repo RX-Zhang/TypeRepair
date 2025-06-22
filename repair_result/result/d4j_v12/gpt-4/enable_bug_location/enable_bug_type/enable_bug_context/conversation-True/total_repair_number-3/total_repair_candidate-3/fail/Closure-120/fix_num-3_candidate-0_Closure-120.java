@@ -1,0 +1,48 @@
+boolean isAssignedOnceInLifetime() {
+  Reference ref = getOneAndOnlyAssignment();
+  if (ref == null) {
+    return false;
+  }
+
+  Var var = ref.getAssignedVariable();
+  ReferenceCollection references = getReferences(var);
+  if (references == null) {
+    // No references means assignment is unique so far.
+    return true;
+  }
+
+  BasicBlock assignmentBlock = ref.getBasicBlock();
+  for (Reference reference : references) {
+    BasicBlock refBlock = reference.getBasicBlock();
+    for (BasicBlock block = refBlock; block != null; block = block.getParent()) {
+      if (block.isFunction) {
+        break;
+      }
+      if (block == assignmentBlock) {
+        // Reference is inside the same block as assignment.
+        if (reference.isAssignment()) {
+          // There's more than one assignment in the same block -> fail
+          if (reference != ref) {
+            return false;
+          }
+        }
+        break;
+      }
+      if (block.isLoop) {
+        // The reference is inside a loop block -> fail
+        return false;
+      }
+    }
+  }
+
+  // Make sure the assignment itself is not inside a loop.
+  for (BasicBlock block = assignmentBlock; block != null; block = block.getParent()) {
+    if (block.isFunction) {
+      break;
+    } else if (block.isLoop) {
+      return false;
+    }
+  }
+
+  return true;
+}

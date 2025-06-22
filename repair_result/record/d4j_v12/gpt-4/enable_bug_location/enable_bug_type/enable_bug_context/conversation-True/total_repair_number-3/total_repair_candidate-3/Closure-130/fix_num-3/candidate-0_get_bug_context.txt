@@ -1,0 +1,1 @@
+['inlineAliasIfPossible', 'warnAboutNamespaceAliasing', 'warnAboutNamespaceRedefinition']

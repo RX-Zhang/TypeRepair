@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.codec.language.CaverphoneTest.testEndMb
+- Error: junit.framework.ComparisonFailure: Source: mbmb expected:<M[PM]1111111> but was:<M[MP]1111111>
+- Location:         this.checkEncodings(data);

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+ 
+     boolean isExtern = false;
+     JSDocInfo functionJSDocInfo = functionType.getJSDocInfo();
+-    if(functionJSDocInfo != null) {
++    if (functionJSDocInfo != null) {
+       String sourceName = functionJSDocInfo.getSourceName();
+       CompilerInput functionSource = compiler.getInput(sourceName);
+       isExtern = functionSource.isExtern();
+@@ -32,8 +32,11 @@
+       report(t, n, CONSTRUCTOR_NOT_CALLABLE, childType.toString());
+     }
+ 
+-    // Functions with explcit 'this' types must be called in a GETPROP
++    // Functions with explicit 'this' types must be called in a GETPROP
+     // or GETELEM.
++    if (functionType.getJSDocInfo() != null && functionType.getJSDocInfo().hasThisType()) {
++      report(t, n, EXPECTED_THIS_TYPE, childType.toString());
++    }
+ 
+     visitParameterList(t, n, functionType);
+     ensureTyped(t, n, functionType.getReturnType());
+@@ -45,3 +48,4 @@
+   // supported by IE.  Either say something about the return type or warn
+   // about the non-portability of the call or both.
+ }
++

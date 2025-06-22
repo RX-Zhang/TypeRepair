@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -8,15 +8,14 @@
+     String uri = element.getNamespaceURI();
+     if (uri == null) {
+         String prefix = getPrefix(node);
++        // Fix: use the standard namespace URI for xmlns attributes
+         String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
+ 
+         Node aNode = node;
+-        while (aNode != null) {
+-            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+-                Attr attr = ((Element) aNode).getAttributeNode(qname);
+-                if (attr != null) {
+-                    return attr.getValue();
+-                }
++        while (aNode != null && aNode.getNodeType() == Node.ELEMENT_NODE) {
++            Attr attr = ((Element) aNode).getAttributeNode(qname);
++            if (attr != null) {
++                return attr.getValue();
+             }
+             aNode = aNode.getParentNode();
+         }
+@@ -24,3 +23,4 @@
+     }
+     return uri;
+ }
++

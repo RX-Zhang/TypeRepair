@@ -1,0 +1,60 @@
+--- 
++++ 
+@@ -7,8 +7,7 @@
+     }
+ 
+     // avoid int overflow, check null buffer
+-    if (start <= buffer.length && length >= 0 && start >= 0
+-        && buffer.length - start >= length) {
++    if (start >= 0 && length >= 0 && start <= buffer.length && buffer.length - start >= length) {
+         if (current.getMethod() == ZipArchiveOutputStream.STORED) {
+             int csize = (int) current.getSize();
+             if (readBytesOfEntry >= csize) {
+@@ -17,16 +16,19 @@
+             if (offsetInBuffer >= lengthOfLastRead) {
+                 offsetInBuffer = 0;
+                 if ((lengthOfLastRead = in.read(buf)) == -1) {
+-                    return -1;
++                    throw new IOException("Truncated ZIP file");
+                 }
+                 count(lengthOfLastRead);
+                 bytesReadFromStream += lengthOfLastRead;
+             }
+-            int toRead = length > lengthOfLastRead
++            int toRead = length > lengthOfLastRead - offsetInBuffer
+                 ? lengthOfLastRead - offsetInBuffer
+                 : length;
+             if ((csize - readBytesOfEntry) < toRead) {
+                 toRead = csize - readBytesOfEntry;
++            }
++            if (toRead <= 0) {
++                return -1;
+             }
+             System.arraycopy(buf, offsetInBuffer, buffer, start, toRead);
+             offsetInBuffer += toRead;
+@@ -36,9 +38,10 @@
+         }
+         if (inf.needsInput()) {
+             fill();
+-            if (lengthOfLastRead > 0) {
+-                bytesReadFromStream += lengthOfLastRead;
++            if (lengthOfLastRead <= 0) {
++                throw new IOException("Truncated ZIP file");
+             }
++            bytesReadFromStream += lengthOfLastRead;
+         }
+         int read = 0;
+         try {
+@@ -49,8 +52,12 @@
+         if (read == 0 && inf.finished()) {
+             return -1;
+         }
++        if (read == 0 && lengthOfLastRead == 0) {
++            throw new IOException("Truncated ZIP file");
++        }
+         crc.update(buffer, start, read);
+         return read;
+     }
+     throw new ArrayIndexOutOfBoundsException();
+ }
++

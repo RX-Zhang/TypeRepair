@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -24,6 +24,20 @@
+       // We short-circuit this problem by bailing out if we see a reference
+       // to a property that isn't defined on the object literal. This
+       // isn't a perfect algorithm, but it should catch most cases.
++      // Fix: Check if the property referenced actually exists on the object literal,
++      // if it doesn’t, bail out.
++      boolean isPropDefined = false;
++      for (Reference r : refs) {
++        Node rName = r.getNode();
++        if (rName.getString().equals(name.getString())) {
++          isPropDefined = true;
++          break;
++        }
++      }
++      if (!isPropDefined) {
++        return false;
++      }
++
+       continue;
+     }
+ 
+@@ -59,7 +73,6 @@
+         return false;
+       }
+ 
+-
+       Node childVal = child.getFirstChild();
+       // Check if childVal is the parent of any of the passed in
+       // references, as that is how self-referential assignments
+@@ -76,7 +89,6 @@
+       }
+     }
+ 
+-
+     // We have found an acceptable object literal assignment. As
+     // long as there are no other assignments that mess things up,
+     // we can inline.
+@@ -84,3 +96,4 @@
+   }
+   return ret;
+ }
++

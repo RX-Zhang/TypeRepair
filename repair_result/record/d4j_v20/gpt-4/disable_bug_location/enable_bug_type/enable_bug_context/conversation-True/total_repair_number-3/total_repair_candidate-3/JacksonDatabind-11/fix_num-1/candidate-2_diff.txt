@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -24,6 +24,11 @@
+      */
+     Type[] bounds = type.getBounds();
+ 
++    if (bounds == null || bounds.length == 0) {
++        // Defensive: no bounds available, return unknown type
++        return _unknownType();
++    }
++
+     // With type variables we must use bound information.
+     // Theoretically this gets tricky, as there may be multiple
+     // bounds ("... extends A & B"); and optimally we might
+@@ -38,5 +43,11 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++    try {
++         return _constructType(bounds[0], context);
++    } catch (IllegalArgumentException | JsonMappingException e) {
++         // In case bound is not properly resolvable, fallback to unknown type
++         return _unknownType();
++    }
+ }
++

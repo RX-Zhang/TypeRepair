@@ -1,0 +1,1 @@
+['tryMinimizeIf', 'isFoldableExpressBlock', 'getBlockExpression', 'tryMinimizeCondition']

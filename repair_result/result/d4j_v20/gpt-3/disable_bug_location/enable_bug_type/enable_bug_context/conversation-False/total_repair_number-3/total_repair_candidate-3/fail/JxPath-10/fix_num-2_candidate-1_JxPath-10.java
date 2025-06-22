@@ -1,0 +1,14 @@
+public final Object computeValue(EvalContext context) {
+    Object left = args[0].computeValue(context);
+    Object right = args[1].computeValue(context);
+    
+    // Treat empty node sets as NaN (not a number) to prevent unintended true results
+    if (left instanceof NodeSet && ((NodeSet) left).isEmpty()) {
+        left = Double.NaN;
+    }
+    if (right instanceof NodeSet && ((NodeSet) right).isEmpty()) {
+        right = Double.NaN;
+    }
+    
+    return compute(left, right) ? Boolean.TRUE : Boolean.FALSE;
+}

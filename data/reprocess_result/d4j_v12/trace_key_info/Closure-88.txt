@@ -1,0 +1,54 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CommandLineRunnerTest.testIssue297
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(b){var a;return(a=b.id)&&(a=parseInt(a.substr(1)))&&a>0}
+Result: function f(b){var a;return b.id&&(a=parseInt(a.substr(1)))&&a>0}
+- Location:     test("function f(p) {" +
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.DeadAssignmentsEliminationTest.testIssue297a
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(p){var x;return(x=p.id)&&(x=parseInt(x.substr(1)))&&x>0}f("")
+Result: function f(p){var x;return p.id&&(x=parseInt(x.substr(1)))&&x>0}f("")
+- Location:     testSame("function f(p) {" +
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.DeadAssignmentsEliminationTest.testIssue297b
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(){var x;return(x="")&&x.substr(1)}
+Result: function f(){var x;return""&&x.substr(1)}
+- Location:     test("function f() {" +
+
+
+Test failure 4:
+- Test: com.google.javascript.jscomp.DeadAssignmentsEliminationTest.testIssue297c
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(){var x;return(x=1)&&f(x)}
+Result: function f(){var x;return 1&&f(x)}
+- Location:     test("function f() {" +
+
+
+Test failure 5:
+- Test: com.google.javascript.jscomp.DeadAssignmentsEliminationTest.testIssue297d
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(a){return(a=1)&&f(a)}
+Result: function f(a){return 1&&f(a)}
+- Location:     test("function f(a) {" +
+
+
+Test failure 6:
+- Test: com.google.javascript.jscomp.DeadAssignmentsEliminationTest.testIssue297e
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(a){return(a=1)-g(a)}
+Result: function f(a){return 1-g(a)}
+- Location:     test("function f(a) {" +
+
+
+Test failure 7:
+- Test: com.google.javascript.jscomp.DeadAssignmentsEliminationTest.testIssue297f
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(a){h((a=1)-g(a))}
+Result: function f(a){h(1-g(a))}
+- Location:     test("function f(a) {" +

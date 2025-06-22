@@ -1,0 +1,70 @@
+--- 
++++ 
+@@ -73,17 +73,64 @@
+       if (arrayFoldedChildren.size() == arrayNode.getChildCount()) {
+         return;
+       }
+-      int kJoinOverhead = "[].join()".length();
+-      foldedSize += kJoinOverhead;
++
++      // Combine first consecutive string literals from the left
++      // with proper handling to maintain folding benefits.
++      List<Node> newChildren = Lists.newLinkedList();
++      StringBuilder leftSb = new StringBuilder();
++      int i = 0;
++      while (i < arrayFoldedChildren.size()) {
++        Node current = arrayFoldedChildren.get(i);
++        if (current.getType() == Token.STRING) {
++          leftSb.append(NodeUtil.getStringValue(current));
++          // Append separator except after last string literal or before non-string
++          if (i + 1 < arrayFoldedChildren.size()
++              && arrayFoldedChildren.get(i + 1).getType() == Token.STRING) {
++            leftSb.append(joinString);
++          } else if (i + 1 < arrayFoldedChildren.size()
++              && arrayFoldedChildren.get(i + 1).getType() != Token.STRING) {
++            leftSb.append(joinString);
++          }
++          i++;
++          // Continue to combine adjacent string nodes
++          while (i < arrayFoldedChildren.size() && arrayFoldedChildren.get(i).getType() == Token.STRING) {
++            leftSb.append(NodeUtil.getStringValue(arrayFoldedChildren.get(i)));
++            if (i + 1 < arrayFoldedChildren.size()) {
++              leftSb.append(joinString);
++            }
++            i++;
++          }
++          newChildren.add(Node.newString(leftSb.toString()));
++          leftSb = new StringBuilder();
++        } else {
++          newChildren.add(current);
++          i++;
++        }
++      }
++
++      // Now replace the original arrayNode children with newChildren
++      foldedSize = 0;
++      for (Node node : newChildren) {
++        if (node.getType() == Token.STRING) {
++          foldedSize += NodeUtil.getStringValue(node).length() + 2;
++        } else {
++          foldedSize += InlineCostEstimator.getCost(node);
++        }
++      }
++      foldedSize += newChildren.size() - 1; // commas
++      foldedSize += "[].join()".length();
+       foldedSize += InlineCostEstimator.getCost(right);
++
+       if (foldedSize > originalSize) {
+         return;
+       }
++
+       arrayNode.detachChildren();
+-      for (Node node : arrayFoldedChildren) {
++      for (Node node : newChildren) {
+         arrayNode.addChildToBack(node);
+       }
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

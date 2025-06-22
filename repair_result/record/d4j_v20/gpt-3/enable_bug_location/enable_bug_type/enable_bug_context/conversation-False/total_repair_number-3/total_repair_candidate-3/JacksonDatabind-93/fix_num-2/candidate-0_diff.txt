@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -2,24 +2,28 @@
+ {
+     // There are certain nasty classes that could cause problems, mostly
+     // via default typing -- catch them here.
++    if (type == null) {
++        throw JsonMappingException.from(ctxt, "Null JavaType passed for validation");
++    }
+     final Class<?> raw = type.getRawClass();
++    if (raw == null) {
++        throw JsonMappingException.from(ctxt, "JavaType has null raw class");
++    }
+     String full = raw.getName();
+ 
+     main_check:
+     do {
+-        if (_cfgIllegalClassNames.contains(full)) {
++        if (_cfgIllegalClassNames != null && _cfgIllegalClassNames.contains(full)) {
+             break;
+         }
+ 
+         // 18-Dec-2017, tatu: As per [databind#1855], need bit more sophisticated handling
+         //    for some Spring framework types
+         // 05-Jan-2017, tatu: ... also, only applies to classes, not interfaces
+-        if (full.startsWith(PREFIX_STRING)) {
+-            for (Class<?> cls = raw; cls != Object.class; cls = cls.getSuperclass()) {
++        if (full != null && full.startsWith(PREFIX_STRING)) {
++            for (Class<?> cls = raw; cls != null && cls != Object.class; cls = cls.getSuperclass()) {
+                 String name = cls.getSimpleName();
+-                // looking for "AbstractBeanFactoryPointcutAdvisor" but no point to allow any is there?
+                 if ("AbstractPointcutAdvisor".equals(name)
+-                        // ditto  for "FileSystemXmlApplicationContext": block all ApplicationContexts
+                         || "AbstractApplicationContext".equals(name)) {
+                     break main_check;
+                 }
+@@ -31,3 +35,4 @@
+     throw JsonMappingException.from(ctxt,
+             String.format("Illegal type (%s) to deserialize: prevented for security reasons", full));
+ }
++

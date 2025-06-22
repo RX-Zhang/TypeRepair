@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -11,7 +11,7 @@
+                 return withFormat(Boolean.TRUE, null);
+             }
+ 
+-            if (format.getShape() == JsonFormat.Shape.STRING) {
++            if (shape == JsonFormat.Shape.STRING) { // Changed from format.getShape() to shape
+                 TimeZone tz = format.getTimeZone();
+                 final String pattern = format.hasPattern()
+                                 ? format.getPattern()
+@@ -28,5 +28,6 @@
+             }
+         }
+     }
+-    return this;
++    return this; // Ensure returning the current instance if no format is found
+ }
++

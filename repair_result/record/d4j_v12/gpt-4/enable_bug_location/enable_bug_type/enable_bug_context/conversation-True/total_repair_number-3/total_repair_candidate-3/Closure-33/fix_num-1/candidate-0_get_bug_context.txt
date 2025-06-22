@@ -1,0 +1,1 @@
+['hasProperty', 'hasOwnProperty', 'isPropertyTypeDeclared', 'defineProperty']

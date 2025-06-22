@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -7,7 +7,15 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
++    // If buffer is all zeros or starts with zero byte, return 0
++    boolean allZeros = true;
++    for (int i = offset; i < end; i++) {
++        if (buffer[i] != 0) {
++            allZeros = false;
++            break;
++        }
++    }
++    if (allZeros) {
+         return 0L;
+     }
+ 
+@@ -47,3 +55,4 @@
+ 
+     return result;
+ }
++

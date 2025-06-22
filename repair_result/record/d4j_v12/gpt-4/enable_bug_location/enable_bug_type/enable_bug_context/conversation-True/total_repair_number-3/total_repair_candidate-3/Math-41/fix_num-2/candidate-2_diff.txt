@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -17,11 +17,11 @@
+             }
+ 
+             double sumWts = 0;
+-            for (int i = 0; i < weights.length; i++) {
++            for (int i = begin; i < begin + length; i++) {
+                 sumWts += weights[i];
+             }
+ 
+-            if (isBiasCorrected) {
++            if (isBiasCorrected()) {
+                 var = (accum - (accum2 * accum2 / sumWts)) / (sumWts - 1.0);
+             } else {
+                 var = (accum - (accum2 * accum2 / sumWts)) / sumWts;
+@@ -30,3 +30,4 @@
+     }
+     return var;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.type.TestTypeFactory.testCanonicalNames
+- Error: junit.framework.ComparisonFailure: expected:<...rence<java.lang.Long[>]> but was:<...rence<java.lang.Long[]>
+- Location:         assertEquals("java.util.concurrent.atomic.AtomicReference<java.lang.Long>",

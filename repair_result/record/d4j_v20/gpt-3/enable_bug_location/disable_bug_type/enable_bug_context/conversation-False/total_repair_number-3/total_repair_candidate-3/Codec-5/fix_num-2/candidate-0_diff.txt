@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -34,17 +34,23 @@
+     // EOF (-1) and first time '=' character is encountered in stream.
+     // This approach makes the '=' padding characters completely optional.
+     if (eof && modulus != 0) {
+-        
+         x = x << 6;
+         switch (modulus) {
+-            case 2 :
++            case 2:
+                 x = x << 6;
+-                buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
++                if (pos < buffer.length) {
++                    buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
++                }
+                 break;
+-            case 3 :
+-                buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+-                buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
++            case 3:
++                if (pos < buffer.length) {
++                    buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
++                }
++                if (pos < buffer.length) {
++                    buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
++                }
+                 break;
+         }
+     }
+ }
++

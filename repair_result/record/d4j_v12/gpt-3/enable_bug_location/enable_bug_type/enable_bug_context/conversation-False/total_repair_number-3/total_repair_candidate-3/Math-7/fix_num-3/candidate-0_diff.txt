@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+         final double currentT = interpolator.getGlobalCurrentTime();
+ 
+         // initialize the events states if needed
+-        if (! statesInitialized) {
++        if (!statesInitialized) {
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+@@ -98,7 +98,7 @@
+             state.stepAccepted(currentT, currentY);
+             isLastStep = isLastStep || state.stop();
+         }
+-        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1);
++        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1e-10); // Adjusted precision for comparison
+ 
+         // handle the remaining part of the step, after all events if any
+         for (StepHandler handler : stepHandlers) {
+@@ -108,3 +108,4 @@
+         return currentT;
+ 
+ }
++

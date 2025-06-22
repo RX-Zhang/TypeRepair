@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -8,7 +8,13 @@
+     }
+     // but exactly 2 types if any found
+     if (typeParams.length != 2) {
+-        throw new IllegalArgumentException("Strange Map type "+rawClass.getName()+": can not determine type parameters");
++        throw new IllegalArgumentException("Strange Map type " + rawClass.getName() + ": can not determine type parameters");
+     }
+-    return MapType.construct(rawClass, typeParams[0], typeParams[1]);
++
++    // Ensure that the types are properly handled to avoid TypeError
++    JavaType keyType = (typeParams[0] != null) ? typeParams[0] : _unknownType();
++    JavaType valueType = (typeParams[1] != null) ? typeParams[1] : _unknownType();
++    
++    return MapType.construct(rawClass, keyType, valueType);
+ }
++

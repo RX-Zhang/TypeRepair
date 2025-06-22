@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -36,8 +36,17 @@
+     {
+         return (T) createURL(str);
+     }
++    else if (Integer.class.equals(clazz))
++    {
++        try {
++            return (T) Integer.valueOf(str);
++        } catch (NumberFormatException e) {
++            throw new ParseException("Cannot parse integer: " + str);
++        }
++    }
+     else
+     {
+         return null;
+     }
+ }
++

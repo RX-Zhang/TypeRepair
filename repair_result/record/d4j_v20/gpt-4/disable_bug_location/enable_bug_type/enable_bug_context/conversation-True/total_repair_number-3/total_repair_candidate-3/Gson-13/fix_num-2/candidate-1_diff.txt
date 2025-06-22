@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -95,8 +95,10 @@
+   } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT
+       || last == NUMBER_CHAR_EXP_DIGIT) {
+     peekedNumberLength = i;
++    pos += i;  // Add this to update pos for PEEKED_NUMBER as well
+     return peeked = PEEKED_NUMBER;
+   } else {
+     return PEEKED_NONE;
+   }
+ }
++

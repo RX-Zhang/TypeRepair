@@ -1,0 +1,61 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharacter = getQuoteCharacter();
++    final char quoteChar = quoteCharacter != null ? quoteCharacter.charValue() : 0;
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -20,8 +21,13 @@
+         quote = !(object instanceof Number);
+         break;
+     case NONE:
+-        // Use the existing escaping code
+-        printAndEscape(value, offset, len, out);
++        // Use the existing escaping code only if escape character is set
++        if (isEscapeCharacterSet()) {
++            printAndEscape(value, offset, len, out);
++        } else {
++            // No escaping to perform, just write as is
++            out.append(value, offset, offset + len);
++        }
+         return;
+     case MINIMAL:
+         if (len <= 0) {
+@@ -36,7 +42,8 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            // Rewritten condition to correctly check if c is not alphanumeric:
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -46,7 +53,7 @@
+             } else {
+                 while (pos < end) {
+                     c = value.charAt(pos);
+-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                    if (c == LF || c == CR || (quoteCharacter != null && c == quoteChar) || c == delimChar) {
+                         quote = true;
+                         break;
+                     }
+@@ -88,7 +95,7 @@
+     // the need for encapsulation.
+     while (pos < end) {
+         final char c = value.charAt(pos);
+-        if (c == quoteChar) {
++        if (quoteCharacter != null && c == quoteChar) {
+             // write out the chunk up until this point
+ 
+             // add 1 to the length to write out the encapsulator also
+@@ -104,3 +111,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

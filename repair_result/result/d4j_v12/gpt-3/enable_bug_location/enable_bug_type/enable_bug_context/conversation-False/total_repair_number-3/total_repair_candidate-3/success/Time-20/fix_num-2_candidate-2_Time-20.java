@@ -1,0 +1,19 @@
+public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+    String str = text.substring(position);
+    // To correctly parse longest matching zone ID first, sort ALL_IDS by descending length before loop
+    // assuming ALL_IDS is a Collection<String>, we sort locally or iterate sorted
+    // Here, to fix logical error, we pick the longest id that matches starting at position
+    String bestMatch = null;
+    for (String id : ALL_IDS) {
+        if (str.startsWith(id)) {
+            if (bestMatch == null || id.length() > bestMatch.length()) {
+                bestMatch = id;
+            }
+        }
+    }
+    if (bestMatch != null) {
+        bucket.setZone(DateTimeZone.forID(bestMatch));
+        return position + bestMatch.length();
+    }
+    return ~position;
+}

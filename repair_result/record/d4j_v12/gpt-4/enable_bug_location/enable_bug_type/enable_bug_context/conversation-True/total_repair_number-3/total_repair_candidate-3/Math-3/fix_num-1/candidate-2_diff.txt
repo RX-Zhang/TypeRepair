@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -5,7 +5,15 @@
+         throw new DimensionMismatchException(len, b.length);
+     }
+ 
+-        // Revert to scalar multiplication.
++    if (len == 0) {
++        return 0;
++    }
++
++    if (len == 1) {
++        return a[0] * b[0];
++    }
++
++    // Revert to scalar multiplication.
+ 
+     final double[] prodHigh = new double[len];
+     double prodLowSum = 0;
+@@ -28,19 +36,18 @@
+         prodLowSum += prodLow;
+     }
+ 
+-
+     final double prodHighCur = prodHigh[0];
+-    double prodHighNext = prodHigh[1];
++    final double prodHighNext = prodHigh[1];
+     double sHighPrev = prodHighCur + prodHighNext;
+     double sPrime = sHighPrev - prodHighNext;
+     double sLowSum = (prodHighNext - (sHighPrev - sPrime)) + (prodHighCur - sPrime);
+ 
+     final int lenMinusOne = len - 1;
+     for (int i = 1; i < lenMinusOne; i++) {
+-        prodHighNext = prodHigh[i + 1];
+-        final double sHighCur = sHighPrev + prodHighNext;
+-        sPrime = sHighCur - prodHighNext;
+-        sLowSum += (prodHighNext - (sHighCur - sPrime)) + (sHighPrev - sPrime);
++        final double prodHighNextLoop = prodHigh[i + 1];
++        final double sHighCur = sHighPrev + prodHighNextLoop;
++        sPrime = sHighCur - prodHighNextLoop;
++        sLowSum += (prodHighNextLoop - (sHighCur - sPrime)) + (sHighPrev - sPrime);
+         sHighPrev = sHighCur;
+     }
+ 
+@@ -57,3 +64,4 @@
+ 
+     return result;
+ }
++

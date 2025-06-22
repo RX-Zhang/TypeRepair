@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -20,7 +20,7 @@
+         }
+     }
+ 
+-    // Must have trailing NUL or space
++    // Must have trailing NUL or space or NULs
+     byte trailer;
+     trailer = buffer[end-1];
+     if (trailer == 0 || trailer == ' '){
+@@ -29,10 +29,14 @@
+         throw new IllegalArgumentException(
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    // May have additional NULs or spaces (loop until none remain)
++    while (end > start) {
++        trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        } else {
++            break;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -48,3 +52,4 @@
+ 
+     return result;
+ }
++

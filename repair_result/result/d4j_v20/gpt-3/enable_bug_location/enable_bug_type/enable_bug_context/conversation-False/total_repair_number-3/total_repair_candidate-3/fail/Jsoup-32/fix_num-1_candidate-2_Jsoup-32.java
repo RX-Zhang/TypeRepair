@@ -1,0 +1,6 @@
+public Element clone() {
+    Element clone = (Element) super.clone();
+    clone.classNames(); // This doesn't actually copy the classNames into the clone.
+    clone.classNames = new LinkedHashSet<>(this.classNames); // Properly copy the classNames to the clone.
+    return clone;
+}

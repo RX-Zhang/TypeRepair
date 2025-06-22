@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -1,7 +1,6 @@
+ protected CompilerOptions createOptions() {
+   CompilerOptions options = new CompilerOptions();
+-  options.setCodingConvention(new ClosureCodingConvention());
+-  CompilationLevel level = flags.compilation_level;
++  CompilerLevel level = flags.compilation_level;
+   level.setOptionsForCompilationLevel(options);
+   if (flags.debug) {
+     level.setDebugOptionsForCompilationLevel(options);
+@@ -12,10 +11,15 @@
+   for (FormattingOption formattingOption : flags.formatting) {
+     formattingOption.applyToOptions(options);
+   }
+-  if (flags.process_closure_primitives) {
++
++  // Correction: Respect the process_closure_primitives flag correctly.
++  if (!flags.process_closure_primitives) {
++    options.closurePass = false;
++  } else {
+     options.closurePass = true;
+   }
+ 
+   initOptionsFromFlags(options);
+   return options;
+ }
++

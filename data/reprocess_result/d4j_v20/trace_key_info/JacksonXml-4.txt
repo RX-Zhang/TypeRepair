@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.dataformat.xml.misc.RootNameTest.testDynamicRootName
+- Error: junit.framework.ComparisonFailure: expected:<<[rudy]/>> but was:<<[null]/>>
+- Location:         assertEquals("<rudy/>", xml);

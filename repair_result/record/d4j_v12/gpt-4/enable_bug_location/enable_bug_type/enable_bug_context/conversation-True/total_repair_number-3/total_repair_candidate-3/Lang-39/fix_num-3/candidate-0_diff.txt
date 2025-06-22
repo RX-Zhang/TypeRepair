@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -69,6 +69,10 @@
+ 
+     // count the replacement text elements that are larger than their corresponding text being replaced
+     for (int i = 0; i < searchList.length; i++) {
++        // skip null replacements to avoid NullPointerException
++        if (replacementList[i] == null || searchList[i] == null) {
++            continue;
++        }
+         int greater = replacementList[i].length() - searchList[i].length();
+         if (greater > 0) {
+             increase += 3 * greater; // assume 3 matches
+@@ -84,7 +88,12 @@
+         for (int i = start; i < textIndex; i++) {
+             buf.append(text.charAt(i));
+         }
+-        buf.append(replacementList[replaceIndex]);
++        // If replacementList[replaceIndex] is null, append the original search string to avoid NPE and no replacement
++        if (replacementList[replaceIndex] == null) {
++            buf.append(searchList[replaceIndex]);
++        } else {
++            buf.append(replacementList[replaceIndex]);
++        }
+ 
+         start = textIndex + searchList[replaceIndex].length();
+ 
+@@ -125,3 +134,4 @@
+ 
+     return replaceEach(result, searchList, replacementList, repeat, timeToLive - 1);
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockitousage.bugs.NPEWithCertainMatchersTest.shouldNotThrowNPEWhenNullPassedToSame
+- Error: java.lang.Exception: Unexpected exception, expected<java.lang.AssertionError> but was<java.lang.NullPointerException>
+- Location:         verify(mock).objectArgMethod(same(null));

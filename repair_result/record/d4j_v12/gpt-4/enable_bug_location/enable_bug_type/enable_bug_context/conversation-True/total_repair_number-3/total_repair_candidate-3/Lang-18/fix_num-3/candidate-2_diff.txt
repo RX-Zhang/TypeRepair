@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -32,8 +32,10 @@
+         case 'y': // year (number)
+             if (tokenLen >= 4) {
+                 rule = selectNumberRule(Calendar.YEAR, tokenLen);
++            } else if (tokenLen == 2) {
++                rule = TwoDigitYearField.INSTANCE;
+             } else {
+-                rule = TwoDigitYearField.INSTANCE;
++                rule = selectNumberRule(Calendar.YEAR, tokenLen);
+             }
+             break;
+         case 'M': // month in year (text and number)
+@@ -120,3 +122,4 @@
+ 
+     return rules;
+ }
++

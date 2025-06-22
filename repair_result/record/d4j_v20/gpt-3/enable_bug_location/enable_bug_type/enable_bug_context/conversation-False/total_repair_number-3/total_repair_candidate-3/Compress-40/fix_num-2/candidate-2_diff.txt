@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -15,15 +15,16 @@
+         }
+         bitsCachedSize += 8;
+     }
+-        // bitsCachedSize >= 57 and left-shifting it 8 bits would cause an overflow
+-    
++    // bitsCachedSize >= count and left-shifting it 8 bits would cause an overflow
++
+     final long bitsOut;
+-        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+-            bitsOut = (bitsCached & MASKS[count]);
+-            bitsCached >>>= count;
+-        } else {
+-            bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
+-        }
+-        bitsCachedSize -= count;
++    if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
++        bitsOut = (bitsCached & MASKS[count]);
++        bitsCached >>>= count;
++    } else {
++        bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
++    }
++    bitsCachedSize -= count;
+     return bitsOut;
+ }
++

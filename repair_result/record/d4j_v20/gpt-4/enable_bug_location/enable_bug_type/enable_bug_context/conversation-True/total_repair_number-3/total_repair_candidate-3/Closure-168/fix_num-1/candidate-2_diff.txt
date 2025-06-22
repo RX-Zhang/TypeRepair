@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -33,7 +33,18 @@
+       }
+ 
+       if (scope != ownerScope && ownerScope.isLocal()) {
+-        data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
++        // Using function analysis results to verify variable types before marking as escaped
++        AstFunctionContents functionContents = getFunctionAnalysisResults(ownerScope.getRootNode());
++        if (functionContents != null) {
++          // Ensure the variable's type is consistent before recording it as escaped
++          JSType varType = var.getType();
++          if (varType != null) {
++            data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
++          }
++        } else {
++          // fallback if no functionContents available
++          data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
++        }
+       }
+     }
+   } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
+@@ -44,9 +55,20 @@
+     if (var != null) {
+       Scope ownerScope = var.getScope();
+       if (scope != ownerScope && ownerScope.isLocal()) {
+-        data.get(ownerScope.getRootNode())
+-            .recordEscapedQualifiedName(n.getQualifiedName());
++        // Similar type check for qualified names
++        AstFunctionContents functionContents = getFunctionAnalysisResults(ownerScope.getRootNode());
++        if (functionContents != null) {
++          JSType varType = var.getType();
++          if (varType != null) {
++            data.get(ownerScope.getRootNode())
++                .recordEscapedQualifiedName(n.getQualifiedName());
++          }
++        } else {
++          data.get(ownerScope.getRootNode())
++              .recordEscapedQualifiedName(n.getQualifiedName());
++        }
+       }
+     }
+   }
+ }
++

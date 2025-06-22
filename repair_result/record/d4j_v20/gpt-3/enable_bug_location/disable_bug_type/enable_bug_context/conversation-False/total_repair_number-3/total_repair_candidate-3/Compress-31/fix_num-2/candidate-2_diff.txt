@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -30,10 +30,17 @@
+         trailer = buffer[end - 1];
+     }
+ 
++    // After trimming, if no characters remain, return 0
++    if (start >= end) {
++        return 0L;
++    }
++
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
+-            break;
++        // Embedded NUL or space invalid inside number
++        if (currentByte == 0 || currentByte == ' ') {
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -46,3 +53,4 @@
+ 
+     return result;
+ }
++

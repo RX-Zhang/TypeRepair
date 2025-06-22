@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -38,6 +38,7 @@
+     }
+     else
+     {
+-        return null;
++        throw new ParseException("Cannot parse value: " + str + " to " + clazz);
+     }
+ }
++

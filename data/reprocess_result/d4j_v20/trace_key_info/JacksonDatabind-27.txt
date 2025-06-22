@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.jsontype.TestExternalId.testInverseExternalId928
+- Error: java.lang.IllegalStateException: No fallback setter/field defined: can not use creator property for com.fasterxml.jackson.databind.deser.CreatorProperty
+- Location:         Envelope928 envelope2 = mapper.readValue(failCase, Envelope928.class);

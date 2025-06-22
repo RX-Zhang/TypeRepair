@@ -1,0 +1,61 @@
+--- 
++++ 
+@@ -8,8 +8,6 @@
+     Number re = parseNumber(source, getRealFormat(), pos);
+     if (re == null) {
+         // invalid real number
+-        // set index back to initial, error index should already be set
+-        // character examined.
+         pos.setIndex(initialIndex);
+         return null;
+     }
+@@ -21,7 +19,6 @@
+     switch (c) {
+     case 0 :
+         // no sign
+-        // return real only complex number
+         return new Complex(re.doubleValue(), 0.0);
+     case '-' :
+         sign = -1;
+@@ -30,9 +27,6 @@
+         sign = 1;
+         break;
+     default :
+-        // invalid sign
+-        // set index back to initial, error index should be the last
+-        // character examined.
+         pos.setIndex(initialIndex);
+         pos.setErrorIndex(startIndex);
+         return null;
+@@ -42,11 +36,8 @@
+     parseAndIgnoreWhitespace(source, pos);
+ 
+     // parse imaginary
+-    Number im = parseNumber(source, getRealFormat(), pos);
++    Number im = parseNumber(source, getImaginaryFormat(), pos); // Fixed to use getImaginaryFormat
+     if (im == null) {
+-        // invalid imaginary number
+-        // set index back to initial, error index should already be set
+-        // character examined.
+         pos.setIndex(initialIndex);
+         return null;
+     }
+@@ -55,11 +46,8 @@
+     int n = getImaginaryCharacter().length();
+     startIndex = pos.getIndex();
+     int endIndex = startIndex + n;
+-    if (
+-        source.substring(startIndex, endIndex).compareTo(
+-        getImaginaryCharacter()) != 0) {
+-        // set index back to initial, error index should be the start index
+-        // character examined.
++    if (endIndex > source.length() || 
++        source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) { // Added boundary check
+         pos.setIndex(initialIndex);
+         pos.setErrorIndex(startIndex);
+         return null;
+@@ -68,3 +56,4 @@
+ 
+     return new Complex(re.doubleValue(), im.doubleValue() * sign);
+ }
++

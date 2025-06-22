@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -31,11 +31,12 @@
+ 
+         // 25-May-2018, tatu: as per [databind#2051], looks like we have to get
+         //    not implicit name, but name with possible strategy-based-rename
+-          paramName = candidate.findImplicitParamName(0);
+         paramName = candidate.findImplicitParamName(0);
+         useProps = (paramName != null) && paramDef.couldSerialize();
+     }
+     if (useProps) {
++        // Ensure the paramName is correctly mapped to the expected JSON property name
++        paramName = PropertyName.construct(paramName.getSimpleName().replaceAll("([a-z])_([A-Z])", "$1$2").toLowerCase());
+         SettableBeanProperty[] properties = new SettableBeanProperty[] {
+                 constructCreatorProperty(ctxt, beanDesc, paramName, 0, param, injectId)
+         };
+@@ -50,3 +51,4 @@
+         ((POJOPropertyBuilder) paramDef).removeConstructors();
+     }
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.node.TestConversions.testBase64Text
+- Error: junit.framework.AssertionFailedError: Failed (variant MODIFIED-FOR-URL, data length 1): Cannot access contents of TextNode as binary due to broken Base64 encoding: Unexpected end-of-String in base64 content
+- Location:                     fail("Failed (variant "+variant+", data length "+len+"): "+e.getMessage());

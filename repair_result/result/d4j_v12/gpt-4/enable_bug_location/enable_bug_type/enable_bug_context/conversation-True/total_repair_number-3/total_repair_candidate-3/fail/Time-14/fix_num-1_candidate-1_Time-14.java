@@ -1,0 +1,33 @@
+public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+    // overridden as superclass algorithm can't handle
+    // 2004-02-29 + 48 months -> 2008-02-29 type dates
+    if (valueToAdd == 0) {
+        return values;
+    }
+    // month is largest field and being added to, such as month-day
+    if (DateTimeUtils.isContiguous(partial)) {
+        long instant = 0L;
+        for (int i = 0, isize = partial.size(); i < isize; i++) {
+            instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+        }
+        long newInstant = add(instant, valueToAdd);
+        // Use set() method to ensure day adjustment for month changes
+        int[] newValues = iChronology.get(newInstant, partial);
+        int monthField = fieldIndex;
+        int newMonth = newValues[monthField];
+        int dayField = monthField + 1 < newValues.length ? monthField + 1 : -1;
+        if (dayField != -1) {
+            int newDay = newValues[dayField];
+            int maxDay = iChronology.getDaysInYearMonth(iChronology.getYear(newInstant), newMonth);
+            if (newDay > maxDay) {
+                newDay = maxDay;
+                newInstant = iChronology.getYearMonthDayMillis(iChronology.getYear(newInstant), newMonth, newDay)
+                             + iChronology.getMillisOfDay(newInstant);
+                newValues = iChronology.get(newInstant, partial);
+            }
+        }
+        return newValues;
+    } else {
+        return super.add(partial, fieldIndex, values, valueToAdd);
+    }
+}

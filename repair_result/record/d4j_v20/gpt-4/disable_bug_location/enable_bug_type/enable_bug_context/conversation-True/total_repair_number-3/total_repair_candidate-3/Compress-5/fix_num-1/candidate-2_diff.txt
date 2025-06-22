@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+     }
+ 
+     // avoid int overflow, check null buffer
+-    if (start <= buffer.length && length >= 0 && start >= 0
++    if (start < buffer.length && length >= 0 && start >= 0
+         && buffer.length - start >= length) {
+         if (current.getMethod() == ZipArchiveOutputStream.STORED) {
+             int csize = (int) current.getSize();
+@@ -17,12 +17,12 @@
+             if (offsetInBuffer >= lengthOfLastRead) {
+                 offsetInBuffer = 0;
+                 if ((lengthOfLastRead = in.read(buf)) == -1) {
+-                    return -1;
++                    throw new IOException("Truncated ZIP file");
+                 }
+                 count(lengthOfLastRead);
+                 bytesReadFromStream += lengthOfLastRead;
+             }
+-            int toRead = length > lengthOfLastRead
++            int toRead = length > (lengthOfLastRead - offsetInBuffer)
+                 ? lengthOfLastRead - offsetInBuffer
+                 : length;
+             if ((csize - readBytesOfEntry) < toRead) {
+@@ -36,9 +36,10 @@
+         }
+         if (inf.needsInput()) {
+             fill();
+-            if (lengthOfLastRead > 0) {
+-                bytesReadFromStream += lengthOfLastRead;
++            if (lengthOfLastRead <= 0) {
++                throw new IOException("Truncated ZIP file");
+             }
++            bytesReadFromStream += lengthOfLastRead;
+         }
+         int read = 0;
+         try {
+@@ -54,3 +55,4 @@
+     }
+     throw new ArrayIndexOutOfBoundsException();
+ }
++

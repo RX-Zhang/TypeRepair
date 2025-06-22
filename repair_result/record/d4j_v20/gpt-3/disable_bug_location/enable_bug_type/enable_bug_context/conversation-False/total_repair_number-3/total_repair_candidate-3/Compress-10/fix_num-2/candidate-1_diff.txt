@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -9,25 +9,20 @@
+         OffsetEntry offsetEntry = entries.get(ze);
+         long offset = offsetEntry.headerOffset;
+         archive.seek(offset + LFH_OFFSET_FOR_FILENAME_LENGTH);
+-        byte[] b = new byte[SHORT];
++        byte[] b = new byte[2]; // SHORT == 2 bytes
+         archive.readFully(b);
+         int fileNameLen = ZipShort.getValue(b);
+         archive.readFully(b);
+         int extraFieldLen = ZipShort.getValue(b);
+-        int lenToSkip = fileNameLen;
+-        while (lenToSkip > 0) {
+-            int skipped = archive.skipBytes(lenToSkip);
+-            if (skipped <= 0) {
+-                throw new RuntimeException("failed to skip file name in"
+-                                           + " local file header");
+-            }
+-            lenToSkip -= skipped;
+-        }
++
++        byte[] fileNameBytes = new byte[fileNameLen];
++        archive.readFully(fileNameBytes);
++
+         byte[] localExtraData = new byte[extraFieldLen];
+         archive.readFully(localExtraData);
+         ze.setExtra(localExtraData);
+         offsetEntry.dataOffset = offset + LFH_OFFSET_FOR_FILENAME_LENGTH
+-            + SHORT + SHORT + fileNameLen + extraFieldLen;
++            + 2 + 2 + fileNameLen + extraFieldLen; // SHORT = 2
+ 
+         if (entriesWithoutUTF8Flag.containsKey(ze)) {
+             String orig = ze.getName();
+@@ -41,3 +36,4 @@
+         }
+     }
+ }
++

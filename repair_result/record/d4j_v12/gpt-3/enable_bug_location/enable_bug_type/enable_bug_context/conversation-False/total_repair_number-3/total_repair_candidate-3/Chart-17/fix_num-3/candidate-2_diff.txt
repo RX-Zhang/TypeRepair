@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,4 +1,10 @@
+ public Object clone() throws CloneNotSupportedException {
+-    Object clone = createCopy(0, getItemCount() - 1);
++    int itemCount = getItemCount();
++    if (itemCount == 0) {
++        // Return a copy with empty data to avoid IllegalArgumentException in createCopy
++        return createCopy(0, -1);
++    }
++    Object clone = createCopy(0, itemCount - 1);
+     return clone;
+ }
++

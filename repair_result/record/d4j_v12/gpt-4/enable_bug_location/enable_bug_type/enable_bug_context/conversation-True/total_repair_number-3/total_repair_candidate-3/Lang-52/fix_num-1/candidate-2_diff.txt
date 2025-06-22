@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -63,6 +63,13 @@
+                     out.write('\\');
+                     out.write('\\');
+                     break;
++                case '/':
++                    // Fix: escape '/' if it is part of "</script>" sequence to avoid ending the script prematurely
++                    if ((i > 0) && (str.charAt(i - 1) == '<')) {
++                        out.write('\\');
++                    }
++                    out.write('/');
++                    break;
+                 default :
+                     out.write(ch);
+                     break;
+@@ -70,3 +77,4 @@
+         }
+     }
+ }
++

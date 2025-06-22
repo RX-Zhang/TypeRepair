@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -4,22 +4,30 @@
+     int depth = 0;
+     char last = 0;
+ 
+-    do {
+-        if (isEmpty()) break;
+-        Character c = consume();
+-        if (last == 0 || last != ESC) {
+-            if (c.equals(open)) {
++    while (!isEmpty()) {
++        char c = peek();
++        if (last != ESC) {
++            if (c == open) {
+                 depth++;
+                 if (start == -1)
+-                    start = pos;
++                    start = pos + 1;
++                advance();
++                last = c;
++                continue;
++            } else if (c == close) {
++                depth--;
++                advance();
++                if (depth == 0)
++                    break;
++                last = c;
++                continue;
+             }
+-            else if (c.equals(close))
+-                depth--;
+         }
++        advance();
++        if (depth > 0)
++            end = pos;
++        last = c;
++    }
++    return (start >= 0 && end >= start) ? queue.substring(start, end) : "";
++}
+ 
+-        if (depth > 0 && last != 0)
+-            end = pos; // don't include the outer match pair in the return
+-        last = c;
+-    } while (depth > 0);
+-    return (end >= 0) ? queue.substring(start, end) : "";
+-}

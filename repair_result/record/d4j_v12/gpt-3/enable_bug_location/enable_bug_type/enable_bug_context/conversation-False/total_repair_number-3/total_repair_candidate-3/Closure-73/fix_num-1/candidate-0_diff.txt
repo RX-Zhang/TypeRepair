@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -46,7 +46,12 @@
+         //  character can be represented in this character set.
+         if (outputCharsetEncoder != null) {
+           if (outputCharsetEncoder.canEncode(c)) {
+-            sb.append(c);
++            // For ASCII control characters and DEL (0x7F), escape unicode to avoid them
++            if ((c >= 0x00 && c <= 0x1f) || c == 0x7f) {
++              appendHexJavaScriptRepresentation(sb, c);
++            } else {
++              sb.append(c);
++            }
+           } else {
+             // Unicode-escape the character.
+             appendHexJavaScriptRepresentation(sb, c);
+@@ -55,7 +60,7 @@
+           // No charsetEncoder provided - pass straight latin characters
+           // through, and escape the rest.  Doing the explicit character
+           // check is measurably faster than using the CharsetEncoder.
+-          if (c > 0x1f && c <= 0x7f) {
++          if (c > 0x1f && c < 0x7f) {
+             sb.append(c);
+           } else {
+             // Other characters can be misinterpreted by some js parsers,
+@@ -69,3 +74,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

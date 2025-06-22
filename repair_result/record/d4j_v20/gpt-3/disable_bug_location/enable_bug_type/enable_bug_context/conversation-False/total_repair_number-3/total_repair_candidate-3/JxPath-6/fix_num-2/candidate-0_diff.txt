@@ -1,0 +1,56 @@
+--- 
++++ 
+@@ -6,9 +6,10 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++    // Uncomment for debugging comparisons.
++    // System.err.println("COMPARING: " +
++    //     (l == null ? "null" : l.getClass().getName()) + " " +
++    //     (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -19,21 +20,33 @@
+     }
+ 
+     if (l instanceof Collection) {
+-        l = ((Collection) l).iterator();
++        l = ((Collection<?>) l).iterator();
+     }
+ 
+     if (r instanceof Collection) {
+-        r = ((Collection) r).iterator();
++        r = ((Collection<?>) r).iterator();
+     }
+ 
+     if ((l instanceof Iterator) && !(r instanceof Iterator)) {
+-        return contains((Iterator) l, r);
++        return contains((Iterator<?>) l, r);
+     }
+     if (!(l instanceof Iterator) && (r instanceof Iterator)) {
+-        return contains((Iterator) r, l);
++        return contains((Iterator<?>) r, l);
+     }
+     if (l instanceof Iterator && r instanceof Iterator) {
+-        return findMatch((Iterator) l, (Iterator) r);
++        return findMatch((Iterator<?>) l, (Iterator<?>) r);
+     }
+-    return equal(l, r);
++
++    // The logical error was that the fallback call equal(l, r) would recursively
++    // call this method again causing infinite recursion.
++    // We need to call a different equal method that compares two Objects instead of Expressions.
++    // Assuming such method exists or use standard equals method.
++    if (l == null) {
++        return r == null;
++    }
++    if (r == null) {
++        return false;
++    }
++    return l.equals(r);
+ }
++

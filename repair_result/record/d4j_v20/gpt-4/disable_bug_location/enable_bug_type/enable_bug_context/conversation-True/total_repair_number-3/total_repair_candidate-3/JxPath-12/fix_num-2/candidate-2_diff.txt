@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -28,7 +28,13 @@
+         switch (((NodeTypeTest) test).getNodeType()) {
+             case Compiler.NODE_TYPE_NODE :
+                 return nodeType == Node.ELEMENT_NODE
+-                        || nodeType == Node.DOCUMENT_NODE;
++                        || nodeType == Node.DOCUMENT_NODE
++                        || nodeType == Node.DOCUMENT_TYPE_NODE
++                        || nodeType == Node.ATTRIBUTE_NODE
++                        || nodeType == Node.CDATA_SECTION_NODE
++                        || nodeType == Node.TEXT_NODE
++                        || nodeType == Node.COMMENT_NODE
++                        || nodeType == Node.PROCESSING_INSTRUCTION_NODE;
+             case Compiler.NODE_TYPE_TEXT :
+                 return nodeType == Node.CDATA_SECTION_NODE
+                     || nodeType == Node.TEXT_NODE;
+@@ -48,3 +54,4 @@
+     }
+     return false;
+ }
++

@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,6 +1,12 @@
+ private void readTypeVariables() {
+     for (Type type : typeVariable.getBounds()) {
+-        registerTypeVariablesOn(type);
++        if (type != null) {
++            registerTypeVariablesOn(type);
++        }
+     }
+-    registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));
++    Type actualTypeArgument = getActualTypeArgumentFor(typeVariable);
++    if (actualTypeArgument != null) {
++        registerTypeVariablesOn(actualTypeArgument);
++    }
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -8,6 +8,14 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (ArrayIndexOutOfBoundsException e) {
++            // Defensive handling to avoid runtime crash due to invalid offset access
++            // Log or handle as needed, here we just nuke symbols to recover
++            nukeSymbols(true);
++            _needRehash = false;
++        }
+     }
+ }
++

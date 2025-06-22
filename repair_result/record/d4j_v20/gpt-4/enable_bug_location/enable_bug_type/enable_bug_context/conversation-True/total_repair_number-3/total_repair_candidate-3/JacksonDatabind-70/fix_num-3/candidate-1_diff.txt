@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -12,8 +12,9 @@
+         if (!found) {
+             // 09-Jan-2017, tatu: Important: must check name slot and NOT property name,
+             //   as only former is lower-case in case-insensitive case
+-            found = key.equals(prop.getName());
+-            if (found) {
++            Object keyInSlot = _hashArea[i-1];
++            if (key.equals(keyInSlot)) {
++                found = true;
+                 // need to leave a hole here
+                 _propsInOrder[_findFromOrdered(prop)] = null;
+                 continue;
+@@ -26,3 +27,4 @@
+     }
+     init(props);
+ }
++

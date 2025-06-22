@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -64,6 +64,11 @@
+ 
+     // search loop
+     while (true) {
++
++        // check evaluations count to prevent excessive evaluations
++        if (computeObjectiveValue.getCount() >= getMaxEvaluations()) {
++            throw new TooManyEvaluationsException(getMaxEvaluations());
++        }
+ 
+         // check convergence of bracketing interval
+         final double xTol = getAbsoluteAccuracy() +
+@@ -201,3 +206,4 @@
+     }
+ 
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.data.time.junit.WeekTests.testConstructor
+- Error: junit.framework.AssertionFailedError: expected:<35> but was:<34>
+- Location:         assertEquals(35, w.getWeek());

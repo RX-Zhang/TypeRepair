@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -4,7 +4,8 @@
+                 sampleSize);
+     }
+ 
+-    final T[]out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
++    @SuppressWarnings("unchecked")
++    final T[] out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
+ 
+     for (int i = 0; i < sampleSize; i++) {
+         out[i] = sample();
+@@ -13,3 +14,4 @@
+     return out;
+ 
+ }
++

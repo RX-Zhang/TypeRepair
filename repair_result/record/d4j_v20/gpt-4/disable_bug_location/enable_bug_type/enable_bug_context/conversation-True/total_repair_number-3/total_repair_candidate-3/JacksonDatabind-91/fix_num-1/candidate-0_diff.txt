@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -2,10 +2,14 @@
+     if (t.isContainerType()) {
+         // First: value types may have both value and type handlers
+         JavaType ct = t.getContentType();
+-        if (ct != null) {
+-            return (ct.getValueHandler() != null) || (ct.getTypeHandler() != null);
++        if (ct != null && ((ct.getValueHandler() != null) || (ct.getTypeHandler() != null))) {
++            return true;
++        }
+         // Second: map(-like) types may have value handler for key (but not type; keys are untyped)
++        if (t.isMapLikeType()) {
++            return t.getKeyType().getValueHandler() != null;
+         }
+     }
+     return false;
+ }
++

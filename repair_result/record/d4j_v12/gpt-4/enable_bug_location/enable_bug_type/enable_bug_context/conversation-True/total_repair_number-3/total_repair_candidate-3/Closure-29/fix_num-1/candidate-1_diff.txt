@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -24,7 +24,7 @@
+       // We short-circuit this problem by bailing out if we see a reference
+       // to a property that isn't defined on the object literal. This
+       // isn't a perfect algorithm, but it should catch most cases.
+-      continue;
++      return false;
+     }
+ 
+     // Only rewrite VAR declarations or simple assignment statements
+@@ -59,7 +59,6 @@
+         return false;
+       }
+ 
+-
+       Node childVal = child.getFirstChild();
+       // Check if childVal is the parent of any of the passed in
+       // references, as that is how self-referential assignments
+@@ -76,7 +75,6 @@
+       }
+     }
+ 
+-
+     // We have found an acceptable object literal assignment. As
+     // long as there are no other assignments that mess things up,
+     // we can inline.
+@@ -84,3 +82,4 @@
+   }
+   return ret;
+ }
++

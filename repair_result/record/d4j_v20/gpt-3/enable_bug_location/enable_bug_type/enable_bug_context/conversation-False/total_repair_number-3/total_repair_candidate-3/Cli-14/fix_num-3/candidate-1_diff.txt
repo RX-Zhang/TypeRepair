@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -19,7 +19,6 @@
+         if (commandLine.hasOption(option)) {
+             if (++present > maximum) {
+                 unexpected = option;
+-
+                 break;
+             }
+ 
+@@ -33,7 +32,7 @@
+                                   unexpected.getPreferredName());
+     }
+ 
+-    // too few option
++    // too few options
+     if (present < minimum) {
+         throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+     }
+@@ -44,3 +43,4 @@
+         option.validate(commandLine);
+     }
+ }
++

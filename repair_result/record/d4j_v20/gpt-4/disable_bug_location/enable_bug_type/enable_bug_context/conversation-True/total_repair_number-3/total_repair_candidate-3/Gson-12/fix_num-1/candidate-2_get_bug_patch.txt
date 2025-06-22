@@ -1,0 +1,19 @@
+@Override public void skipValue() throws IOException {
+  if (stackSize == 0) {
+    return; // or throw an IOException indicating no value to skip
+  }
+  if (peek() == JsonToken.NAME) {
+    nextName();
+    if (stackSize - 2 >= 0) {
+      pathNames[stackSize - 2] = "null";
+    }
+  } else {
+    popStack();
+    if (stackSize - 1 >= 0) {
+      pathNames[stackSize - 1] = "null";
+    }
+  }
+  if (stackSize - 1 >= 0) {
+    pathIndices[stackSize - 1]++;
+  }
+}

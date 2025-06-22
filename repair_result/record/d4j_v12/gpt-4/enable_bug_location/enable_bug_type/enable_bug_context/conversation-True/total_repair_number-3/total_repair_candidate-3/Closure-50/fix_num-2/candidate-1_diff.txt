@@ -1,0 +1,64 @@
+--- 
++++ 
+@@ -20,14 +20,14 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+   int foldedSize = 0;
+   Node prev = null;
+   Node elem = arrayNode.getFirstChild();
++
+   // Merges adjacent String nodes.
+   while (elem != null) {
+     if (NodeUtil.isImmutableValue(elem) || elem.getType() == Token.EMPTY) {
+@@ -64,6 +64,7 @@
+   foldedSize += arrayFoldedChildren.size() - 1;
+ 
+   int originalSize = InlineCostEstimator.getCost(n);
++
+   switch (arrayFoldedChildren.size()) {
+     case 0:
+       Node emptyStringNode = Node.newString("");
+@@ -76,6 +77,7 @@
+         return n;
+       }
+       arrayNode.detachChildren();
++
+       if (foldedStringNode.getType() != Token.STRING) {
+         // If the Node is not a string literal, ensure that
+         // it is coerced to a string.
+@@ -84,14 +86,22 @@
+             foldedStringNode);
+         foldedStringNode = replacement;
+       }
++
+       n.getParent().replaceChild(n, foldedStringNode);
+       reportCodeChange();
+       return foldedStringNode;
+     default:
+       // No folding could actually be performed.
+-      if (arrayFoldedChildren.size() == arrayNode.getChildCount()) {
++      if (arrayFoldedChildren.size() == arrayNode.getChildCount() &&
++          (right == null || ",".equals(joinString))) {
+         return n;
+       }
++
++      // If joinString is default ",", remove explicit join string to optimize
++      if (right != null && ",".equals(joinString)) {
++        right.detach();
++      }
++
+       int kJoinOverhead = "[].join()".length();
+       foldedSize += kJoinOverhead;
+       foldedSize += (right != null) ? InlineCostEstimator.getCost(right) : 0;
+@@ -108,3 +118,4 @@
+ 
+   return n;
+ }
++

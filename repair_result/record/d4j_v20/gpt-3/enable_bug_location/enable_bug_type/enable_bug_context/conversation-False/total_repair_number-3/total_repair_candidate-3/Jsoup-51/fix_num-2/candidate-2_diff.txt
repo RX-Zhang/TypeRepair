@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -2,5 +2,6 @@
+     if (isEmpty())
+         return false;
+     char c = input[pos];
+-    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
++    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= 0x80); // Include non-ASCII characters
+ }
++

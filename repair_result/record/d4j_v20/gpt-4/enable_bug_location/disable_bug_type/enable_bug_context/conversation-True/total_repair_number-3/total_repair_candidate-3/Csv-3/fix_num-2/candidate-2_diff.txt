@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -12,17 +12,20 @@
+         return BACKSPACE;
+     case 'f':
+         return FF;
+-    case CR:
+-    case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
+-        return c;
++    case '0':
++        // handle null character (as seen for the MySQL \N escape case)
++        return DISABLED;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
++    case '\\':
++    case '/':
++        // support for escaping escape character itself or other escape chars like '/'
++        return c;
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // if next char is not a recognized escape sequence, 
++        // preserve the escape char and the following char.
++        // Return the character as is.
++        return c;
+     }
+ }
++

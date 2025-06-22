@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -1,7 +1,31 @@
+ private boolean isShortOption(String token)
+ {
+     // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+-    return token.startsWith("-") && token.length() >= 2 && options.hasShortOption(token.substring(1, 2));
++    if (!token.startsWith("-") || token.length() < 2) {
++        return false;
++    }
+ 
+-    // remove leading "-" and "=value"
++    // check if the first character after '-' is a known short option
++    String opt = token.substring(1, 2);
++    if (!options.hasShortOption(opt)) {
++        return false;
++    }
++
++    // if token length is exactly 2 (e.g., "-t"), it's a short option
++    if (token.length() == 2) {
++        return true;
++    }
++
++    // if token length > 2, check if third char is '=' (e.g., -S=V)
++    if (token.charAt(2) == '=') {
++        return true;
++    }
++
++    // if the token looks like concatenated short options or an argument to the short option,
++    // we need to handle it in handleConcatenatedOptions or handleShortAndLongOption
++
++    // Ensure that the token does not start with a second short option or looks like a negative number
++    // For example "-t1" where t is option and 1 is argument
++    return options.hasShortOption(opt);
+ }
++

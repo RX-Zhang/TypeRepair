@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -40,8 +40,8 @@
+         if (_parsingContext.inArray()) {
+             // Yup: in array, so this element could be verified; but it won't be
+             // reported anyway, and we need to process following event.
++            _mayBeLeaf = true;
+             token = _xmlTokens.next();
+-            _mayBeLeaf = true;
+             continue;
+         }
+         String name = _xmlTokens.getLocalName();
+@@ -132,3 +132,4 @@
+     _throwInternal();
+     return null;
+ }
++

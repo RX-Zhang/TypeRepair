@@ -1,0 +1,1 @@
+['getNextZipEntry', 'readFirstLocalFileHeader', 'processZip64Extra', 'canReadEntryData', 'closeEntry', 'currentEntryHasOutstandingBytes', 'drainCurrentEntryData']

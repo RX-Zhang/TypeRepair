@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -19,6 +19,7 @@
+     // mostly copied from 'nextToken()'
+     while (token == XmlTokenStream.XML_START_ELEMENT) {
+         if (_mayBeLeaf) {
++            // Here we should mimic 'nextToken' and return FIELD_NAME indicating start of object
+             _nextToken = JsonToken.FIELD_NAME;
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
+@@ -46,6 +47,7 @@
+             // NOTE: this is different from nextToken() -- produce "", NOT null
+             _mayBeLeaf = false;
+             _currToken = JsonToken.VALUE_STRING;
++            // Return empty string as text value for leaf node on end element
+             return (_currText = "");
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+@@ -60,15 +62,16 @@
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            return null; // We must return null here, as no text value yet
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
++            return null; // No text value here
+         }
+-        break;
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText; // Return the attribute's text value immediately
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -88,6 +91,10 @@
+         break;
+     case XmlTokenStream.XML_END:
+         _currToken = null;
++        break;
++    default:
++        // no action; let flow return null
+     }
+     return null;
+ }
++

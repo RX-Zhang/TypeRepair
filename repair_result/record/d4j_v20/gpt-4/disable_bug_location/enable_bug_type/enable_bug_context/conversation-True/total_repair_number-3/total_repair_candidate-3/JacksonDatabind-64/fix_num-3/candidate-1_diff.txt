@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -19,7 +19,6 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+             serializationType = declaredType;
+         }
+         JavaType ct = serializationType.getContentType();
+@@ -73,7 +72,6 @@
+             valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
+         } else {
+             valueToSuppress = getDefaultValue(actualType);
+-            suppressNulls = true;
+         }
+         if (valueToSuppress == null) {
+             suppressNulls = true;
+@@ -125,3 +123,4 @@
+     }
+     return bpw;
+ }
++

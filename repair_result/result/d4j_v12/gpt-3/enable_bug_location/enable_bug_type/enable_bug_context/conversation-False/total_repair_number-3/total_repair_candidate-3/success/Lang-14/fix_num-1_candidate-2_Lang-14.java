@@ -1,0 +1,10 @@
+public static boolean equals(CharSequence cs1, CharSequence cs2) {
+    if (cs1 == cs2) {
+        return true;
+    }
+    if (cs1 == null || cs2 == null) {
+        return false;
+    }
+    // Correcting the logical error to also handle instances of different types
+    return cs1.toString().equals(cs2.toString());
+}

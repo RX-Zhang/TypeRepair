@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -2,3 +2,4 @@
+     return compute(args[0].computeValue(context), args[1].computeValue(context)) 
+             ? Boolean.TRUE : Boolean.FALSE;
+ }
++

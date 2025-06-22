@@ -1,0 +1,13 @@
+public final Object computeValue(EvalContext context) {
+    Object left = args[0].computeValue(context);
+    Object right = args[1].computeValue(context);
+    boolean result = compute(left, right);
+    if (left instanceof Iterator || right instanceof Iterator) {
+        // If either operand is an empty node-set, relational operators should return false
+        if ((left instanceof Iterator && !((Iterator) left).hasNext()) ||
+            (right instanceof Iterator && !((Iterator) right).hasNext())) {
+            result = false;
+        }
+    }
+    return result ? Boolean.TRUE : Boolean.FALSE;
+}

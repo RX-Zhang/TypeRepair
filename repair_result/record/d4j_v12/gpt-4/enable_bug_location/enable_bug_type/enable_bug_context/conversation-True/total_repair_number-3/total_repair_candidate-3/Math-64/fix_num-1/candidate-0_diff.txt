@@ -1,0 +1,54 @@
+--- 
++++ 
+@@ -40,7 +40,7 @@
+         // so let jacobian contain the R matrix with its diagonal elements
+         for (int k = 0; k < solvedCols; ++k) {
+             int pk = permutation[k];
+-            jacobian[k][pk] = diagR[pk];
++            jacobian[k][pk] = diagR[k];
+         }
+ 
+         if (firstIteration) {
+@@ -133,10 +133,10 @@
+ 
+             // compute the scaled predicted reduction
+             // and the scaled directional derivative
++            Arrays.fill(work1, 0);
+             for (int j = 0; j < solvedCols; ++j) {
+                 int pj = permutation[j];
+                 double dirJ = lmDir[pj];
+-                work1[j] = 0;
+                 for (int i = 0; i <= j; ++i) {
+                     work1[i] += jacobian[i][pj] * dirJ;
+                 }
+@@ -158,11 +158,11 @@
+             if (ratio <= 0.25) {
+                 double tmp =
+                     (actRed < 0) ? (0.5 * dirDer / (dirDer + 0.5 * actRed)) : 0.5;
+-                    if ((0.1 * cost >= previousCost) || (tmp < 0.1)) {
+-                        tmp = 0.1;
+-                    }
+-                    delta = tmp * Math.min(delta, 10.0 * lmNorm);
+-                    lmPar /= tmp;
++                if ((0.1 * cost >= previousCost) || (tmp < 0.1)) {
++                    tmp = 0.1;
++                }
++                delta = tmp * Math.min(delta, 10.0 * lmNorm);
++                lmPar /= tmp;
+             } else if ((lmPar == 0) || (ratio >= 0.75)) {
+                 delta = 2 * lmNorm;
+                 lmPar *= 0.5;
+@@ -193,7 +193,7 @@
+                 oldRes    = tmpVec;
+             }
+             if (checker==null) {
+-            	if (((Math.abs(actRed) <= costRelativeTolerance) &&
++                if (((Math.abs(actRed) <= costRelativeTolerance) &&
+                     (preRed <= costRelativeTolerance) &&
+                     (ratio <= 2.0)) ||
+                    (delta <= parRelativeTolerance * xNorm)) {
+@@ -222,3 +222,4 @@
+     }
+ 
+ }
++

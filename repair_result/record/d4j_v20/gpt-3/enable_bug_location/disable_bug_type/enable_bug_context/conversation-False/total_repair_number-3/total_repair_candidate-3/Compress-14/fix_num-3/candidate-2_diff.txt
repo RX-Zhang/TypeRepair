@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -18,9 +18,9 @@
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
++    // Skip leading spaces and NULs
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == ' ' || buffer[start] == 0){
+             start++;
+         } else {
+             break;
+@@ -55,3 +55,4 @@
+ 
+     return result;
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -28,10 +28,11 @@
+     // local-alias-inlining above.
+     if ((name.type == Name.Type.OBJECTLIT ||
+          name.type == Name.Type.FUNCTION) &&
+-        name.aliasingGets == 0 && name.props != null) {
++        name.aliasingGets == 0 && (name.props != null && !name.props.isEmpty())) {
+       // All of {@code name}'s children meet condition (a), so they can be
+       // added to the worklist.
+       workList.addAll(name.props);
+     }
+   }
+ }
++

@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -56,5 +56,11 @@
+     options.messageBundle = new EmptyMessageBundle();
+   }
+ 
++  // Validate the message bundle to avoid uninitialized messages
++  if (options.messageBundle instanceof EmptyMessageBundle) {
++    throw new RuntimeException("Message bundle is empty and may lead to uninitialized messages.");
++  }
++
+   return options;
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -45,5 +45,12 @@
+       }
+     }
+   }
++
++  // Additional type safety check to prevent type mismatch errors
++  if (valueType != null && valueType.isFunctionType() && rhsValue != null && !rhsValue.isFunction()) {
++    return false;
++  }
++
+   return inferred;
+ }
++

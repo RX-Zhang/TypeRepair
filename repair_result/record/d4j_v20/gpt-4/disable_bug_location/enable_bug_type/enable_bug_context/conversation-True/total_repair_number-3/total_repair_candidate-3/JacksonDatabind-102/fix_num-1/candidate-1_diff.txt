@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -42,10 +42,10 @@
+     // Jackson's own `StdDateFormat` is quite easy to deal with...
+     if (df0 instanceof StdDateFormat) {
+         StdDateFormat std = (StdDateFormat) df0;
+-        if (format.hasLocale()) {
++        if (hasLocale) {
+             std = std.withLocale(format.getLocale());
+         }
+-        if (format.hasTimeZone()) {
++        if (hasTZ) {
+             std = std.withTimeZone(format.getTimeZone());
+         }
+         return withFormat(Boolean.FALSE, std);
+@@ -57,7 +57,7 @@
+     if (!(df0 instanceof SimpleDateFormat)) {
+         serializers.reportBadDefinition(handledType(), String.format(
+ "Configured `DateFormat` (%s) not a `SimpleDateFormat`; cannot configure `Locale` or `TimeZone`",
+-getClass().getName()));
++df0.getClass().getName()));
+     }
+     SimpleDateFormat df = (SimpleDateFormat) df0;
+     if (hasLocale) {
+@@ -73,3 +73,4 @@
+     }
+     return withFormat(Boolean.FALSE, df);
+ }
++

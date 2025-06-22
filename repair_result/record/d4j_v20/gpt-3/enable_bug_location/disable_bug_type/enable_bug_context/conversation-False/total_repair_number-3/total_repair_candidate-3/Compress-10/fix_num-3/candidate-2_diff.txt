@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -10,10 +10,15 @@
+         long offset = offsetEntry.headerOffset;
+         archive.seek(offset + LFH_OFFSET_FOR_FILENAME_LENGTH);
+         byte[] b = new byte[SHORT];
++
++        // Read file name length (2 bytes)
+         archive.readFully(b);
+         int fileNameLen = ZipShort.getValue(b);
++
++        // Read extra field length (2 bytes)
+         archive.readFully(b);
+         int extraFieldLen = ZipShort.getValue(b);
++
+         int lenToSkip = fileNameLen;
+         while (lenToSkip > 0) {
+             int skipped = archive.skipBytes(lenToSkip);
+@@ -41,3 +46,4 @@
+         }
+     }
+ }
++

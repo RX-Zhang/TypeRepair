@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
+ {
+-    List tokens = new ArrayList();
++    List<String> tokens = new ArrayList<>(); // Specify the type of List
+ 
+     boolean eatTheRest = false;
+ 
+@@ -27,7 +27,14 @@
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                if (arg.contains("=") && options.hasOption(opt)) // Check for '=' in the argument
++                {
++                    // the format is --foo=value or -foo=value
++                    // the format is a special properties option (-Dproperty=value)
++                    tokens.add(arg.substring(0, arg.indexOf('='))); // Add the option part
++                    tokens.add(arg.substring(arg.indexOf('=') + 1)); // Add the value part
++                }
++                else if (options.hasOption(arg.substring(0, 2)))
+                 {
+                     // the format is --foo=value or -foo=value
+                     // the format is a special properties option (-Dproperty=value)
+@@ -55,5 +62,6 @@
+         }
+     }
+ 
+-    return (String[]) tokens.toArray(new String[tokens.size()]);
++    return tokens.toArray(new String[0]); // Use a more concise way to convert List to Array
+ }
++

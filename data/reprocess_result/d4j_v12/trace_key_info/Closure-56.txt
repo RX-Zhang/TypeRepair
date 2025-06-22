@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.JSCompilerSourceExcerptProviderTest.testExceptNoNewLine
+- Error: junit.framework.ComparisonFailure: expected:<foo2:third line> but was:<null>
+- Location:     assertEquals("foo2:third line", provider.getSourceLine("foo2", 3));
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.JsMessageExtractorTest.testSyntaxError1
+- Error: junit.framework.AssertionFailedError
+- Location:       assertTrue(e.getMessage().contains("if (true) {}}\n"));
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.JsMessageExtractorTest.testSyntaxError2
+- Error: junit.framework.AssertionFailedError
+- Location:       assertTrue(e.getMessage().contains("if (true) {}}\n"));

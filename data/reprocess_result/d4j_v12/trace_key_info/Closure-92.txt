@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.ProcessClosurePrimitivesTest.testProvideInIndependentModules4
+- Error: junit.framework.AssertionFailedError: 
+Expected: var apps={};apps.foo={};apps.foo.bar={};apps.foo.bar.B={};apps.foo.bar.C={}
+Result: var apps={};apps.foo.bar={};apps.foo={};apps.foo.bar.B={};apps.foo.bar.C={}
+- Location:     test(

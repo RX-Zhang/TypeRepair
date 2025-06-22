@@ -1,0 +1,17 @@
+private Node parseContextTypeExpression(JsDocToken token) {
+    if (token == JsDocToken.LC) {  // Added missing handling for left curly brace '{'
+        skipEOLs();
+        Node typeNode = parseTopLevelTypeExpression(next());
+        if (typeNode != null) {
+            skipEOLs();
+            if (!match(JsDocToken.RC)) {
+                reportTypeSyntaxWarning("msg.jsdoc.missing.rc");
+            } else {
+                next();
+            }
+        }
+        return typeNode;
+    } else {
+        return parseTypeName(token);
+    }
+}

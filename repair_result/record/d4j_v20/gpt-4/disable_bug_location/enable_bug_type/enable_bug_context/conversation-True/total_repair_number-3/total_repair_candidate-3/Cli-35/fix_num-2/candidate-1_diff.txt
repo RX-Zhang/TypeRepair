@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,7 +4,10 @@
+     
+     List<String> matchingOpts = new ArrayList<String>();
+ 
+-    // for a perfect match return the single option only
++    if (hasLongOption(opt)) {
++        matchingOpts.add(opt);
++        return matchingOpts;
++    }
+ 
+     for (String longOpt : longOpts.keySet())
+     {
+@@ -16,3 +19,4 @@
+     
+     return matchingOpts;
+ }
++

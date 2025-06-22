@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -4,15 +4,15 @@
+     String key = getPropertyName(propToRm);
+     boolean found = false;
+ 
+-    for (int i = 1, end = _hashArea.length; i < end; i += 2) {
+-        SettableBeanProperty prop = (SettableBeanProperty) _hashArea[i];
++    for (int i = 0, end = _hashArea.length; i < end; i += 2) {
++        SettableBeanProperty prop = (SettableBeanProperty) _hashArea[i+1];
+         if (prop == null) {
+             continue;
+         }
+         if (!found) {
+-            // 09-Jan-2017, tatu: Important: must check name slot and NOT property name,
+-            //   as only former is lower-case in case-insensitive case
+-            found = key.equals(prop.getName());
++            // Important: check the key slot, which is lower-cased if caseInsensitive is true
++            String currentKey = (String) _hashArea[i];
++            found = key.equals(currentKey);
+             if (found) {
+                 // need to leave a hole here
+                 _propsInOrder[_findFromOrdered(prop)] = null;
+@@ -26,3 +26,4 @@
+     }
+     init(props);
+ }
++

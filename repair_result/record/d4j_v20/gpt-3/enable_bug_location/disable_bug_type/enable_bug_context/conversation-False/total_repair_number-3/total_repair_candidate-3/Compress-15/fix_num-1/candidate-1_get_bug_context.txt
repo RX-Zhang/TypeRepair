@@ -1,0 +1,1 @@
+['getMethod', 'getInternalAttributes', 'getExternalAttributes', 'getPlatform', 'getName', 'getSize', 'getGeneralPurposeBit']

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,6 +2,13 @@
+     if(this.runningState != STATE_RUNNING && this.runningState != STATE_SUSPENDED) {
+         throw new IllegalStateException("Stopwatch is not running. ");
+     }
++    // Correct the stopTime calculation to ensure it reflects the total time when stopped
++    if (this.runningState == STATE_RUNNING) {
+         stopTime = System.currentTimeMillis();
++    } else if (this.runningState == STATE_SUSPENDED) {
++        // If the stopwatch is suspended, we should not update stopTime
++        // Instead, we should keep it as is to reflect the time when it was last running
++    }
+     this.runningState = STATE_STOPPED;
+ }
++

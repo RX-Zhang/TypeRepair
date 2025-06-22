@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -19,7 +19,6 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+             serializationType = declaredType;
+         }
+         JavaType ct = serializationType.getContentType();
+@@ -61,10 +60,10 @@
+         //    static definition. Sigh.
+         // First: case of class/type specifying it; try to find POJO property defaults
+ 
+-        // 16-Oct-2016, tatu: Note: if we can not for some reason create "default instance",
++        // 16-Oct-2016, tatu: Note: if we cannot for some reason create "default instance",
+         //    revert logic to the case of general/per-property handling, so both
+         //    type-default AND null are to be excluded.
+-        //    (as per [databind#1417]
++        //    (as per [databind#1417])
+         if (_useRealPropertyDefaults) {
+             // 07-Sep-2016, tatu: may also need to front-load access forcing now
+             if (prov.isEnabled(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)) {
+@@ -73,7 +72,6 @@
+             valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
+         } else {
+             valueToSuppress = getDefaultValue(actualType);
+-            suppressNulls = true;
+         }
+         if (valueToSuppress == null) {
+             suppressNulls = true;
+@@ -125,3 +123,4 @@
+     }
+     return bpw;
+ }
++

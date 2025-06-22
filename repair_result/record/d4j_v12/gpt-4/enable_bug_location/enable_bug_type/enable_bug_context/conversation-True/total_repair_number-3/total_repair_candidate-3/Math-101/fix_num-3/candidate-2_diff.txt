@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -1,5 +1,6 @@
+ public Complex parse(String source, ParsePosition pos) {
+     int initialIndex = pos.getIndex();
++    int length = source.length();
+ 
+     // parse whitespace
+     parseAndIgnoreWhitespace(source, pos);
+@@ -52,12 +53,19 @@
+     }
+ 
+     // parse imaginary character
+-    int n = getImaginaryCharacter().length();
++    String imaginaryChar = getImaginaryCharacter();
++    int n = imaginaryChar.length();
+     startIndex = pos.getIndex();
+     int endIndex = startIndex + n;
+-    if (
+-        source.substring(startIndex, endIndex).compareTo(
+-        getImaginaryCharacter()) != 0) {
++
++    if (endIndex > length) {
++        // if substring range exceeds string length, set error and return null
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(startIndex);
++        return null;
++    }
++
++    if (!source.substring(startIndex, endIndex).equals(imaginaryChar)) {
+         // set index back to initial, error index should be the start index
+         // character examined.
+         pos.setIndex(initialIndex);
+@@ -68,3 +76,4 @@
+ 
+     return new Complex(re.doubleValue(), im.doubleValue() * sign);
+ }
++

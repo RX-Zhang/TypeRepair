@@ -1,0 +1,1 @@
+{"ClassName": "ReturnsEmptyValues", "Fields": ["private static final long serialVersionUID;", " ObjectMethodsGuru methodsGuru;", " MockUtil mockUtil;"], "Methods": ["public Object answer(InvocationOnMock invocation) { ... }", " Object returnValueFor(Class type) { ... }"]}

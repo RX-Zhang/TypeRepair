@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -162,7 +162,7 @@
+                         tmp = 0.1;
+                     }
+                     delta = tmp * Math.min(delta, 10.0 * lmNorm);
+-                    lmPar /= tmp;
++                    lmPar = Math.max(lmPar / tmp, 2.2251e-308); // Ensure lmPar does not drop below a small positive value
+             } else if ((lmPar == 0) || (ratio >= 0.75)) {
+                 delta = 2 * lmNorm;
+                 lmPar *= 0.5;
+@@ -193,7 +193,7 @@
+                 oldRes    = tmpVec;
+             }
+             if (checker==null) {
+-            	if (((Math.abs(actRed) <= costRelativeTolerance) &&
++                if (((Math.abs(actRed) <= costRelativeTolerance) &&
+                     (preRed <= costRelativeTolerance) &&
+                     (ratio <= 2.0)) ||
+                    (delta <= parRelativeTolerance * xNorm)) {
+@@ -222,3 +222,4 @@
+     }
+ 
+ }
++

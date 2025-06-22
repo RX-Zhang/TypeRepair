@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -14,6 +14,26 @@
+                 continue;
+             }
+             // but not just one
++            JsonToken t = _tokens[i].firstToken();
++            if (t != null && t.isScalarValue()) {
++                JsonParser buffered = _tokens[i].asParser(p);
++                buffered.nextToken();
++                Object result = TypeDeserializer.deserializeIfNatural(buffered, ctxt, extProp.getProperty().getType());
++                if (result != null) {
++                    values[i] = result;
++                    final SettableBeanProperty prop = extProp.getProperty();
++                    // handle creator assignment if needed
++                    if (prop.getCreatorIndex() >= 0) {
++                        buffer.assignParameter(prop, result);
++
++                        SettableBeanProperty typeProp = extProp.getTypeProperty();
++                        if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
++                            buffer.assignParameter(typeProp, null);
++                        }
++                    }
++                    continue;
++                }
++            }
+             // 26-Oct-2012, tatu: As per [databind#94], must allow use of 'defaultImpl'
+             if (!extProp.hasDefaultType()) {
+                 ctxt.reportInputMismatch(_beanType,
+@@ -26,8 +46,9 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
+         }
++
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+@@ -55,3 +76,4 @@
+     }
+     return bean;
+ }
++

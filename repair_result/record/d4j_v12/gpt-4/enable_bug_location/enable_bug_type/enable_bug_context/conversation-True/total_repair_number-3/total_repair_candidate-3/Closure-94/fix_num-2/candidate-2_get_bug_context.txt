@@ -1,0 +1,1 @@
+['isLiteralValue', 'isValidDefineValue', 'isGetProp', 'isName']

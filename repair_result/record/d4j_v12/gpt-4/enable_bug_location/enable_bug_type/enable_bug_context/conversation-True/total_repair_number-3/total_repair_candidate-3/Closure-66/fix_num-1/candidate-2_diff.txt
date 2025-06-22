@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -326,7 +326,17 @@
+             && (parent.getJSType() instanceof EnumType)) {
+           ensureTyped(t, n, parent.getJSType());
+         } else {
+-          ensureTyped(t, n);
++          // Fix: Provide a more accurate type for enums declared inline
++          if (n.getType() == Token.OBJECTLIT && parent.getType() == Token.ASSIGN) {
++            JSType parentType = getJSType(parent);
++            if (parentType instanceof EnumType) {
++              ensureTyped(t, n, parentType);
++            } else {
++              ensureTyped(t, n);
++            }
++          } else {
++            ensureTyped(t, n);
++          }
+         }
+       }
+       if (n.getType() == Token.OBJECTLIT) {
+@@ -351,3 +361,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

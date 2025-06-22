@@ -1,0 +1,1 @@
+['getNumberOfSuccesses', 'getPopulationSize', 'getSampleSize', 'getSupportLowerBound', 'getSupportUpperBound']

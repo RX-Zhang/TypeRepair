@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -27,8 +27,17 @@
+     // larger than the right bound.
+     boolean inverted = false;
+ 
++    int iteration = 0;
++    final int maxEval = getMaxEvaluations();
++
+     // Keep finding better approximations.
+     while (true) {
++        // Check for too many evaluations.
++        ++iteration;
++        if (iteration > maxEval) {
++            throw new org.apache.commons.math.exception.TooManyEvaluationsException(maxEval);
++        }
++
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
+@@ -58,6 +67,8 @@
+             case REGULA_FALSI:
+                 // Detect early that algorithm is stuck, instead of waiting
+                 // for the maximum number of iterations to be exceeded.
++                // here we can throw a ConvergenceException or break the loop
++                // but leaving it empty is standard practice in this version.
+                 break;
+             default:
+                 // Should never happen.
+@@ -121,3 +132,4 @@
+         }
+     }
+ }
++

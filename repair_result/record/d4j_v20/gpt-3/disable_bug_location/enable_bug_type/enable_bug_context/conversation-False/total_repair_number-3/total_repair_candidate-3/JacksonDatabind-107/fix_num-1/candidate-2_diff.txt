@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -14,7 +14,13 @@
+             deser = _findDefaultImplDeserializer(ctxt);
+             if (deser == null) {
+                 // 10-May-2016, tatu: We may get some help...
+-                JavaType actual = _handleUnknownTypeId(ctxt, typeId);
++                JavaType actual = null;
++                try {
++                    actual = _handleUnknownTypeId(ctxt, typeId);
++                } catch (IOException e) {
++                    // Log or handle the exception appropriately
++                    throw new IOException("Failed to handle unknown type ID: " + typeId, e);
++                }
+                 if (actual == null) { // what should this be taken to mean?
+                     // 17-Jan-2019, tatu: As per [databind#2221], better NOT return `null` but...
+                     return null;
+@@ -52,3 +58,4 @@
+     }
+     return deser;
+ }
++

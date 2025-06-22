@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -61,6 +61,8 @@
+     double yB    = y[signChangeIndex];
+     double absYB = FastMath.abs(yB);
+     int agingB   = 0;
++
++    int evaluations = getMaxEvaluations();
+ 
+     // search loop
+     while (true) {
+@@ -86,6 +88,10 @@
+             }
+         }
+ 
++        if (evaluations <= 0) {
++            throw new TooManyEvaluationsException(getMaxEvaluations());
++        }
++
+         // target for the next evaluation point
+         double targetY;
+         if (agingA >= MAXIMAL_AGING) {
+@@ -139,6 +145,7 @@
+ 
+         // evaluate the function at the guessed root
+         final double nextY = computeObjectiveValue(nextX);
++        --evaluations;
+         if (Precision.equals(nextY, 0.0, 1)) {
+             // we have found an exact root, since it is not an approximation
+             // we don't need to bother about the allowed solutions setting
+@@ -201,3 +208,4 @@
+     }
+ 
+ }
++

@@ -1,0 +1,1 @@
+['resizeBuffer', 'setInitialBuffer', 'encodeBase64']

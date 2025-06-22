@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -9,6 +9,17 @@
+     multiply(y, yOffset, y, yOffset, tmp2, 0);      // y^2
+     add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2
+     rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)
++
++    // Handle special cases for atan2
++    if (Double.isNaN(tmp1[0]) || Double.isNaN(x[xOffset]) || Double.isNaN(y[yOffset])) {
++        result[resultOffset] = Double.NaN;
++        return;
++    }
++
++    if (x[xOffset] == 0 && y[yOffset] == 0) {
++        result[resultOffset] = 0; // Define atan2(0, 0) = 0
++        return;
++    }
+ 
+     if (x[xOffset] >= 0) {
+ 
+@@ -35,5 +46,13 @@
+     }
+ 
+     // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++    if (x[xOffset] == 0) {
++        if (y[yOffset] > 0) {
++            result[resultOffset] = FastMath.PI / 2; // atan2(+y, 0) = +pi/2
++        } else if (y[yOffset] < 0) {
++            result[resultOffset] = -FastMath.PI / 2; // atan2(-y, 0) = -pi/2
++        }
++    }
+ 
+ }
++

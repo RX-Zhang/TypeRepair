@@ -1,0 +1,14 @@
+private boolean isOneExactlyFunctionOrDo(Node n) {
+    // For labels with block children, we need to ensure that a
+    // labeled FUNCTION or DO isn't generated when extraneous BLOCKs 
+    // skipped. If the node is a block with exactly one child which is FUNCTION or DO,
+    // we should treat that as oneExactlyFunctionOrDo.
+    if (n.getType() == Token.BLOCK) {
+      Node firstChild = getFirstNonEmptyChild(n);
+      if (firstChild != null && (firstChild.getType() == Token.FUNCTION || firstChild.getType() == Token.DO)) {
+        return true;
+      } 
+      return false;
+    }
+    return (n.getType() == Token.FUNCTION || n.getType() == Token.DO);
+}

@@ -1,0 +1,1 @@
+['checkOffset', 'parseInt', 'indexOfNonDigit']

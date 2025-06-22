@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -5,20 +5,29 @@
+     if (hoursOffset < -23 || hoursOffset > 23) {
+         throw new IllegalArgumentException("Hours out of range: " + hoursOffset);
+     }
+-    if (minutesOffset < 0 || minutesOffset > 59) {
++    int effectiveMinutesOffset = minutesOffset;
++    if (hoursOffset < 0) {
++        if (minutesOffset > 0) {
++            effectiveMinutesOffset = -minutesOffset;
++        } else if (minutesOffset < 0) {
++            effectiveMinutesOffset = minutesOffset;
++        } else {
++            effectiveMinutesOffset = 0;
++        }
++    } else {
++        if (minutesOffset < 0) {
++            effectiveMinutesOffset = -minutesOffset;
++        }
++    }
++    if (effectiveMinutesOffset < -59 || effectiveMinutesOffset > 59) {
+         throw new IllegalArgumentException("Minutes out of range: " + minutesOffset);
+     }
+-    int offset = 0;
++    int totalMinutes = hoursOffset * 60 + effectiveMinutesOffset;
+     try {
+-        int hoursInMinutes = hoursOffset * 60;
+-        if (hoursInMinutes < 0) {
+-            minutesOffset = hoursInMinutes - minutesOffset;
+-        } else {
+-            minutesOffset = hoursInMinutes + minutesOffset;
+-        }
+-        offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
++        int offset = FieldUtils.safeMultiply(totalMinutes, DateTimeConstants.MILLIS_PER_MINUTE);
++        return forOffsetMillis(offset);
+     } catch (ArithmeticException ex) {
+         throw new IllegalArgumentException("Offset is too large");
+     }
+-    return forOffsetMillis(offset);
+ }
++

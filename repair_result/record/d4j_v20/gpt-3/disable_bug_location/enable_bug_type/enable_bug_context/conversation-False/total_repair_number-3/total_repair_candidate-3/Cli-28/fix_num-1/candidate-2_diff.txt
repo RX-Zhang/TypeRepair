@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -12,6 +12,11 @@
+         if (!cmd.hasOption(option))
+         {
+             Option opt = getOptions().getOption(option);
++
++            if (opt == null) {
++                // option not recognized, skip
++                continue;
++            }
+ 
+             // get the value from the properties instance
+             String value = properties.getProperty(option);
+@@ -36,10 +41,11 @@
+             {
+                 // if the value is not yes, true or 1 then don't add the
+                 // option to the CommandLine
+-                break;
++                continue;
+             }
+ 
+             cmd.addOption(opt);
+         }
+     }
+ }
++

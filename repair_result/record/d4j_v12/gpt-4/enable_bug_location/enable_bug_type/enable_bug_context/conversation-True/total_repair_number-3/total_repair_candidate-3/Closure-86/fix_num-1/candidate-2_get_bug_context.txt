@@ -1,0 +1,1 @@
+['isImmutableValue', 'isSimpleOperator', 'callHasLocalResult', 'isAssignmentOp', 'isToStringMethodCall']

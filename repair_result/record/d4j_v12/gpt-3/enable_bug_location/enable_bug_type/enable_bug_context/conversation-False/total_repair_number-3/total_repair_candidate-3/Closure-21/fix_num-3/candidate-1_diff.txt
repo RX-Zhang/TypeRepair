@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -44,6 +44,12 @@
+       return;
+     }
+   }
++  
++  // Added boundary check for null parent
++  if (parent == null) {
++    return;
++  }
++
+   if (
+       (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler()))) {
+     String msg = "This code lacks side-effects. Is there a bug?";
+@@ -63,3 +69,4 @@
+     }
+   }
+ }
++

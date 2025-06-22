@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -2,9 +2,18 @@
+     // try to resolve relative urls to abs, and optionally update the attribute so output html has abs.
+     // rels without a baseuri get removed
+     String value = el.absUrl(attr.getKey());
+-    if (!preserveRelativeLinks)
+-        attr.setValue(value);
+-    
++    if (!preserveRelativeLinks) {
++        if (!value.isEmpty()) {
++            attr.setValue(value);
++        } else {
++            // No abs URL found, keep original value (relative)
++            value = attr.getValue();
++        }
++    } else {
++        // preserveRelativeLinks is true, keep original value
++        value = attr.getValue();
++    }
++
+     for (Protocol protocol : protocols) {
+         String prot = protocol.toString() + ":";
+         if (value.toLowerCase().startsWith(prot)) {
+@@ -13,3 +22,4 @@
+     }
+     return false;
+ }
++

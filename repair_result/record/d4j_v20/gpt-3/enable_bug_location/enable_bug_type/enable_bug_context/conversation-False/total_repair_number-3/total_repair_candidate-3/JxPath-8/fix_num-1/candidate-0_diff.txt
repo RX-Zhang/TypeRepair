@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -19,5 +19,18 @@
+     }
+     double ld = InfoSetUtil.doubleValue(left);
+     double rd = InfoSetUtil.doubleValue(right);
++    
++    // Handle NaN cases explicitly
++    if (Double.isNaN(ld) && Double.isNaN(rd)) {
++        return evaluateCompare(0); // NaN is considered equal to NaN
++    }
++    if (Double.isNaN(ld)) {
++        return evaluateCompare(1); // NaN is greater than any number
++    }
++    if (Double.isNaN(rd)) {
++        return evaluateCompare(-1); // Any number is less than NaN
++    }
++    
+     return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+ }
++

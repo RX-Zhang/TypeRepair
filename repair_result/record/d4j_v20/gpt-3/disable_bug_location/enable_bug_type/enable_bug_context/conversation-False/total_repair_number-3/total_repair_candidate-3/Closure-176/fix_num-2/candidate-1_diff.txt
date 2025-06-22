@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -39,7 +39,8 @@
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
++      // Convert leftType to resultType or null only if types are compatible
++      left.setJSType(isVarDeclaration || leftType == null || leftType.isSubtype(resultType) ?
+           resultType : null);
+ 
+       if (var != null && var.isTypeInferred()) {
+@@ -61,3 +62,4 @@
+       break;
+   }
+ }
++

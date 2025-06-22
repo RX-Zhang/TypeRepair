@@ -1,0 +1,5 @@
+public static boolean equals(double x, double y) {
+    // NaN values are considered not equal according to IEEE 754 standard
+    // so we only return true if both are exactly equal.
+    return x == y;
+}

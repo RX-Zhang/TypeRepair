@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -16,11 +16,16 @@
+     return true;
+   }
+ 
+-
+   for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+-    if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
++    // Fix: Only skip new CFG nodes if we have side effects inside.
++    // The original condition was too early, causing nodes to be skipped.
++    if (ControlFlowGraph.isEnteringNewCfgNode(c)) {
++      continue;
++    }
++    if (apply(c)) {
+       return true;
+     }
+   }
+   return false;
+ }
++

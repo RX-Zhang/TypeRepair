@@ -1,0 +1,1 @@
+{"ClassName": "ChecksumCalculatingInputStream", "Fields": ["private final InputStream in;", "private final Checksum checksum;"], "Methods": ["public int read() { ... }", "public int read(byte[] b) { ... }", "public int read(byte[] b, int off, int len) { ... }", "public long skip(long n) { ... }", "public long getValue() { ... }"]}

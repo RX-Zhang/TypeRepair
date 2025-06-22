@@ -1,0 +1,1 @@
+['needMoreInput', 'endOfInput', '_finishToken', '_startValue']

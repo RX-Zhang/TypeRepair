@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -1,4 +1,7 @@
+ protected BasePeriod(long duration) {
+-    this(duration, null, null);
+-    // bug [3264409]
++    setPeriod(0, 0, 0, 0, (int) (duration / DateTimeConstants.MILLIS_PER_HOUR),
++              (int) ((duration / DateTimeConstants.MILLIS_PER_MINUTE) % 60),
++              (int) ((duration / DateTimeConstants.MILLIS_PER_SECOND) % 60),
++              (int) (duration % 1000));
+ }
++

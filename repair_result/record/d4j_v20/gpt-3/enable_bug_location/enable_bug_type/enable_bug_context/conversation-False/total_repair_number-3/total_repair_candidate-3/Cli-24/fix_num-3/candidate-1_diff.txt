@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ protected StringBuffer renderWrappedText(StringBuffer sb, int width, 
+                                          int nextLineTabStop, String text)
+ {
++    if (width <= 0 || nextLineTabStop < 0) {
++        throw new IllegalArgumentException("Width must be greater than 0 and nextLineTabStop must be non-negative");
++    }
++
+     int pos = findWrapPos(text, width, 0);
+ 
+     if (pos == -1)
+@@ -42,3 +46,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -8,6 +8,14 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (RuntimeException e) {
++            // Handle exception or log it if necessary
++            // For example, log the error or take appropriate action
++            System.err.println("Rehash failed: " + e.getMessage());
++            throw e; // Optionally rethrow the exception
++        }
+     }
+ }
++

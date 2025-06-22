@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.compress.utils.BitInputStreamTest.littleEndianWithOverflow
+- Error: junit.framework.AssertionFailedError: expected:<1186> but was:<1184>
+- Location:         assertEquals(1186, // 01001010-0010
+
+
+Test failure 2:
+- Test: org.apache.commons.compress.utils.BitInputStreamTest.bigEndianWithOverflow
+- Error: junit.framework.AssertionFailedError: expected:<8274274654740644818> but was:<203824122492715986>
+- Location:         assertEquals(8274274654740644818l, //111-00101101-01000010-00001111-01011010-00011101-01011000-00111101-0010

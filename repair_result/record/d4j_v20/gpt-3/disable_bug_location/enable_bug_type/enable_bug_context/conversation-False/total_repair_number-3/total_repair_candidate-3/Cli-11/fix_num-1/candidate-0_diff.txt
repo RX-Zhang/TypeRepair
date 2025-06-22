@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -16,15 +16,16 @@
+         buff.append("--").append(option.getLongOpt());
+     }
+ 
+-    // if the Option has a value
+-    if (option.hasArg() && (option.getArgName() != null))
++    // if the Option has a value and a non-empty argument name
++    String argName = option.getArgName();
++    if (option.hasArg() && argName != null && !argName.isEmpty())
+     {
+-        buff.append(" <").append(option.getArgName()).append(">");
++        buff.append(" <").append(argName).append(">");
+     }
+ 
+-    // if the Option is not a required option
+     if (!required)
+     {
+         buff.append("]");
+     }
+ }
++

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -26,8 +26,10 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
+-          addToSetIfLocal(lhs, kill);
+-          addToSetIfLocal(lhs, gen);
++        // For lhs in for-in, lhs is definitely assigned (killed).
++        addToSetIfLocal(lhs, kill);
++        // The property read at lhs is not a variable, so do not gen it.
++        // So do NOT add lhs to gen here.
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +86,4 @@
+       return;
+   }
+ }
++

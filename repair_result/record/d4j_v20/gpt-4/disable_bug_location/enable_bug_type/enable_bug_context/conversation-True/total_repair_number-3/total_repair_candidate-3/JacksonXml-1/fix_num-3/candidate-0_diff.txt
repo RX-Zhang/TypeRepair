@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -92,24 +92,27 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            /* One more refinement (pronunced like "hack") is that if
++            /* One more refinement (pronounced like "hack") is that if
+              * we had an empty String (or all white space), and we are
+              * deserializing an array, we better hide the empty text.
+              */
+             // Also: must skip following END_ELEMENT
+             _xmlTokens.skipEndElement();
+             if (_parsingContext.inArray()) {
+-                if (_isEmpty(_currText)) {
+-                    // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                    //    expose as empty Object, not null (or, worse, as used to
+-                    //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
+-                    _parsingContext = _parsingContext.getParent();
+-                    _namesToWrap = _parsingContext.getNamesToWrap();
+-                    return _currToken;
++                if (!_isEmpty(_currText)) {
++                    // if not empty, expose as VALUE_STRING (leaf)
++                    return (_currToken = JsonToken.VALUE_STRING);
+                 }
++                // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
++                //    expose as empty Object, not null (or, worse, as used to
++                //    be done, by swallowing the token)
++                _currToken = JsonToken.END_ARRAY;
++                _parsingContext = _parsingContext.getParent();
++                _namesToWrap = _parsingContext.getNamesToWrap();
++                return _currToken;
+             }
+-            return (_currToken = JsonToken.VALUE_STRING);
++            // If not in array, just expose VALUE_NULL to represent empty leaf
++            return (_currToken = JsonToken.VALUE_NULL);
+         } else {
+             // [dataformat-xml#177]: empty text may also need to be skipped
+             if (_parsingContext.inObject()
+@@ -132,3 +135,4 @@
+     _throwInternal();
+     return null;
+ }
++

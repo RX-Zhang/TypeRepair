@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -7,8 +7,16 @@
+         String namespace = namespacesStack.peek().get(prefix);
+         String tagName = sourceEl.tagName();
+ 
+-        Element el = 
+-            doc.createElementNS(namespace, tagName);
++        // Handle undeclared namespace prefix by passing null namespace to createElementNS
++        if (namespace == null) {
++            namespace = null;
++            tagName = sourceEl.tagName();
++            // if tagName contains colon but no namespace declared, treat as local name
++            if (tagName.contains(":")) {
++                tagName = tagName.substring(tagName.indexOf(":") + 1);
++            }
++        }
++        Element el = doc.createElementNS(namespace, tagName);
+         copyAttributes(sourceEl, el);
+         if (dest == null) { // sets up the root
+             doc.appendChild(el);
+@@ -32,3 +40,4 @@
+         // unhandled
+     }
+ }
++

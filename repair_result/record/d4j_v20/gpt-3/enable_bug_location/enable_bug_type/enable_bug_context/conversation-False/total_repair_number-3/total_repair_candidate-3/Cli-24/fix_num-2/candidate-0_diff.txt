@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+ 
+     if (nextLineTabStop >= width)
+     {
+-        // stops infinite loop happening
++        // Add exception handling to prevent runtime error
+         throw new IllegalStateException("Total width is less than the width of the argument and indent " + 
+                                         "- no room for the description");
+     }
+@@ -39,6 +39,12 @@
+             pos = width;
+         }
+ 
++        // Add boundary check to prevent potential runtime errors
++        if (pos > text.length()) {
++            pos = text.length();
++        }
++
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

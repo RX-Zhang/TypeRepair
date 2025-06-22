@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -18,14 +18,13 @@
+             if (token.indexOf('=') != -1)
+             {
+                 tokens.add(token.substring(0, token.indexOf('=')));
+-                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                tokens.add(token.substring(token.indexOf('=') + 1));
+             }
+             else
+             {
+                 tokens.add(token);
+             }
+         }
+-
+         // single hyphen
+         else if ("-".equals(token))
+         {
+@@ -61,3 +60,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

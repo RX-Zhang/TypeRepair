@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,15 +1,21 @@
+ public boolean isDirectory() {
+     if (file != null) {
+-        return file.isDirectory();
++        try {
++            return file.isDirectory();
++        } catch (SecurityException e) {
++            // If we cannot access file properties, fallback to checking linkFlag and name
++        }
+     }
+ 
+     if (linkFlag == LF_DIR) {
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
++    String name = getName();
++    if (name != null && name.endsWith("/")) {
+         return true;
+     }
+ 
+     return false;
+ }
++

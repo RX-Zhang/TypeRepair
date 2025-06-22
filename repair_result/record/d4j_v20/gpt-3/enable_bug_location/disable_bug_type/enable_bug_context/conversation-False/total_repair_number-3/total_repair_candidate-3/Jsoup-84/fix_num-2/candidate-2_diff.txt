@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -7,8 +7,17 @@
+         String namespace = namespacesStack.peek().get(prefix);
+         String tagName = sourceEl.tagName();
+ 
+-        Element el = 
+-            doc.createElementNS(namespace, tagName);
++        // Fix: if namespace is empty string, treat as null to avoid NAMESPACE_ERR
++        if (namespace != null && namespace.isEmpty()) {
++            namespace = null;
++        }
++
++        Element el;
++        if (namespace == null) {
++            el = doc.createElement(tagName);
++        } else {
++            el = doc.createElementNS(namespace, tagName);
++        }
+         copyAttributes(sourceEl, el);
+         if (dest == null) { // sets up the root
+             doc.appendChild(el);
+@@ -32,3 +41,4 @@
+         // unhandled
+     }
+ }
++

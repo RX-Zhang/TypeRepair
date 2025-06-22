@@ -1,0 +1,1 @@
+['setDomainAxis', 'clearDomainAxes', 'setRangeAxis', 'clearRangeAxes', 'setDataset', 'setRenderer', 'draw']

@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -7,7 +7,8 @@
+ 
+   Node right = callTarget.getNext();
+   if (right != null) {
+-    if (!NodeUtil.isImmutableValue(right)) {
++    if (!NodeUtil.isImmutableValue(right) || right.getNext() != null) {
++      // Do not fold if there are more than one arguments to join.
+       return n;
+     }
+   }
+@@ -89,7 +90,8 @@
+       return foldedStringNode;
+     default:
+       // No folding could actually be performed.
+-      if (arrayFoldedChildren.size() == arrayNode.getChildCount()) {
++      if (arrayFoldedChildren.size() == arrayNode.getChildCount() && 
++          (right != null ? joinString.equals(",") : true)) {
+         return n;
+       }
+       int kJoinOverhead = "[].join()".length();
+@@ -102,9 +104,18 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++
++      // Update join argument to default only if it was explicit "," before to fix test failure
++      if (right != null && joinString.equals(",")) {
++        arrayNode.getNext().setString("");// clear explicit ','
++        // Detach original explicit join argument node from call
++        right.detach();
++      }
++
+       reportCodeChange();
+       break;
+   }
+ 
+   return n;
+ }
++

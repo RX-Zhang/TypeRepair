@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -6,13 +6,23 @@
+     }
+     if (!isPositive(expected) || !isNonNegative(observed)) {
+         throw new IllegalArgumentException(
+-            "observed counts must be non-negative and expected counts must be postive");
++            "observed counts must be non-negative and expected counts must be positive");
+     }
+     double sumSq = 0.0d;
+     double dev = 0.0d;
++    double totalObserved = 0.0;
++    double totalExpected = 0.0;
++
+     for (int i = 0; i < observed.length; i++) {
+-            dev = ((double) observed[i] - expected[i]);
+-            sumSq += dev * dev / expected[i];
++        totalObserved += observed[i];
++        totalExpected += expected[i];
++    }
++
++    for (int i = 0; i < observed.length; i++) {
++        double expectedCount = (expected[i] / totalExpected) * totalObserved;
++        dev = observed[i] - expectedCount;
++        sumSq += (dev * dev) / expectedCount;
+     }
+     return sumSq;
+ }
++

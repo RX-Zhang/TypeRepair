@@ -1,0 +1,9 @@
+public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Element element = (Element) o;
+    return this.tagName().equals(element.tagName()) &&
+           this.id().equals(element.id()) &&
+           this.className().equals(element.className()) &&
+           this.text().equals(element.text());
+}

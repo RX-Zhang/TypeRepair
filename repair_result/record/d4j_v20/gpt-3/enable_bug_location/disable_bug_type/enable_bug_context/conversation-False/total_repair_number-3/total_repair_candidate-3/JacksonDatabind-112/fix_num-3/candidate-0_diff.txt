@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+         // [databind#125]: May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+@@ -31,5 +31,10 @@
+     if (isDefaultDeserializer(valueDeser)) {
+         valueDeser = null;
+     }
++    // Ensure that the ValueInstantiator has a no-argument constructor
++    if (_valueInstantiator.getDelegateCreator() == null && _valueInstantiator.getValueType() == null) {
++        throw new JsonMappingException("Cannot construct instance of " + _valueInstantiator.getValueType().getRawClass().getName() + ": no default no-arguments constructor found");
++    }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -9,6 +9,15 @@
+         while((ch = i.read()) != -1) {
+             read++;
+             if (ch == ' '){
++                // Check if len is valid before using
++                if (len <= 0) {
++                    // skip malformed or blank lines
++                    // consume until newline
++                    while (ch != -1 && ch != '\n') {
++                        ch = i.read();
++                    }
++                    break;
++                }
+                 // Get keyword
+                 final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                 while((ch = i.read()) != -1) {
+@@ -17,6 +26,10 @@
+                         final String keyword = coll.toString(CharsetNames.UTF_8);
+                         // Get rest of entry
+                         final int restLen = len - read;
++                        if (restLen < 0) {
++                            // Malformed length, break out
++                            break;
++                        }
+                         if (restLen == 1) { // only NL
+                             headers.remove(keyword);
+                         } else {
+@@ -40,6 +53,13 @@
+                 }
+                 break; // Processed single header
+             }
++            if (ch < '0' || ch > '9') {
++                // Invalid length character, skip rest of line
++                while (ch != -1 && ch != '\n') {
++                    ch = i.read();
++                }
++                break;
++            }
+             len *= 10;
+             len += ch - '0';
+         }
+@@ -49,3 +69,4 @@
+     }
+     return headers;
+ }
++

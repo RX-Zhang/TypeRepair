@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -21,14 +21,19 @@
+                     data.add(HttpConnection.KeyVal.create(name, option.val()));
+             }
+         } else if ("checkbox".equalsIgnoreCase(type) || "radio".equalsIgnoreCase(type)) {
+-            // only add checkbox or radio if they have the checked attribute
++            // add checkbox or radio if they have the checked attribute
+             if (el.hasAttr("checked")) {
+                 final String val = el.val();
+-                data.add(HttpConnection.KeyVal.create(name, val));
++                // Use "on" as the value if not explicitly set
++                data.add(HttpConnection.KeyVal.create(name, val.isEmpty() ? "on" : val));
+             }
+         } else {
+-            data.add(HttpConnection.KeyVal.create(name, el.val()));
++            // For disabled fields, skip adding them to the data
++            if (!el.hasAttr("disabled")) {
++                data.add(HttpConnection.KeyVal.create(name, el.val()));
++            }
+         }
+     }
+     return data;
+ }
++

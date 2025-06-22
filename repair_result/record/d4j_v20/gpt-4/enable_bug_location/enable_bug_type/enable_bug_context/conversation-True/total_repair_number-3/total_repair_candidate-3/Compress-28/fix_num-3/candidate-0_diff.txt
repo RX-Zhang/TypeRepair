@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -13,12 +13,17 @@
+     
+     totalRead = is.read(buf, offset, numToRead);
+     count(totalRead);
+-    
++
+     if (totalRead == -1) {
+-        hasHitEOF = true;
++        // EOF on current entry reached prematurely
++        setAtEOF(true);
++        // Consume the remainder of the last block to align with tar block size
++        consumeRemainderOfLastBlock();
++        throw new IOException("Truncated tar archive entry");
+     } else {
+         entryOffset += totalRead;
+     }
+ 
+     return totalRead;
+ }
++

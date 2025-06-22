@@ -1,0 +1,73 @@
+--- 
++++ 
+@@ -7,38 +7,38 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
++    // Skip leading NULs and spaces
++    while (start < end && (buffer[start] == 0 || buffer[start] == ' ')) {
++        start++;
++    }
++
++    // Must have trailing NUL or space
++    if (end == offset) {
++        throw new IllegalArgumentException(
++                "Empty field at offset " + offset);
++    }
++
++    byte trailer = buffer[end - 1];
++    if (trailer == 0 || trailer == ' ') {
++        end--;
++    } else {
++        throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, end - 1, trailer));
++    }
++
++    // May have additional trailing NULs or spaces
++    while (end > start && (buffer[end - 1] == 0 || buffer[end - 1] == ' ')) {
++        end--;
++    }
++
++    if (start == end) {
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
+-    while (start < end){
+-        if (buffer[start] == ' '){
+-            start++;
+-        } else {
+-            break;
+-        }
+-    }
+-
+-    // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    }
+-
+-    for ( ;start < end; start++) {
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+         // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+@@ -48,3 +48,4 @@
+ 
+     return result;
+ }
++

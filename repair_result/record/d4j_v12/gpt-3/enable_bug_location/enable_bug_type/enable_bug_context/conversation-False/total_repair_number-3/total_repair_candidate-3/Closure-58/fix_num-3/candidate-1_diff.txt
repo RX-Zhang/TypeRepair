@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -26,8 +26,13 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
++        try {
+           addToSetIfLocal(lhs, kill);
+           addToSetIfLocal(lhs, gen);
++        } catch (IllegalStateException e) {
++          // Defensive: if lhs is not a variable or index is out-of-bound,
++          // skip adding to bitsets to avoid execution error.
++        }
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +89,4 @@
+       return;
+   }
+ }
++

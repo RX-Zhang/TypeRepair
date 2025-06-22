@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -38,6 +38,48 @@
+     }
+     else
+     {
+-        return null;
++        // Attempt to convert string to the requested type if possible
++        if (clazz == Integer.class)
++        {
++            try
++            {
++                return clazz.cast(Integer.valueOf(str));
++            }
++            catch (final NumberFormatException e)
++            {
++                throw new ParseException("Unable to parse integer: " + str);
++            }
++        }
++        else if (clazz == Long.class)
++        {
++            try
++            {
++                return clazz.cast(Long.valueOf(str));
++            }
++            catch (final NumberFormatException e)
++            {
++                throw new ParseException("Unable to parse long: " + str);
++            }
++        }
++        else if (clazz == Double.class)
++        {
++            try
++            {
++                return clazz.cast(Double.valueOf(str));
++            }
++            catch (final NumberFormatException e)
++            {
++                throw new ParseException("Unable to parse double: " + str);
++            }
++        }
++        else if (clazz == Boolean.class)
++        {
++            return clazz.cast(Boolean.valueOf(str));
++        }
++        else
++        {
++            throw new ParseException("Unable to create an instance of the type: " + clazz.getName());
++        }
+     }
+ }
++

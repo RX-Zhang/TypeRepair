@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -5,25 +5,24 @@
+     while (bitsCachedSize < count) {
+         final long nextByte = in.read();
+         if (nextByte < 0) {
+-            return nextByte;
++            return bitsCachedSize > 0 ? -1 : nextByte; // Return -1 if no bits have been read
+         }
+         if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+             bitsCached |= (nextByte << bitsCachedSize);
+         } else {
+-            bitsCached <<= 8;
+-            bitsCached |= nextByte;
++            bitsCached = (bitsCached << 8) | nextByte; // Corrected the left shift operation
+         }
+         bitsCachedSize += 8;
+     }
+-        // bitsCachedSize >= 57 and left-shifting it 8 bits would cause an overflow
+-    
++    // bitsCachedSize >= count, we can safely read the bits
+     final long bitsOut;
+-        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+-            bitsOut = (bitsCached & MASKS[count]);
+-            bitsCached >>>= count;
+-        } else {
+-            bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
+-        }
+-        bitsCachedSize -= count;
++    if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
++        bitsOut = bitsCached & MASKS[count];
++        bitsCached >>>= count;
++    } else {
++        bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
++    }
++    bitsCachedSize -= count;
+     return bitsOut;
+ }
++

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -13,6 +13,12 @@
+     DateTimeParserBucket bucket = new DateTimeParserBucket(
+         instantLocal, chrono, iLocale, iPivotYear, defaultYear);
+     int newPos = parser.parseInto(bucket, text, position);
++    
++    // Check if the parsed day is valid for the month and year
++    if (bucket.getDay() > 28 && bucket.getMonth() == 2 && !chrono.isLeapYear(defaultYear)) {
++        throw new IllegalFieldValueException("dayOfMonth", bucket.getDay(), "Value must be in the range [1,28]");
++    }
++    
+     instant.setMillis(bucket.computeMillis(false, text));
+     if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+         int parsedOffset = bucket.getOffsetInteger();
+@@ -27,3 +33,4 @@
+     }
+     return newPos;
+ }
++

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -3,6 +3,11 @@
+         throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
+     }
+     
++    // Check if there are any streams available before accessing the list
++    if (deferredBlockStreams.size() < 1) {
++        throw new IllegalStateException("No deferred block streams available.");
++    }
++
+     while (deferredBlockStreams.size() > 1) {
+         // In solid compression mode we need to decompress all leading folder'
+         // streams to get access to an entry. We defer this until really needed
+@@ -14,3 +19,4 @@
+ 
+     return deferredBlockStreams.get(0);
+ }
++

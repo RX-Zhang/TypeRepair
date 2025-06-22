@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -4,13 +4,16 @@
+         if (node instanceof TextNode) {
+             TextNode tn = (TextNode) node;
+             if (!tn.isBlank())
+-                toMove.add(tn);
++                toMove.add(node);
+         }
+     }
+ 
+     for (Node node: toMove) {
+         element.removeChild(node);
+-        body().appendChild(new TextNode(" ", ""));
++        if (!body().childNodes().isEmpty()) {
++            body().appendChild(new TextNode(" ", ""));
++        }
+         body().appendChild(node);
+     }
+ }
++

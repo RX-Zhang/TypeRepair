@@ -1,0 +1,1 @@
+['isEmpty', 'advance', 'consume', 'consumeTo', 'consumeToAny', 'remainder']

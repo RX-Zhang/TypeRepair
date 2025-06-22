@@ -1,0 +1,1 @@
+['inlineAliasIfPossible', 'checkNamespaces', 'warnAboutNamespaceAliasing', 'warnAboutNamespaceRedefinition', 'updateObjLitOrFunctionDeclaration', 'updateFunctionDeclarationAtFunctionNode']

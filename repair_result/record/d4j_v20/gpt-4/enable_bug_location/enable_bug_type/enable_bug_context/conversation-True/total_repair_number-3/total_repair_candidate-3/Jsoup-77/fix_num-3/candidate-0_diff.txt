@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -8,6 +8,9 @@
+             firstFound = next;
+             break;
+         }
++        // If reach a block level element or html element, stop processing
++        if (next.isBlock() || next.nodeName().equals("html"))
++            return;
+     }
+     if (firstFound == null)
+         return; // not found, skip
+@@ -19,3 +22,4 @@
+             break;
+     }
+ }
++

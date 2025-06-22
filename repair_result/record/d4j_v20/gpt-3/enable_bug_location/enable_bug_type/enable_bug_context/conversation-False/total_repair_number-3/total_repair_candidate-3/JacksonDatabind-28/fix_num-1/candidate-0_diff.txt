@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -1,13 +1,23 @@
+ public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+ {
+-    if (p.getCurrentToken() == JsonToken.START_OBJECT) {
+-        p.nextToken();
++    JsonToken currentToken = p.getCurrentToken();
++
++    if (currentToken == JsonToken.START_OBJECT) {
++        // Move to the first token inside the object
++        JsonToken nextToken = p.nextToken();
++        if (nextToken == JsonToken.END_OBJECT) {
++            // Empty object, return empty ObjectNode
++            return ctxt.getNodeFactory().objectNode();
++        }
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+     }
+-    // 23-Sep-2015, tatu: Ugh. We may also be given END_OBJECT (similar to FIELD_NAME),
+-    //    if caller has advanced to the first token of Object, but for empty Object
+-    if (p.getCurrentToken() == JsonToken.FIELD_NAME) {
++    // According to the comment: FIELD_NAME token may occur for empty objects
++    if (currentToken == JsonToken.FIELD_NAME) {
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+     }
++    if (currentToken == JsonToken.END_OBJECT) {
++        // Empty object, return empty ObjectNode
++        return ctxt.getNodeFactory().objectNode    }
+     throw ctxt.mappingException(ObjectNode.class);
+- }
++}
++

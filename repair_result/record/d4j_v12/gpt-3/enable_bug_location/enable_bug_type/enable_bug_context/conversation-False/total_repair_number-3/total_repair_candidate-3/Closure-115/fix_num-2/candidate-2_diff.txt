@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -68,3 +68,4 @@
+ 
+   return CanInlineResult.YES;
+ }
++

@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -34,10 +34,10 @@
+                     accum.append("&amp;");
+                     break;
+                 case 0xA0:
+-                    if (escapeMode != EscapeMode.xhtml)
++                    if (escapeMode == EscapeMode.xhtml)
++                        accum.append("&#xa0;");
++                    else
+                         accum.append("&nbsp;");
+-                    else
+-                        accum.append(c);
+                     break;
+                 case '<':
+                     if (!inAttribute)
+@@ -74,3 +74,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,30 @@
+private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
+    // try to resolve relative urls to abs, and optionally update the attribute so output html has abs.
+    // rels without a baseuri get removed
+    String value = el.absUrl(attr.getKey());
+    if (!value.isEmpty()) {
+        if (!preserveRelativeLinks)
+            attr.setValue(value);
+
+        for (Protocol protocol : protocols) {
+            String prot = protocol.toString() + ":";
+            if (value.toLowerCase().startsWith(prot)) {
+                return true;
+            }
+        }
+        return false; // no matching protocol found
+    } else {
+        // No absolute URL found, so value is empty (likely relative URL)
+        if (preserveRelativeLinks) {
+            // When preserving relative links, check if original attr value has valid protocol
+            String origVal = attr.getValue();
+            for (Protocol protocol : protocols) {
+                String prot = protocol.toString() + ":";
+                if (origVal.toLowerCase().startsWith(prot)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}

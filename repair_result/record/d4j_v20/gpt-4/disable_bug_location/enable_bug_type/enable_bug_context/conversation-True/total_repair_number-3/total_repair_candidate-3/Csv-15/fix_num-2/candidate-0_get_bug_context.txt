@@ -1,0 +1,1 @@
+['getDelimiter', 'getQuoteCharacter', 'getQuoteMode', 'getRecordSeparator', 'withQuote', 'withQuoteMode', 'withRecordSeparator']

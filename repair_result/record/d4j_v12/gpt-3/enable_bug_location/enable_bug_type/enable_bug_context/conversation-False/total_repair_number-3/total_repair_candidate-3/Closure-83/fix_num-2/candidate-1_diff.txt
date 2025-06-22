@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -11,9 +11,10 @@
+     } else if (FALSES.contains(lowerParam)) {
+       setter.addValue(false);
+     } else {
+-      setter.addValue(true);
+-      return 0;
++      setter.addValue(true); // This line should be corrected to handle unexpected values properly
++      return 1; // Changed return value to 1 to indicate a non-standard input
+     }
+-    return 1;
++    return 1; // Ensure returning 1 for valid true/false cases
+   }
+ }
++

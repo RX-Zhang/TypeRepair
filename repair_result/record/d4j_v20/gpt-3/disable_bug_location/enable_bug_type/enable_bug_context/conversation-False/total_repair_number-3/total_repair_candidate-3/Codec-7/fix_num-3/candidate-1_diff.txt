@@ -1,0 +1,9 @@
+--- 
++++ 
+@@ -1,3 +1,5 @@
+ public static String encodeBase64String(byte[] binaryData) {
+-    return StringUtils.newStringUtf8(encodeBase64(binaryData, true));
++    // Disable chunking by passing false to encodeBase64 to avoid trailing new lines
++    return binaryData == null ? null : StringUtils.newStringUtf8(encodeBase64(binaryData, false));
+ }
++

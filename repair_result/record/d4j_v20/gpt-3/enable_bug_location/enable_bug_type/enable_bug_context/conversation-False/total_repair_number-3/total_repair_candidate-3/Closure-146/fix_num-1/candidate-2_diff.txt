@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+   // unions types
+   if (that instanceof UnionType) {
+     TypePair p = that.getTypesUnderInequality(this);
+-    return new TypePair(p.typeB, p.typeA);
++    return p; // Return p as-is, don't swap types
+   }
+ 
+   // other types
+@@ -18,3 +18,4 @@
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

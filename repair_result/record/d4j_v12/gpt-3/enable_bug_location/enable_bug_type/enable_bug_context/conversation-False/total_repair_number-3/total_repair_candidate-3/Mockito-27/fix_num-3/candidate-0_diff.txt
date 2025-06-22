@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -1,6 +1,8 @@
+ public <T> void resetMock(T mock) {
+     MockHandlerInterface<T> oldMockHandler = getMockHandler(mock);
++    MockSettingsImpl oldSettings = ((MockHandler<?>) oldMockHandler).getMockSettings();
+     MockHandler<T> newMockHandler = new MockHandler<T>(oldMockHandler);
+-    MethodInterceptorFilter newFilter = new MethodInterceptorFilter(newMockHandler, (MockSettingsImpl) org.mockito.Mockito.withSettings().defaultAnswer(org.mockito.Mockito.RETURNS_DEFAULTS));
++    MethodInterceptorFilter newFilter = new MethodInterceptorFilter(newMockHandler, oldSettings);
+     ((Factory) mock).setCallback(0, newFilter);
+ }
++

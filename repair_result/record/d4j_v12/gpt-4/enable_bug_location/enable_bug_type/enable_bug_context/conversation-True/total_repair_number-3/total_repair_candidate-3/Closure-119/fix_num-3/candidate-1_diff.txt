@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -104,6 +104,10 @@
+         return;
+       }
+       break;
++    case Token.CATCH:
++      // Catch block introduces a new scope with the exception variable
++      // defined locally. So do not treat the catch parameter as a global.
++      return;
+     default:
+       return;
+   }
+@@ -123,3 +127,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -3,6 +3,14 @@
+         throw new IllegalStateException(
+                 "No header mapping was specified, the record values can't be accessed by name");
+     }
++    if (!isMapped(name)) {
++        throw new IllegalArgumentException("Mapping does not contain the specified name: " + name);
++    }
+     final Integer index = mapping.get(name);
+-        return index != null ? values[index.intValue()] : null;
++    // Check index bounds to avoid ArrayIndexOutOfBoundsException
++    if (index == null || index < 0 || index >= values.length) {
++        throw new IllegalArgumentException("Index out of bounds for the specified name: " + name);
++    }
++    return values[index.intValue()];
+ }
++

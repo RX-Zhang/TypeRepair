@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -2,6 +2,7 @@
+     if (str == null) {
+         return null;
+     }
++    str = str.trim(); // Input sanitization to remove leading and trailing spaces
+     if (StringUtils.isBlank(str)) {
+         throw new NumberFormatException("A blank string is not a valid number");
+     }  
+@@ -84,7 +85,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -147,3 +148,4 @@
+         }
+     }
+ }
++

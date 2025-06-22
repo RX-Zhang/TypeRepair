@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeInferenceTest.testRecordInference
+- Error: junit.framework.ComparisonFailure: expected:<{[a: (boolean|undefined), b: (string|undefined)]}> but was:<{[]}>
+- Location:     assertEquals("{a: (boolean|undefined), b: (string|undefined)}",
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypeInferenceTest.testIssue785
+- Error: junit.framework.ComparisonFailure: expected:<{[prop: (string|undefined)]}> but was:<{[]}>
+- Location:     assertEquals("{prop: (string|undefined)}", getType("out").toString());

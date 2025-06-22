@@ -1,0 +1,1 @@
+['getName', 'setName', 'getRawName']

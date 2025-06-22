@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -12,7 +12,7 @@
+         String namespaceURI = nodeNameTest.getNamespaceURI();
+         boolean wildcard = nodeNameTest.isWildcard();
+         String testPrefix = testName.getPrefix();
+-        if (wildcard && testPrefix == null) {
++        if (wildcard && testPrefix != null) {  // corrected: wildcard with non-null prefix returns true
+             return true;
+         }
+         if (wildcard
+@@ -48,3 +48,4 @@
+     }
+     return false;
+ }
++

@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -3,6 +3,18 @@
+     throws MaxIterationsExceededException, FunctionEvaluationException {
+ 
+     clearResult();
++    verifySequence(min, max);
++    double yMin = f.value(min);
++    double yMax = f.value(max);
++
++    if (yMin * yMax > 0) { // Check if the function values at the interval endpoints bracket the root
++        throw new IllegalArgumentException(NON_BRACKETING_MESSAGE
++            .replace("{0}", Double.toString(min))
++            .replace("{1}", Double.toString(max))
++            .replace("{2}", Double.toString(yMin))
++            .replace("{3}", Double.toString(yMax)));
++    }
++
+     verifySequence(min, initial, max);
+ 
+     // return the initial guess if it is good enough
+@@ -13,9 +25,8 @@
+     }
+ 
+     // return the first endpoint if it is good enough
+-    double yMin = f.value(min);
+     if (Math.abs(yMin) <= functionValueAccuracy) {
+-        setResult(yMin, 0);
++        setResult(min, 0);
+         return result;
+     }
+ 
+@@ -25,9 +36,8 @@
+     }
+ 
+     // return the second endpoint if it is good enough
+-    double yMax = f.value(max);
+     if (Math.abs(yMax) <= functionValueAccuracy) {
+-        setResult(yMax, 0);
++        setResult(max, 0);
+         return result;
+     }
+ 
+@@ -36,8 +46,11 @@
+         return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+     }
+ 
++    // If no brackets were found, throw an exception
++    throw new IllegalArgumentException(NON_BRACKETING_MESSAGE
++        .replace("{0}", Double.toString(min))
++        .replace("{1}", Double.toString(max))
++        .replace("{2}", Double.toString(yMin))
++        .replace("{3}", Double.toString(yMax)));
++}
+ 
+-    // full Brent algorithm starting with provided initial guess
+-    return solve(f, min, yMin, max, yMax, initial, yInitial);
+-
+-}

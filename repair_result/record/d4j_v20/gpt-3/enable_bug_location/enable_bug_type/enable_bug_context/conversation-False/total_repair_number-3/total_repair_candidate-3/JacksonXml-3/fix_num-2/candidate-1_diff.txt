@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -19,6 +19,8 @@
+     // mostly copied from 'nextToken()'
+     while (token == XmlTokenStream.XML_START_ELEMENT) {
+         if (_mayBeLeaf) {
++            // Correct logic to end previous leaf processing:
++            _mayBeLeaf = false; // Must clear leaf flag here
+             _nextToken = JsonToken.FIELD_NAME;
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
+@@ -60,15 +62,16 @@
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            return null; // need to return null here to avoid falling through
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
++            return null; // should return here to avoid fall through
+         }
+-        break;
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText;
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -85,9 +88,13 @@
+         _parsingContext.setCurrentName(_cfgNameForTextElement);
+         _nextToken = JsonToken.VALUE_STRING;
+         _currToken = JsonToken.FIELD_NAME;
+-        break;
++        return null;
+     case XmlTokenStream.XML_END:
+         _currToken = null;
++        break;
++    default:
++        break;
+     }
+     return null;
+ }
++

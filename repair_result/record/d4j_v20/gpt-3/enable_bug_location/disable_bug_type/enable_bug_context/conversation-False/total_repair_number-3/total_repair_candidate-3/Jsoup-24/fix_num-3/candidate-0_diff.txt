@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -3,7 +3,7 @@
+         String name = r.consumeLetterSequence();
+         t.tagPending.appendTagName(name.toLowerCase());
+         t.dataBuffer.append(name);
+-        r.advance();
++        // Removed r.advance(); because consumeLetterSequence already advances the reader.
+         return;
+     }
+ 
+@@ -32,3 +32,4 @@
+         anythingElse(t, r);
+     }
+ }
++

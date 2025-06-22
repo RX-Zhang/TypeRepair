@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ void resetInsertionMode() {
+     boolean last = false;
+-    for (int pos = stack.size() -1; pos >= 0; pos--) {
++    for (int pos = stack.size() - 1; pos >= 0; pos--) {
+         Element node = stack.get(pos);
+         if (pos == 0) {
+             last = true;
+@@ -10,9 +10,12 @@
+         if ("select".equals(name)) {
+             transition(HtmlTreeBuilderState.InSelect);
+             break; // frag
+-        } else if (("td".equals(name) || "td".equals(name) && !last)) {
++        } else if ("td".equals(name) && !last) {
+             transition(HtmlTreeBuilderState.InCell);
+             break;
++        } else if ("th".equals(name) && !last) {
++            transition(HtmlTreeBuilderState.InCell);
++            break; // Added handling for <th> elements
+         } else if ("tr".equals(name)) {
+             transition(HtmlTreeBuilderState.InRow);
+             break;
+@@ -46,3 +49,4 @@
+         }
+     }
+ }
++

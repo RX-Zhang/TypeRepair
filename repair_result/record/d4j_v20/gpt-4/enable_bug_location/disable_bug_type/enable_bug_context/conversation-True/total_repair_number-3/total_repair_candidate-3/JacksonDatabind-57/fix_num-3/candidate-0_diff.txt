@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -4,6 +4,7 @@
+     if (_dataFormatReaders != null) {
+         return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+     }
+-    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-            true));
++    JsonParser p = _parserFactory.createParser(src, offset, length);
++    return _bindAndReadValues(_considerFilter(p, true));
+ }
++

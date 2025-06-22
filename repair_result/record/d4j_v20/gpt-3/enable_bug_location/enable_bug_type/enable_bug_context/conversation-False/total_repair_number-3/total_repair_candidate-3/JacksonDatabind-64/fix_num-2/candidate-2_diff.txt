@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -19,8 +19,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -45,7 +44,6 @@
+             _defaultInclusion);
+ 
+     // property annotation override
+-    
+     inclV = inclV.withOverrides(propDef.findInclusion());
+     JsonInclude.Include inclusion = inclV.getValueInclusion();
+ 
+@@ -103,8 +101,7 @@
+     case ALWAYS: // default
+     default:
+         // we may still want to suppress empty collections, as per [JACKSON-254]:
+-        if (actualType.isContainerType()
+-                && !_config.isEnabled(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)) {
++        if (actualType.isContainerType() && !_config.isEnabled(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)) {
+             valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;
+         }
+         break;
+@@ -125,3 +122,4 @@
+     }
+     return bpw;
+ }
++

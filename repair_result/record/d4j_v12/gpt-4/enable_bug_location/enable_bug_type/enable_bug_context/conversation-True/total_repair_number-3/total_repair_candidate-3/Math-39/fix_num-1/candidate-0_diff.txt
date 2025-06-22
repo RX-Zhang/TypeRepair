@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -87,8 +87,8 @@
+       if (error >= 1.0) {
+         // reject the step and attempt to reduce error by stepsize control
+         final double factor =
+-            FastMath.min(maxGrowth,
+-                         FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
++            FastMath.min(getMaxGrowth(),
++                         FastMath.max(getMinReduction(), getSafety() * FastMath.pow(error, exp)));
+         hNew = filterStep(stepSize * factor, forward, false);
+       }
+ 
+@@ -113,7 +113,7 @@
+ 
+         // stepsize control for next step
+         final double factor =
+-            FastMath.min(maxGrowth, FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
++            FastMath.min(getMaxGrowth(), FastMath.max(getMinReduction(), getSafety() * FastMath.pow(error, exp)));
+         final double  scaledH    = stepSize * factor;
+         final double  nextT      = stepStart + scaledH;
+         final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+@@ -136,3 +136,4 @@
+   resetInternalState();
+ 
+ }
++

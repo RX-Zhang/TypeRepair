@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -5,7 +5,10 @@
+         throw new DimensionMismatchException(len, b.length);
+     }
+ 
+-        // Revert to scalar multiplication.
++    // Handle the trivial case of length 1 to avoid out of bounds access.
++    if (len == 1) {
++        return a[0] * b[0];
++    }
+ 
+     final double[] prodHigh = new double[len];
+     double prodLowSum = 0;
+@@ -27,7 +30,6 @@
+                                               aHigh * bLow);
+         prodLowSum += prodLow;
+     }
+-
+ 
+     final double prodHighCur = prodHigh[0];
+     double prodHighNext = prodHigh[1];
+@@ -57,3 +59,4 @@
+ 
+     return result;
+ }
++

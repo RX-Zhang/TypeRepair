@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+         } else {
+             result.append("KN");
+         }
+-        index = index + 2;
++        index += 2; // Corrected incrementing by 2 here
+     } else if (contains(value, index + 1, 2, "LI") && !slavoGermanic) {
+         result.append("KL", "L");
+         index += 2;
+@@ -40,7 +40,7 @@
+         } else {
+             result.append('J', 'K');
+         }
+-        index += 2;
++        index += 2; // Corrected incrementing by 2 here
+     } else if (charAt(value, index + 1) == 'G') {
+         index += 2;
+         result.append('K');
+@@ -50,3 +50,4 @@
+     }
+     return index;
+ }
++

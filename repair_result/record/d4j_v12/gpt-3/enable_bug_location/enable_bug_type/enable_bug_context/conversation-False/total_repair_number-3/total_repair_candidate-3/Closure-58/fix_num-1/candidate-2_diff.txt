@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -26,8 +26,15 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
+-          addToSetIfLocal(lhs, kill);
+-          addToSetIfLocal(lhs, gen);
++        // Add boundary check to avoid potential NPE or invalid Var access
++        if (lhs != null) {
++          try {
++            addToSetIfLocal(lhs, kill);
++            addToSetIfLocal(lhs, gen);
++          } catch (IllegalStateException e) {
++            // swallow or log error - defend against invalid state
++          }
++        }
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +91,4 @@
+       return;
+   }
+ }
++

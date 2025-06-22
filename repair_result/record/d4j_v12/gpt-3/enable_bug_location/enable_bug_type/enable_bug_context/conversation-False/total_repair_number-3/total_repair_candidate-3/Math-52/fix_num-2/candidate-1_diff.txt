@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -16,7 +16,7 @@
+ double u1u2   = u1.dotProduct(u2);
+ double v1v2   = v1.dotProduct(v2);
+ double coeffU = u1u2 / u1u1;
+-double coeffV = v1v2 / u1u1;
++double coeffV = v1v2 / v1v1;
+ double beta   = FastMath.sqrt((u2u2 - u1u2 * coeffU) / (v2v2 - v1v2 * coeffV));
+ double alpha  = coeffU - beta * coeffV;
+ v2 = new Vector3D(alpha, v1, beta, v2);
+@@ -41,8 +41,8 @@
+   if (c == 0) {
+     // the (q1, q2, q3) vector is also close to the (u1, u3) plane,
+     // it is almost aligned with u1: we try (u2, u3) and (v2, v3)
+-    k = v2Su2.crossProduct(v3Su3);;
+-    c = k.dotProduct(u2.crossProduct(u3));;
++    k = v2Su2.crossProduct(v3Su3);
++    c = k.dotProduct(u2.crossProduct(u3));
+ 
+     if (c == 0) {
+       // the (q1, q2, q3) vector is aligned with everything
+@@ -70,9 +70,16 @@
+ q3 = inv * k.getZ();
+ 
+ // compute the scalar part
+- k = new Vector3D(uRef.getY() * q3 - uRef.getZ() * q2,
++k = new Vector3D(uRef.getY() * q3 - uRef.getZ() * q2,
+                   uRef.getZ() * q1 - uRef.getX() * q3,
+                   uRef.getX() * q2 - uRef.getY() * q1);
+-q0 = vRef.dotProduct(k) / (2 * k.getNormSq());
++double kNormSq = k.getNormSq();
++if (kNormSq == 0) {
++    // Handle the case where k is a zero vector to avoid NaN
++    q0 = 1.0;
++} else {
++    q0 = vRef.dotProduct(k) / (2 * kNormSq);
++}
+ 
+ }
++

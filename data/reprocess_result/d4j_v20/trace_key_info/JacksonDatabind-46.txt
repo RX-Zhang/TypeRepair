@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.type.TestJavaType.testGenericSignature1195
+- Error: junit.framework.ComparisonFailure: expected:<...e<Ljava/lang/String;[>];> but was:<...e<Ljava/lang/String;[];>
+- Location:         assertEquals("Ljava/util/concurrent/atomic/AtomicReference<Ljava/lang/String;>;", t.getGenericSignature());

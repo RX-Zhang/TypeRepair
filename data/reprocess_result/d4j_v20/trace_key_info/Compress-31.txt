@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.TarTestCase.testCOMPRESS178
+- Error: junit.framework.AssertionFailedError: Expected IOException
+- Location:             fail("Expected IOException");
+
+
+Test failure 2:
+- Test: org.apache.commons.compress.archivers.tar.TarUtilsTest.testParseOctalInvalid
+- Error: junit.framework.AssertionFailedError: Expected IllegalArgumentException - embedded NUL
+- Location:             fail("Expected IllegalArgumentException - embedded NUL");

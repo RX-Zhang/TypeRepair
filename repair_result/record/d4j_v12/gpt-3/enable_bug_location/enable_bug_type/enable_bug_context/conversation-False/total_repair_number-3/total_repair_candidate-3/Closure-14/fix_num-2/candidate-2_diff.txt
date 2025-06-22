@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -47,7 +47,7 @@
+       break;
+     case Token.FOR:
+       if (NodeUtil.isForIn(parent)) {
+-        return parent;
++        return parent.getFirstChild().getNext();
+       } else {
+         return parent.getFirstChild().getNext().getNext();
+       }
+@@ -96,3 +96,4 @@
+     return computeFollowNode(fromNode, parent, cfa);
+   }
+ }
++

@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -31,6 +31,21 @@
+     }
+ 
+     // Don't traverse functions that are getting lent to a prototype.
++    // Added a check here to prevent traversal of functions assigned to prototype properties
++    if (parent != null && parent.getType() == Token.ASSIGN) {
++      Node lhs = parent.getFirstChild();
++      if (NodeUtil.isGet(lhs)) {
++        if (lhs.getType() == Token.GETPROP &&
++            "prototype".equals(lhs.getLastChild().getString())) {
++          return false;
++        }
++        Node llhs = lhs.getFirstChild();
++        if (llhs != null && llhs.getType() == Token.GETPROP &&
++            "prototype".equals(llhs.getLastChild().getString())) {
++          return false;
++        }
++      }
++    }
+   }
+ 
+   if (parent != null && parent.getType() == Token.ASSIGN) {
+@@ -53,7 +68,7 @@
+           return false;
+         }
+         Node llhs = lhs.getFirstChild();
+-        if (llhs.getType() == Token.GETPROP &&
++        if (llhs != null && llhs.getType() == Token.GETPROP &&
+             llhs.getLastChild().getString().equals("prototype")) {
+           return false;
+         }
+@@ -63,3 +78,4 @@
+ 
+   return true;
+ }
++

@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -5,27 +5,17 @@
+     }
+ 
+     final int[] indices = new int[dimension];
++    int remaining = index;
+ 
+-    int count = 0;
+     for (int i = 0; i < last; i++) {
+-        int idx = 0;
+         final int offset = uniCounterOffset[i];
+-        while (count <= index) {
+-            count += offset;
+-            ++idx;
+-        }
+-        --idx;
+-        count -= offset;
++        int idx = remaining / offset;
++        remaining = remaining % offset;
+         indices[i] = idx;
+     }
+ 
+-    int idx = 1;
+-    while (count < index) {
+-        count += idx;
+-        ++idx;
+-    }
+-    --idx;
+-    indices[last] = idx;
++    indices[last] = remaining;
+ 
+     return indices;
+ }
++

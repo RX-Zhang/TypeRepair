@@ -1,0 +1,15 @@
+private void findCalledFunctions(
+    Node node, Set<String> changed) {
+  Preconditions.checkArgument(changed != null);
+  // For each referenced function, add a new reference
+  if (node.getType() == Token.CALL) {
+    Node child = node.getFirstChild();
+    if (child.getType() == Token.NAME || child.isGetProp()) {
+      changed.add(child.getQualifiedName());
+    }
+  }
+
+  for (Node c = node.getFirstChild(); c != null; c = c.getNext()) {
+    findCalledFunctions(c, changed);
+  }
+}

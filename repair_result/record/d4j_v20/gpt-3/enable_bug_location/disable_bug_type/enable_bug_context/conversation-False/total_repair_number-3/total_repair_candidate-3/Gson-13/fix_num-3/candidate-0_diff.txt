@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -73,6 +73,15 @@
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+         if (value == 0) {
++          // Allow leading zero only if it's just "-0"
++          if (i == 1 && negative) {
++            // "negative zero" allowed, continue parsing if next chars are not digits
++            // but stop if digit follows: so here, allow exactly '-0' but disallow '-00'
++            // so if this digit is the second digit after '-', disallow.
++            // so returning PEEKED_LONG here for "-0"
++            // but since we're inside for loop with i>1, if digit follows '0' disallow
++            return PEEKED_NONE;
++          }
+           return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
+         }
+         long newValue = value * 10 - (c - '0');
+@@ -100,3 +109,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -23,14 +23,17 @@
+             case 2:
+                 buf[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
+                 buf[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+-                buf[pos++] = encodeTable[(x << 2) & MASK_6BITS];
++                buf[pos++] = encodeTable[( << 2) & MASK_6BITS];
+                 // URL-SAFE skips the padding to further reduce size.
+                 if (encodeTable == STANDARD_ENCODE_TABLE) {
+                     buf[pos++] = PAD;
+                 }
+                 break;
++            default:
++                // modulus == 0 means no leftover bytes to encode, so do nothing
++                break;
+         }
+-        if (lineLength > 0) {
++        if (lineLength > 0 && pos > 0) {
+             System.arraycopy(lineSeparator, 0, buf, pos, lineSeparator.length);
+             pos += lineSeparator.length;
+         }
+@@ -58,3 +61,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -2,5 +2,7 @@
+     if (isEmpty())
+         return false;
+     char c = input[pos];
+-    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
++    // Allow letters beyond just A-Z, a-z, to support non-ASCII letters
++    return Character.isLetter(c);
+ }
++

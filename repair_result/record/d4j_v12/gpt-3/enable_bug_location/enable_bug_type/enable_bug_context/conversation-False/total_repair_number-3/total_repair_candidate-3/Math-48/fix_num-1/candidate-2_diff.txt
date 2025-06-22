@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -28,10 +28,17 @@
+     boolean inverted = false;
+ 
+     // Keep finding better approximations.
++    int evaluations = 0;
+     while (true) {
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
++        evaluations++;
++
++        // Check for too many evaluations
++        if (evaluations > 3624) {
++            throw new TooManyEvaluationsException(evaluations);
++        }
+ 
+         // If the new approximation is the exact root, return it. Since
+         // this is not an under-approximation or an over-approximation,
+@@ -121,3 +128,4 @@
+         }
+     }
+ }
++

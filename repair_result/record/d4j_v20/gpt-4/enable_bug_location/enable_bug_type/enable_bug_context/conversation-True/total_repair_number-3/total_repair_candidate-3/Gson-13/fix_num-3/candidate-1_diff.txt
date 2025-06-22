@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -89,6 +89,12 @@
+ 
+   // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.
+   if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
++    // Fix for negative zero: if the value is zero but negative is true, treat as string, not long
++    if (value == 0 && negative && !isLenient()) {
++      // Return as PEEKED_NUMBER to force nextString() to produce "-0" as string
++      peekedNumberLength = i;
++      return peeked = PEEKED_NUMBER;
++    }
+     peekedLong = negative ? value : -value;
+     pos += i;
+     return peeked = PEEKED_LONG;
+@@ -100,3 +106,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

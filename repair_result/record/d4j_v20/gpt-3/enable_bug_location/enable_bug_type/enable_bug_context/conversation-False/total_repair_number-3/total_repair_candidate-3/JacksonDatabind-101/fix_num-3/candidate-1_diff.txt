@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -80,8 +80,8 @@
+             tokens.writeFieldName(propName);
+             tokens.append(b2);
+             try {
+-                buffer.bufferAnyProperty(_anySetter, propName,
+-                        _anySetter.deserialize(b2.asParserOnFirstToken(), ctxt));
++                Object value = _anySetter.deserialize(b2.asParserOnFirstToken(), ctxt);
++                buffer.bufferAnyProperty(_anySetter, propName, value);
+             } catch (Exception e) {
+                 wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+             }
+@@ -99,3 +99,4 @@
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

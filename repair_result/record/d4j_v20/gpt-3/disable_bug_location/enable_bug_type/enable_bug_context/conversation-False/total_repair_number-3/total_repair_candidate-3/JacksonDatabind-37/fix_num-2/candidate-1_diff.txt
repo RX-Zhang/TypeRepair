@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -13,6 +13,8 @@
+     }
+     */
+     // 15-Jan-2015, tatu: Not correct; should really re-resolve...
++    // Fix: actually use 'subclass' in place of '_class' in constructor so that subtype is reflected properly
+     return new SimpleType(subclass, _bindings, _superClass, _superInterfaces,
+             _valueHandler, _typeHandler, _asStatic);
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -40,6 +40,7 @@
+             else if (options.hasOption(token))
+             {
+                 tokens.add(token);
++                currentOption = options.getOption(token);
+             }
+             // requires bursting
+             else
+@@ -59,5 +60,6 @@
+         gobble(iter);
+     }
+ 
+-    return (String[]) tokens.toArray(new String[tokens.size()]);
++    return tokens.toArray(new String[0]);
+ }
++

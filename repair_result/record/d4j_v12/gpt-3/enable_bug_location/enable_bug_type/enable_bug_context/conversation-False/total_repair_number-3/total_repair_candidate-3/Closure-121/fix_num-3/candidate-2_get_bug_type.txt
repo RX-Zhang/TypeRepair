@@ -1,0 +1,1 @@
+['LogicalError', 'TypeMismatchError', 'ConfigurationIssue', 'ResourceManagementError', 'InputValidationIssue', 'EfficiencyIssue']

@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -1,3 +1,7 @@
+ private Node parseContextTypeExpression(JsDocToken token) {
+-        return parseTypeName(token);
++    if (token != JsDocToken.LC && token != JsDocToken.STRING) {
++      return reportTypeSyntaxWarning("msg.jsdoc.expected.contextType");
++    }
++    return parseTypeName(token);
+ }
++

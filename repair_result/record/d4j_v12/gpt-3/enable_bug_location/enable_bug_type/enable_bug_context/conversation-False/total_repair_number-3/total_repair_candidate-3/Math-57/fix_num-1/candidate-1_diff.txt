@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -12,7 +12,7 @@
+     while (resultSet.size() < k) {
+         // For each data point x, compute D(x), the distance between x and
+         // the nearest center that has already been chosen.
+-        int sum = 0;
++        double sum = 0.0;
+         for (int i = 0; i < pointSet.size(); i++) {
+             final T p = pointSet.get(i);
+             final Cluster<T> nearest = getNearestCluster(resultSet, p);
+@@ -22,17 +22,24 @@
+         }
+ 
+         // Add one new data point as a center. Each point x is chosen with
+-        // probability proportional to D(x)2
++        // probability proportional to D(x)^2
+         final double r = random.nextDouble() * sum;
+-        for (int i = 0 ; i < dx2.length; i++) {
++        int selectedIndex = -1;
++        for (int i = 0; i < dx2.length; i++) {
+             if (dx2[i] >= r) {
+-                final T p = pointSet.remove(i);
+-                resultSet.add(new Cluster<T>(p));
++                selectedIndex = i;
+                 break;
+             }
+         }
++        if (selectedIndex == -1) {
++            // In case of rounding errors, select the last point
++            selectedIndex = dx2.length - 1;
++        }
++        final T p = pointSet.remove(selectedIndex);
++        resultSet.add(new Cluster<T>(p));
+     }
+ 
+     return resultSet;
+ 
+ }
++

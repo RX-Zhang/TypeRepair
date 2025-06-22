@@ -1,0 +1,22 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.deser.builder.BuilderWithUnwrappedTest.testWithUnwrappedAndCreatorSingleParameterAtBeginning
+- Error: junit.framework.ComparisonFailure: expected:<John> but was:<null>
+- Location:         assertEquals("John", person.getName().getFirst());
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.databind.deser.builder.BuilderWithUnwrappedTest.testWithUnwrappedAndCreatorMultipleParametersAtBeginning
+- Error: junit.framework.ComparisonFailure: expected:<John> but was:<null>
+- Location:         assertEquals("John", animal.getName().getFirst());
+
+
+Test failure 3:
+- Test: com.fasterxml.jackson.databind.deser.builder.BuilderWithUnwrappedTest.testWithUnwrappedAndCreatorSingleParameterInMiddle
+- Error: junit.framework.AssertionFailedError: expected:<30> but was:<0>
+- Location:         assertEquals(30, person.getAge());
+
+
+Test failure 4:
+- Test: com.fasterxml.jackson.databind.deser.builder.BuilderWithUnwrappedTest.testWithUnwrappedAndCreatorMultipleParametersInMiddle
+- Error: junit.framework.AssertionFailedError: expected:<30> but was:<0>
+- Location:         assertEquals(30, animal.getAge());

@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -103,6 +103,7 @@
+             } else {
+                 // reject the step to match exactly the next switch time
+                 hNew = dt;
++                continue;  // Add continue here to retry with new hNew
+             }
+         } else {
+           // accept the step
+@@ -112,8 +113,8 @@
+       } else {
+         // reject the step and attempt to reduce error by stepsize control
+         final double factor =
+-            Math.min(maxGrowth,
+-                     Math.max(minReduction, safety * Math.pow(error, exp)));
++            Math.min(getMaxGrowth(),
++                     Math.max(getMinReduction(), getSafety() * Math.pow(error, exp)));
+         hNew = filterStep(stepSize * factor, forward, false);
+       }
+ 
+@@ -150,9 +151,9 @@
+         stepSize = filterStep(stepSize, forward, true);
+ 
+       // stepsize control for next step
+-      final double factor = Math.min(maxGrowth,
+-                                     Math.max(minReduction,
+-                                              safety * Math.pow(error, exp)));
++      final double factor = Math.min(getMaxGrowth(),
++                                     Math.max(getMinReduction(),
++                                              getSafety() * Math.pow(error, exp)));
+       final double  scaledH    = stepSize * factor;
+       final double  nextT      = stepStart + scaledH;
+       final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+@@ -166,3 +167,4 @@
+   return stopTime;
+ 
+ }
++

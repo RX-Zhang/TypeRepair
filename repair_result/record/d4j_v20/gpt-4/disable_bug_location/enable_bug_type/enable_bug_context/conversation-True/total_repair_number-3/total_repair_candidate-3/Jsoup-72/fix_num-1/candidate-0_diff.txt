@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -11,7 +11,7 @@
+     }
+ 
+     // get from cache
+-    final int index = hash & stringCache.length - 1;
++    final int index = hash & (stringCache.length - 1);
+     String cached = stringCache[index];
+ 
+     if (cached == null) { // miss, add
+@@ -27,3 +27,4 @@
+     }
+     return cached;
+ }
++

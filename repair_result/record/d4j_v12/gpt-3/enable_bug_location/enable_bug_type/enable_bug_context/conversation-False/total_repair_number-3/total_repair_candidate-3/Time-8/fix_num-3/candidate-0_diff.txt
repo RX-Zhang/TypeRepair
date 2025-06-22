@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -11,14 +11,11 @@
+     int offset = 0;
+     try {
+         int hoursInMinutes = hoursOffset * 60;
+-        if (hoursInMinutes < 0) {
+-            minutesOffset = hoursInMinutes - minutesOffset;
+-        } else {
+-            minutesOffset = hoursInMinutes + minutesOffset;
+-        }
++        minutesOffset = hoursInMinutes + minutesOffset; // Corrected logic to always add minutesOffset
+         offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
+     } catch (ArithmeticException ex) {
+         throw new IllegalArgumentException("Offset is too large");
+     }
+     return forOffsetMillis(offset);
+ }
++

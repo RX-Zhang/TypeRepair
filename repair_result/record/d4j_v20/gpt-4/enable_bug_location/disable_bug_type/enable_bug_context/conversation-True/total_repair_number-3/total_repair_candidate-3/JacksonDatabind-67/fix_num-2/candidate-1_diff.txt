@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -30,3 +30,15 @@
+     }
+     return deser;
+ }
++
++private KeyDeserializer _createEnumKeyDeserializer(DeserializationContext ctxt, JavaType type) throws JsonMappingException {
++    final DeserializationConfig config = ctxt.getConfig();
++    final Class<?> enumClass = type.getRawClass();
++
++    // find jsonValue method if any (to honor @JsonValue on enum methods)
++    AnnotatedMethod jsonValueMethod = _findJsonValueFor(config, type);
++    EnumResolver enumRes = constructEnumResolver(enumClass, config, jsonValueMethod);
++
++    return new StdKeyDeserializer.EnumKD(enumRes, jsonValueMethod);
++}
++

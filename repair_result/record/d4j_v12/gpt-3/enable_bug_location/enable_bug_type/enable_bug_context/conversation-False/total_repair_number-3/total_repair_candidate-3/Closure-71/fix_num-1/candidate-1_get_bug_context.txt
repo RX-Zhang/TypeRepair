@@ -1,0 +1,1 @@
+['checkPropertyVisibility', 'isValidPrivateConstructorAccess', 'shouldEmitDeprecationWarning', 'canAccessDeprecatedTypes']

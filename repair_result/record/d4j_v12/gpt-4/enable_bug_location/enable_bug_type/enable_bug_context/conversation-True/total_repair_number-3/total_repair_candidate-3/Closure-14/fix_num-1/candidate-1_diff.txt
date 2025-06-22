@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -35,7 +35,7 @@
+       // case, without having to go to the case condition.
+       if (parent.getNext() != null) {
+         if (parent.getNext().isCase()) {
+-          return parent.getNext().getFirstChild().getNext();
++          return parent.getNext().getFirstChild();
+         } else if (parent.getNext().isDefaultCase()) {
+           return parent.getNext().getFirstChild();
+         } else {
+@@ -96,3 +96,4 @@
+     return computeFollowNode(fromNode, parent, cfa);
+   }
+ }
++

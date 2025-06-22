@@ -1,0 +1,109 @@
+--- 
++++ 
+@@ -2,33 +2,90 @@
+     if (str == null) {
+         return null;
+     }
++
++    // Quick sanity check: empty or too short or too long strings are invalid
+     int len = str.length();
+-    if (len != 2 && len != 5 && len < 7) {
++    if (len < 2) {
+         throw new IllegalArgumentException("Invalid locale format: " + str);
+     }
+-    char ch0 = str.charAt(0);
+-    char ch1 = str.charAt(1);
+-    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
++
++    // Handle language only: 2 or 3 lowercase letters
++    if (len == 2 || len == 3) {
++        for (int i = 0; i < len; i++) {
++            char ch = str.charAt(i);
++            if (ch < 'a' || ch > 'z') {
++                throw new IllegalArgumentException("Invalid locale format: " + str);
++            }
++        }
++        Locale locale = new Locale(str);
++        // Validate against available locales if needed
++        if (!availableLocaleSet().contains(locale)) {
++            // Still allow creation but could throw if strict
++            // throw new IllegalArgumentException("Invalid locale: " + str);
++        }
++        return locale;
++    }
++    
++    // Parse based on underscore positions
++    int firstUnderscore = str.indexOf('_');
++    
++    if (firstUnderscore == -1) {
++        // No underscore but more than 3 chars, invalid format
+         throw new IllegalArgumentException("Invalid locale format: " + str);
+     }
+-    if (len == 2) {
+-        return new Locale(str, "");
+-    } else {
+-        if (str.charAt(2) != '_') {
++    
++    String language = str.substring(0, firstUnderscore);
++    
++    if (language.length() < 2 || language.length() > 3) {
++        throw new IllegalArgumentException("Invalid locale format: " + str);
++    }
++
++    for (int i = 0; i < language.length(); i++) {
++        char ch = language.charAt(i);
++        if (ch < 'a' || ch > 'z') {
+             throw new IllegalArgumentException("Invalid locale format: " + str);
+         }
+-        char ch3 = str.charAt(3);
+-        char ch4 = str.charAt(4);
+-        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
++    }
++
++    int secondUnderscore = str.indexOf('_', firstUnderscore + 1);
++
++    if (secondUnderscore == -1) {
++        // Format like language_COUNTRY
++        String country = str.substring(firstUnderscore + 1);
++        if (!(country.length() == 2 || country.length() == 3)) {
+             throw new IllegalArgumentException("Invalid locale format: " + str);
+         }
+-        if (len == 5) {
+-            return new Locale(str.substring(0, 2), str.substring(3, 5));
+-        } else {
+-            if (str.charAt(5) != '_') {
++
++        for (int i = 0; i < country.length(); i++) {
++            char ch = country.charAt(i);
++            if ((ch < 'A' || ch > 'Z') && (ch < '0' || ch > '9')) {
+                 throw new IllegalArgumentException("Invalid locale format: " + str);
+             }
+-            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+         }
++
++        return new Locale(language, country);
++    } else {
++        // Format language_COUNTRY_VARIANT
++        String country = str.substring(firstUnderscore + 1, secondUnderscore);
++        String variant = str.substring(secondUnderscore + 1);
++
++        if (!(country.length() == 2 || country.length() == 3)) {
++            throw new IllegalArgumentException("Invalid locale format: " + str);
++        }
++
++        for (int i = 0; i < country.length(); i++) {
++            char ch = country.charAt(i);
++            if ((ch < 'A' || ch > 'Z') && (ch < '0' || ch > '9')) {
++                throw new IllegalArgumentException("Invalid locale format: " + str);
++            }
++        }
++
++        // Variant can be any string including empty but should not be null
++        if (variant.isEmpty()) {
++            throw new IllegalArgumentException("Invalid locale format: " + str);
++        }
++
++        return new Locale(language, country, variant);
+     }
+ }
++

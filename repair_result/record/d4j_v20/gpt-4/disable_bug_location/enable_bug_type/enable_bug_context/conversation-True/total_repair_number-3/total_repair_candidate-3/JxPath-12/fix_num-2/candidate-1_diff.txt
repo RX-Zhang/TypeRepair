@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -36,8 +36,9 @@
+                 return nodeType == Node.COMMENT_NODE;
+             case Compiler.NODE_TYPE_PI :
+                 return nodeType == Node.PROCESSING_INSTRUCTION_NODE;
++            default:
++                return false;
+         }
+-        return false;
+     }
+     if (test instanceof ProcessingInstructionTest) {
+         if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+@@ -45,6 +46,8 @@
+             String nodePI = ((ProcessingInstruction) node).getTarget();
+             return testPI.equals(nodePI);
+         }
++        return false;
+     }
+     return false;
+ }
++

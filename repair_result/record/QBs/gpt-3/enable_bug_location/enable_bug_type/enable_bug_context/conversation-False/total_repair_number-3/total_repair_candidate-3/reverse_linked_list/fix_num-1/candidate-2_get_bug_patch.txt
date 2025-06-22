@@ -1,0 +1,10 @@
+def reverse_linked_list(node):
+    if node is None:  # Added boundary check for None input
+        return None
+    prevnode = None
+    while node:
+        nextnode = node.successor
+        node.successor = prevnode
+        prevnode = node  # Fix to update prevnode correctly
+        node = nextnode
+    return prevnode

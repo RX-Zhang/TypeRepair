@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -2,6 +2,9 @@
+ 	int totalRead = 0;
+ 
+     if (hasHitEOF || entryOffset >= entrySize) {
++        // Consume padding bytes of the last block before hitting EOF
++        consumeRemainderOfLastBlock();
++        setAtEOF(true);
+         return -1;
+     }
+ 
+@@ -10,15 +13,17 @@
+     }
+ 
+     numToRead = Math.min(numToRead, available());
+-    
++
+     totalRead = is.read(buf, offset, numToRead);
+     count(totalRead);
+-    
++
+     if (totalRead == -1) {
+-        hasHitEOF = true;
+-    } else {
+-        entryOffset += totalRead;
++        setAtEOF(true);
++        return -1;
+     }
++
++    entryOffset += totalRead;
+ 
+     return totalRead;
+ }
++

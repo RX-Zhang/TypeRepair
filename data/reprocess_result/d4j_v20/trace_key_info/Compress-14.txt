@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest.workaroundForBrokenTimeHeader
+- Error: java.io.IOException: Error detected parsing the header
+- Location:             tae = in.getNextTarEntry();

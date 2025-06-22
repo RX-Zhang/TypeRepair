@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -4,10 +4,10 @@
+                                         boolean hasDiskStart)
+     throws ZipException {
+     if (rawCentralDirectoryData != null) {
+-        int expectedLength = (hasUncompressedSize ? DWORD : 0)
+-            + (hasCompressedSize ? DWORD : 0)
+-            + (hasRelativeHeaderOffset ? DWORD : 0)
+-            + (hasDiskStart ? WORD : 0);
++        int expectedLength = (size != null ? DWORD : 0)
++            + (compressedSize != null ? DWORD : 0)
++            + (relativeHeaderOffset != null ? DWORD : 0)
++            + (diskStart != null ? WORD : 0);
+         if (rawCentralDirectoryData.length != expectedLength) {
+             throw new ZipException("central directory zip64 extended"
+                                    + " information extra field's length"
+@@ -17,23 +17,24 @@
+                                    + rawCentralDirectoryData.length);
+         }
+         int offset = 0;
+-        if (hasUncompressedSize) {
++        if (size != null) {
+             size = new ZipEightByteInteger(rawCentralDirectoryData, offset);
+             offset += DWORD;
+         }
+-        if (hasCompressedSize) {
++        if (compressedSize != null) {
+             compressedSize = new ZipEightByteInteger(rawCentralDirectoryData,
+                                                      offset);
+             offset += DWORD;
+         }
+-        if (hasRelativeHeaderOffset) {
++        if (relativeHeaderOffset != null) {
+             relativeHeaderOffset =
+                 new ZipEightByteInteger(rawCentralDirectoryData, offset);
+             offset += DWORD;
+         }
+-        if (hasDiskStart) {
++        if (diskStart != null) {
+             diskStart = new ZipLong(rawCentralDirectoryData, offset);
+             offset += WORD;
+         }
+     }
+ }
++

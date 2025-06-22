@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -12,10 +12,10 @@
+       for (String prop : constraintObj.getOwnPropertyNames()) {
+         JSType propType = constraintObj.getPropertyType(prop);
+         if (!objType.isPropertyTypeDeclared(prop)) {
+-          JSType typeToInfer = propType;
++          JSType typeToInfer = propType == null ? getNativeType(UNKNOWN_TYPE) : propType;
+           if (!objType.hasProperty(prop)) {
+             typeToInfer =
+-                getNativeType(VOID_TYPE).getLeastSupertype(propType);
++                getNativeType(VOID_TYPE).getLeastSupertype(typeToInfer);
+           }
+           objType.defineInferredProperty(prop, typeToInfer, null);
+         }
+@@ -23,3 +23,4 @@
+     }
+   }
+ }
++

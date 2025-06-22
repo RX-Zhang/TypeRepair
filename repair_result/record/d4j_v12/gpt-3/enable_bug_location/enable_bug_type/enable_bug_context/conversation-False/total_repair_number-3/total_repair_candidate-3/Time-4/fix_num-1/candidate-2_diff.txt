@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -16,12 +16,12 @@
+                 DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+                 if (loopUnitField.isSupported()) {
+                     int compare = unitField.compareTo(loopUnitField);
+-                    if (compare > 0) {
++                    if (compare < 0) {  // Corrected: insertion point is where unitField is smaller
+                         break;
+                     } else if (compare == 0) {
+                         DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
+                         DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
+-                        if (rangeField.compareTo(loopRangeField) > 0) {
++                        if (rangeField != null && loopRangeField != null && rangeField.compareTo(loopRangeField) < 0) {
+                             break;
+                         }
+                     }
+@@ -47,3 +47,4 @@
+     newValues = getField(index).set(this, index, newValues, value);
+     return new Partial(this, newValues);
+ }
++

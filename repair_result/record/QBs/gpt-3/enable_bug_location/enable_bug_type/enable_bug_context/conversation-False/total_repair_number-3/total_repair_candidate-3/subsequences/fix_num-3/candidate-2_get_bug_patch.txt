@@ -1,0 +1,8 @@
+def subsequences(a, b, k):
+    if k == 0:  # base case for k = 0, return empty list
+        return [[]]  # return a list containing an empty list
+    ret = []
+    for i in range(a, b + 1 - k + 1):  # adjust range to include b
+        for rest in subsequences(i + 1, b, k - 1):
+            ret.append([i] + rest)  # append the current number with the rest
+    return ret

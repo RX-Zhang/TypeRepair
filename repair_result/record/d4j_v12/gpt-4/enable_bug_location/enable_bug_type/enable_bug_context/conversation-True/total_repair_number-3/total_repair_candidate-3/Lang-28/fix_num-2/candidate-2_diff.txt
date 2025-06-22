@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -25,9 +25,17 @@
+         } catch(NumberFormatException nfe) {
+             return 0;
+         }
+-
++        
++        if(entityValue > 0xFFFF) {
++            // Write surrogate pairs for supplementary characters
++            char[] chars = Character.toChars(entityValue);
++            out.write(chars[0]);
++            out.write(chars[1]);
++        } else {
+             out.write(entityValue);
++        }
+         return 2 + (end - start) + (isHex ? 1 : 0) + 1;
+     }
+     return 0;
+ }
++

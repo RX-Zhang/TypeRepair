@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -40,8 +40,11 @@
+     } else if (raw == Currency.class) {
+         FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+         return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
++    } else if (raw.isEnum()) {
++        return new StdKeyDeserializer.EnumKD(raw);
+     } else {
+         return null;
+     }
+     return new StdKeyDeserializer(kind, raw);
+ }
++

@@ -1,0 +1,1 @@
+['withArrayIndenter', 'withObjectIndenter', 'withSpacesInObjectEntries', 'withoutSpacesInObjectEntries', 'withSeparators']

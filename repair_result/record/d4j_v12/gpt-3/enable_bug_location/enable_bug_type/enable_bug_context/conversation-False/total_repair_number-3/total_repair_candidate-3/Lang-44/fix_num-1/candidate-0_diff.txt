@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -20,10 +20,16 @@
+     String dec;
+     String exp;
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    int expPosE = val.indexOf('e');
++    int expPosU = val.indexOf('E');
++    int expPos = -1;
++    if (expPosE > -1 && expPosU > -1) {
++        expPos = Math.min(expPosE, expPosU);
++    } else {
++        expPos = Math.max(expPosE, expPosU);
++    }
+ 
+     if (decPos > -1) {
+-
+         if (expPos > -1) {
+             if (expPos < decPos) {
+                 throw new NumberFormatException(val + " is not a valid number.");
+@@ -55,7 +61,7 @@
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+@@ -68,7 +74,7 @@
+             case 'f' :
+             case 'F' :
+                 try {
+-                    Float f = NumberUtils.createFloat(numeric);
++                    Float f = createFloat(numeric);
+                     if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                         //If it's too big for a float or the float value = 0 and the string
+                         //has non-zeros in it, then float does not have the precision we want
+@@ -82,8 +88,8 @@
+             case 'd' :
+             case 'D' :
+                 try {
+-                    Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    Double d = createDouble(numeric);
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -147,3 +153,4 @@
+ 
+     }
+ }
++

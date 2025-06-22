@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -6,6 +6,10 @@
+   }
+ 
+   Node right = callTarget.getNext();
++  // If more than one argument passed to join(), do not fold.
++  if (right != null && right.getNext() != null) {
++    return n;
++  }
+   if (right != null) {
+     if (!NodeUtil.isImmutableValue(right)) {
+       return n;
+@@ -20,8 +24,9 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
++  // We want to fold the join only if the join parameter is a string or undefined.
++  // If it's something else (like boolean or number), we still fold it but convert the join string.
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+@@ -102,9 +107,14 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      // Correct the join argument to null if the original was "," and we folded it away.
++      if (right != null && right.getNext() == null && ",".equals(joinString)) {
++        callTarget.removeChild(right);
++      }
+       reportCodeChange();
+       break;
+   }
+ 
+   return n;
+ }
++

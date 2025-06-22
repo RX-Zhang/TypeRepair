@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,4 +1,4 @@
+-private void processOptionToken(String token, boolean stopAtNonOption)
++private void processOptionToken(String token, boolean stopAtNonOption) throws UnrecognizedOptionException
+ {
+     if (options.hasOption(token))
+     {
+@@ -10,4 +10,9 @@
+         eatTheRest = true;
+         tokens.add(token);
+     }
++    else
++    {
++        throw new UnrecognizedOptionException(token);
++    }
+ }
++

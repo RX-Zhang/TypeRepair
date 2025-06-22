@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -1,4 +1,4 @@
+-private boolean isShortOption(String token)
++private boolean isShortOption(String token) throws ParseException
+ {
+     // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+     if (!token.startsWith("-") || token.length() == 1)
+@@ -9,6 +9,14 @@
+     // remove leading "-" and "=value"
+     int pos = token.indexOf("=");
+     String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
+-    return options.hasShortOption(optName);
+-    // check for several concatenated short options
++
++    if (options.hasShortOption(optName))
++    {
++        return true;
++    }
++
++    // check if the token can be treated as concatenated short options or special cases
++    // fallback is false if none matches
++    return false;
+ }
++

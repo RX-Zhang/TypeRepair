@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.jsoup.nodes.ElementTest.testNotPretty
+- Error: junit.framework.AssertionFailedError: expected:<[   
+]<p>Hello
+ there
+- Location:         assertEquals("   \n<p>Hello\n there\n</p>", div.html());

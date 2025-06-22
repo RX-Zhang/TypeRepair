@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -21,9 +21,15 @@
+                  * just placeholder, can't be called)
+                  */
+             } else {
+-                // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
++                // multi-level merge within mixins (per Issue#515)
++                // Only add method if it does not exist in main methods
++                // to avoid losing existing method info
++                AnnotatedMethod constructed = _constructMethod(m);
++                if (!mixIns.contains(constructed)) {
++                    mixIns.add(constructed);
++                }
+             }
+         }
+     }
+ }
++

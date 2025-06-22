@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -27,6 +27,8 @@
+     Reference reference = referenceInfo.references.get(
+         firstRefAfterInit - 1);
+     if (canInline(declaration, init, reference)) {
++      Node value = init != null ? init.getAssignedValue() : null;
++      Preconditions.checkNotNull(value);
+       inline(v, declaration, init, reference);
+       staleVars.add(v);
+     }
+@@ -72,3 +74,4 @@
+     }
+   }
+ }
++

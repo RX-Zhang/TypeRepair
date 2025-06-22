@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -39,7 +39,7 @@
+                     out.write('\\');
+                     out.write('r');
+                     break;
+-                default :
++                default:
+                     if (ch > 0xf) {
+                         out.write("\\u00" + hex(ch));
+                     } else {
+@@ -51,7 +51,7 @@
+             switch (ch) {
+                 case '\'':
+                     if (escapeSingleQuote) {
+-                      out.write('\\');
++                        out.write('\\');
+                     }
+                     out.write('\'');
+                     break;
+@@ -63,10 +63,21 @@
+                     out.write('\\');
+                     out.write('\\');
+                     break;
+-                default :
++                case '/':
++                    // Escape forward slash only if it helps prevent </script> or <!-- in JavaScript
++                    if (i > 0) {
++                        char prevChar = str.charAt(i - 1);
++                        if (prevChar == '<' || prevChar == '!') {
++                            out.write('\\');
++                        }
++                    }
++                    out.write('/');
++                    break;
++                default:
+                     out.write(ch);
+                     break;
+             }
+         }
+     }
+ }
++

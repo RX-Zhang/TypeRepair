@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.mockito.internal.invocation.InvocationMatcherTest.shouldMatchCaptureArgumentsWhenArgsCountDoesNOTMatch
+- Error: java.lang.ArrayIndexOutOfBoundsException: 0
+- Location:         invocationMatcher.captureArgumentsFrom(invocation);
+
+
+Test failure 2:
+- Test: org.mockitousage.basicapi.UsingVarargsTest.shouldMatchEasilyEmptyVararg
+- Error: java.lang.ArrayIndexOutOfBoundsException
+- Location: Unknown location

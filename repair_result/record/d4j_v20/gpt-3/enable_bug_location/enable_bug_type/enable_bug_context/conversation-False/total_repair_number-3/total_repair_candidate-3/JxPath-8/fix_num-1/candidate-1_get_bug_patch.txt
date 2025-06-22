@@ -1,0 +1,34 @@
+private boolean compute(Object left, Object right) {
+    left = reduce(left);
+    right = reduce(right);
+
+    if (left instanceof InitialContext) {
+        ((InitialContext) left).reset();
+    }
+    if (right instanceof InitialContext) {
+        ((InitialContext) right).reset();
+    }
+    if (left instanceof Iterator && right instanceof Iterator) {
+        return findMatch((Iterator) left, (Iterator) right);
+    }
+    if (left instanceof Iterator) {
+        return containsMatch((Iterator) left, right);
+    }
+    if (right instanceof Iterator) {
+        return containsMatch((Iterator) right, left);
+    }
+    
+    // Handle NaN cases explicitly
+    if (left instanceof Double && right instanceof Double) {
+        if (Double.isNaN((Double) left) && Double.isNaN((Double) right)) {
+            return true; // NaN equals NaN
+        }
+        if (Double.isNaN((Double) left) || Double.isNaN((Double) right)) {
+            return false; // NaN is not equal to any number
+        }
+    }
+
+    double ld = InfoSetUtil.doubleValue(left);
+    double rd = InfoSetUtil.doubleValue(right);
+    return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+}

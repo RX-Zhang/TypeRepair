@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.deser.TestJdkTypes.testStringBuilder
+- Error: com.fasterxml.jackson.databind.JsonMappingException: Conflicting String creators: already had explicitly marked [constructor for java.lang.StringBuilder, annotations: [null]], encountered [constructor for java.lang.StringBuilder, annotations: [null]]
+- Location:         StringBuilder sb = MAPPER.readValue(quote("abc"), StringBuilder.class);

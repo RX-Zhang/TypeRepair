@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,6 +1,14 @@
+ public static String getNamespaceURI(Node node) {
++    if (node == null) {
++        throw new IllegalArgumentException("Node must not be null.");
++    }
++
+     if (node instanceof Document) {
+         node = ((Document) node).getDocumentElement();
++    }
++
++    if (!(node instanceof Element)) {
++        throw new ClassCastException("Node must be an instance of Element.");
+     }
+ 
+     Element element = (Element) node;
+@@ -24,3 +32,4 @@
+     }
+     return uri;
+ }
++

@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+   // Section 3.4.7: Subtyping Function Types.
+ 
+   // this.returnType <: that.returnType (covariant)
+-  if (!this.returnType.isSubtype(that.returnType)) {
++  if (!that.returnType.isSubtype(this.returnType)) {
+     return false;
+   }
+ 
+@@ -39,7 +39,7 @@
+     JSType thatParamType = thatParam.getJSType();
+     if (thisParamType != null) {
+       if (thatParamType == null ||
+-          !thatParamType.isSubtype(thisParamType)) {
++          !thisParamType.isSubtype(thatParamType)) {
+         return false;
+       }
+     }
+@@ -69,7 +69,17 @@
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
++  // Check that all remaining parameters in 'this' are optional (or varargs),
++  // because 'that' has no more parameters
++  while (thisParam != null) {
++    if (!thisParam.isOptionalArg() && !thisParam.isVarArgs()) {
++      return false;
++    }
++    thisParam = thisParam.getNext();
++  }
++
++  // "that" can't be a supertype, because it's missing a required argument.
+ 
+   return true;
+ }
++

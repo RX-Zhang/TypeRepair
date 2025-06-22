@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -14,9 +14,9 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
++        serializationType = declaredType;
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+         if (ct == null) {
+@@ -102,3 +102,4 @@
+     }
+     return bpw;
+ }
++

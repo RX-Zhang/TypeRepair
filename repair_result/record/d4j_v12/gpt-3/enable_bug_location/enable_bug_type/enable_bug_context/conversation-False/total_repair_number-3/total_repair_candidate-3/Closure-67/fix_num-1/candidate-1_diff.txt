@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -1,16 +1,20 @@
+ private boolean isPrototypePropertyAssign(Node assign) {
+   Node n = assign.getFirstChild();
+   if (n != null && NodeUtil.isVarOrSimpleAssignLhs(n, assign)
+-      && n.getType() == Token.GETPROP
+-      ) {
++      && n.getType() == Token.GETPROP) {
+     // We want to exclude the assignment itself from the usage list
+     boolean isChainedProperty =
+         n.getFirstChild().getType() == Token.GETPROP;
+ 
+     if (isChainedProperty) {
+-      Node child = n.getFirstChild().getFirstChild().getNext();
++      Node child = n.getFirstChild().getFirstChild();
+ 
+-      if (child.getType() == Token.STRING &&
++      // Ensure we check the correct child node for "prototype"
++      if (child != null && child.getType() == Token.GETPROP) {
++        child = child.getFirstChild().getNext();
++      }
++
++      if (child != null && child.getType() == Token.STRING &&
+           child.getString().equals("prototype")) {
+         return true;
+       }
+@@ -19,3 +23,4 @@
+ 
+   return false;
+ }
++

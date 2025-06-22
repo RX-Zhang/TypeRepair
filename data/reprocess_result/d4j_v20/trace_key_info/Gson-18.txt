@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.gson.functional.CollectionTest.testIssue1107
+- Error: java.lang.ClassCastException: com.google.gson.internal.LinkedTreeMap cannot be cast to com.google.gson.functional.CollectionTest$SmallClass
+- Location:     SmallClass small = bigClass.inBig.get("key").get(0);

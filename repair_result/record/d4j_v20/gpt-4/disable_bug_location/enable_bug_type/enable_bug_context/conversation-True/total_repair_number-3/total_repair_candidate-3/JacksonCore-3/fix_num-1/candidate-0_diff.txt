@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -8,8 +8,8 @@
+     _objectCodec = codec;
+     _symbols = sym;
+     _inputBuffer = inputBuffer;
+-    _inputPtr = start;
+-    _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
++    _inputPtr = 0; // reset pointer to 0 to reflect offset adjustment
++    _inputEnd = end - start; // adjust end relative to new start
+     _bufferRecyclable = bufferRecyclable;
+ }
++

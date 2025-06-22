@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -17,9 +17,17 @@
+     }
+ 
+     // if the Option has a value
+-    if (option.hasArg() && (option.getArgName() != null))
++    if (option.hasArg())
+     {
+-        buff.append(" <").append(option.getArgName()).append(">");
++        String argName = option.getArgName();
++        if (argName == null || argName.isEmpty())
++        {
++            buff.append(" <").append(HelpFormatter.DEFAULT_ARG_NAME).append(">");
++        }
++        else
++        {
++            buff.append(" <").append(argName).append(">");
++        }
+     }
+ 
+     // if the Option is not a required option
+@@ -28,3 +36,4 @@
+         buff.append("]");
+     }
+ }
++

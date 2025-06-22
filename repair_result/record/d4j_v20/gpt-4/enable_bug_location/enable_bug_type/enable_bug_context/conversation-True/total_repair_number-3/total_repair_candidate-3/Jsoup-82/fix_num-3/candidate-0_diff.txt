@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -54,7 +54,7 @@
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+             charsetName = foundCharset;
+             doc = null;
+-        } else if (!fullyRead) {
++        } else if (foundCharset == null && !fullyRead) {
+             doc = null;
+         }
+     } else { // specified by content type header (or by user on file load)
+@@ -73,9 +73,39 @@
+             throw e.ioException();
+         }
+         Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // Attempt to encode with the found charset, fallback to UTF-8 if encoding fails
++        if (!charset.newEncoder().canEncode()) {
++            charset = Charset.forName("UTF-8");
++            doc.outputSettings().charset(charset);
++
++            // update meta charset element in the doc to UTF-8
++            Elements metaCharset = doc.select("meta[charset]");
++            if (!metaCharset.isEmpty()) {
++                for (Element meta : metaCharset) {
++                    meta.attr("charset", "UTF-8");
++                }
++            } else {
++                Elements metaContentTypes = doc.select("meta[http-equiv=content-type]");
++                if (!metaContentTypes.isEmpty()) {
++                    for (Element meta : metaContentTypes) {
++                        String content = meta.attr("content");
++                        // Replace charset in content
++                        String updatedContent = content.replaceAll("(?i)charset=([^;\"']+)", "charset=UTF-8");
++                        meta.attr("content", updatedContent);
++                    }
++                } else {
++                    // If no meta charset or content-type, create a new meta charset element
++                    Element head = doc.head();
++                    if (head == null) head = doc.prependElement("head");
++                    head.appendElement("meta").attr("charset", "UTF-8");
++                }
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

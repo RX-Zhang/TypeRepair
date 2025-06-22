@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -14,14 +14,13 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = declaredType; // Fixed: removed unnecessary typeFactory call
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+         if (ct == null) {
+             throw new IllegalStateException("Problem trying to create BeanPropertyWriter for property '"
+-                    +propDef.getName()+"' (of type "+_beanDesc.getType()+"); serialization type "+serializationType+" has no content");
++                    + propDef.getName() + "' (of type " + _beanDesc.getType() + "); serialization type " + serializationType + " has no content");
+         }
+         serializationType = serializationType.withContentTypeHandler(contentTypeSer);
+         ct = serializationType.getContentType();
+@@ -58,7 +57,6 @@
+                 valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+             }
+         }
+-
+         break;
+     case NON_ABSENT: // new with 2.6, to support Guava/JDK8 Optionals
+         // always suppress nulls
+@@ -102,3 +100,4 @@
+     }
+     return bpw;
+ }
++

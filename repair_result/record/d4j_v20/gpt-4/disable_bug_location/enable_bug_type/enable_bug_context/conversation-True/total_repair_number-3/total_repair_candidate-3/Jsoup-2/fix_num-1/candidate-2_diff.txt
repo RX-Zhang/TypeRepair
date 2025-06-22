@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -3,7 +3,7 @@
+     String tagName = tq.consumeWord();
+ 
+     if (tagName.length() == 0) { // doesn't look like a start tag after all; put < back on stack and handle as text
+-        tq.addFirst("&lt;");
++        tq.addFirst("<");
+         parseTextNode();
+         return;
+     }
+@@ -18,7 +18,7 @@
+     Tag tag = Tag.valueOf(tagName);
+     Element child = new Element(tag, baseUri, attributes);
+ 
+-    boolean isEmptyElement = tag.isEmpty(); // empty element if empty tag (e.g. img) or self-closed el (<div/>
++    boolean isEmptyElement = tag.isEmpty(); // empty element if empty tag (e.g. img) or self-closed el (<div/>)
+     if (tq.matchChomp("/>")) { // close empty element or tag
+         isEmptyElement = true;
+     } else {
+@@ -30,13 +30,15 @@
+     if (tag.isData()) {
+         String data = tq.chompTo("</" + tagName);
+         tq.chompTo(">");
+-        
++
+         Node dataNode;
+         if (tag.equals(titleTag) || tag.equals(textareaTag)) // want to show as text, but not contain inside tags (so not a data tag?)
+             dataNode = TextNode.createFromEncoded(data, baseUri);
+         else
+             dataNode = new DataNode(data, baseUri); // data not encoded but raw (for " in script)
+-        child.appendChild(dataNode);   
++        child.appendChild(dataNode);
++        // close the data tag from the stack, because we manually consumed the end tag content
++        popStackToClose(tag);
+     }
+ 
+     // <base href>: update the base uri
+@@ -48,3 +50,4 @@
+         }
+     }
+ }
++

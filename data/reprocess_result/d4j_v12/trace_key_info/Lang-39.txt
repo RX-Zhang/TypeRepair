@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.StringUtilsTest.testReplace_StringStringArrayStringArray
+- Error: java.lang.NullPointerException
+- Location:         assertEquals(StringUtils.replaceEach("aba", new String[]{"a", "b"}, new String[]{"c", null}),"cbc");

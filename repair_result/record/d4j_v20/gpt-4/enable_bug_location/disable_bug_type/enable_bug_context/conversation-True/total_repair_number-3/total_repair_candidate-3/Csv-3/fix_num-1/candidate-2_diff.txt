@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -12,17 +12,19 @@
+         return BACKSPACE;
+     case 'f':
+         return FF;
+-    case CR:
+-    case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
+-        return c;
++    case '\\':
++        return '\\';
++    case '\'':
++        return '\'';
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // For unrecognized escape sequences, return the escaped character as-is,
++        // including the escape char if needed (for example \N in MySQL).
++        // So in order to preserve the escape char in token content,
++        // the lexer should be designed to add it explicitly.
++        // Here we return the char, and lexer logic should handle this.
++        return c;
+     }
+ }
++

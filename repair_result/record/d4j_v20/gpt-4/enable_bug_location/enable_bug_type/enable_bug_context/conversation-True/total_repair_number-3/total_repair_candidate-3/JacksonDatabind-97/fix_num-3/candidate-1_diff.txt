@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -5,8 +5,9 @@
+     } else if (_value instanceof JsonSerializable) {
+         ((JsonSerializable) _value).serialize(gen, ctxt);
+     } else {
+-        // 25-May-2018, tatu: [databind#1991] do not call via generator but through context;
+-        //    this to preserve contextual information
+-        gen.writeObject(_value);
++        // Use the asText() method to get the properly converted String value,
++        // so that custom serialization logic depending on context attributes is honored.
++        gen.writeString(asText());
+     }
+ }
++

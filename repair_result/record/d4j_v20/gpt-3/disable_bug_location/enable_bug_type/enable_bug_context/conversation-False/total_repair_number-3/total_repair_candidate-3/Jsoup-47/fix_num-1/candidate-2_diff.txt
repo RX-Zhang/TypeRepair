@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -40,14 +40,11 @@
+                         accum.append("&#xa0;");
+                     break;
+                 case '<':
+-                    // escape when in character data or when in a xml attribue val; not needed in html attr val
+-                    if (!inAttribute)
+-                        accum.append("&lt;");
+-                    else
+-                        accum.append(c);
++                    // escape when in character data or when in a xml attribute val; not needed in html attr val
++                    accum.append("&lt;");
+                     break;
+                 case '>':
+-                    if (!inAttribute)
++                    if (inAttribute) // Corrected logic here to escape '>' when in attribute
+                         accum.append("&gt;");
+                     else
+                         accum.append(c);
+@@ -75,3 +72,4 @@
+         }
+     }
+ }
++

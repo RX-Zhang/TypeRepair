@@ -1,0 +1,1 @@
+['ExecutionError', 'InputValidationIssue', 'TypeMismatchError', 'LogicalError', 'ConfigurationIssue', 'APIUsageError', 'ResourceManagementError', 'SyntaxError']

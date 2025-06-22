@@ -1,0 +1,72 @@
+--- 
++++ 
+@@ -6,7 +6,12 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++
++    // Use Character to handle possible null
++    final Character quoteCharObj = getQuoteCharacter();
++    final char quoteChar = quoteCharObj != null ? quoteCharObj.charValue() : 0;
++
++    final Character escapeCharObj = getEscapeCharacter();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,9 +41,9 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
+-                quote = true;
+-            } else if (c <= COMMENT) {
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z')) {
++ quote = true;
++            } else if (c <= COMMENT {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+                 // encapsulate if we start in anything less than '#'. We are being conservative
+                 // by including the default comment char too.
+@@ -46,7 +51,7 @@
+             } else {
+                 while (pos < end) {
+                     c = value.charAt(pos);
+-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                    if (c == LF || c == CR || (quoteCharObj != null && c == quoteChar) || c == delimChar) {
+                         quote = true;
+                         break;
+                     }
+@@ -82,13 +87,13 @@
+     }
+ 
+     // we hit something that needed encapsulation
+-    out.append(quoteChar);
++    out.append(quoteCharObj != null ? quoteChar : '"'); // fallback if quoteChar is null
+ 
+     // Pick up where we left off: pos should be positioned on the first character that caused
+     // the need for encapsulation.
+     while (pos < end) {
+         final char c = value.charAt(pos);
+-        if (c == quoteChar) {
++        if (quoteCharObj != null && c == quoteChar) {
+             // write out the chunk up until this point
+ 
+             // add 1 to the length to write out the encapsulator also
+@@ -96,11 +101,16 @@
+             // put the next starting position on the encapsulator so we will
+             // write it out again with the next string (effectively doubling it)
+             start = pos;
++        } else if (escapeCharObj != null && c == escapeCharObj.charValue()) {
++            // Handle escape character itself by doubling it
++            out.append(value, start, pos + 1);
++            start = pos;
+         }
+         pos++;
+     }
+ 
+     // write the last segment
+     out.append(value, start, pos);
+-    out.append(quoteChar);
++ out.append(quoteCharObj != null ? quoteChar : '"');
+ }
++

@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -12,11 +12,12 @@
+ 
+     // Assume date is Gregorian.
+     long instant;
++    try {
+         instant = iGregorianChronology.getDateTimeMillis
+             (year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+-    if (instant < iCutoverMillis) {
+-        // Maybe it's Julian.
++    } catch (IllegalArgumentException e) {
++        // If date is invalid in Gregorian, it could be valid in Julian
+         instant = iJulianChronology.getDateTimeMillis
+             (year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+@@ -24,6 +25,19 @@
+             // Okay, it's in the illegal cutover gap.
+             throw new IllegalArgumentException("Specified date does not exist");
+         }
++        return instant;
++    }
++
++    if (instant < iCutoverMillis) {
++        // Maybe it's Julian.
++        long julianInstant = iJulianChronology.getDateTimeMillis
++            (year, monthOfYear, dayOfMonth,
++             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
++        if (julianInstant >= iCutoverMillis) {
++            // Okay, it's in the illegal cutover gap.
++            throw new IllegalArgumentException("Specified date does not exist");
++        }
+     }
+     return instant;
+ }
++

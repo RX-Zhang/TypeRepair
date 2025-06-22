@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -35,12 +35,13 @@
+       //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+       //     || !resultType.isSubtype(varType));
+ 
+-
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++      // Fix to handle type mismatch between isVarDeclaration (boolean) and
++      // leftType (JSType): make the setJSType call consistent
++      // Only set resultType if it's a var declaration or if leftType is null.
++      left.setJSType((isVarDeclaration || leftType == null) ? resultType : null);
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -61,3 +62,4 @@
+       break;
+   }
+ }
++

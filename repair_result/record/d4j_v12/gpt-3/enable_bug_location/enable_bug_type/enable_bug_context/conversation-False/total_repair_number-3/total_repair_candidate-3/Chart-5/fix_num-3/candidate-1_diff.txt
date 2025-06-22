@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -3,7 +3,6 @@
+         throw new IllegalArgumentException("Null 'x' argument.");
+     }
+ 
+-    // if we get to here, we know that duplicate X values are not permitted
+     XYDataItem overwritten = null;
+     int index = indexOf(x);
+     if (index >= 0 && !this.allowDuplicateXValues) {
+@@ -17,17 +16,14 @@
+         existing.setY(y);
+     }
+     else {
+-        // if the series is sorted, the negative index is a result from
+-        // Collections.binarySearch() and tells us where to insert the
+-        // new item...otherwise it will be just -1 and we should just
+-        // append the value to the list...
+         if (this.autoSort) {
+-            this.data.add(-index - 1, new XYDataItem(x, y));
++            // index returned by binarySearch is negative insertion point -1 if item not found
++            int insertIndex = (index < 0) ? (-index - 1) : this.data.size();
++            this.data.add(insertIndex, new XYDataItem(x, y));
+         }
+         else {
+             this.data.add(new XYDataItem(x, y));
+         }
+-        // check if this addition will exceed the maximum item count...
+         if (getItemCount() > this.maximumItemCount) {
+             this.data.remove(0);
+         }
+@@ -35,3 +31,4 @@
+     fireSeriesChanged();
+     return overwritten;
+ }
++

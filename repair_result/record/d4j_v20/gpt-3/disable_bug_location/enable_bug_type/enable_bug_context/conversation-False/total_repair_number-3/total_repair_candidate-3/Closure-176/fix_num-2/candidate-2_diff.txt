@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -35,12 +35,15 @@
+       //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+       //     || !resultType.isSubtype(varType));
+ 
+-
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++      // Defensive: avoid setting JSType to an incompatible type
++      if (isVarDeclaration || leftType == null) {
++        left.setJSType(resultType);
++      } else {
++        left.setJSType(null);
++      }
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -51,8 +54,10 @@
+     case Token.GETPROP:
+       String qualifiedName = left.getQualifiedName();
+       if (qualifiedName != null) {
++        // Defensive: ensure leftType is compatible; if null, use unknownType
++        JSType effectiveLeftType = leftType == null ? unknownType : leftType;
+         scope.inferQualifiedSlot(left, qualifiedName,
+-            leftType == null ? unknownType : leftType,
++            effectiveLeftType,
+             resultType);
+       }
+ 
+@@ -61,3 +66,4 @@
+       break;
+   }
+ }
++

@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -1,3 +1,7 @@
+ public int getLength() {
+-    return ValueUtils.getLength(getBaseValue());
++    if (value == UNINITIALIZED) {
++        value = ValueUtils.getValue(bean, getPropertyName());
++    }
++    return ValueUtils.getLength(value);
+ }
++

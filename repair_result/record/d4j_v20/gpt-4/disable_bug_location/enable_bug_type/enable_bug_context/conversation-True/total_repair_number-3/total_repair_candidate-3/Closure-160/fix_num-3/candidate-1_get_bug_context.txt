@@ -1,0 +1,1 @@
+['setErrorManager', 'compile', 'getErrors', 'getWarnings', 'getDiagnosticGroups', 'getErrorCount', 'getWarningCount', 'getOptions']

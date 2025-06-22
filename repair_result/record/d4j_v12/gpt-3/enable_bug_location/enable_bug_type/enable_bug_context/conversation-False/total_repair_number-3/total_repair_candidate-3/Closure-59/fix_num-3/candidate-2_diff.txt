@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -27,10 +27,10 @@
+         CheckLevel.OFF);
+   }
+ 
+-  if (options.checkGlobalThisLevel.isOn()) {
++  if (options.checkGlobalThisLevel.isOff()) { // Changed from isOn() to isOff()
+     options.setWarningLevel(
+         DiagnosticGroups.GLOBAL_THIS,
+-        options.checkGlobalThisLevel);
++        CheckLevel.OFF); // Set the level to OFF to match the intended behavior
+   }
+ 
+   if (options.getLanguageIn() == LanguageMode.ECMASCRIPT5_STRICT) {
+@@ -61,3 +61,4 @@
+ 
+   this.warningsGuard = composedGuards;
+ }
++

@@ -1,0 +1,74 @@
+--- 
++++ 
+@@ -6,12 +6,14 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    final char quoteChar = quoteCharObj != null ? quoteCharObj.charValue() : '"';
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+         quoteModePolicy = QuoteMode.MINIMAL;
+     }
++
+     switch (quoteModePolicy) {
+     case ALL:
+         quote = true;
+@@ -36,9 +38,13 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            // Fix logical expression to correctly check characters outside these ranges
++            if (newRecord && ((c < '0') 
++                  || (c > '9' && c < 'A') 
++                  || (c > 'Z' && c < 'a') 
++                  || (c > 'z'))) {
+                 quote = true;
+-            } else if (c <= COMMENT) {
++            } else if (c <= '#') {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+                 // encapsulate if we start in anything less than '#'. We are being conservative
+                 // by including the default comment char too.
+@@ -46,7 +52,7 @@
+             } else {
+                 while (pos < end) {
+                     c = value.charAt(pos);
+-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                    if (c == '\n' || c == '\r' || c == quoteChar || c == delimChar) {
+                         quote = true;
+                         break;
+                     }
+@@ -58,7 +64,7 @@
+                     c = value.charAt(pos);
+                     // Some other chars at the end caused the parser to fail, so for now
+                     // encapsulate if we end in anything less than ' '
+-                    if (c <= SP) {
++                    if (c < ' ') {
+                         quote = true;
+                     }
+                 }
+@@ -84,14 +90,12 @@
+     // we hit something that needed encapsulation
+     out.append(quoteChar);
+ 
+-    // Pick up where we left off: pos should be positioned on the first character that caused
+-    // the need for encapsulation.
++    // Reset pos to start to process entire sequence for double quote escaping
++    pos = start;
+     while (pos < end) {
+         final char c = value.charAt(pos);
+         if (c == quoteChar) {
+             // write out the chunk up until this point
+-
+-            // add 1 to the length to write out the encapsulator also
+             out.append(value, start, pos + 1);
+             // put the next starting position on the encapsulator so we will
+             // write it out again with the next string (effectively doubling it)
+@@ -104,3 +108,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

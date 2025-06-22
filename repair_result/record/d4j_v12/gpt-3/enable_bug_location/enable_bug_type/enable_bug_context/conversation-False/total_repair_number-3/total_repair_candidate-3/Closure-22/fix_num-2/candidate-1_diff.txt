@@ -1,0 +1,81 @@
+--- 
++++ 
+@@ -3,8 +3,7 @@
+   // I've been unable to think of any cases where this indicates a bug,
+   // and apparently some people like keeping these semicolons around,
+   // so we'll allow it.
+-  if (n.isEmpty() ||
+-      n.isComma()) {
++  if (n.isEmpty() || n.isComma()) {
+     return;
+   }
+ 
+@@ -19,35 +18,36 @@
+     Node gramps = parent.getParent();
+     if (gramps.isCall() && parent == gramps.getFirstChild()) {
+       if (n == parent.getFirstChild() && parent.getChildCount() == 2 && n.getNext().isName() && "eval".equals(n.getNext().getString())) {
+-    return;
++        return;
+       }
+-  }
++    }
+ 
+-  // This no-op statement was there so that JSDoc information could
+-  // be attached to the name. This check should not complain about it.
++    // This no-op statement was there so that JSDoc information could
++    // be attached to the name. This check should not complain about it.
+     if (n == parent.getLastChild()) {
+       for (Node an : parent.getAncestors()) {
+         int ancestorType = an.getType();
+-        if (ancestorType == Token.COMMA)
++        if (ancestorType == Token.COMMA) {
+           continue;
+-        if (ancestorType != Token.EXPR_RESULT && ancestorType != Token.BLOCK)
++        }
++        if (ancestorType != Token.EXPR_RESULT && ancestorType != Token.BLOCK) {
+           return;
+-        else
++        } else {
+           break;
++        }
+       }
+     }
+   } else if (parent.getType() != Token.EXPR_RESULT && parent.getType() != Token.BLOCK) {
+-    if (parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() ||
+-         n == parent.getFirstChild().getNext().getNext())) {
++    if (parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext())) {
++      // Allow for loop cases to pass
+     } else {
+-    return;
++      return;
+     }
+   }
+ 
+   boolean isResultUsed = NodeUtil.isExpressionResultUsed(n);
+   boolean isSimpleOp = NodeUtil.isSimpleOperatorType(n.getType());
+-  if (!isResultUsed &&
+-      (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler()))) {
++  if (!isResultUsed && (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler()))) {
+     if (n.isQualifiedName() && n.getJSDocInfo() != null) {
+       return;
+     } else if (n.isExprResult()) {
+@@ -57,12 +57,10 @@
+     if (n.isString()) {
+       msg = "Is there a missing '+' on the previous line?";
+     } else if (isSimpleOp) {
+-      msg = "The result of the '" + Token.name(n.getType()).toLowerCase() +
+-          "' operator is not being used.";
++      msg = "The result of the '" + Token.name(n.getType()).toLowerCase() + "' operator is not being used.";
+     }
+ 
+-    t.getCompiler().report(
+-        t.makeError(n, level, USELESS_CODE_ERROR, msg));
++    t.getCompiler().report(t.makeError(n, level, USELESS_CODE_ERROR, msg));
+     // TODO(johnlenz): determine if it is necessary to
+     // try to protect side-effect free statements as well.
+     if (!NodeUtil.isStatement(n)) {
+@@ -70,3 +68,4 @@
+     }
+   }
+ }
++

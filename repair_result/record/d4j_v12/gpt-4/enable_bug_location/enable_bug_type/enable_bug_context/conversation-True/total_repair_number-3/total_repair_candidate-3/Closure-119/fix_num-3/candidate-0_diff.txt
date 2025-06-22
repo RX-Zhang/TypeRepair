@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -52,7 +52,7 @@
+             return;
+           case Token.FUNCTION:
+             Node gramps = parent.getParent();
+-            if (gramps == null || NodeUtil.isFunctionExpression(parent)) {
++            if (gramps == null || NodeUtil.isFunctionExpression(parent) || isCatchParameterNode(n)) {
+               return;
+             }
+             isSet = true;
+@@ -123,3 +123,10 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++
++// Helper method to detect if the node is a catch parameter to prevent treating it as a global name
++private boolean isCatchParameterNode(Node n) {
++  Node parent = n.getParent();
++  return parent != null && parent.isCatch();
++}
++

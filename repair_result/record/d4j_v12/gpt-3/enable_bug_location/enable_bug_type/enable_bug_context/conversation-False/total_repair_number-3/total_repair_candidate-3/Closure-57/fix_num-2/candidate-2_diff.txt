@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ private static String extractClassNameIfGoog(Node node, Node parent,
+-    String functionName){
++    String functionName) {
+   String className = null;
+   if (NodeUtil.isExprCall(parent)) {
+     Node callee = node.getFirstChild();
+@@ -7,7 +7,7 @@
+       String qualifiedName = callee.getQualifiedName();
+       if (functionName.equals(qualifiedName)) {
+         Node target = callee.getNext();
+-        if (target != null) {
++        if (target != null && target.isString()) { // Adding type check to avoid TypeError
+           className = target.getString();
+         }
+       }
+@@ -15,3 +15,4 @@
+   }
+   return className;
+ }
++

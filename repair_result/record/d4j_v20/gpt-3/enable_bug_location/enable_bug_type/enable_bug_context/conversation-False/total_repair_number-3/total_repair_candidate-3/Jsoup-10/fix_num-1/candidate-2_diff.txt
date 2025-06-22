@@ -1,0 +1,54 @@
+--- 
++++ 
+@@ -1,24 +1,38 @@
+ public String absUrl(String attributeKey) {
+     Validate.notEmpty(attributeKey);
+ 
+-    String relUrl = attr(attributeKey);
+     if (!hasAttr(attributeKey)) {
+         return ""; // nothing to make absolute with
+-    } else {
+-        URL base;
++    }
++
++    String relUrl = attr(attributeKey);
++    URL base;
++    try {
++        base = new URL(baseUri);
++    } catch (MalformedURLException e) {
++        // the base is unsuitable, but the attribute may be abs on its own, so try that
+         try {
+-            try {
+-                base = new URL(baseUri);
+-            } catch (MalformedURLException e) {
+-                // the base is unsuitable, but the attribute may be abs on its own, so try that
+-                URL abs = new URL(relUrl);
+-                return abs.toExternalForm();
+-            }
+-            // workaround: java resolves '//path/file + ?foo' to '//path/?foo', not '//path/file?foo' as desired
+-            URL abs = new URL(base, relUrl);
++            URL abs = new URL(relUrl);
+             return abs.toExternalForm();
+-        } catch (MalformedURLException e) {
++        } catch (MalformedURLException e2) {
+             return "";
+         }
+     }
++
++    // workaround to correctly handle relative URLs starting with '?'
++    if (relUrl.startsWith("?")) {
++        // append the query to the path component of base URI
++        String baseStr = base.toExternalForm();
++        int queryIndex = baseStr.indexOf("?");
++        String baseWithoutQuery = (queryIndex != -1) ? baseStr.substring(0, queryIndex) : baseStr;
++        return baseWithoutQuery + relUrl;
++    }
++
++    try {
++        URL abs = new URL(base, relUrl);
++        return abs.toExternalForm();
++    } catch (MalformedURLException e) {
++        return "";
++    }
+ }
++

@@ -1,0 +1,1 @@
+['getName', 'getNamespaceURI', 'getDefaultNamespaceURI', 'matchesQName']

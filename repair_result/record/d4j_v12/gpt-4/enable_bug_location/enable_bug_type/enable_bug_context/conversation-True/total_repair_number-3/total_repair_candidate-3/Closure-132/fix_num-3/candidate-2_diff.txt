@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -149,8 +149,7 @@
+           n.removeChild(cond);
+           Node assignName = thenOp.removeFirstChild();
+           Node thenExpr = thenOp.removeFirstChild();
+-          Node elseExpr = elseOp.getLastChild();
+-          elseOp.removeChild(elseExpr);
++          Node elseExpr = elseOp.removeLastChild();
+ 
+           Node hookNode = IR.hook(cond, thenExpr, elseExpr).srcref(n);
+           Node assign = new Node(thenOp.getType(), assignName, hookNode)
+@@ -200,9 +199,9 @@
+       parent.replaceChild(n, var);
+       reportCodeChange();
+       return var;
+-    }
+-
+-  // if(x)y=1;else var y=2  ->  var y=x?1:2
++
++    // if(x)y=1;else var y=2  ->  var y=x?1:2
++    }
+   } else if (elseBranchIsVar && thenBranchIsExpressionBlock &&
+       getBlockExpression(thenBranch).getFirstChild().isAssign()) {
+ 
+@@ -231,3 +230,4 @@
+ 
+   return n;
+ }
++

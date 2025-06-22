@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -6,6 +6,10 @@
+     if (end < start) {
+         throw new IllegalArgumentException("Requires start <= end.");
+     }
++    if (end >= this.data.size()) {
++        throw new IllegalArgumentException("Requires end < data.size().");
++    }
++
+     TimeSeries copy = (TimeSeries) super.clone();
+     copy.data = new java.util.ArrayList();
+     if (this.data.size() > 0) {
+@@ -21,5 +25,7 @@
+             }
+         }
+     }
++    copy.findBoundsByIteration(); // recalculate minY and maxY for the new data subset
+     return copy;
+ }
++

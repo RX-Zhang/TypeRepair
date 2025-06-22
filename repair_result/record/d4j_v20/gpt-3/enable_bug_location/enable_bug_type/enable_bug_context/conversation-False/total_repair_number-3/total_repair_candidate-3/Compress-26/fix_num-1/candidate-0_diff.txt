@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,12 +1,20 @@
+ public static long skip(InputStream input, long numToSkip) throws IOException {
+     long available = numToSkip;
++    byte[] skipBuffer = new byte[(int) Math.min(SKIP_BUF_SIZE, 2048)];
+     while (numToSkip > 0) {
+         long skipped = input.skip(numToSkip);
+-        if (skipped == 0) {
++        if (skipped > 0) {
++            numToSkip -= skipped;
++            continue;
++        }
++        // skip returned 0, try reading to skip
++        int toRead = (int) Math.min(numToSkip, skipBuffer.length);
++        int read = input.read(skipBuffer, 0, toRead);
++        if (read == -1) {
+             break;
+         }
+-        numToSkip -= skipped;
++        numToSkip -= read;
+     }
+-        
+     return available - numToSkip;
+ }
++

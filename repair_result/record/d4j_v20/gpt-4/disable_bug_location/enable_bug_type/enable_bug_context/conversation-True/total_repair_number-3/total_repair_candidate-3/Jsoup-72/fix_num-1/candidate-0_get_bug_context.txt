@@ -1,0 +1,1 @@
+['nextIndexOf', 'consumeTo', 'matches', 'matchConsume']

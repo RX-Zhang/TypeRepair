@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -10,7 +10,9 @@
+ 
+     for (Node node: toMove) {
+         element.removeChild(node);
+-        body().appendChild(new TextNode(" ", ""));
++        // Append node directly without adding extra space before each text node
++        // To keep original ordering, append the node itself
+         body().appendChild(node);
+     }
+ }
++

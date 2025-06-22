@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -6,8 +6,7 @@
+     if (name.length() >= TarConstants.NAMELEN) {
+         name = name.substring(0, TarConstants.NAMELEN - 1);
+     }
+-    TarArchiveEntry pex = new TarArchiveEntry(name,
+-                                              TarConstants.LF_PAX_EXTENDED_HEADER_LC);
++    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER);
+ 
+     StringWriter w = new StringWriter();
+     for (Map.Entry<String, String> h : headers.entrySet()) {
+@@ -36,3 +35,4 @@
+     write(data);
+     closeArchiveEntry();
+ }
++

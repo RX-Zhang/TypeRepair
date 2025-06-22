@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.mixins.MixinsWithBundlesTest.testMixinWithBundles
+- Error: junit.framework.ComparisonFailure: expected:<{"[bar]":"result"}> but was:<{"[stuff]":"result"}>
+- Location:         assertEquals("{\"bar\":\"result\"}", result);

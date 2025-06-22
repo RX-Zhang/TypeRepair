@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -24,8 +24,8 @@
+     } else if ((contains(value, index + 1, 2, "ER") || 
+                 charAt(value, index + 1) == 'Y') &&
+                !contains(value, 0, 6, "DANGER", "RANGER", "MANGER") &&
+-               !contains(value, index - 1, 1, "E", "I") && 
+-               !contains(value, index - 1, 3, "RGY", "OGY")) {
++               (contains(value, index - 1, 1, "E", "I") ||  // FIX: should be OR not NOT
++                contains(value, index - 1, 3, "RGY", "OGY"))) {
+         //-- -ger-, -gy- --//
+         result.append('K', 'J');
+         index += 2;
+@@ -50,3 +50,4 @@
+     }
+     return index;
+ }
++

@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -20,7 +20,6 @@
+          */
+         if (serializationType == null) {
+               serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -37,7 +36,7 @@
+ 
+     // 12-Jul-2016, tatu: [databind#1256] Need to make sure we consider type refinement
+     JavaType actualType = (serializationType == null) ? declaredType : serializationType;
+-    
++
+     // 17-Aug-2016, tatu: Default inclusion covers global default (for all types), as well
+     //   as type-default for enclosing POJO. What we need, then, is per-type default (if any)
+     //   for declared property type... and finally property annotation overrides
+@@ -45,14 +44,14 @@
+             _defaultInclusion);
+ 
+     // property annotation override
+-    
++
+     inclV = inclV.withOverrides(propDef.findInclusion());
+     JsonInclude.Include inclusion = inclV.getValueInclusion();
+ 
+     if (inclusion == JsonInclude.Include.USE_DEFAULTS) { // should not occur but...
+         inclusion = JsonInclude.Include.ALWAYS;
+     }
+-    
++
+     switch (inclusion) {
+     case NON_DEFAULT:
+         // 11-Nov-2015, tatu: This is tricky because semantics differ between cases,
+@@ -125,3 +124,4 @@
+     }
+     return bpw;
+ }
++

@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -6,12 +6,19 @@
+     // need to ensure method is callable (for non-public)
+     AnnotatedMember mutator = propDef.getNonConstructorMutator();
+ 
+-    if (ctxt.canOverrideAccessModifiers()) {
+-        // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;
+-        // never needed and attempts may cause problems on some platforms.
+-        // !!! NOTE: should be handled better for 2.8 and later
+-            mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++    if (mutator != null) {
++        if (ctxt.canOverrideAccessModifiers()) {
++            // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;
++            // never needed and attempts may cause problems on some platforms.
++            if (!("cause".equals(propDef.getName()) && Throwable.class.isAssignableFrom(beanDesc.getBeanClass()))) {
++                mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++            }
++        }
++    } else {
++        // Defensive check: if no mutator found, return null (or throw), to avoid NPE later
++        return null;
+     }
++
+     // note: this works since we know there's exactly one argument for methods
+     BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),
+             propType0, propDef.getWrapperName(),
+@@ -48,3 +55,4 @@
+     }
+     return prop;
+ }
++

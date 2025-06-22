@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -24,7 +24,12 @@
+             // only add checkbox or radio if they have the checked attribute
+             if (el.hasAttr("checked")) {
+                 final String val = el.val();
+-                data.add(HttpConnection.KeyVal.create(name, val));
++                // For checkboxes, if no value is set, use "on"
++                if (val.isEmpty()) {
++                    data.add(HttpConnection.KeyVal.create(name, "on"));
++                } else {
++                    data.add(HttpConnection.KeyVal.create(name, val));
++                }
+             }
+         } else {
+             data.add(HttpConnection.KeyVal.create(name, el.val()));
+@@ -32,3 +37,4 @@
+     }
+     return data;
+ }
++

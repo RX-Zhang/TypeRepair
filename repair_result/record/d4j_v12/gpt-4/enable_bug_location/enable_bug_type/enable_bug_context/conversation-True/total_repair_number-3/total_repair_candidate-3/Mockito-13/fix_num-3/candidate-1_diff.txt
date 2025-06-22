@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -17,10 +17,15 @@
+     if (verificationMode != null) {
+         //We need to check if verification was started on the correct mock 
+         // - see VerifyingWithAnExtraCallToADifferentMockTest (bug 138)
+-        if (verificationMode instanceof MockAwareVerificationMode && ((MockAwareVerificationMode) verificationMode).getMock() == invocation.getMock()) {                
+-            VerificationDataImpl data = new VerificationDataImpl(invocationContainerImpl, invocationMatcher);            
+-            verificationMode.verify(data);
+-            return null;
++        if (verificationMode instanceof MockAwareVerificationMode) {
++            if (((MockAwareVerificationMode) verificationMode).getMock() == invocation.getMock()) {                
++                VerificationDataImpl data = new VerificationDataImpl(invocationContainerImpl, invocationMatcher);            
++                verificationMode.verify(data);
++                return null;
++            } else {
++                // Re-add verification mode if it's for a different mock
++                mockingProgress.reportVerificationMode(verificationMode);
++            }
+             // this means there is an invocation on a different mock. Re-adding verification mode 
+             // - see VerifyingWithAnExtraCallToADifferentMockTest (bug 138)
+         }
+@@ -47,3 +52,4 @@
+         return ret;
+     }
+ }
++

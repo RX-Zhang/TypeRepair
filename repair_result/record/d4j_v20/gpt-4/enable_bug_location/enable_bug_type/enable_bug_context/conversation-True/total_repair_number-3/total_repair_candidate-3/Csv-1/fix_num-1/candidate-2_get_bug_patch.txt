@@ -1,0 +1,18 @@
+public int read() throws IOException {
+    int current = super.read();
+    if (current == '\r') {
+        lineCounter++;
+        // Check if the next character is '\n', to handle CRLF (\r\n)
+        int nextChar = lookAhead();
+        if (nextChar == '\n') {
+            // Consume the next '\n' so it is not counted as a new line
+            super.read();
+            lastChar = '\n';
+            return lastChar;
+        }
+    } else if (current == '\n') {
+        lineCounter++;
+    }
+    lastChar = current;
+    return lastChar;
+}

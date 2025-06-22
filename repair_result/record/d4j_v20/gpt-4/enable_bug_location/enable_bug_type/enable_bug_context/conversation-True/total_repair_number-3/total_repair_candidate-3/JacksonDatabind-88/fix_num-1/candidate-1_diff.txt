@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -11,7 +11,12 @@
+         //    compatibility -- needed later anyway, and not doing so may open
+         //    security issues.
+         JavaType t = tf.constructFromCanonical(id);
+-            // Probably cleaner to have a method in `TypeFactory` but can't add in patch
++        // Ensure that the resolved type is assignable to _baseType to prevent security issues
++        if (!_baseType.getRawClass().isAssignableFrom(t.getRawClass())) {
++            throw new IllegalArgumentException(String.format(
++                "Inconsistent type id '%s': resolved type %s not subtype of %s",
++                id, t.getRawClass().getName(), _baseType.getRawClass().getName()));
++        }
+         return t;
+     }
+     Class<?> cls;
+@@ -30,5 +35,12 @@
+     } catch (Exception e) {
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
++    // Verify that found class is assignable to _baseType to prevent assignment issues
++    if (!_baseType.getRawClass().isAssignableFrom(cls)) {
++        throw new IllegalArgumentException(String.format(
++            "Inconsistent type id '%s': resolved class %s not subtype of %s",
++            id, cls.getName(), _baseType.getRawClass().getName()));
++    }
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

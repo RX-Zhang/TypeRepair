@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -73,9 +73,29 @@
+             throw e.ioException();
+         }
+         Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // Check if this charset can encode; if not, fallback to UTF-8 and update doc accordingly
++        if (!charset.newEncoder().canEncode()) {
++            charset = Charset.forName("UTF-8");
++            charsetName = "UTF-8";
++            doc.outputSettings().charset(charset);
++
++            // update meta charset element in doc
++            Elements metaElements = doc.select("meta[http-equiv=content-type], meta[charset]");
++            for (Element meta : metaElements) {
++                if (meta.hasAttr("charset")) {
++                    meta.attr("charset", "UTF-8");
++                } else if (meta.hasAttr("http-equiv")) {
++                    String content = meta.attr("content");
++                    content = content.replaceAll("(?i)charset=\\S+", "charset=UTF-8");
++                    meta.attr("content", content);
++                }
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

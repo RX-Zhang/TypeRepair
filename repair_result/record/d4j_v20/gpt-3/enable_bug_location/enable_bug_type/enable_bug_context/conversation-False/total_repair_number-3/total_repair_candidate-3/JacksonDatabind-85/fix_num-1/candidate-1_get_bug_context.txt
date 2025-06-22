@@ -1,0 +1,1 @@
+['withFormat', 'getSchema', 'acceptJsonFormatVisitor', '_asTimestamp']

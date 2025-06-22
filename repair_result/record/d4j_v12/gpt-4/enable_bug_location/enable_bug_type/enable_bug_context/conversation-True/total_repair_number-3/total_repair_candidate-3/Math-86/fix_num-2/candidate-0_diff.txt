@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+ 
+         final double[] lI = lTData[i];
+ 
+-        if (lTData[i][i] < absolutePositivityThreshold) {
++        if (lI[i] < absolutePositivityThreshold) {
+             throw new NotPositiveDefiniteMatrixException();
+         }
+         // check off-diagonal elements (and reset them to 0)
+@@ -32,7 +32,7 @@
+             if (Math.abs(lIJ - lJI) > maxDelta) {
+                 throw new NotSymmetricMatrixException();
+             }
+-            lJ[i] = 0;
++            lI[j] = 0;  // corrected to zero the upper right elements
+        }
+     }
+ 
+@@ -42,11 +42,13 @@
+         final double[] ltI = lTData[i];
+ 
+         // check diagonal element
+-
++        if (ltI[i] <= 0.0) {
++            throw new NotPositiveDefiniteMatrixException();
++        }
+         ltI[i] = Math.sqrt(ltI[i]);
+         final double inverse = 1.0 / ltI[i];
+ 
+-        for (int q = order - 1; q > i; --q) {
++        for (int q = i + 1; q < order; ++q) {
+             ltI[q] *= inverse;
+             final double[] ltQ = lTData[q];
+             for (int p = q; p < order; ++p) {
+@@ -57,3 +59,4 @@
+     }
+ 
+ }
++

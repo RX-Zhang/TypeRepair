@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -1,12 +1,14 @@
+ public static long skip(InputStream input, long numToSkip) throws IOException {
+-    long available = numToSkip;
++    long totalSkipped = 0; // Track the total bytes skipped
+     while (numToSkip > 0) {
+         long skipped = input.skip(numToSkip);
+         if (skipped == 0) {
+-            break;
++            break; // No more bytes can be skipped
+         }
+-        numToSkip -= skipped;
++        totalSkipped += skipped; // Accumulate the total bytes skipped
++        numToSkip -= skipped; // Decrease the number of bytes left to skip
+     }
+         
+-    return available - numToSkip;
++    return totalSkipped; // Return the total bytes skipped
+ }
++

@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -20,27 +20,25 @@
+         }
+     }
+ 
+-    // Trim all trailing NULs and spaces.
+-    // The ustar and POSIX tar specs require a trailing NUL or
+-    // space but some implementations use the extra digit for big
+-    // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
++    // Trim trailing NULs and spaces.
++    // Allow multiple trailing NULs and spaces, not just one.
++    while (end > start) {
++        byte trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' ') {
++            end--;
++        } else {
++            break;
++        }
+     }
+-    trailer = buffer[end - 1];
+-    while (start < end - 1 && (trailer == 0 || trailer == ' ')) {
+-        end--;
+-        trailer = buffer[end - 1];
++    if (end == start) {
++        // All bytes trimmed, interpret as 0
++        return 0L;
+     }
+ 
+-    for ( ;start < end; start++) {
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+         // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+@@ -50,3 +48,4 @@
+ 
+     return result;
+ }
++

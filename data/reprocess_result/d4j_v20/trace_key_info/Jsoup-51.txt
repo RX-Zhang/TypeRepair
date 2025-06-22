@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.testSupportsNonAsciiTags
+- Error: junit.framework.AssertionFailedError: expected:<[Yes]> but was:<[]>
+- Location:         assertEquals("Yes", els.text());

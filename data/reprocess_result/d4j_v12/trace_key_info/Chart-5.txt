@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.data.xy.junit.XYSeriesTests.testBug1955483
+- Error: java.lang.IndexOutOfBoundsException: Index: -1, Size: 1
+- Location:         series.addOrUpdate(1.0, 2.0);

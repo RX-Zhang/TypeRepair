@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -24,7 +24,7 @@
+       // the left hand side, so we use the left hand side.
+ 
+       boolean isVarTypeBetter = !isVarDeclaration || var == null || var.isTypeInferred();
+-          // Makes it easier to check for NPEs.
++          // Makes it easier to check for NPE.
+ 
+       // TODO(nicksantos): This might be a better check once we have
+       // back-inference of object/array constraints.  It will probably
+@@ -35,12 +35,11 @@
+       //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+       //     || !resultType.isSubtype(varType));
+ 
+-
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+       left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++          resultType : leftType);
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -61,3 +60,4 @@
+       break;
+   }
+ }
++

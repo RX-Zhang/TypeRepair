@@ -1,0 +1,1 @@
+['skip', 'getRecord', 'read', 'isAtEOF', 'setAtEOF']

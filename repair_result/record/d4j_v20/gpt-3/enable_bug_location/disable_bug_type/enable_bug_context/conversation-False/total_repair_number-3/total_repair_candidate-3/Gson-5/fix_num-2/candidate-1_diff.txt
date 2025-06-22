@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -100,7 +100,6 @@
+                 //    `java.util.TimeZone` specifically instruct use of GMT as base for
+                 //    custom timezones... odd.
+                 String timezoneId = "GMT" + timezoneOffset;
+-                  String timezoneId = "UTC" + timezoneOffset;
+ 
+                 timezone = TimeZone.getTimeZone(timezoneId);
+ 
+@@ -152,3 +151,4 @@
+     ex.initCause(fail);
+     throw ex;
+ }
++

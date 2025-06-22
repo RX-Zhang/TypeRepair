@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -6,6 +6,11 @@
+         String prefix = updateNamespaces(sourceEl);
+         String namespace = namespacesStack.peek().get(prefix);
+         String tagName = sourceEl.tagName();
++
++        // Check if namespace is null or empty before creating the element
++        if (namespace == null || namespace.isEmpty()) {
++            namespace = ""; // Use default namespace if none is found
++        }
+ 
+         Element el = 
+             doc.createElementNS(namespace, tagName);
+@@ -32,3 +37,4 @@
+         // unhandled
+     }
+ }
++

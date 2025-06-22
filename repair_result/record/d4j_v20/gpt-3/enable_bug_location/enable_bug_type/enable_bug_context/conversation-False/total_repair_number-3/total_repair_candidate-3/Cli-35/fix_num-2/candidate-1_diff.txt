@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -5,10 +5,15 @@
+     List<String> matchingOpts = new ArrayList<String>();
+ 
+     // for a perfect match return the single option only
+-
+     for (String longOpt : longOpts.keySet())
+     {
+-        if (longOpt.startsWith(opt))
++        if (longOpt.equals(opt)) // Check for exact match
++        {
++            matchingOpts.clear(); // Clear previous matches
++            matchingOpts.add(longOpt);
++            return matchingOpts; // Return immediately on exact match
++        }
++        else if (longOpt.startsWith(opt))
+         {
+             matchingOpts.add(longOpt);
+         }
+@@ -16,3 +21,4 @@
+     
+     return matchingOpts;
+ }
++

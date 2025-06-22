@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -36,7 +36,11 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // Corrected logical condition to check characters that require quoting
++            if (newRecord && (c < 0x20 
++                    || (c > 0x21 && c < 0x23) 
++                    || (c > 0x2B && c < 0x2D) 
++                    || c > 0x7E)) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -58,7 +62,7 @@
+                     c = value.charAt(pos);
+                     // Some other chars at the end caused the parser to fail, so for now
+                     // encapsulate if we end in anything less than ' '
+-                    if (c <= SP) {
++                    if (c < SP) { // changed from c <= SP to c < SP for proper behavior with regular space
+                         quote = true;
+                     }
+                 }
+@@ -104,3 +108,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.rhino.jstype.RecordTypeTest.testRecursiveRecord
+- Error: junit.framework.ComparisonFailure: expected:<{loop: [?], number: number, st...> but was:<{loop: [{...}], number: number, st...>
+- Location:     assertEquals("{loop: ?, number: number, string: string}",
+
+
+Test failure 2:
+- Test: com.google.javascript.rhino.jstype.RecordTypeTest.testLongToString
+- Error: junit.framework.ComparisonFailure: expected:<...number, a4: number, [a5: number, a6: number]}> but was:<...number, a4: number, [...]}>
+- Location:     assertEquals(

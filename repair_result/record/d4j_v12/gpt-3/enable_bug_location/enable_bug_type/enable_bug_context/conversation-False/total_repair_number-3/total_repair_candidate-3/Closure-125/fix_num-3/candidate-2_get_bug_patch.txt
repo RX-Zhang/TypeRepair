@@ -1,0 +1,23 @@
+private void visitNew(NodeTraversal t, Node n) {
+  Node constructor = n.getFirstChild();
+  JSType type = getJSType(constructor).restrictByNotNullOrUndefined();
+
+  try {
+    if (type.isConstructor() || type.isEmptyType() || type.isUnknownType()) {
+      FunctionType fnType = type.toMaybeFunctionType();
+      if (fnType != null) {
+        visitParameterList(t, n, fnType);
+        ensureTyped(t, n, fnType.getInstanceType());
+      } else {
+        ensureTyped(t, n);
+      }
+    } else {
+      report(t, n, NOT_A_CONSTRUCTOR);
+      ensureTyped(t, n);
+    }
+  } catch (IllegalStateException e) {
+    // Handle the IllegalStateException gracefully, e.g., report and continue
+    report(t, n, NOT_A_CONSTRUCTOR, "Exception: " + e.getMessage());
+    ensureTyped(t, n);
+  }
+}

@@ -1,0 +1,22 @@
+public double getSumSquaredErrors() {
+    if (n < 3) {
+        return Double.NaN; // not enough data to compute sum squared errors
+    }
+    double slope = getSlope();
+    if (Double.isNaN(slope)) {
+        return Double.NaN;
+    }
+    double intercept = getIntercept();
+    double sse = 0.0;
+    // sum of squared errors = Σ(y_i - (slope*x_i + intercept))^2
+    // Since the actual data points are not stored, but sums and means are,
+    // we use the formula sse = sumYY + n*intercept*intercept + slope*slope*sumXX - 2*intercept*sumY - 2*slope*sumXY + 2*slope*intercept*sumX
+    // Or alternatively: sse = sumYY - 2*intercept*sumY - 2*slope*sumXY + n*intercept^2 + 2*slope*intercept*sumX + slope^2*sumXX
+    // To avoid recalculating complicated formula, use the known decomposition:
+    // SSE = Total Sum of Squares - Regression Sum of Squares.
+    // Let's calculate it directly with:
+    double regressionSumSquares = getRegressionSumSquares(slope);
+    double totalSumSquares = sumYY;
+    sse = totalSumSquares - regressionSumSquares;
+    return sse;
+}

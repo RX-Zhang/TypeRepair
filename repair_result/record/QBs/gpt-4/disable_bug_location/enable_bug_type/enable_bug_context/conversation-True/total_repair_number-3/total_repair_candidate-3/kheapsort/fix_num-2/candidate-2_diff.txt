@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,8 +2,10 @@
+     import heapq
+     heap = arr[:k]
+     heapq.heapify(heap)
+-    for x in arr:
+-        yield heapq.heappushpop(heap, x)
++    for x in arr[k:]:
++        heapq.heappushpop(heap, x)
++    result = []
+     while heap:
+-        yield heapq.heappop(heap)
++        result.append(heapq.heappop(heap))
++    return result
+ 

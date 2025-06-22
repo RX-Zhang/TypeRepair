@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -4,10 +4,10 @@
+     }
+ 
+     List<Integer> columnsToDrop = new ArrayList<Integer>();
+-    columnsToDrop.add(0);
++    columnsToDrop.add(0); // drop phase 1 objective column
+ 
+     // positive cost non-artificial variables
+-    for (int i = getNumObjectiveFunctions(); i < getArtificialVariableOffset(); i++) {
++    for (int i = 1; i < getArtificialVariableOffset(); i++) {
+         final double entry = tableau.getEntry(0, i);
+         if (Precision.compareTo(entry, 0d, maxUlps) > 0) {
+             columnsToDrop.add(i);
+@@ -39,3 +39,4 @@
+     this.tableau = new Array2DRowRealMatrix(matrix);
+     this.numArtificialVariables = 0;
+ }
++

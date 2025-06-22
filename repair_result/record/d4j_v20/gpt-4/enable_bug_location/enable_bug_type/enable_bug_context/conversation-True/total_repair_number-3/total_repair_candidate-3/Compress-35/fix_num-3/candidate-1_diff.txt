@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ public static boolean verifyCheckSum(byte[] header) {
+     long storedSum = 0;
+-    long unsignedSum = 0;
++    long unsignedSum = computeCheckSum(header);
+     long signedSum = 0;
+ 
+     int digits = 0;
+@@ -14,8 +14,8 @@
+             }
+             b = ' ';
+         }
+-        unsignedSum += 0xff & b;
+         signedSum += b;
+     }
+     return storedSum == unsignedSum || storedSum == signedSum;
+ }
++

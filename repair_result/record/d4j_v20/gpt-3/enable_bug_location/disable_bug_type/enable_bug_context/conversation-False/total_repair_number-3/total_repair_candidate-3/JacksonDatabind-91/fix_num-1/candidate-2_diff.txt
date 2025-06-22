@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -4,8 +4,12 @@
+         JavaType ct = t.getContentType();
+         if (ct != null) {
+             return (ct.getValueHandler() != null) || (ct.getTypeHandler() != null);
++        }
+         // Second: map(-like) types may have value handler for key (but not type; keys are untyped)
++        if (t.isMapType()) {
++            return (t.getKeyType() != null && (t.getKeyType().getValueHandler() != null || t.getKeyType().getTypeHandler() != null));
+         }
+     }
+     return false;
+ }
++

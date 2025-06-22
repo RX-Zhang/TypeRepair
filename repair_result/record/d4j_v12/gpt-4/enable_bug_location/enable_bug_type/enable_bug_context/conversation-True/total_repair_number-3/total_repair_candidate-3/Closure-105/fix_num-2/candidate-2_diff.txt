@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -83,7 +83,11 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++
++      // Replace the original call node with the new array join call:
++      parent.replaceChild(n, n.cloneNode());
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -7,7 +7,19 @@
+     }
+     else if (stopAtNonOption)
+     {
+-        eatTheRest = true;
++        if (token.length() > 2)
++        {
++            burstToken(token, stopAtNonOption);
++        }
++        else
++        {
++            eatTheRest = true;
++            tokens.add(token);
++        }
++    }
++    else
++    {
+         tokens.add(token);
+     }
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -109,7 +109,7 @@
+   }
+ 
+   // We are only interested in global names.
+-  if (!isGlobalNameReference(name, scope)) {
++  if (!isGlobalNameReference(name, scope) && !(parent != null && parent.isCatch())) {
+     return;
+   }
+ 
+@@ -123,3 +123,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

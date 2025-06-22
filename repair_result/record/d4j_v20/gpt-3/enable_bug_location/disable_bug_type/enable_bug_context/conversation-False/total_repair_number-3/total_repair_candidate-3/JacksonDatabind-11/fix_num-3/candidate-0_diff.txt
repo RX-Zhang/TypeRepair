@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -37,6 +37,12 @@
+      *   (T extends Comparable<T>). Need to add "placeholder"
+      *   for resolution to catch those.
+      */
+-    context._addPlaceholder(name);
++    if (context != null) {
++        context._addPlaceholder(name);
++    }
++    if (bounds.length == 0) {
++        return _unknownType();
++    }
+     return _constructType(bounds[0], context);
+ }
++

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -8,13 +8,21 @@
+         valueList = defaultValues;
+     }
+ 
+-    // augment the list with the default values
++    // if still no values, try option's defaultValues
+     if ((valueList == null) || valueList.isEmpty()) {
+         valueList = (List) this.defaultValues.get(option);
+     }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
++
++    // if valueList has fewer elements than required (minimum), 
++    // try to add default values if any are missing
++    if (valueList != null && !(valueList instanceof ArrayList)) {
++        valueList = new ArrayList(valueList);
++    }
++
++    if (valueList == null) {
++        valueList = Collections.EMPTY_LIST;
++    }
+     
+-    return valueList == null ? Collections.EMPTY_LIST : valueList;
++    return valueList;
+ }
++

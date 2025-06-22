@@ -1,0 +1,74 @@
+--- 
++++ 
+@@ -24,10 +24,14 @@
+             df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, DATE_FORMAT_STR_ISO8601_Z, _timezone, _locale);
+         }
+         // [JACKSON-334]: may be missing milliseconds... if so, add
+-        if (dateStr.charAt(len-4) == ':') {
+-            StringBuilder sb = new StringBuilder(dateStr);
+-            sb.insert(len-1, ".000");
+-            dateStr = sb.toString();
++        // only add if there are no milliseconds
++        if (len >= 20 && dateStr.charAt(len-5) == ':') { // at least: "xxxx-xx-xxTxx:xxZ"
++            // we need to check for presence of '.' before Z
++            if (dateStr.indexOf('.') == -1) {
++                StringBuilder sb = new StringBuilder(dateStr);
++                sb.insert(len-1, ".000");
++                dateStr = sb.toString();
++            }
+         }
+     } else {
+         // Let's see if we have timezone indicator or not...
+@@ -38,18 +42,26 @@
+                 StringBuilder sb = new StringBuilder(dateStr);
+                 sb.delete(len-3, len-2);
+                 dateStr = sb.toString();
++                len--;
+             } else if (c == '+' || c == '-') { // missing minutes
+                 // let's just append '00'
+                 dateStr += "00";
++                len += 2;
+             }
+             // Milliseconds partial or missing; and even seconds are optional
+-            len = dateStr.length();
+-            // remove 'T', '+'/'-' and 4-digit timezone-offset
+-            c = dateStr.charAt(len-9);
+-            if (Character.isDigit(c)) {
+-                StringBuilder sb = new StringBuilder(dateStr);
+-                sb.insert(len-5, ".000");
+-                dateStr = sb.toString();
++            // remove 'T', '+'/'-' and 4-digit timezone-offset index safely:
++            // check if string is long enough for char at len-9
++            if (len > 9) {
++                c = dateStr.charAt(len-9);
++                if (Character.isDigit(c)) {
++                    int dotPos = dateStr.indexOf('.');
++                    if (dotPos == -1 || dotPos < len - 13) {
++                        StringBuilder sb = new StringBuilder(dateStr);
++                        sb.insert(len-5, ".000");
++                        dateStr = sb.toString();
++                        len += 4;
++                    }
++                }
+             }
+             df = _formatISO8601;
+             if (_formatISO8601 == null) {
+@@ -59,9 +71,10 @@
+             // If not, plain date. Easiest to just patch 'Z' in the end?
+             StringBuilder sb = new StringBuilder(dateStr);
+             // And possible also millisecond part if missing
+-            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+-            if (timeLen <= 8) {
+-                    sb.append(".000");
++            int tIndex = dateStr.indexOf('T');
++            int timeLen = (tIndex < 0) ? 0 : len - tIndex - 1;
++            if (timeLen > 0 && timeLen <= 8 && dateStr.indexOf('.') == -1) {
++                sb.append(".000");
+             }
+             sb.append('Z');
+             dateStr = sb.toString();
+@@ -74,3 +87,4 @@
+     }
+     return df.parse(dateStr, pos);
+ }
++

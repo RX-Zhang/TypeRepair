@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -8,6 +8,14 @@
+     }
+     // Nope; but does it fit in just one segment?
+     if (!_hasSegments)  return _currentSegment;
+-    // Nope, need to have/create a non-segmented array and return it
+-    return contentsAsArray();
++
++    // Added exception handling to prevent NullPointerException
++    try {
++        // Nope, need to have/create a non-segmented array and return it
++        return contentsAsArray();
++    } catch (Exception e) {
++        // Handle the exception (e.g., log it, return an empty array, etc.)
++        return new char[0]; // Return an empty array in case of an error
++    }
+ }
++

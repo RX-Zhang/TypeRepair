@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testGetprop4
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes("var x = null; x.prop = 3;",
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testIssue810
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(

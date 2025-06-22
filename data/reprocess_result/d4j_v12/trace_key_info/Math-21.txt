@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest.testMath789
+- Error: junit.framework.AssertionFailedError: expected:<0.0> but was:<0.0180652917341963>
+- Location:         Assert.assertEquals(0.0, m3.subtract(rebuiltM3).getNorm(), 1.0e-16);
+
+
+Test failure 2:
+- Test: org.apache.commons.math3.linear.RectangularCholeskyDecompositionTest.testFullRank
+- Error: junit.framework.AssertionFailedError
+- Location:         Assert.assertTrue(root.subtract(base).getNorm() > 0.3);

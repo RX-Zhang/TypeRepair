@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVRecordTest.testToMapWithShortRecord
+- Error: java.lang.ArrayIndexOutOfBoundsException: 2
+- Location:        shortRec.toMap();

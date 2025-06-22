@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -38,5 +38,11 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
++    
++    // Defensive check: bounds could be empty but normally contains Object at least
++    if (bounds.length == 0) {
++        return _unknownType();
++    }
+     return _constructType(bounds[0], context);
+ }
++

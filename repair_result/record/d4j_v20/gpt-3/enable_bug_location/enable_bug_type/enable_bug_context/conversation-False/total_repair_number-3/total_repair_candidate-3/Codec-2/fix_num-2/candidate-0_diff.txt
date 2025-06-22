@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -11,16 +11,18 @@
+         }
+         switch (modulus) {
+             case 1:
+-                buf[pos++] = encodeTable[(x >> 2) & MASK_6BITS];
+-                buf[pos++] = encodeTable[(x << 4) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 16) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+                 // URL-SAFE skips the padding to further reduce size.
+                 if (encodeTable == STANDARD_ENCODE_TABLE) {
+                     buf[pos++] = PAD;
+-                    buf[pos++] = PAD;
+                 }
++                buf[pos++] = PAD;
+                 break;
+ 
+             case 2:
++                buf[pos++] = encodeTable[(x >> 16) & MASK_6BITS];
+                 buf[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
+                 buf[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+                 buf[pos++] = encodeTable[(x << 2) & MASK_6BITS];
+@@ -33,6 +35,7 @@
+         if (lineLength > 0) {
+             System.arraycopy(lineSeparator, 0, buf, pos, lineSeparator.length);
+             pos += lineSeparator.length;
++            currentLinePos = 0;
+         }
+     } else {
+         for (int i = 0; i < inAvail; i++) {
+@@ -58,3 +61,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -55,6 +55,14 @@
+     int n = getImaginaryCharacter().length();
+     startIndex = pos.getIndex();
+     int endIndex = startIndex + n;
++    
++    // Boundary check to prevent StringIndexOutOfBoundsException
++    if (endIndex > source.length()) {
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(startIndex);
++        return null;
++    }
++
+     if (
+         source.substring(startIndex, endIndex).compareTo(
+         getImaginaryCharacter()) != 0) {
+@@ -68,3 +76,4 @@
+ 
+     return new Complex(re.doubleValue(), im.doubleValue() * sign);
+ }
++

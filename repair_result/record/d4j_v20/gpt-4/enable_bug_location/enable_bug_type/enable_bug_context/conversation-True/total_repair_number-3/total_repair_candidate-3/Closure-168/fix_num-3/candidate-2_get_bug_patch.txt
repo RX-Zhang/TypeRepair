@@ -1,0 +1,60 @@
+@Override public void visit(NodeTraversal t, Node n, Node parent) {
+  if (t.inGlobalScope()) {
+    return;
+  }
+
+  if (n.isReturn() && n.getFirstChild() != null) {
+    data.get(t.getScopeRoot()).recordNonEmptyReturn();
+  }
+
+  if (t.getScopeDepth() <= 2) {
+    // The first-order function analyzer looks at two types of variables:
+    //
+    // 1) Local variables that are assigned in inner scopes ("escaped vars")
+    //
+    // 2) Local variables that are assigned more than once.
+    //
+    // We treat all global variables as escaped by default, so there's
+    // no reason to do this extra computation for them.
+    return;
+  }
+
+  if (n.isName() && NodeUtil.isLValue(n) &&
+      // Be careful of bleeding functions, which create variables
+      // in the inner scope, not the scope where the name appears.
+      !NodeUtil.isBleedingFunctionName(n)) {
+    String name = n.getString();
+    Scope scope = t.getScope();
+    Var var = scope.getVar(name);
+    if (var != null) {
+      Scope ownerScope = var.getScope();
+      if (ownerScope.isLocal()) {
+        AstFunctionContents contents = getFunctionAnalysisResults(ownerScope.getRootNode());
+        if (contents != null) {
+          contents.recordAssignedName(name);
+        }
+      }
+
+      if (scope != ownerScope && ownerScope.isLocal()) {
+        AstFunctionContents contents = getFunctionAnalysisResults(ownerScope.getRootNode());
+        if (contents != null) {
+          contents.recordEscapedVarName(name);
+        }
+      }
+    }
+  } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
+      NodeUtil.isLValue(n)) {
+    String name = NodeUtil.getRootOfQualifiedName(n).getString();
+    Scope scope = t.getScope();
+    Var var = scope.getVar(name);
+    if (var != null) {
+      Scope ownerScope = var.getScope();
+      if (scope != ownerScope && ownerScope.isLocal()) {
+        AstFunctionContents contents = getFunctionAnalysisResults(ownerScope.getRootNode());
+        if (contents != null) {
+          contents.recordEscapedQualifiedName(n.getQualifiedName());
+        }
+      }
+    }
+  }
+}

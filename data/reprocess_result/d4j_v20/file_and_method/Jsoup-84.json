@@ -1,0 +1,1 @@
+{"ClassName": "W3CDom", "Fields": ["protected DocumentBuilderFactory factory;"], "Methods": ["public Document fromJsoup(org in) { ... }", "public void convert(org in, Document out) { ... }", "public String asString(Document doc) { ... }"]}

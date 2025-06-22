@@ -1,0 +1,1 @@
+['parseAndRecordTypeNode', 'parseAndRecordTypeNameNode', 'parseTypeExpressionAnnotation', 'parseTypeExpression', 'parseTypeName', 'parseFunctionType', 'reportTypeSyntaxWarning']

@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -38,5 +38,18 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
++
++    // Defensive check for empty bounds array
++    if (bounds == null || bounds.length == 0) {
++        return _unknownType();
++    }
++
++    // Defensive: if bound[0] is Object, mark placeholder resolved to prevent cycles
++    if (bounds[0] == Object.class) {
++        context._assignPlaceholder(name, _constructType(bounds[0], context));
++        return _constructType(bounds[0], context);
++    }
++
+     return _constructType(bounds[0], context);
+ }
++

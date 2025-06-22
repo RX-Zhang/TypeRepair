@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -2,6 +2,7 @@
+ 	int totalRead = 0;
+ 
+     if (hasHitEOF || entryOffset >= entrySize) {
++        setAtEOF(true);
+         return -1;
+     }
+ 
+@@ -15,10 +16,16 @@
+     count(totalRead);
+     
+     if (totalRead == -1) {
+-        hasHitEOF = true;
++        setAtEOF(true);
+     } else {
+         entryOffset += totalRead;
++        if (entryOffset >= entrySize) {
++            // Consume padding of the last block in the current entry
++            consumeRemainderOfLastBlock();
++            setAtEOF(true);
++        }
+     }
+ 
+     return totalRead;
+ }
++

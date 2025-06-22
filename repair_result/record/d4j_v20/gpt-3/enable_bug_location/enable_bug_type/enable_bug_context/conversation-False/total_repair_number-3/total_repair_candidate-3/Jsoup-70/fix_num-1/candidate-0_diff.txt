@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -2,10 +2,18 @@
+     // looks only at this element and five levels up, to prevent recursion & needless stack searches
+     if (node != null && node instanceof Element) {
+         Element el = (Element) node;
+-            if (el.tag.preserveWhitespace())
++        // Corrected logical flow to ensure that we check the parent elements correctly
++        if (el.tag.preserveWhitespace())
++            return true;
++        // Check if the parent exists and if it preserves whitespace
++        Node parent = el.parent();
++        while (parent != null) {
++            if (parent instanceof Element && ((Element) parent).tag.preserveWhitespace()) {
+                 return true;
+-            else
+-                return el.parent() != null && el.parent().tag.preserveWhitespace();
++            }
++            parent = parent.parent();
++        }
+     }
+     return false;
+ }
++

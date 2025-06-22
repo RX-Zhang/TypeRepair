@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -96,7 +96,11 @@
+       || last == NUMBER_CHAR_EXP_DIGIT) {
+     peekedNumberLength = i;
+     return peeked = PEEKED_NUMBER;
++  } else if (last == NUMBER_CHAR_SIGN) {
++    // number like "-" alone is invalid
++    return PEEKED_NONE;
+   } else {
+     return PEEKED_NONE;
+   }
+ }
++

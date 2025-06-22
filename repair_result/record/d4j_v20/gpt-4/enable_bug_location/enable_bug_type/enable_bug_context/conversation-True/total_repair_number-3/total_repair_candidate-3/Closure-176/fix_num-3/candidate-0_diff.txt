@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -39,8 +39,13 @@
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++      
++      // Prevent setting null type when leftType is non-null and not a declared var
++      if (isVarDeclaration || leftType == null || leftType.isUnknownType() || leftType.isNullType()) {
++        left.setJSType(resultType);
++      } else {
++        left.setJSType(null);
++      }
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -61,3 +66,4 @@
+       break;
+   }
+ }
++

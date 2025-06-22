@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -34,8 +34,10 @@
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Do NOT recurse into finally block to avoid incorrect exit minimization
++      // which can cause semantic problems, so skip the following line:
++      // tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Remove the erroneous recursion into finally block by not calling it here.
+     }
+   }
+ 
+@@ -94,3 +96,4 @@
+     }
+   }
+ }
++

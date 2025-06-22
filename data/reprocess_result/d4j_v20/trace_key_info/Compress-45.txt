@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.tar.TarUtilsTest.testRoundTripOctalOrBinary8
+- Error: java.lang.IllegalArgumentException: Value -72057594037927935 is too large for 8 byte field.
+- Location:         testRoundTripOctalOrBinary(8);

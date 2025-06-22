@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.util.MultidimensionalCounterTest.testIterationConsistency
+- Error: junit.framework.AssertionFailedError: Wrong multidimensional index for [3][2] expected:<3> but was:<2>
+- Location:                 Assert.assertEquals("Wrong multidimensional index for [" + i + "][" + dimIndex + "]",

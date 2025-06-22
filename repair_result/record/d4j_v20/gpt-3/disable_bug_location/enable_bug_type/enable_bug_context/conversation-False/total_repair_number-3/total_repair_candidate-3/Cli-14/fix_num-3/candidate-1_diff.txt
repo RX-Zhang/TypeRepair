@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -33,7 +33,7 @@
+                                   unexpected.getPreferredName());
+     }
+ 
+-    // too few option
++    // too few options
+     if (present < minimum) {
+         throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+     }
+@@ -44,3 +44,4 @@
+         option.validate(commandLine);
+     }
+ }
++

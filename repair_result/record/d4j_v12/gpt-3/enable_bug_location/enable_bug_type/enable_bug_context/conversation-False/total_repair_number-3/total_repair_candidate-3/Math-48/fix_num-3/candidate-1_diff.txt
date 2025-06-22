@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -2,6 +2,12 @@
+     // Get initial solution
+     double x0 = getMin();
+     double x1 = getMax();
++    
++    // Check for valid bounds
++    if (x0 >= x1) {
++        throw new IllegalArgumentException("Invalid bounds: min must be less than max");
++    }
++    
+     double f0 = computeObjectiveValue(x0);
+     double f1 = computeObjectiveValue(x1);
+ 
+@@ -31,6 +37,12 @@
+     while (true) {
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
++        
++        // Check for potential overflow or invalid operations
++        if (Double.isNaN(x) || Double.isInfinite(x)) {
++            throw new RuntimeException("Calculation resulted in an invalid value");
++        }
++        
+         final double fx = computeObjectiveValue(x);
+ 
+         // If the new approximation is the exact root, return it. Since
+@@ -121,3 +133,4 @@
+         }
+     }
+ }
++

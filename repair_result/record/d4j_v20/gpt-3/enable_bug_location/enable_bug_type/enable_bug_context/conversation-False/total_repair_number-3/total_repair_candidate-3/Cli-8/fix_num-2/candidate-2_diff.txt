@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -17,8 +17,9 @@
+ 
+     while (true)
+     {
++        // Ensure we are not creating an empty string after trimming
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, nextLineTabStop);
++        pos = findWrapPos(text, width, 0); // Fixed the start position to 0
+ 
+         if (pos == -1)
+         {
+@@ -28,5 +29,8 @@
+         }
+ 
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        // Update pos to continue from the new position after appending
++        pos += padding.length(); // Ensure proper continuation of text
+     }
+ }
++

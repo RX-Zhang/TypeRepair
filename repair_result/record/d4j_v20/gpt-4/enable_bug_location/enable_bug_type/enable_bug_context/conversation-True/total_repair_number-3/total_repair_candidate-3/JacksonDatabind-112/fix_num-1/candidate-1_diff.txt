@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -15,9 +15,9 @@
+     final JavaType valueType = _containerType.getContentType();
+     if (valueDeser == null) {
+         // [databind#125]: May have a content converter
+-        valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
++        valueDeser = findConvertingContentDeserializer(ctxt, property, null);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+@@ -33,3 +33,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

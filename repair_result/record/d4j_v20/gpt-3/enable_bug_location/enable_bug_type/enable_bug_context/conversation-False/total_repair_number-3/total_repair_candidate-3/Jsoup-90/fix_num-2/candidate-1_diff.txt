@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     int i = 0;
+     // BOM:
+     if (input.length >= 3 && (input[0] & 0xFF) == 0xEF
+-        && (input[1] & 0xFF) == 0xBB & (input[2] & 0xFF) == 0xBF) {
++        && (input[1] & 0xFF) == 0xBB && (input[2] & 0xFF) == 0xBF) {
+         i = 3;
+     }
+ 
+@@ -24,9 +24,16 @@
+             return false;
+         }
+ 
++        // Add boundary check to prevent ArrayIndexOutOfBoundsException
++        if (end > input.length) {
++            return false;
++        }
+ 
+         while (i < end) {
+             i++;
++            if (i >= input.length) {
++                return false; // Boundary check
++            }
+             o = input[i];
+             if ((o & 0xC0) != 0x80) {
+                 return false;
+@@ -35,3 +42,4 @@
+     }
+     return true;
+ }
++

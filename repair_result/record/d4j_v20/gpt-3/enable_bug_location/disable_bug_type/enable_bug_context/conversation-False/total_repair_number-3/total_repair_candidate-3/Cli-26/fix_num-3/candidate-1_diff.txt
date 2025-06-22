@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,5 +1,9 @@
+ public static Option create(String opt) throws IllegalArgumentException
+ {
++        if (opt == null) {
++            throw new IllegalArgumentException("opt must not be null");
++        }
++
+         // create the option
+     Option option = new Option(opt, description);
+ 
+@@ -17,3 +21,4 @@
+     // return the Option instance
+     return option;
+ }
++

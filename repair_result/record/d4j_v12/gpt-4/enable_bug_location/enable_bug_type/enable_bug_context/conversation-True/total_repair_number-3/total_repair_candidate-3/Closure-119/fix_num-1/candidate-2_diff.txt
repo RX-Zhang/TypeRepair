@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -57,6 +57,11 @@
+             }
+             isSet = true;
+             type = Name.Type.FUNCTION;
++            break;
++          case Token.CATCH:
++            // Add this catch block to handle catch parameters as defined variables
++            isSet = true;
++            type = Name.Type.OTHER;
+             break;
+           case Token.INC:
+           case Token.DEC:
+@@ -123,3 +128,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

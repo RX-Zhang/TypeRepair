@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testMinusNegativeZero
+- Error: junit.framework.ComparisonFailure: expected:<x-[ ]-0.0> but was:<x-[]-0.0>
+- Location:     assertPrint("x- -0", "x- -0.0");

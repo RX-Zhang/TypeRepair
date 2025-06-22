@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest.testUnfinishedEntity
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 19
+- Location:         String result = neu.translate(input);
+
+
+Test failure 2:
+- Test: org.apache.commons.lang3.text.translate.NumericEntityUnescaperTest.testOutOfBounds
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 7
+- Location:         assertEquals("Failed to ignore when last character is &", "Test &#", neu.translate("Test &#"));

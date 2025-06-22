@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -25,7 +25,7 @@
+         Elements metaElements = doc.select("meta[http-equiv=content-type], meta[charset]");
+         String foundCharset = null; // if not found, will keep utf-8 as best attempt
+         for (Element meta : metaElements) {
+-            if (meta.hasAttr("http-equiv"))
++            if (meta.hasAttr("http-equiv") && meta.attr("http-equiv").equalsIgnoreCase("content-type"))
+                 foundCharset = getCharsetFromContentType(meta.attr("content"));
+             if (foundCharset == null && meta.hasAttr("charset"))
+                 foundCharset = meta.attr("charset");
+@@ -50,6 +50,7 @@
+             }
+         }
+         foundCharset = validateCharset(foundCharset);
++
+         if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+             charsetName = foundCharset;
+@@ -73,9 +74,26 @@
+             throw e.ioException();
+         }
+         Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        // check if charset can encode; if not, fallback to UTF-8 and update meta charset
++        if (!charset.newEncoder().canEncode()) {
++            charset = Charset.forName("UTF-8");
++            doc.outputSettings().charset(charset);
++            // update meta charset(s) to UTF-8
++            Elements metaCharsetEls = doc.select("meta[charset]");
++            for (Element meta : metaCharsetEls) {
++                meta.attr("charset", "UTF-8");
++            }
++            Elements metaContentTypeEls = doc.select("meta[http-equiv=content-type]");
++            for (Element meta : metaContentTypeEls) {
++                String content = meta.attr("content");
++                content = content.replaceAll("(?i)charset=([^;]*)", "charset=UTF-8");
++                meta.attr("content", content);
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

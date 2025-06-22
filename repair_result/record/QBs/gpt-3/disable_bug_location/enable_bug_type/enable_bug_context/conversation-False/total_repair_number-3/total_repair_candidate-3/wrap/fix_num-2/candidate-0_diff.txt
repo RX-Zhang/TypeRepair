@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -5,6 +5,10 @@
+         if end == -1:
+             end = cols
+         line, text = text[:end], text[end:]
++        if text and text[0] == ' ':
++            text = text[1:]  # remove leading space
+         lines.append(line)
++    if text:
++        lines.append(text)
+     return lines
+ 

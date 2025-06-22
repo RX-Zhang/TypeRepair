@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -26,7 +26,8 @@
+ 
+           // object literal keys
+           pType == Token.STRING ||
+-          pType == Token.NUMBER)) {
++          pType == Token.NUMBER ||
++          pType == Token.OBJECTLIT)) { // Added OBJECTLIT to the check
+       return false;
+     }
+ 
+@@ -63,3 +64,4 @@
+ 
+   return true;
+ }
++

@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -6,8 +6,10 @@
+         _hashShared = false;
+         // 09-Sep-2015, tatu: As per [jackson-core#216], also need to ensure
+         //    we rehash as needed, as need-rehash flag is not copied from parent
++        _needRehash = true;
+     }
+     if (_needRehash) {
+         rehash();
+     }
+ }
++

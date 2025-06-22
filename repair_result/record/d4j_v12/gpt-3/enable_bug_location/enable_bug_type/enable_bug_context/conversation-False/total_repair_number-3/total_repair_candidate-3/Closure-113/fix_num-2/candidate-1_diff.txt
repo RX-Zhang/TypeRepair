@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,6 +1,14 @@
+ private void processRequireCall(NodeTraversal t, Node n, Node parent) {
+   Node left = n.getFirstChild();
+   Node arg = left.getNext();
++  
++  // Adding input validation for the argument to ensure it's not null
++  if (arg == null) {
++    compiler.report(
++        t.makeError(n, NULL_ARGUMENT_ERROR, left.getQualifiedName()));
++    return; // Early return to prevent further processing
++  }
++
+   if (verifyLastArgumentIsString(t, left, arg)) {
+     String ns = arg.getString();
+     ProvidedName provided = providedNames.get(ns);
+@@ -38,3 +46,4 @@
+     }
+   }
+ }
++

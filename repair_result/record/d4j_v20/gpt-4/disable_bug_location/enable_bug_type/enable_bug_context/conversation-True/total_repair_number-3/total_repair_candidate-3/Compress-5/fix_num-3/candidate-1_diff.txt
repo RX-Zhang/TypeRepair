@@ -1,0 +1,70 @@
+--- 
++++ 
+@@ -2,13 +2,14 @@
+     if (closed) {
+         throw new IOException("The stream is closed");
+     }
+-    if (inf.finished() || current == null) {
++    if (current == null) {
+         return -1;
+     }
+ 
+     // avoid int overflow, check null buffer
+     if (start <= buffer.length && length >= 0 && start >= 0
+         && buffer.length - start >= length) {
++
+         if (current.getMethod() == ZipArchiveOutputStream.STORED) {
+             int csize = (int) current.getSize();
+             if (readBytesOfEntry >= csize) {
+@@ -17,13 +18,13 @@
+             if (offsetInBuffer >= lengthOfLastRead) {
+                 offsetInBuffer = 0;
+                 if ((lengthOfLastRead = in.read(buf)) == -1) {
+-                    return -1;
++                    throw new IOException("Truncated ZIP file");
+                 }
+                 count(lengthOfLastRead);
+                 bytesReadFromStream += lengthOfLastRead;
+             }
+-            int toRead = length > lengthOfLastRead
+-                ? lengthOfLastRead - offsetInBuffer
++            int toRead = length > (lengthOfLastRead - offsetInBuffer)
++                ? (lengthOfLastRead - offsetInBuffer)
+                 : length;
+             if ((csize - readBytesOfEntry) < toRead) {
+                 toRead = csize - readBytesOfEntry;
+@@ -34,12 +35,19 @@
+             crc.update(buffer, start, toRead);
+             return toRead;
+         }
++
++        if (inf.finished()) {
++            return -1;
++        }
++
+         if (inf.needsInput()) {
+             fill();
+-            if (lengthOfLastRead > 0) {
+-                bytesReadFromStream += lengthOfLastRead;
++            if (lengthOfLastRead <= 0) {
++                throw new IOException("Truncated ZIP file");
+             }
++            bytesReadFromStream += lengthOfLastRead;
+         }
++
+         int read = 0;
+         try {
+             read = inf.inflate(buffer, start, length);
+@@ -49,8 +57,12 @@
+         if (read == 0 && inf.finished()) {
+             return -1;
+         }
++        if (read == 0 && lengthOfLastRead == 0) {
++            throw new IOException("Truncated ZIP file");
++        }
+         crc.update(buffer, start, read);
+         return read;
+     }
+     throw new ArrayIndexOutOfBoundsException();
+ }
++

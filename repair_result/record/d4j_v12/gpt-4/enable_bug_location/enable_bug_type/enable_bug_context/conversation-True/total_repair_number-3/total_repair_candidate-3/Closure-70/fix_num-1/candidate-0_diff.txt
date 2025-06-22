@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -7,14 +7,17 @@
+     if (jsDocParameters != null) {
+       Node jsDocParameter = jsDocParameters.getFirstChild();
+       for (Node astParameter : astParameters.children()) {
+-        if (jsDocParameter != null) {
+-          defineSlot(astParameter, functionNode,
++        Node bestLValue = TypedScopeCreator.getBestLValue(astParameter);
++        JSDocInfo jsDocInfo = TypedScopeCreator.getBestJSDocInfo(astParameter);
++        if (jsDocParameter != null && jsDocInfo != null) {
++          defineSlot(bestLValue, functionNode,
+               jsDocParameter.getJSType(), true);
+           jsDocParameter = jsDocParameter.getNext();
+         } else {
+-          defineSlot(astParameter, functionNode, null, true);
++          defineSlot(bestLValue != null ? bestLValue : astParameter, functionNode, null, true);
+         }
+       }
+     }
+   }
+ } // end declareArguments
++

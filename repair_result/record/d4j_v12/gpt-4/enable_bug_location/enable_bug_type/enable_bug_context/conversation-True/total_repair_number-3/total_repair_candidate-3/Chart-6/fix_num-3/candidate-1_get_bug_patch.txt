@@ -1,0 +1,30 @@
+public boolean equals(Object obj) {
+
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof ShapeList)) {
+        return false;
+    }
+    ShapeList that = (ShapeList) obj;
+
+    int size = 0;
+    try {
+        // Check up to the largest index set in either list
+        while (true) {
+            Shape s1 = this.getShape(size);
+            Shape s2 = that.getShape(size);
+            if (s1 == null && s2 == null) {
+                break;
+            }
+            if (s1 == null ? s2 != null : !s1.equals(s2)) {
+                return false;
+            }
+            size++;
+        }
+    } catch (IndexOutOfBoundsException e) {
+        // Different lengths
+        return false;
+    }
+    return true;
+}

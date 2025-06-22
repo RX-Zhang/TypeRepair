@@ -1,0 +1,9 @@
+def bucketsort(arr, k):
+    counts = [0] * k
+    for x in arr:
+        if x < k:  # Ensure x is within the range of counts
+            counts[x] += 1
+    sorted_arr = []
+    for i, count in enumerate(counts):  # Use counts instead of arr for indexing
+        sorted_arr.extend([i] * count)
+    return sorted_arr

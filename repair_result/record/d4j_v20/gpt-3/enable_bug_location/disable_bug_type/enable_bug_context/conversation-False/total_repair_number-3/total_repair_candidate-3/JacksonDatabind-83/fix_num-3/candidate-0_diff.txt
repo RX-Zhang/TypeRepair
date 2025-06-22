@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -12,9 +12,13 @@
+             // 19-May-2017, tatu: Used to require non-null result (assuming `null`
+             //    indicated error; but that seems wrong. Should be able to return
+             //    `null` as value.
+-            if (_deserialize(text, ctxt) != null) {
+-            return _deserialize(text, ctxt);
++            T result = _deserialize(text, ctxt);
++            if (result != null) {
++                return result;
+             }
++            // if result is null, just proceed without early return; this allows null returns
++            // which can be legitimate
++            return null; // explicitly return null if _deserialize returned null
+         } catch (IllegalArgumentException iae) {
+             cause = iae;
+         } catch (MalformedURLException me) {
+@@ -53,3 +57,4 @@
+     }
+     return (T) ctxt.handleUnexpectedToken(_valueClass, p);
+ }
++

@@ -1,0 +1,72 @@
+--- 
++++ 
+@@ -34,42 +34,45 @@
+   // So, in this case, g < f, but f !< g
+   Node thisParam = parameters.getFirstChild();
+   Node thatParam = that.parameters.getFirstChild();
+-  while (thisParam != null && thatParam != null) {
+-    JSType thisParamType = thisParam.getJSType();
+-    JSType thatParamType = thatParam.getJSType();
++  while (thisParam != null || thatParam != null) {
++    JSType thisParamType = thisParam != null ? thisParam.getJSType() : null;
++    JSType thatParamType = thatParam != null ? thatParam.getJSType() : null;
++
+     if (thisParamType != null) {
+-      if (thatParamType == null ||
+-          !thatParamType.isSubtype(thisParamType)) {
++      if (thatParamType == null || !thatParamType.isSubtype(thisParamType)) {
++        return false;
++      }
++    } else {
++      // If this param type is null but that param type isn't, fail.
++      if (thatParamType != null) {
+         return false;
+       }
+     }
+ 
+-    boolean thisIsVarArgs = thisParam.isVarArgs();
+-    boolean thatIsVarArgs = thatParam.isVarArgs();
+-
+-    // "that" can't be a supertype, because it's missing a required argument.
+-      // NOTE(nicksantos): In our type system, we use {function(...?)} and
+-      // {function(...NoType)} to to indicate that arity should not be
+-      // checked. Strictly speaking, this is not a correct formulation,
+-      // because now a sub-function can required arguments that are var_args
+-      // in the super-function. So we special-case this.
+-
+-    // don't advance if we have variable arguments
+-    if (!thisIsVarArgs) {
+-      thisParam = thisParam.getNext();
+-    }
+-    if (!thatIsVarArgs) {
+-      thatParam = thatParam.getNext();
+-    }
++    boolean thisIsVarArgs = thisParam != null && thisParam.isVarArgs();
++    boolean thatIsVarArgs = thatParam != null && thatParam.isVarArgs();
+ 
+     // both var_args indicates the end
+     if (thisIsVarArgs && thatIsVarArgs) {
++      break;
++    }
++
++    // don't advance if we have variable arguments
++    if (thisParam != null && !thisIsVarArgs) {
++      thisParam = thisParam.getNext();
++    } else if (thisIsVarArgs) {
+       thisParam = null;
++    }
++
++    if (thatParam != null && !thatIsVarArgs) {
++      thatParam = thatParam.getNext();
++    } else if (thatIsVarArgs) {
+       thatParam = null;
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
+-
++  // No missing required arguments in 'that' compared to 'this' detected,
++  // so 'this' can be a subtype of 'that'.
+   return true;
+ }
++

@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -17,6 +17,9 @@
+                         final String keyword = coll.toString(CharsetNames.UTF_8);
+                         // Get rest of entry
+                         final int restLen = len - read;
++                        if (restLen < 0) {
++                            throw new IOException("PaxHeader length too short: " + len);
++                        }
+                         if (restLen == 1) { // only NL
+                             headers.remove(keyword);
+                         } else {
+@@ -40,12 +43,26 @@
+                 }
+                 break; // Processed single header
+             }
++            if (ch < '0' || ch > '9') {
++                // Invalid character in length field, skip rest of line
++                while (ch != '\n' && ch != -1) {
++                    ch = i.read();
++                }
++                len = 0;
++                read = 0;
++                continue;
++            }
+             len *= 10;
+             len += ch - '0';
+         }
+         if (ch == -1){ // EOF
+             break;
+         }
++        // If we have read the header, but did not process it due to breaks, continue
++        if (len == 0) {
++            break;
++        }
+     }
+     return headers;
+ }
++

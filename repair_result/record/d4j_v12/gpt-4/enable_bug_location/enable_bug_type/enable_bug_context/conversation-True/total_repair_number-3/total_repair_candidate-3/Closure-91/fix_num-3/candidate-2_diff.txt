@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -61,5 +61,13 @@
+     }
+   }
+ 
++  // Fix: add a check with shouldReportThis to prevent reporting global this improperly
++  if (n.getType() == Token.THIS) {
++    if (!shouldReportThis(n, parent)) {
++      return false;
++    }
++  }
++
+   return true;
+ }
++

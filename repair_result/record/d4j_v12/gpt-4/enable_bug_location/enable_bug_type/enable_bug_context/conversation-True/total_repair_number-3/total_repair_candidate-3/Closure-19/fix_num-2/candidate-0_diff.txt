@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -1,4 +1,9 @@
+ protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
++  JSType origType = getTypeIfRefinable(node, scope);
++  if (origType == null) {
++    origType = getNativeType(UNKNOWN_TYPE);
++  }
++
+   switch (node.getType()) {
+     case Token.NAME:
+       scope.inferSlotType(node.getString(), type);
+@@ -7,9 +12,6 @@
+     case Token.GETPROP:
+       String qualifiedName = node.getQualifiedName();
+       Preconditions.checkNotNull(qualifiedName);
+-
+-      JSType origType = node.getJSType();
+-      origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+       scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+       break;
+ 
+@@ -20,3 +22,4 @@
+           node.toStringTree());
+   }
+ }
++

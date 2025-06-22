@@ -1,0 +1,89 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 5 items
+
+python_testcases/test_wrap.py FFFFF                                      [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_wrap[input_data0-expected0] _______________________
+
+input_data = ['The leaves did not stir on the trees, grasshoppers chirruped, and the monotonous hollow sound of the sea rising up f...thing except what we think or do ourselves when we forget our human dignity and the higher aims of our existence.', 50]
+expected = ['The leaves did not stir on the trees, grasshoppers', ' chirruped, and the monotonous hollow sound of the', ' sea ris...So it must have', ' sounded when there was no Yalta, no Oreanda here;', ' so it sounds now, and it will sound as', ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_wrap(input_data, expected):
+>       assert wrap(*input_data) == expected
+E       AssertionError: assert ['The leaves ...ound as', ...] == ['The leaves ...ound as', ...]
+E         
+E         Right contains one more item: ' dignity and the higher aims of our existence.'
+E         Use -v to get more diff
+
+python_testcases/test_wrap.py:15: AssertionError
+_______________________ test_wrap[input_data1-expected1] _______________________
+
+input_data = ['The leaves did not stir on the trees, grasshoppers chirruped, and the monotonous hollow sound of the sea rising up f...thing except what we think or do ourselves when we forget our human dignity and the higher aims of our existence.', 20]
+expected = ['The leaves did not', ' stir on the trees,', ' grasshoppers', ' chirruped, and the', ' monotonous hollow', ' sound of the sea', ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_wrap(input_data, expected):
+>       assert wrap(*input_data) == expected
+E       AssertionError: assert ['The leaves ...the sea', ...] == ['The leaves ...the sea', ...]
+E         
+E         Right contains one more item: ' existence.'
+E         Use -v to get more diff
+
+python_testcases/test_wrap.py:15: AssertionError
+_______________________ test_wrap[input_data2-expected2] _______________________
+
+input_data = ['The leaves did not stir on the trees, grasshoppers chirruped, and the monotonous hollow sound of the sea rising up f...thing except what we think or do ourselves when we forget our human dignity and the higher aims of our existence.', 80]
+expected = ['The leaves did not stir on the trees, grasshoppers chirruped, and the monotonous', ' hollow sound of the sea rising ...his constancy, in this complete', ' indifference to the life and death of each of us, there lies hid, perhaps, a', ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_wrap(input_data, expected):
+>       assert wrap(*input_data) == expected
+E       AssertionError: assert ['The leaves ...haps, a', ...] == ['The leaves ...haps, a', ...]
+E         
+E         Right contains one more item: ' of our existence.'
+E         Use -v to get more diff
+
+python_testcases/test_wrap.py:15: AssertionError
+_______________________ test_wrap[input_data3-expected3] _______________________
+
+input_data = ['The leaves did not stir on the trees, grasshoppers chirruped, and the monotonous hollow sound of the sea rising up f...thing except what we think or do ourselves when we forget our human dignity and the higher aims of our existence.', 77]
+expected = ['The leaves did not stir on the trees, grasshoppers chirruped, and the', ' monotonous hollow sound of the sea rising ...e. And in this constancy, in this', ' complete indifference to the life and death of each of us, there lies hid,', ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_wrap(input_data, expected):
+>       assert wrap(*input_data) == expected
+E       AssertionError: assert ['The leaves ...es hid,', ...] == ['The leaves ...es hid,', ...]
+E         
+E         Right contains one more item: ' human dignity and the higher aims of our existence.'
+E         Use -v to get more diff
+
+python_testcases/test_wrap.py:15: AssertionError
+_______________________ test_wrap[input_data4-expected4] _______________________
+
+input_data = ['The leaves did not stir on the trees, grasshoppers chirruped, and the monotonous hollow sound of the sea rising up f...hing except what we think or do ourselves when we forget our human dignity and the higher aims of our existence.', 140]
+expected = ['The leaves did not stir on the trees, grasshoppers chirruped, and the monotonous hollow sound of the sea rising up f...a, mountains, clouds, the open sky - Gurov thought how in reality everything is beautiful in this world when one', ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_wrap(input_data, expected):
+>       assert wrap(*input_data) == expected
+E       AssertionError: assert ['The leaves ...rld when one'] == ['The leaves ...hen one', ...]
+E         
+E         Right contains one more item: ' reflects: everything except what we think or do ourselves when we forget our human dignity and the higher aims of our existence.'
+E         Use -v to get more diff
+
+python_testcases/test_wrap.py:15: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_wrap.py::test_wrap[input_data0-expected0] - Asse...
+FAILED python_testcases/test_wrap.py::test_wrap[input_data1-expected1] - Asse...
+FAILED python_testcases/test_wrap.py::test_wrap[input_data2-expected2] - Asse...
+FAILED python_testcases/test_wrap.py::test_wrap[input_data3-expected3] - Asse...
+FAILED python_testcases/test_wrap.py::test_wrap[input_data4-expected4] - Asse...
+============================== 5 failed in 0.03s ===============================

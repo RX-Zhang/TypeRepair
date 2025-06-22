@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -36,12 +36,8 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
+-                quote = true;
+-            } else if (c <= COMMENT) {
+-                // Some other chars at the start of a value caused the parser to fail, so for now
+-                // encapsulate if we start in anything less than '#'. We are being conservative
+-                // by including the default comment char too.
++            // Corrected logic for characters that trigger quoting at the start of a new record
++            if (newRecord && (c < 0x20 || c == delimChar || c == quoteChar || c == COMMENT || c == LF || c == CR)) {
+                 quote = true;
+             } else {
+                 while (pos < end) {
+@@ -56,8 +52,7 @@
+                 if (!quote) {
+                     pos = end - 1;
+                     c = value.charAt(pos);
+-                    // Some other chars at the end caused the parser to fail, so for now
+-                    // encapsulate if we end in anything less than ' '
++                    // encapsulate if ends with whitespace or control character less than or equal to space (SP)
+                     if (c <= SP) {
+                         quote = true;
+                     }
+@@ -104,3 +99,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

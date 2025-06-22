@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,12 +1,19 @@
+ public static long skip(InputStream input, long numToSkip) throws IOException {
+-    long available = numToSkip;
+-    while (numToSkip > 0) {
+-        long skipped = input.skip(numToSkip);
+-        if (skipped == 0) {
++    if (numToSkip < 0) {
++        throw new IllegalArgumentException("Negative skip length not allowed");
++    }
++    long remaining = numToSkip;
++    byte[] skipBuffer = new byte[4096];
++    while (remaining > 0) {
++        long skipped = input.skip(remaining);
++        if (skipped > 0) {
++            remaining -= skipped;
++        } else if (input.read(skipBuffer, 0, (int)Math.min(skipBuffer.length, remaining)) == -1) {
+             break;
++        } else {
++            remaining--;
+         }
+-        numToSkip -= skipped;
+     }
+-        
+-    return available - numToSkip;
++    return numToSkip - remaining;
+ }
++

@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -8,6 +8,13 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (ArrayIndexOutOfBoundsException e) {
++            // Handle the exception, possibly logging it or taking corrective action
++            System.err.println("Rehash failed due to array index out of bounds: " + e.getMessage());
++            nukeSymbols(true); // Optionally, call nukeSymbols to reset
++        }
+     }
+ }
++

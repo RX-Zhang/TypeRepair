@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+     Set<String> propertyNames = Sets.newTreeSet();
+     for (ObjectType current = this;
+          current != null && !current.isNativeObjectType() &&
+-             propertyNames.size() <= MAX_PRETTY_PRINTED_PROPERTIES;
++             propertyNames.size() < MAX_PRETTY_PRINTED_PROPERTIES; // Change <= to <
+          current = current.getImplicitPrototype()) {
+       propertyNames.addAll(current.getOwnPropertyNames());
+     }
+@@ -34,6 +34,11 @@
+       }
+     }
+ 
++    // Ensure that the output respects the MAX_PRETTY_PRINTED_PROPERTIES limit
++    if (propertyNames.size() >= MAX_PRETTY_PRINTED_PROPERTIES) {
++      sb.append(", ...");
++    }
++
+     sb.append("}");
+ 
+     prettyPrint = true;
+@@ -42,3 +47,4 @@
+     return "{...}";
+   }
+ }
++

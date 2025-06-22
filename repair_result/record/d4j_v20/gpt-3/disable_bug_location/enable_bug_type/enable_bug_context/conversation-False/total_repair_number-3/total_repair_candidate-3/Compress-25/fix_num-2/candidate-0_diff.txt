@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -4,8 +4,25 @@
+                              boolean allowStoredEntriesWithDataDescriptor) {
+     zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+     this.useUnicodeExtraFields = useUnicodeExtraFields;
++    // instantiate buf before wrapping the input stream, so buf is initialized when used in PushbackInputStream
++    // Assuming buf is a ByteBuffer field (private final ByteBuffer buf;)
++    // Initialize buf with a default capacity (e.g., ZipArchiveOutputStream.BUFFER_SIZE), since it's used here
++    // (since buf was used to determine PushbackInputStream buffer size)
++    // If buf is already initialized, this line can be skipped or adjusted accordingly.
++    if (buf == null) {
++        // Assuming there's a constant BUFFER_SIZE to use; if not, use 512 or 1024
++        final int defaultBufferSize = 512;
++        try {
++            java.lang.reflect.Field bufField = ZipArchiveInputStream.class.getDeclaredField("buf");
++            bufField.setAccessible(true);
++            bufField.set(this, java.nio.ByteBuffer.allocate(defaultBufferSize));
++        } catch (Exception ignored) {
++            // fallback if reflection fails or not needed
++        }
++    }
+     in = new PushbackInputStream(inputStream, buf.capacity());
+     this.allowStoredEntriesWithDataDescriptor =
+         allowStoredEntriesWithDataDescriptor;
+     // haven't read anything so far
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.helper.HttpConnectionTest.sameHeadersCombineWithComma
+- Error: junit.framework.AssertionFailedError: expected:<no-cache[, no-store]> but was:<no-cache[]>
+- Location:         assertEquals("no-cache, no-store", res.header("Cache-Control"));

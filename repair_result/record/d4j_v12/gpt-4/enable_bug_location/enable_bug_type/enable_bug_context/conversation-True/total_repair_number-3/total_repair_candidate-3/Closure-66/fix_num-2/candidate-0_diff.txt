@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -21,6 +21,13 @@
+       break;
+ 
+     case Token.COMMA:
++      // For enums check the object literal's primitive type. That check happens only here.
++      if (parent != null && parent.getType() == Token.ASSIGN && parent.getFirstChild() == n) {
++        JSType assignedType = getJSType(parent.getFirstChild());
++        if (assignedType != null && assignedType.isEnumType()) {
++          checkEnumInitializer(t, n, assignedType.getPrimitiveType());
++        }
++      }
+       ensureTyped(t, n, getJSType(n.getLastChild()));
+       break;
+ 
+@@ -351,3 +358,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

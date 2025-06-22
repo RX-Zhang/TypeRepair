@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -22,7 +22,11 @@
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+         // Now check for meta-characters
+-            return c;
++        if (c == '\\') { // Handle the escape character itself
++            return c; // Return the escape character
++        }
++        return c; // Return the unexpected char
+         // indicate unexpected char - available from in.getLastChar()
+     }
+ }
++

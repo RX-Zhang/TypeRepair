@@ -1,0 +1,64 @@
+--- 
++++ 
+@@ -19,17 +19,50 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
+-
+-            if (options.hasOption(opt))
++            // Check for something like -f=bar or --foo=bar
++            int pos = arg.indexOf('=');
++            if (pos != -1)
+             {
+-                tokens.add(arg);
++                String opt;
++                String value = arg.substring(pos + 1);
++                if (arg.startsWith("--"))
++                {
++                    opt = arg.substring(2, pos);
++                    if (options.hasOption(opt))
++                    {
++                        tokens.add("--" + opt);
++                        tokens.add(value);
++                    }
++                    else
++                    {
++                        tokens.add(arg);
++                    }
++                }
++                else
++                {
++                    // Single dash case
++                    opt = arg.substring(1, pos);
++                    if (options.hasOption(opt))
++                    {
++                        tokens.add("-" + opt);
++                        tokens.add(value);
++                    }
++                    else
++                    {
++                        tokens.add(arg);
++                    }
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
++                    tokens.add(arg);
++                }
++                else if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
++                {
+                     // the format is a special properties option (-Dproperty=value)
+                     tokens.add(arg.substring(0, 2)); // -D
+                     tokens.add(arg.substring(2)); // property=value
+@@ -57,3 +90,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

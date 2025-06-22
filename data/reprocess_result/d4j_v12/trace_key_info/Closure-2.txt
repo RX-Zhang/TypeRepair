@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testBadInterfaceExtendsNonExistentInterfaces
+- Error: java.lang.NullPointerException
+- Location:     testTypes(js, expectedWarnings);

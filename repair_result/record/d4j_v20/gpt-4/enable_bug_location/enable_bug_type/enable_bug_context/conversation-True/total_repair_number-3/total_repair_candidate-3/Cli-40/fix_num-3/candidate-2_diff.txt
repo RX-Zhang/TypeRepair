@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -1,38 +1,38 @@
+ public static <T> T createValue(final String str, final Class<T> clazz) throws ParseException
+ {
+-    if (PatternOptionBuilder.STRING_VALUE == clazz)
++    if (String.class == clazz)
+     {
+         return (T) str;
+     }
+-    else if (PatternOptionBuilder.OBJECT_VALUE == clazz)
++    else if (Object.class == clazz)
+     {
+         return (T) createObject(str);
+     }
+-    else if (PatternOptionBuilder.NUMBER_VALUE == clazz)
++    else if (Number.class == clazz)
+     {
+         return (T) createNumber(str);
+     }
+-    else if (PatternOptionBuilder.DATE_VALUE == clazz)
++    else if (Date.class == clazz)
+     {
+         return (T) createDate(str);
+     }
+-    else if (PatternOptionBuilder.CLASS_VALUE == clazz)
++    else if (Class.class == clazz)
+     {
+         return (T) createClass(str);
+     }
+-    else if (PatternOptionBuilder.FILE_VALUE == clazz)
++    else if (File.class == clazz)
+     {
+         return (T) createFile(str);
+     }
+-    else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz)
++    else if (FileInputStream.class == clazz)
+     {
+         return (T) openFile(str);
+     }
+-    else if (PatternOptionBuilder.FILES_VALUE == clazz)
++    else if (File[].class == clazz)
+     {
+         return (T) createFiles(str);
+     }
+-    else if (PatternOptionBuilder.URL_VALUE == clazz)
++    else if (URL.class == clazz)
+     {
+         return (T) createURL(str);
+     }
+@@ -41,3 +41,4 @@
+         return null;
+     }
+ }
++

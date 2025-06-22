@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+   double result;
+ 
+   // TODO(johnlenz): Handle NaN with unknown value. BIT ops convert NaN
+-  // to zero so this is a little akward here.
++  // to zero so this is a little awkward here.
+ 
+   Double lValObj = NodeUtil.getNumberValue(left);
+   if (lValObj == null) {
+@@ -46,14 +46,14 @@
+     case Token.MOD:
+       if (rval == 0) {
+         error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+-        return null;
++        return Node.newString(Token.NAME, "Infinity"); // Return a string representation of Infinity
+       }
+       result = lval % rval;
+       break;
+     case Token.DIV:
+       if (rval == 0) {
+         error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
+-        return null;
++        return Node.newString(Token.NAME, "Infinity"); // Return a string representation of Infinity
+       }
+       result = lval / rval;
+       break;
+@@ -81,3 +81,4 @@
+ 
+   return null;
+ }
++

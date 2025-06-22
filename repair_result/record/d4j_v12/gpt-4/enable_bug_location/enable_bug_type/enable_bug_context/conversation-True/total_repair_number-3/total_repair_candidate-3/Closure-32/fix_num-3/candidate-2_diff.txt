@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -22,7 +22,7 @@
+   state = State.SEARCHING_ANNOTATION;
+   token = next();
+ 
+-  boolean ignoreStar = false;
++  boolean ignoreStar = true; // changed from false to true to ignore stars at start of lines
+ 
+   // Track the start of the line to count whitespace that
+   // the tokenizer skipped. Because this case is rare, it's easier
+@@ -33,6 +33,7 @@
+       case STAR:
+         if (ignoreStar) {
+           // Mark the position after the star as the new start of the line.
++          // skipping the star, so do not append it
+         } else {
+           // The star is part of the comment.
+           if (builder.length() > 0) {
+@@ -58,7 +59,7 @@
+         ignoreStar = false;
+         state = State.SEARCHING_ANNOTATION;
+ 
+-            // All tokens must be separated by a space.
++        // All tokens must be separated by a space.
+ 
+         if (token == JsDocToken.EOC ||
+             token == JsDocToken.EOF ||
+@@ -99,3 +100,4 @@
+     }
+   } while (true);
+ }
++

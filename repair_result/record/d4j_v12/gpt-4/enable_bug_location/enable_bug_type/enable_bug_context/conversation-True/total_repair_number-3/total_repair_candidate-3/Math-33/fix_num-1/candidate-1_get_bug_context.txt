@@ -1,0 +1,1 @@
+['getNumObjectiveFunctions', 'getBasicRow', 'getWidth', 'getHeight', 'getEntry', 'getArtificialVariableOffset']

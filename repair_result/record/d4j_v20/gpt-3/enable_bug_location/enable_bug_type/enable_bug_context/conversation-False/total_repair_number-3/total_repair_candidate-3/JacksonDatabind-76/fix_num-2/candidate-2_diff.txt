@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -31,7 +31,7 @@
+                 }
+                 tokens.writeEndObject();
+                 if (bean.getClass() != _beanType.getRawClass()) {
+-                    ctxt.reportMappingException("Can not create polymorphic instances with unwrapped values");
++                    ctxt.reportMappingException("Cannot create polymorphic instances with unwrapped values");
+                     return null;
+                 }
+                 return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+@@ -62,11 +62,11 @@
+ 
+     // We hit END_OBJECT, so:
+     Object bean;
+-    // !!! 15-Feb-2012, tatu: Need to modify creator to use Builder!
+     try {
+         bean = creator.build(ctxt, buffer);
+     } catch (Exception e) {
+-        return wrapInstantiationProblem(e, ctxt);
++        bean = wrapInstantiationProblem(e, ctxt);
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

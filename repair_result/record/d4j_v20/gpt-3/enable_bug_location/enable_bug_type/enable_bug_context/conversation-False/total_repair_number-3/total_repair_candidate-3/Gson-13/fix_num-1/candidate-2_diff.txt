@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -89,6 +89,7 @@
+ 
+   // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.
+   if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
++    // Fix logical error here: peekedLong should be assigned correctly considering the negative flag
+     peekedLong = negative ? value : -value;
+     pos += i;
+     return peeked = PEEKED_LONG;
+@@ -100,3 +101,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

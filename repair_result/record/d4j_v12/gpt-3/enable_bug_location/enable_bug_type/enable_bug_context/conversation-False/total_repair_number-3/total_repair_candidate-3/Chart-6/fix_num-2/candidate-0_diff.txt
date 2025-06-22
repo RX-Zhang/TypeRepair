@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -6,6 +6,25 @@
+     if (!(obj instanceof ShapeList)) {
+         return false;
+     }
+-    return super.equals(obj);
++    ShapeList that = (ShapeList) obj;
++
++    if (this.size() != that.size()) {
++        return false;
++    }
++
++    for (int i = 0; i < this.size(); i++) {
++        if (this.getShape(i) == null) {
++            if (that.getShape(i) != null) {
++                return false;
++            }
++        } else {
++            if (!this.getShape(i).equals(that.getShape(i))) {
++                return false;
++            }
++        }
++    }
++
++    return true;
+ 
+ }
++

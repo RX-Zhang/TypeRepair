@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStreamTest.readOfLength0ShouldReturn0
+- Error: junit.framework.AssertionFailedError: expected:<0> but was:<-1>
+- Location:         Assert.assertEquals(0, bzipIn.read(buffer, 1024, 0));

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -9,7 +9,11 @@
+   attachLiteralTypes(n);
+   switch (n.getType()) {
+     case Token.FUNCTION:
+-      if (parent.getType() == Token.NAME) {
++      // Allow functions nested inside NAME nodes to be processed
++      if (parent.getType() == Token.NAME && parent.getParent() != null &&
++          parent.getParent().getType() == Token.EXPR_RESULT) {
++        // Fall through and defineDeclaredFunction to handle goog.foo; declarations
++      } else if (parent.getType() == Token.NAME) {
+         return;
+       }
+       defineDeclaredFunction(n, parent);
+@@ -22,3 +26,4 @@
+       break;
+   }
+ }
++

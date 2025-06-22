@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public static Option create(String opt) throws IllegalArgumentException
+ {
++        // reset the OptionBuilder properties before creating the option
++        OptionBuilder.reset();
++
+         // create the option
+     Option option = new Option(opt, description);
+ 
+@@ -11,9 +14,8 @@
+         option.setType(type);
+         option.setValueSeparator(valuesep);
+         option.setArgName(argName);
+-        // reset the OptionBuilder properties
+-        OptionBuilder.reset();
+ 
+     // return the Option instance
+     return option;
+ }
++

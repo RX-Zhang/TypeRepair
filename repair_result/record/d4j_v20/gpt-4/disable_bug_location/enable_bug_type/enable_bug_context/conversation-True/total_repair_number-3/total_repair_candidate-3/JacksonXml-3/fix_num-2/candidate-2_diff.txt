@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -43,7 +43,6 @@
+     switch (token) {
+     case XmlTokenStream.XML_END_ELEMENT:
+         if (_mayBeLeaf) {
+-            // NOTE: this is different from nextToken() -- produce "", NOT null
+             _mayBeLeaf = false;
+             _currToken = JsonToken.VALUE_STRING;
+             return (_currText = "");
+@@ -53,7 +52,6 @@
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         break;
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+-        // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+             _nextToken = JsonToken.FIELD_NAME;
+@@ -73,15 +71,10 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            // Also: must skip following END_ELEMENT
+             _xmlTokens.skipEndElement();
+-
+-            // NOTE: this is different from nextToken() -- NO work-around
+-            // for otherwise empty List/array
+             _currToken = JsonToken.VALUE_STRING;
+             return _currText;
+         }
+-        // If not a leaf, need to transform into property...
+         _parsingContext.setCurrentName(_cfgNameForTextElement);
+         _nextToken = JsonToken.VALUE_STRING;
+         _currToken = JsonToken.FIELD_NAME;
+@@ -91,3 +84,4 @@
+     }
+     return null;
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -31,5 +31,12 @@
+     if (isDefaultDeserializer(valueDeser)) {
+         valueDeser = null;
+     }
+-    return withResolved(delegate, valueDeser, nuller, unwrapSingle);
++    
++    // Adding exception handling to prevent runtime errors
++    try {
++        return withResolved(delegate, valueDeser, nuller, unwrapSingle);
++    } catch (Exception e) {
++        throw new JsonMappingException(ctxt.getParser(), "Error creating contextual deserializer", e);
++    }
+ }
++

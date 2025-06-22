@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -8,8 +8,19 @@
+ 
+         if (tq.matchChomp(SQ)) {
+             value = tq.chompTo(SQ);
++            if (tq.matchChomp(SQ) == false && !tq.isEmpty()) {
++                // if not closed properly, consume until next space or tag end to avoid index errors
++                while (!tq.matchesAny("<", "/>", ">") && !tq.matchesWhitespace() && !tq.isEmpty()) {
++                    tq.consume();
++                }
++            }
+         } else if (tq.matchChomp(DQ)) {
+             value = tq.chompTo(DQ);
++            if (tq.matchChomp(DQ) == false && !tq.isEmpty()) {
++                while (!tq.matchesAny("<", "/>", ">") && !tq.matchesWhitespace() && !tq.isEmpty()) {
++                    tq.consume();
++                }
++            }
+         } else {
+             StringBuilder valueAccum = new StringBuilder();
+             // no ' or " to look for, so scan to end tag or space (or end of stream)
+@@ -23,8 +34,10 @@
+     if (key.length() != 0)
+         return Attribute.createFromEncoded(key, value);
+     else {
+-        tq.consume();
+-            
++        if (!tq.isEmpty())
++            tq.consume();
++
+         return null;
+     }
+ }
++

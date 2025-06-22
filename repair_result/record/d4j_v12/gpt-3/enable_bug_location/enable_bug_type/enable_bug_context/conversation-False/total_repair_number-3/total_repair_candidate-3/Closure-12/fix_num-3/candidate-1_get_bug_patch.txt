@@ -1,0 +1,6 @@
+private boolean hasExceptionHandler(Node cfgNode) {
+  // Return true if this node has an exception handler edge.
+  // This is a simplified check assuming cfgNode is a TRY or CATCH node.
+  // In a full implementation, this method would analyze the control flow graph accordingly.
+  return cfgNode.getType() == Token.TRY || cfgNode.getType() == Token.CATCH;
+}

@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -1,5 +1,11 @@
+ public PropertyName findNameForSerialization(Annotated a)
+ {
++    Object ser = findSerializer(a);
++    if (ser != null) {
++        // If there's a serializer and it's not a default empty serializer
++        return PropertyName.construct("");
++    }
++    
+     String name = null;
+ 
+     JsonGetter jg = _findAnnotation(a, JsonGetter.class);
+@@ -9,13 +15,8 @@
+         JsonProperty pann = _findAnnotation(a, JsonProperty.class);
+         if (pann != null) {
+             name = pann.value();
+-            /* 22-Apr-2014, tatu: Should figure out a better way to do this, but
+-             *   it's actually bit tricky to do it more efficiently (meta-annotations
+-             *   add more lookups; AnnotationMap costs etc)
+-             */
+-        } else if (_hasAnnotation(a, JsonSerialize.class)
+-                || _hasAnnotation(a, JsonView.class)
+-                || _hasAnnotation(a, JsonRawValue.class)) {
++        } else if (_hasAnnotation(a, JsonView.class)) {
++            // keep this to avoid returning null unnecessarily if JsonView is present
+             name = "";
+         } else {
+             return null;
+@@ -23,3 +24,4 @@
+     }
+     return PropertyName.construct(name);
+ }
++

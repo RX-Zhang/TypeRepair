@@ -1,0 +1,61 @@
+--- 
++++ 
+@@ -7,17 +7,23 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
++    // If first byte is NUL or space, treat as 0 immediately (per tar spec)
++    if (buffer[start] == 0 || buffer[start] == ' ') {
+         return 0L;
+     }
+ 
+     // Skip leading spaces
+-    while (start < end){
+-        if (buffer[start] == ' '){
++    while (start < end) {
++        if (buffer[start] == ' ') {
+             start++;
+         } else {
+             break;
+         }
++    }
++
++    // If after skipping spaces we reached end, return 0 (empty field is zero)
++    if (start == end) {
++        return 0L;
+     }
+ 
+     // Trim all trailing NULs and spaces.
+@@ -27,22 +33,25 @@
+     byte trailer = buffer[end - 1];
+     while (start < end && (trailer == 0 || trailer == ' ')) {
+         end--;
+-        trailer = buffer[end - 1];
++        if (end > start) {
++            trailer = buffer[end - 1];
++        }
+     }
+ 
+-    for ( ;start < end; start++) {
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
+-            break;
++        // Reject embedded NUL or space in the digits
++        if (currentByte == 0 || currentByte == ' ') {
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+-        // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+     }
+ 
+     return result;
+ }
++

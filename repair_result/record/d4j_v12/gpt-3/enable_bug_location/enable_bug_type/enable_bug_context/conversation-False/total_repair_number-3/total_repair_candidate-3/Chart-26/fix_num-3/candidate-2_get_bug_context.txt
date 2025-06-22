@@ -1,0 +1,1 @@
+['getLabel', 'getLabelFont', 'getLabelPaint', 'getLabelInsets', 'getLabelAngle']

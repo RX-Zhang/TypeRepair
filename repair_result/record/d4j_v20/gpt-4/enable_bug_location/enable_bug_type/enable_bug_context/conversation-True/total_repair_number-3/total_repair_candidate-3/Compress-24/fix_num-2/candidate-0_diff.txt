@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -25,16 +25,13 @@
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+     byte trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
++    while (start < end && (trailer == 0 || trailer == ' ')) {
+         end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    trailer = buffer[end - 1];
+-    while (start < end - 1 && (trailer == 0 || trailer == ' ')) {
+-        end--;
+-        trailer = buffer[end - 1];
++        if (end > 0) {
++            trailer = buffer[end - 1];
++        } else {
++            break;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -50,3 +47,4 @@
+ 
+     return result;
+ }
++

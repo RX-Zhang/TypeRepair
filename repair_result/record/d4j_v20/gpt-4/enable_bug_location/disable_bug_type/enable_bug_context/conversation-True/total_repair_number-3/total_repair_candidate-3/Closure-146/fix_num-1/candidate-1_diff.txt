@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -12,9 +12,10 @@
+ 
+     case FALSE:
+     case UNKNOWN:
+-      return new TypePair(this, that);
++      return new TypePair(this.restrictByNotNullOrUndefined(), that.restrictByNotNullOrUndefined());
+   }
+ 
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

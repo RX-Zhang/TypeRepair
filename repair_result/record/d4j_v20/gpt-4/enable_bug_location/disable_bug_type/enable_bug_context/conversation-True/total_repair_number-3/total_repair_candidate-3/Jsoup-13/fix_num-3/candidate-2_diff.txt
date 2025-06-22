@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -1,5 +1,7 @@
+ public boolean hasAttr(String attributeKey) {
+     Validate.notNull(attributeKey);
+ 
+-    return attributes.hasKey(attributeKey);
++    // Check for the attribute with and without the "abs:" prefix
++    return attributes.hasKey(attributeKey) || attributes.hasKey("abs:" + attributeKey);
+ }
++

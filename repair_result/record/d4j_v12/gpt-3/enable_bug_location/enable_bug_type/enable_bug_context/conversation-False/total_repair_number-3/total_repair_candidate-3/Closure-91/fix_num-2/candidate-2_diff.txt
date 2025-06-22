@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -60,6 +60,14 @@
+       }
+     }
+   }
++  
++  // Check for potential issues with 'this' context in assignments.
++  if (parent != null && NodeUtil.isGet(parent) && assignLhsChild != null) {
++    // If we have a 'this' context in the left-hand side of the assignment
++    // we need to report it appropriately.
++    return true; 
++  }
+ 
+   return true;
+ }
++

@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CompilerRunnerTest.testIssue115
+- Error: junit.framework.AssertionFailedError: 
+Expected: function f(){arguments=Array.prototype.slice.call(arguments,0);return arguments[0]}
+Result: function f(){var arguments=Array.prototype.slice.call(arguments,0);return arguments[0]}
+- Location:     test("function f() { " +

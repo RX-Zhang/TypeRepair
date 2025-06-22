@@ -1,0 +1,32 @@
+private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
+    if (notPrinter && notParser) {
+        throw new IllegalStateException("Builder has created neither a printer nor a parser");
+    }
+    int size = elementPairs.size();
+    if (size >= 2 && elementPairs.get(0) instanceof Separator) {
+        Separator sep = (Separator) elementPairs.get(0);
+        if (size < 3) {
+            throw new IllegalArgumentException("Separator without following elements");
+        }
+        PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+        sep = sep.finish(f.getPrinter(), f.getParser());
+        return new PeriodFormatter(sep, sep);
+    }
+    Object[] comp = createComposite(elementPairs);
+    if (notPrinter) {
+        if (comp[1] == null) {
+            throw new IllegalArgumentException("No parser available");
+        }
+        return new PeriodFormatter(null, (PeriodParser) comp[1]);
+    } else if (notParser) {
+        if (comp[0] == null) {
+            throw new IllegalArgumentException("No printer available");
+        }
+        return new PeriodFormatter((PeriodPrinter) comp[0], null);
+    } else {
+        if (comp[0] == null || comp[1] == null) {
+            throw new IllegalArgumentException("No printer or parser available");
+        }
+        return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+    }
+}

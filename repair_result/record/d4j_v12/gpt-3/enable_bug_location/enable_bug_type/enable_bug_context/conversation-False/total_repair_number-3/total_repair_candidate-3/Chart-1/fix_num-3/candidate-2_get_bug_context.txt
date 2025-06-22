@@ -1,0 +1,1 @@
+['getPlot', 'setPlot', 'getLegendItemLabelGenerator', 'setLegendItemLabelGenerator', 'getRowCount', 'getLegendItem', 'getLegendItems']

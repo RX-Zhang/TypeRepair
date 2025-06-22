@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -61,5 +61,13 @@
+     }
+   }
+ 
++  // Fix: Don't traverse 'this' nodes when they're on right side of assignments
++  if (n.getType() == Token.THIS) {
++    if (!shouldReportThis(n, parent)) {
++      return false;
++    }
++  }
++
+   return true;
+ }
++

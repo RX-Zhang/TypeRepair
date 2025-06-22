@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -60,4 +60,10 @@
+   }
+ 
+   this.warningsGuard = composedGuards;
++
++  // Ensure that the globalThis warning is properly managed
++  if (options.checkGlobalThisLevel.isOff()) {
++    options.setWarningLevel(DiagnosticGroups.GLOBAL_THIS, CheckLevel.OFF);
++  }
+ }
++

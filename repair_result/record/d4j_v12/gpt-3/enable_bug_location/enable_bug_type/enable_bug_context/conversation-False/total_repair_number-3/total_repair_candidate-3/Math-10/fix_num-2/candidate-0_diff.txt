@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -10,8 +10,7 @@
+     add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2
+     rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)
+ 
+-    if (x[xOffset] >= 0) {
+-
++    if (x[xOffset] > 0 || (x[xOffset] == 0 && y[yOffset] > 0)) {
+         // compute atan2(y, x) = 2 atan(y / (r + x))
+         add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x
+         divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)
+@@ -20,8 +19,7 @@
+             result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))
+         }
+ 
+-    } else {
+-
++    } else if (x[xOffset] < 0) {
+         // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))
+         subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x
+         divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)
+@@ -32,8 +30,21 @@
+             result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))
+         }
+ 
++    } else {
++        // Handle the case where x is 0
++        if (y[yOffset] > 0) {
++            result[resultOffset] = FastMath.PI / 2; // +0/+0 case
++        } else if (y[yOffset] < 0) {
++            result[resultOffset] = -FastMath.PI / 2; // -0/+0 case
++        } else {
++            result[resultOffset] = 0; // +0/-0 case
++        }
++        for (int i = 1; i < tmp2.length; ++i) {
++            result[resultOffset + i] = 0; // Set derivatives to 0
++        }
+     }
+ 
+     // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
+ 
+ }
++

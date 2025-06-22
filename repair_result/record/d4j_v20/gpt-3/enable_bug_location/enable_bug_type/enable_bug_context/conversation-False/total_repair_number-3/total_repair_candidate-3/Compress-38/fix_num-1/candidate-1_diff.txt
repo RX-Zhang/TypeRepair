@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -3,13 +3,17 @@
+         return file.isDirectory();
+     }
+ 
++    // Adding boundary check for linkFlag to prevent potential RuntimeError
+     if (linkFlag == LF_DIR) {
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
++    // Adding boundary check for name to prevent potential RuntimeError
++    String entryName = getName();
++    if (entryName != null && entryName.endsWith("/")) {
+         return true;
+     }
+ 
+     return false;
+ }
++

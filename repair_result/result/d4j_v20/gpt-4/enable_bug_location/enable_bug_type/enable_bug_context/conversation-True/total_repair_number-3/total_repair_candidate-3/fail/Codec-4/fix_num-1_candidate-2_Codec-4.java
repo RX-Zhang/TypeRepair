@@ -1,0 +1,76 @@
+public Base64() {
+    this(false);
+}
+
+public Base64(boolean urlSafe) {
+    this(urlSafe, DEFAULT_BUFFER_SIZE);
+}
+
+public Base64(boolean urlSafe, int chunkSize) {
+    this(urlSafe, chunkSize, CHUNK_SEPARATOR);
+}
+
+public Base64(boolean urlSafe, int lineLength, byte[] lineSeparator) {
+    this.urlSafe = urlSafe;
+    if (lineLength > 0) {
+        if (lineLength % 4 != 0) {
+            throw new IllegalArgumentException("lineLength must be multiple of 4");
+        }
+    }
+    this.lineLength = lineLength > 0 ? lineLength : 0;
+    this.lineSeparator = lineSeparator != null ? lineSeparator : new byte[0];
+    this.encodeTable = urlSafe ? URL_SAFE_ENCODE_TABLE : STANDARD_ENCODE_TABLE;
+    this.decodeSize = 3;
+    this.encodeSize = 4;
+    this.buffer = null;
+    this.pos = 0;
+    this.readPos = 0;
+    this.currentLinePos = 0;
+    this.modulus = 0;
+    this.eof = false;
+    this.x = 0;
+}
+
+@Override
+public Object encode(Object pObject) throws EncoderException {
+    if (!(pObject instanceof byte[])) {
+        throw new EncoderException("Parameter supplied to Base64 encode is not a byte[]");
+    }
+    return encode((byte[]) pObject);
+}
+
+@Override
+public byte[] encode(byte[] pArray) {
+    if (pArray == null || pArray.length == 0) {
+        return pArray;
+    }
+    reset();
+    encode(pArray, 0, pArray.length);
+    encode(pArray, 0, -1); // Notify EOF
+    byte[] result = new byte[pos];
+    readPos = 0;
+    System.arraycopy(buffer, 0, result, 0, pos);
+    reset();
+    return result;
+}
+
+private void reset() {
+    buffer = null;
+    pos = 0;
+    readPos = 0;
+    currentLinePos = 0;
+    modulus = 0;
+    eof = false;
+    x = 0;
+}
+
+private void resizeBuffer() {
+    if (buffer == null) {
+        buffer = new byte[DEFAULT_BUFFER_SIZE];
+        pos = 0;
+        return;
+    }
+    byte[] b = new byte[buffer.length * DEFAULT_BUFFER_RESIZE_FACTOR];
+    System.arraycopy(buffer, 0, b, 0, buffer.length);
+    buffer = b;
+}

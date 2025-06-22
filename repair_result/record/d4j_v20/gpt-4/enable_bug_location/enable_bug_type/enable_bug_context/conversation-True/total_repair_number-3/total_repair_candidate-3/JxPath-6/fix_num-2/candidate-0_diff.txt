@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//    System.err.println("COMPARING: " +
++//        (l == null ? "null" : l.getClass().getName()) + " " +
++//        (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -37,3 +37,36 @@
+     }
+     return equal(l, r);
+ }
++
++protected boolean contains(Iterator it, Object value) {
++    while (it.hasNext()) {
++        Object element = it.next();
++        if (equal(element, value)) {
++            return true;
++        }
++    }
++    return false;
++}
++
++protected boolean equal(Object l, Object r) {
++    if (l == r) {
++        return true;
++    }
++    if (l == null || r == null) {
++        return false;
++    }
++    if (l instanceof Boolean && r instanceof Boolean) {
++        return l.equals(r);
++    }
++    if (l instanceof Number && r instanceof Number) {
++        // Compare numbers as doubles for equality
++        return ((Number) l).doubleValue() == ((Number) r).doubleValue();
++    }
++    if (l instanceof String && r instanceof String) {
++        return l.equals(r);
++    }
++    // Additional equality checks can be added here as needed
++
++    return l.equals(r);
++}
++

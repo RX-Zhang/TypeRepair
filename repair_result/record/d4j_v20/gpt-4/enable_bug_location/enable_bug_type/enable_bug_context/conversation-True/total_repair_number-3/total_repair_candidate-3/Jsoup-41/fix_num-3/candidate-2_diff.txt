@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -5,5 +5,7 @@
+ 
+     Element element = (Element) o;
+ 
+-    return this == o;
++    // Compare the text content and class names for equality
++    return this.text().equals(element.text()) && this.classNames().equals(element.classNames());
+ }
++

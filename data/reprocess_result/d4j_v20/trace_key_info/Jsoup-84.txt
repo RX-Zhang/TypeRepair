@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.helper.W3CDomTest.treatsUndeclaredNamespaceAsLocalName
+- Error: org.w3c.dom.DOMException: NAMESPACE_ERR: An attempt is made to create or change an object in a way which is incorrect with regard to namespaces.
+- Location:         Document w3Doc = new W3CDom().fromJsoup(doc);

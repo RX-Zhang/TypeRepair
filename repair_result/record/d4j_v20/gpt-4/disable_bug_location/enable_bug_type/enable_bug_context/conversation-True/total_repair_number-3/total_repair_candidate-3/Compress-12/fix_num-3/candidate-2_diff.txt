@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+ 
+     byte[] headerBuf = getRecord();
+ 
+-    if (hasHitEOF) {
++    if (hasHitEOF || headerBuf == null) {
+         currEntry = null;
+         return null;
+     }
+@@ -30,12 +30,13 @@
+ 
+     if (currEntry.isGNULongNameEntry()) {
+         // read in the name
+-        StringBuffer longName = new StringBuffer();
++        StringBuilder longName = new StringBuilder();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+         int length = 0;
+-        while ((length = read(buf)) >= 0) {
+-            longName.append(new String(buf, 0, length));
++        while ((length = read(buf, 0, buf.length)) > 0) {
++            longName.append(new String(buf, 0, length, "UTF-8"));
+         }
++        // Recursively get the next entry after the long name entry
+         getNextEntry();
+         if (currEntry == null) {
+             // Bugzilla: 40334
+@@ -43,18 +44,18 @@
+             return null;
+         }
+         // remove trailing null terminator
+-        if (longName.length() > 0
+-            && longName.charAt(longName.length() - 1) == 0) {
+-            longName.deleteCharAt(longName.length() - 1);
++        int lnLength = longName.length();
++        if (lnLength > 0 && longName.charAt(lnLength - 1) == '\0') {
++            longName.deleteCharAt(lnLength - 1);
+         }
+         currEntry.setName(longName.toString());
+     }
+ 
+-    if (currEntry.isPaxHeader()){ // Process Pax headers
++    if (currEntry.isPaxHeader()) { // Process Pax headers
+         paxHeaders();
+     }
+ 
+-    if (currEntry.isGNUSparse()){ // Process sparse files
++    if (currEntry.isGNUSparse()) { // Process sparse files
+         readGNUSparse();
+     }
+ 
+@@ -65,3 +66,4 @@
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -13,3 +13,4 @@
+     findCalledFunctions(c, changed);
+   }
+ }
++

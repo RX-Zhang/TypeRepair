@@ -1,0 +1,19 @@
+public boolean hasSameMethod(Invocation candidate) {        
+    //not using method.equals() for 1 good reason:
+    //sometimes java generates forwarding methods when generics are in play see JavaGenericsForwardingMethodsTest
+    if (candidate == null) {
+        // Handle the case where candidate is null to avoid a NullPointerException
+        return false;
+    }
+    
+    Method m1 = invocation.getMethod();
+    Method m2 = candidate.getMethod();
+    
+    if (m1 == null || m2 == null) {
+        // If either method is null, they cannot be the same
+        return false;
+    }
+
+    /* Avoid unnecessary cloning */
+    return m1.equals(m2);
+}

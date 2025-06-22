@@ -1,0 +1,1 @@
+['equalsIgnoreCase', 'contains', 'containsIgnoreCase', 'upperCase', 'lowerCase']

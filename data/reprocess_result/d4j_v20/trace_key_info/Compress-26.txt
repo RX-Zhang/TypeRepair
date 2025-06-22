@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.compress.utils.IOUtilsTest.skipUsingRead
+- Error: junit.framework.AssertionFailedError: expected:<10> but was:<0>
+- Location:         skip(new StreamWrapper() {
+
+
+Test failure 2:
+- Test: org.apache.commons.compress.utils.IOUtilsTest.skipUsingSkipAndRead
+- Error: junit.framework.AssertionFailedError: expected:<10> but was:<5>
+- Location:         skip(new StreamWrapper() {

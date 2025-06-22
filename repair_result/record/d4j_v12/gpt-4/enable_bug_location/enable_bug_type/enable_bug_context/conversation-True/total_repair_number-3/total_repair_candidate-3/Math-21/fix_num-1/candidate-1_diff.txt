@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -18,12 +18,11 @@
+         swap[r] = r;
+         for (int i = r + 1; i < order; ++i) {
+             int ii  = index[i];
+-            int isi = index[swap[i]];
++            int isi = index[swap[r]];
+             if (c[ii][ii] > c[isi][isi]) {
+                 swap[r] = i;
+             }
+         }
+-
+ 
+         // swap elements
+         if (swap[r] != r) {
+@@ -51,7 +50,6 @@
+ 
+             // all remaining diagonal elements are close to zero, we consider we have
+             // found the rank of the symmetric positive semidefinite matrix
+-            ++r;
+             loop = false;
+ 
+         } else {
+@@ -88,3 +86,4 @@
+     }
+ 
+ }
++

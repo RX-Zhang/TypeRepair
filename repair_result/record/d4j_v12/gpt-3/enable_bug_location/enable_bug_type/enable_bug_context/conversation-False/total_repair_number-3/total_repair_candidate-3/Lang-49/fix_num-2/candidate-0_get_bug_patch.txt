@@ -1,0 +1,10 @@
+public Fraction reduce() {
+    if (numerator == 0) {
+        return Fraction.ZERO; // normalize zero denominator to 1
+    }
+    int gcd = greatestCommonDivisor(Math.abs(numerator), denominator);
+    if (gcd == 1) {
+        return this;
+    }
+    return Fraction.getFraction(numerator / gcd, denominator / gcd);
+}

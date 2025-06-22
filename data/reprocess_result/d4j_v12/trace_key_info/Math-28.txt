@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math3.optimization.linear.SimplexSolverTest.testMath828Cycle
+- Error: org.apache.commons.math3.exception.MaxCountExceededException: illegal state: maximal count (100) exceeded
+- Location:         PointValuePair solution = new SimplexSolver().optimize(f, constraints, GoalType.MINIMIZE, true);

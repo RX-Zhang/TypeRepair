@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.LiveVariableAnalysisTest.testExpressionInForIn
+- Error: java.lang.IllegalStateException
+- Location:     assertLiveBeforeX("var a = [0]; X:for (a[1] in foo) { }", "a");

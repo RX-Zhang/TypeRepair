@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,6 +4,11 @@
+   char prev = getLastChar();
+   if (x < 0 && prev == '-') {
+     add(" ");
++  }
++
++  if (x == 0 && 1 / x < 0) { // Check for -0.0 specifically
++    add("-0.0");
++    return;
+   }
+ 
+   if ((long) x == x) {
+@@ -26,3 +31,4 @@
+   }
+ 
+ }
++

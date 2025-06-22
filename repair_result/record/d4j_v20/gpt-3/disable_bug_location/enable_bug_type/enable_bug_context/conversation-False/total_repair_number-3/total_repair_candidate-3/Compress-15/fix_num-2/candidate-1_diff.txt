@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -17,8 +17,10 @@
+     }
+     String myComment = getComment();
+     String otherComment = other.getComment();
+-    if (myComment == null) {
+-        if (otherComment != null) {
++
++    // Treat null and empty comments as equal
++    if (myComment == null || myComment.isEmpty()) {
++        if (otherComment != null && !otherComment.isEmpty()) {
+             return false;
+         }
+     } else if (!myComment.equals(otherComment)) {
+@@ -38,3 +40,4 @@
+                          other.getLocalFileDataExtra())
+         && gpb.equals(other.gpb);
+ }
++

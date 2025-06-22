@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,8 +1,10 @@
+ public double cumulativeProbability(double x) throws MathException {
++    if (Double.isInfinite(x)) {
++        return x < 0 ? 0 : 1;
++    }
+     final double dev = x - mean;
+     try {
+-    return 0.5 * (1.0 + Erf.erf((dev) /
+-                (standardDeviation * FastMath.sqrt(2.0))));
++        return 0.5 * (1.0 + Erf.erf(dev / (standardDeviation * FastMath.sqrt(2.0))));
+     } catch (MaxIterationsExceededException ex) {
+         if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows at 38
+             return 0;
+@@ -13,3 +15,4 @@
+         }
+     }
+ }
++

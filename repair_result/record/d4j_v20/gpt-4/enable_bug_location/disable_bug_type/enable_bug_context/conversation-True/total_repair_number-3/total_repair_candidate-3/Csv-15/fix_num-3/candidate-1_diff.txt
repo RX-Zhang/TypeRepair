@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final char quoteChar = getQuoteCharacter() != null ? getQuoteCharacter() : '"';
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -104,3 +104,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

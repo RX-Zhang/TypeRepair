@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -3,8 +3,9 @@
+     Matcher m = charsetPattern.matcher(contentType);
+     if (m.find()) {
+         String charset = m.group(1).trim();
+-        charset = charset.toUpperCase(Locale.ENGLISH);
++        // Return the charset in original case (or normalized form), not uppercase
+         return charset;
+     }
+     return null;
+ }
++

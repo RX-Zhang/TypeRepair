@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.ode.events.EventStateTest.testIssue695
+- Error: junit.framework.AssertionFailedError: going backard in time! (7.796578226186635 < 10.99)
+- Location:         double tEnd = integrator.integrate(equation, 0.0, y, target, y);

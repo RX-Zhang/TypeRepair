@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ int readEscape() throws IOException {
+-    // the escape char has just been read (normally a backslash)
++    // the escape char has just been read (normally a backslash or custom escape char)
+     final int c = in.read();
+     switch (c) {
+     case 'r':
+@@ -14,15 +14,22 @@
+         return FF;
+     case CR:
+     case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
++    case FF:
++    case TAB:
++    case BACKSPACE:
+         return c;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // For all other characters we return the escaped character literally including meta like N for MySQL \N (null),
++        // and any other characters that should be escaped literally.
++        // This fixes test cases where escape sequences like \N or \a are expected to keep the escape char in output.
++        // To do that we must return the escape character followed by c.
++        // However, the method returns int, so we cannot return two characters at once.
++        // The caller must handle assembling those characters into the token.
++        // Therefore, here we return the character itself, but the caller,
++        // if it detects unrecognized escape, will include the escape char and this char.
++        return c;
+     }
+ }
++

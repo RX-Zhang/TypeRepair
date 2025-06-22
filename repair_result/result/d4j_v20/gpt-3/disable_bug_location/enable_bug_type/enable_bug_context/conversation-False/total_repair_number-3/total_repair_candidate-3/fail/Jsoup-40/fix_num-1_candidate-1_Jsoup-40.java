@@ -1,0 +1,22 @@
+public DocumentType(String name, String publicId, String systemId, String baseUri) {
+    super(baseUri);
+
+    // Allow blank or null name, replace control characters with replacement character
+    if (name == null) {
+        name = "";
+    } else {
+        // replace any \u0000 or other control characters with replacement char
+        name = name.replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "\uFFFD");
+    }
+    attr("name", name);
+
+    if (publicId == null) {
+        publicId = "";
+    }
+    attr("publicId", publicId);
+
+    if (systemId == null) {
+        systemId = "";
+    }
+    attr("systemId", systemId);
+}

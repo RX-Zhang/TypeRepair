@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.jsoup.safety.CleanerTest.handlesCustomProtocols
+- Error: junit.framework.AssertionFailedError: expected:<<img [src="cid:12345" /> 
+<img src="data:gzzt"] />> but was:<<img [/> 
+<img] />>
+- Location:         assertEquals("<img src=\"cid:12345\" /> \n<img src=\"data:gzzt\" />", preserved);

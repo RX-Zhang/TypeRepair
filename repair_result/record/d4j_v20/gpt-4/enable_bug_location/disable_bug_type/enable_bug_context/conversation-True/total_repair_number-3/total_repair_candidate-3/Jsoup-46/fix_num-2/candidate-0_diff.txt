@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -35,7 +35,8 @@
+                     break;
+                 case 0xA0:
+                     if (escapeMode != EscapeMode.xhtml)
+-                        accum.append("&nbsp;");
++                        // use numeric escape for Shift_JIS compatibility instead of &nbsp;
++                        accum.append("&#xa0;");
+                     else
+                         accum.append(c);
+                     break;
+@@ -74,3 +75,4 @@
+         }
+     }
+ }
++

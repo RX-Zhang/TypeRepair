@@ -1,0 +1,81 @@
+Map<String, String> parsePaxHeaders(final InputStream i)
+    throws IOException {
+    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+    // Format is "length keyword=value\n";
+    while(true){ // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+        // read the length field
+        while((ch = i.read()) != -1) {
+            if (ch == '\n') {
+                // Blank line, just ignore and continue to next line
+                len = 0;
+                read = 0;
+                continue;
+            }
+            if (ch == ' ') {
+                read++;
+                break;
+            }
+            if (ch < '0' || ch > '9') {
+                // Invalid length field, consume until end of line and skip entry
+                while ((ch = i.read()) != -1 && ch != '\n') {
+                    // do nothing
+                }
+                len = 0;
+                read = 0;
+                break;
+            }
+            len *= 10;
+            len += ch - '0';
+            read++;
+        }
+        if (ch == -1) { // EOF
+            break;
+        }
+        if (len == 0) {
+            // no length found, possibly blank line, continue to next
+            continue;
+        }
+
+        // Get keyword
+        final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+        while((ch = i.read()) != -1) {
+            read++;
+            if (ch == '='){ // end of keyword
+                final String keyword = coll.toString(CharsetNames.UTF_8);
+                // Get rest of entry
+                final int restLen = len - read;
+                if (restLen < 0) {
+                    // Length field error, skip this line to avoid negative restLen
+                    while (ch != '\n' && ch != -1) {
+                        ch = i.read();
+                    }
+                } else if (restLen == 1) { // only NL
+                    headers.remove(keyword);
+                } else {
+                    final byte[] rest = new byte[restLen];
+                    final int got = IOUtils.readFully(i, rest);
+                    if (got != restLen) {
+                        throw new IOException("Failed to read "
+                                              + "Paxheader. Expected "
+                                              + restLen
+                                              + " bytes, read "
+                                              + got);
+                    }
+                    // Drop trailing NL
+                    final String value = new String(rest, 0,
+                                              restLen - 1, CharsetNames.UTF_8);
+                    headers.put(keyword, value);
+                }
+                break;
+            }
+            coll.write((byte) ch);
+        }
+        if (ch == -1){ // EOF
+            break;
+        }
+    }
+    return headers;
+}

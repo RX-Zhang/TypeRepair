@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -13,9 +13,12 @@
+             }
+         } catch (MockitoAssertionError e) {
+             error = handleVerifyException(e);
+-        }
+-        catch (org.mockito.exceptions.verification.junit.ArgumentsAreDifferent e) {
++        } catch (org.mockito.exceptions.verification.junit.ArgumentsAreDifferent e) {
+             error = handleVerifyException(e);
++        } catch (Exception e) {
++            // Adding a general exception catch to handle any unanticipated errors
++            error = new AssertionError("An unexpected error occurred during verification.", e);
++            break; // Exiting the loop if an unexpected error occurs
+         }
+     }
+ 
+@@ -23,3 +26,4 @@
+         throw error;
+     }
+ }
++

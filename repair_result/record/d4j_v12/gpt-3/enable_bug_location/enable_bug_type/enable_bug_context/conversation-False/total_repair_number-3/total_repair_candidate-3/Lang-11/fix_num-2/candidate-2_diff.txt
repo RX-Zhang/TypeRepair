@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -7,6 +7,14 @@
+     }
+     if (chars != null && chars.length == 0) {
+         throw new IllegalArgumentException("The chars array must not be empty");
++    }
++
++    if (start < 0 || end < 0) { // Check for negative start or end
++        throw new IllegalArgumentException("start and end must be non-negative");
++    }
++    
++    if (start >= end) { // Ensure start is less than end
++        throw new IllegalArgumentException("start must be less than end");
+     }
+ 
+     if (start == 0 && end == 0) {
+@@ -65,3 +73,4 @@
+     }
+     return new String(buffer);
+ }
++

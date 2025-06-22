@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.ArrayUtilsAddTest.testJira567
+- Error: java.lang.ArrayStoreException
+- Location:                n = ArrayUtils.addAll(new Integer[]{Integer.valueOf(1)}, new Long[]{Long.valueOf(2)});

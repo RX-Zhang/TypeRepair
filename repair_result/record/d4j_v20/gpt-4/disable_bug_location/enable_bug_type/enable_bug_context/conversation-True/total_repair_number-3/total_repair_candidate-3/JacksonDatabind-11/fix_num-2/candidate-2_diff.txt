@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -14,6 +14,15 @@
+         JavaType actualType = context.findType(name);
+         if (actualType != null) {
+             return actualType;
++        }
++
++        // Attempt to resolve using subtype info if possible
++        HierarchicType leafType = _findSuperTypeChain(context.getContextClass(), context.getRawType());
++        if (leafType != null) {
++            JavaType resolved = _resolveVariableViaSubTypes(leafType, name, context);
++            if (resolved != null) {
++                return resolved;
++            }
+         }
+     }
+ 
+@@ -40,3 +49,4 @@
+     context._addPlaceholder(name);
+     return _constructType(bounds[0], context);
+ }
++

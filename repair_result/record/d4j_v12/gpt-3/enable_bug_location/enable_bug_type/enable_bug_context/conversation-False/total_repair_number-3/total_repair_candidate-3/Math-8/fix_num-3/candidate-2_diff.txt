@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -4,12 +4,19 @@
+                 sampleSize);
+     }
+ 
+-    final T[]out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
++    // Ensure that singletons is not empty to avoid ArrayStoreException
++    if (singletons.isEmpty()) {
++        throw new IllegalStateException("Singletons list is empty.");
++    }
++
++    // Get the class of the first element in singletons to create the array
++    final Class<?> clazz = singletons.get(0).getClass();
++    final T[] out = (T[]) java.lang.reflect.Array.newInstance(clazz, sampleSize);
+ 
+     for (int i = 0; i < sampleSize; i++) {
+         out[i] = sample();
+     }
+ 
+     return out;
++}
+ 
+-}

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -6,8 +6,9 @@
+     if (name.length() >= TarConstants.NAMELEN) {
+         name = name.substring(0, TarConstants.NAMELEN - 1);
+     }
++    // Ensure the pax header entry is treated as a normal file, not a directory
+     TarArchiveEntry pex = new TarArchiveEntry(name,
+-                                              TarConstants.LF_PAX_EXTENDED_HEADER_LC);
++                                              TarConstants.LF_PAX_EXTENDED_HEADER);
+ 
+     StringWriter w = new StringWriter();
+     for (Map.Entry<String, String> h : headers.entrySet()) {
+@@ -36,3 +37,4 @@
+     write(data);
+     closeArchiveEntry();
+ }
++

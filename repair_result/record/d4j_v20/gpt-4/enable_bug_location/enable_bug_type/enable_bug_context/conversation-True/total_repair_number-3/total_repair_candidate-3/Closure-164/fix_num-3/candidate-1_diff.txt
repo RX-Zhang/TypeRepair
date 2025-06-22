@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -5,8 +5,10 @@
+ 
+   ArrowType that = (ArrowType) other;
+ 
+-  // This is described in Draft 2 of the ES4 spec,
+-  // Section 3.4.7: Subtyping Function Types.
++  // If either has unknown parameters or return, treat conservatively.
++  if (this.hasUnknownParamsOrReturn() || that.hasUnknownParamsOrReturn()) {
++    return true;
++  }
+ 
+   // this.returnType <: that.returnType (covariant)
+   if (!this.returnType.isSubtype(that.returnType)) {
+@@ -47,13 +49,6 @@
+     boolean thisIsVarArgs = thisParam.isVarArgs();
+     boolean thatIsVarArgs = thatParam.isVarArgs();
+ 
+-    // "that" can't be a supertype, because it's missing a required argument.
+-      // NOTE(nicksantos): In our type system, we use {function(...?)} and
+-      // {function(...NoType)} to to indicate that arity should not be
+-      // checked. Strictly speaking, this is not a correct formulation,
+-      // because now a sub-function can required arguments that are var_args
+-      // in the super-function. So we special-case this.
+-
+     // don't advance if we have variable arguments
+     if (!thisIsVarArgs) {
+       thisParam = thisParam.getNext();
+@@ -69,7 +64,12 @@
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
++  // If "that" function has more required parameters than "this",
++  // then "that" can't be a supertype, because it's missing a required argument.
++  if (thatParam != null && !thatParam.isOptionalArg()) {
++    return false;
++  }
+ 
+   return true;
+ }
++

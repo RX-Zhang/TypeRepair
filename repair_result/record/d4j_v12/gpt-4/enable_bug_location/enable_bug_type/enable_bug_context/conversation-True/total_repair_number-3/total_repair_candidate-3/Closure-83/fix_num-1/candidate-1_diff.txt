@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -8,12 +8,14 @@
+     String lowerParam = param.toLowerCase();
+     if (TRUES.contains(lowerParam)) {
+       setter.addValue(true);
++      return 1;
+     } else if (FALSES.contains(lowerParam)) {
+       setter.addValue(false);
++      return 1;
+     } else {
+-      setter.addValue(true);
++      // For unknown parameters, do not add value but return 0 to indicate no arguments consumed
+       return 0;
+     }
+-    return 1;
+   }
+ }
++

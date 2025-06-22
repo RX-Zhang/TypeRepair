@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -4,6 +4,10 @@
+     JavaType[] typeParams = findTypeParameters(rawClass, Map.class);
+     // ok to have no types ("raw")
+     if (typeParams == null) {
++        // Special case for Properties: parameterize as String key, String value
++        if (Properties.class.isAssignableFrom(rawClass)) {
++            return constructMapType(rawClass, CORE_TYPE_STRING, CORE_TYPE_STRING);
++        }
+         return MapType.construct(rawClass, _unknownType(), _unknownType());
+     }
+     // but exactly 2 types if any found
+@@ -12,3 +16,4 @@
+     }
+     return MapType.construct(rawClass, typeParams[0], typeParams[1]);
+ }
++

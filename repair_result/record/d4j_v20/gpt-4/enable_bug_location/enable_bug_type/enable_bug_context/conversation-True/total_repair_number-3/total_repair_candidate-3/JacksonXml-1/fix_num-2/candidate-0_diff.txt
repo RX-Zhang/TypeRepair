@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -48,9 +48,9 @@
+         _parsingContext.setCurrentName(name);
+ 
+         // Ok: virtual wrapping can be done by simply repeating current START_ELEMENT.
+-        // Couple of ways to do it; but start by making _xmlTokens replay the thing...
++        // Use addVirtualWrapping() method to handle this properly.
+         if (_namesToWrap != null && _namesToWrap.contains(name)) {
+-            _xmlTokens.repeatStartElement();
++            addVirtualWrapping(_namesToWrap);
+         }
+ 
+         _mayBeLeaf = true;
+@@ -132,3 +132,4 @@
+     _throwInternal();
+     return null;
+ }
++

@@ -1,0 +1,1 @@
+['tryRemoveRepeatedStatements', 'isFoldableExpressBlock', 'getBlockExpression', 'isReturnExpressBlock', 'isLowerPrecedenceInExpression', 'isPropertyAssignmentInExpression', 'tryMinimizeCondition']

@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -19,9 +19,10 @@
+     }
+     // or, something for which "as-property" won't work, changed into "wrapper-array" type:
+     if (p.getCurrentToken() == JsonToken.START_ARRAY) {
+-        return super.deserializeTypedFromAny(p, ctxt);
++        return deserializeTypedFromAny(p, ctxt);
+     }
+     ctxt.reportWrongTokenException(p, JsonToken.FIELD_NAME,
+             "missing property '"+_typePropertyName+"' that is to contain type id  (for class "+baseTypeName()+")");
+     return null;
+ }
++

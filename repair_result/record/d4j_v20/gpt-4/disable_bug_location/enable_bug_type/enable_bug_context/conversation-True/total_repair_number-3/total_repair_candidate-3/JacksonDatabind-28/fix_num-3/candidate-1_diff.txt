@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,5 +1,9 @@
+ public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+ {
++    if (p.getCurrentToken() == null) {
++        throw ctxt.mappingException(ObjectNode.class);
++    }
++
+     if (p.getCurrentToken() == JsonToken.START_OBJECT) {
+         p.nextToken();
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+@@ -10,4 +14,5 @@
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+     }
+     throw ctxt.mappingException(ObjectNode.class);
+- }
++}
++

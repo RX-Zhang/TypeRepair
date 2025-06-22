@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -13,7 +13,13 @@
+         }
+         char c = _inputBuffer[_inputPtr];
+         int i = (int) c;
+-        if (i <= maxCode) {
++
++        // Prevent ArrayIndexOutOfBoundsException by ensuring i is within bounds
++        if (i < 0 || i > 0xFFFF) { // char is 16-bit, but check added to be safe
++            break;
++        }
++
++        if (i < maxCode) {
+             if (codes[i] != 0) {
+                 break;
+             }
+@@ -41,3 +47,4 @@
+         return _symbols.findSymbol(buf, start, len, hash);
+     }
+ }
++

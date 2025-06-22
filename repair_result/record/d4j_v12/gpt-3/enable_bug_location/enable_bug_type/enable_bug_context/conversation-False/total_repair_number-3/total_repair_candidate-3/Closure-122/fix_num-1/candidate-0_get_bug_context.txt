@@ -1,0 +1,1 @@
+['handleBlockComment', 'createJsDocInfoParser', 'parseInlineTypeDoc']

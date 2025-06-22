@@ -1,0 +1,1 @@
+['doesFunctionMeetMinimumRequirements', 'isSupportedCallType', 'canInlineReferenceAsStatementBlock', 'callMeetsBlockInliningRequirements', 'canInlineReferenceDirectly']

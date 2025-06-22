@@ -1,0 +1,1 @@
+['processProvideCall', 'reportBadBaseClassUse', 'verifyNotNull', 'verifyOfType']

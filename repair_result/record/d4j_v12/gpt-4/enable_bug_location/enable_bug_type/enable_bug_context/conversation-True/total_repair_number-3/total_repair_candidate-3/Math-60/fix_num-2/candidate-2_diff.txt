@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,15 +1,16 @@
+ public double cumulativeProbability(double x) throws MathException {
+-    final double dev = x - mean;
++    final double dev = x - getMean();
++    final double stdDev = getStandardDeviation();
+     try {
+-    return 0.5 * (1.0 + Erf.erf((dev) /
+-                (standardDeviation * FastMath.sqrt(2.0))));
++        return 0.5 * (1.0 + Erf.erf((dev) / (stdDev * FastMath.sqrt(2.0))));
+     } catch (MaxIterationsExceededException ex) {
+-        if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows at 38
++        if (x < (getMean() - 20 * stdDev)) { // JDK 1.5 blows at 38
+             return 0;
+-        } else if (x > (mean + 20 * standardDeviation)) {
++        } else if (x > (getMean() + 20 * stdDev)) {
+             return 1;
+         } else {
+             throw ex;
+         }
+     }
+ }
++

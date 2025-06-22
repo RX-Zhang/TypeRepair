@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -33,7 +33,7 @@
+             if (tokenLen >= 4) {
+                 rule = selectNumberRule(Calendar.YEAR, tokenLen);
+             } else {
+-                rule = TwoDigitYearField.INSTANCE;
++                rule = selectNumberRule(Calendar.YEAR, 2);
+             }
+             break;
+         case 'M': // month in year (text and number)
+@@ -42,9 +42,9 @@
+             } else if (tokenLen == 3) {
+                 rule = new TextField(Calendar.MONTH, shortMonths);
+             } else if (tokenLen == 2) {
+-                rule = TwoDigitMonthField.INSTANCE;
++                rule = selectNumberRule(Calendar.MONTH, 2);
+             } else {
+-                rule = UnpaddedMonthField.INSTANCE;
++                rule = selectNumberRule(Calendar.MONTH, 1);
+             }
+             break;
+         case 'd': // day in month (number)
+@@ -108,10 +108,10 @@
+             if (sub.length() == 1) {
+                 rule = new CharacterLiteral(sub.charAt(0));
+             } else {
+-                rule = new StringLiteral(sub);
++ rule = new StringLiteral(sub);
+             }
+             break;
+-        default:
++ default:
+             throw new IllegalArgumentException("Illegal pattern component: " + token);
+         }
+ 
+@@ -120,3 +120,4 @@
+ 
+     return rules;
+ }
++

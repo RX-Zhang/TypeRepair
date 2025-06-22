@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -18,6 +18,8 @@
+       }
+       if (ct != null && ct.isConstructor()) {
+         type = ct.getInstanceType();
++        // Perform backwards inference to update argument types based on constructor usage
++        backwardsInferenceFromCallSite(n, ct);
+       }
+     }
+   }
+@@ -27,3 +29,4 @@
+   }
+   return scope;
+ }
++

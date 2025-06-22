@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -10,8 +10,18 @@
+     add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2
+     rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)
+ 
++    // Handle special cases for atan2
++    if (Double.isNaN(tmp1[0]) || Double.isNaN(tmp2[0])) {
++        Arrays.fill(result, resultOffset, resultOffset + getSize(), Double.NaN);
++        return;
++    }
++
++    if (x[xOffset] == 0 && y[yOffset] == 0) {
++        Arrays.fill(result, resultOffset, resultOffset + getSize(), 0.0);
++        return;
++    }
++
+     if (x[xOffset] >= 0) {
+-
+         // compute atan2(y, x) = 2 atan(y / (r + x))
+         add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x
+         divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r + x)
+@@ -21,7 +31,6 @@
+         }
+ 
+     } else {
+-
+         // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))
+         subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x
+         divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)
+@@ -31,9 +40,15 @@
+         for (int i = 1; i < tmp2.length; ++i) {
+             result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))
+         }
+-
+     }
+ 
+     // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++    if (y[yOffset] == 0) {
++        if (x[xOffset] > 0) {
++            Arrays.fill(result, resultOffset, resultOffset + getSize(), 0.0);
++        } else if (x[xOffset] < 0) {
++            Arrays.fill(result, resultOffset, resultOffset + getSize(), (y[yOffset] < 0) ? -FastMath.PI : FastMath.PI);
++        }
++    }
++}
+ 
+-}

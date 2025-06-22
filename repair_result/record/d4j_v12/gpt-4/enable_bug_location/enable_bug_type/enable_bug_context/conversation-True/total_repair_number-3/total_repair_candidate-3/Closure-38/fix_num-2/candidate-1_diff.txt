@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -3,8 +3,10 @@
+   // x--4 (which is a syntax error).
+   char prev = getLastChar();
+   boolean negativeZero = isNegativeZero(x);
+-  if (x < 0 && prev == '-') {
+-    add(" ");
++  if (x < 0 || negativeZero) {
++    if (prev == '-') {
++      add(" ");
++    }
+   }
+ 
+   if ((long) x == x && !negativeZero) {
+@@ -26,3 +28,4 @@
+     add(String.valueOf(x));
+   }
+ }
++

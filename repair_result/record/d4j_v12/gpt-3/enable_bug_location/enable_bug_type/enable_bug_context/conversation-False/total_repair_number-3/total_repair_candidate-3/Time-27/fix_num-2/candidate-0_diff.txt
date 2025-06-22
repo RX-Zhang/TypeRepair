@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -5,9 +5,20 @@
+     int size = elementPairs.size();
+     if (size >= 2 && elementPairs.get(0) instanceof Separator) {
+         Separator sep = (Separator) elementPairs.get(0);
++        if (size > 2) {
+             PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+             sep = sep.finish(f.getPrinter(), f.getParser());
+             return new PeriodFormatter(sep, sep);
++        } else {
++            // Defensive: if no elements after separator, return with null printer/parser as appropriate
++            if (notPrinter) {
++                return new PeriodFormatter(null, sep);
++            } else if (notParser) {
++                return new PeriodFormatter(sep, null);
++            } else {
++                return new PeriodFormatter(sep, sep);
++            }
++        }
+     }
+     Object[] comp = createComposite(elementPairs);
+     if (notPrinter) {
+@@ -18,3 +29,4 @@
+         return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+     }
+ }
++

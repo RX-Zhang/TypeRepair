@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,3 +1,20 @@
+ public Map<String, Integer> getHeaderMap() {
++    if (this.headerMap == null) {
++        try {
++            Map<String, Integer> initializedHeader = initializeHeader();
++            if (initializedHeader != null) {
++                // assuming headerMap is final, if not, assign it here
++                // but since headerMap is final, we return the initialized header
++                return new LinkedHashMap<>(initializedHeader);
++            } else {
++                return null;
++            }
++        } catch (IOException e) {
++            // log or rethrow as runtime exception depending on design
++            // for now, return null to prevent failure
++            return null;
++        }
++    }
+     return new LinkedHashMap<String, Integer>(this.headerMap);
+ }
++

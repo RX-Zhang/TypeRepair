@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testIssue1056
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(

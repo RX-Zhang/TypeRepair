@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.StringEscapeUtilsTest.testLang720
+- Error: junit.framework.ComparisonFailure: expected:<𠮷[A]> but was:<𠮷[?]>
+- Location:         assertEquals(input, escaped);

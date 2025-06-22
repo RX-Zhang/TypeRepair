@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.TarTestCase.testCOMPRESS178
+- Error: java.lang.IllegalArgumentException: Invalid byte 0 at offset 2 in '00{NUL}0765{NUL}' len=8
+- Location:             in.getNextEntry();

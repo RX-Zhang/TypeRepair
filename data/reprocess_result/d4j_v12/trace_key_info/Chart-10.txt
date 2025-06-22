@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.chart.imagemap.junit.StandardToolTipTagFragmentGeneratorTests.testGenerateURLFragment
+- Error: junit.framework.ComparisonFailure: expected:< title="Series [&quot;A&quot;], 100.0" alt=""> but was:< title="Series ["A"], 100.0" alt="">
+- Location:         assertEquals(" title=\"Series &quot;A&quot;, 100.0\" alt=\"\"",

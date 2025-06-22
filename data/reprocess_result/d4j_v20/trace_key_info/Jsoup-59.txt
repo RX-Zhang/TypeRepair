@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.handlesControlCodeInAttributeName
+- Error: java.lang.IllegalArgumentException: String must not be empty
+- Location:         Document doc = Jsoup.parse("<p><a \06=foo>One</a><a/\06=bar><a foo\06=bar>Two</a></p>");
+
+
+Test failure 2:
+- Test: org.jsoup.safety.CleanerTest.handlesControlCharactersAfterTagName
+- Error: java.lang.IllegalArgumentException: String must not be empty
+- Location:         String clean = Jsoup.clean(html, Whitelist.basic());

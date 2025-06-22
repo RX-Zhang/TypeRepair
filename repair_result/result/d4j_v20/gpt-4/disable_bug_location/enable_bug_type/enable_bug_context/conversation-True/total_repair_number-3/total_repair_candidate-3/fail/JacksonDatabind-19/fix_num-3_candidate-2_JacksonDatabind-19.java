@@ -1,0 +1,18 @@
+private JavaType _mapType(Class<?> rawClass)
+{
+    // 28-May-2015, tatu: Properties are special, as per [databind#810]
+    JavaType[] typeParams = findTypeParameters(rawClass, Map.class);
+    // ok to have types (parameterized), but if none, treat specially for Properties
+    if (typeParams == null) {
+        // Special handling for Properties: key and value types are String.class
+        if (Properties.class.isAssignableFrom(rawClass)) {
+            return constructMapType(rawClass, CORE_TYPE_STRING, CORE_TYPE_STRING);
+        }
+        return MapType.construct(rawClass, _unknownType(), _unknownType());
+    }
+    // but exactly 2 types if any found
+    if (typeParams.length != 2) {
+        throw new IllegalArgumentException("Strange Map type "+rawClass.getName()+": cannot determine type parameters");
+    }
+    return MapType.construct(rawClass, typeParams[0], typeParams[1]);
+}

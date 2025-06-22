@@ -1,0 +1,1 @@
+['addObjectIdReader', 'addBeanProps', 'addReferenceProperties']

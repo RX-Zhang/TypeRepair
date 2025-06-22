@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.fraction.FractionFormatTest.testParseProperInvalidMinus
+- Error: junit.framework.AssertionFailedError: invalid minus in improper fraction.
+- Location:             fail("invalid minus in improper fraction.");

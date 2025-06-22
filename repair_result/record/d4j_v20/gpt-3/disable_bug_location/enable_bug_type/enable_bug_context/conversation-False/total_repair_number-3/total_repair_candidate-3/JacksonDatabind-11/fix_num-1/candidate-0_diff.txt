@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -24,6 +24,11 @@
+      */
+     Type[] bounds = type.getBounds();
+ 
++    if (bounds.length == 0) {
++        // Defensive: no bounds means Object
++        return _unknownType();
++    }
++
+     // With type variables we must use bound information.
+     // Theoretically this gets tricky, as there may be multiple
+     // bounds ("... extends A & B"); and optimally we might
+@@ -38,5 +43,17 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++
++    // Defensive check: if the first bound is again the variable itself,
++    // return _unknownType() to prevent infinite recursion
++    Type firstBound = bounds[0];
++    if (firstBound instanceof TypeVariable<?>) {
++        TypeVariable<?> boundVar = (TypeVariable<?>) firstBound;
++        if (name.equals(boundVar.getName())) {
++            return _unknownType();
++        }
++    }
++
++    return _constructType(firstBound, context);
+ }
++

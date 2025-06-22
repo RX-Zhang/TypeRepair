@@ -1,0 +1,1 @@
+{"ClassName": "JsonAdapterAnnotationTypeAdapterFactory", "Fields": ["private final ConstructorConstructor constructorConstructor;"], "Methods": ["public TypeAdapter create(Gson gson, TypeToken targetType) { ... }", "static TypeAdapter getTypeAdapter(ConstructorConstructor constructorConstructor, Gson gson, TypeToken fieldType, JsonAdapter annotation) { ... }"]}

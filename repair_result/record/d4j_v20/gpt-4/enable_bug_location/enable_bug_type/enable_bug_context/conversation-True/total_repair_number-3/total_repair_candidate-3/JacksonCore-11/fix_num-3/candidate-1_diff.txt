@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -10,4 +10,7 @@
+     if (_needRehash) {
+         rehash();
+     }
++    // Also verify if rehash is needed after copying from parent
++    _verifyNeedForRehash();
+ }
++

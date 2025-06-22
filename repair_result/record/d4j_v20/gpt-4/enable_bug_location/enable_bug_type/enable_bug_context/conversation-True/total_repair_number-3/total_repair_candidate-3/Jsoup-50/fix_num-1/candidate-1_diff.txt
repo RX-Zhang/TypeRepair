@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -3,7 +3,6 @@
+     Document doc = null;
+ 
+     // look for BOM - overrides any other header or input
+-
+     if (charsetName == null) { // determine from meta. safe parse as UTF-8
+         // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
+         docData = Charset.forName(defaultCharset).decode(byteData).toString();
+@@ -24,12 +23,13 @@
+                 }
+             }
+ 
+-            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
++            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode
+                 foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                doc = null;
++                doc = parser.parseInput(docData, baseUri);
++                doc.outputSettings().charset(foundCharset);
+             }
+         }
+     } else { // specified by content type header (or by user on file load)
+@@ -37,15 +37,15 @@
+         docData = Charset.forName(charsetName).decode(byteData).toString();
+     }
+     if (docData.length() > 0 && docData.charAt(0) == UNICODE_BOM) {
+-        byteData.rewind();
+-        docData = Charset.forName(defaultCharset).decode(byteData).toString();
+         docData = docData.substring(1);
+         charsetName = defaultCharset;
+         doc = null;
+     }
+     if (doc == null) {
+         doc = parser.parseInput(docData, baseUri);
+-        doc.outputSettings().charset(charsetName);
++        if (charsetName != null)
++            doc.outputSettings().charset(charsetName);
+     }
+     return doc;
+ }
++

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -8,8 +8,10 @@
+       Node jsDocParameter = jsDocParameters.getFirstChild();
+       for (Node astParameter : astParameters.children()) {
+         if (jsDocParameter != null) {
++          // Use getBestJSDocInfo to get the most accurate JSDocInfo for the parameter
++          JSDocInfo paramInfo = TypedScopeCreator.getBestJSDocInfo(jsDocParameter);
+           defineSlot(astParameter, functionNode,
+-              jsDocParameter.getJSType(), true);
++              paramInfo == null ? null : paramInfo.getType(), true);
+           jsDocParameter = jsDocParameter.getNext();
+         } else {
+           defineSlot(astParameter, functionNode, null, true);
+@@ -18,3 +20,4 @@
+     }
+   }
+ } // end declareArguments
++

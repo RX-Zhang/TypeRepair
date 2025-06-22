@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -8,4 +8,7 @@
+     this.allowStoredEntriesWithDataDescriptor =
+         allowStoredEntriesWithDataDescriptor;
+     // haven't read anything so far
++    current = null; // Initialize current to null to avoid logical errors
++    entriesRead = 0; // Initialize entriesRead to 0 to track the number of entries read
+ }
++

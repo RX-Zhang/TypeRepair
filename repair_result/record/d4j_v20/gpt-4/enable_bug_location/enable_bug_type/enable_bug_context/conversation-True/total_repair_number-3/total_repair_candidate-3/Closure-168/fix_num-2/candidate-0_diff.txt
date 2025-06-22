@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -44,9 +44,15 @@
+     if (var != null) {
+       Scope ownerScope = var.getScope();
+       if (scope != ownerScope && ownerScope.isLocal()) {
+-        data.get(ownerScope.getRootNode())
+-            .recordEscapedQualifiedName(n.getQualifiedName());
++        // Before recording escaped qualified names, verify that the variable's type is a function
++        // to help avoid type mismatch issues.
++        JSType varType = var.getType();
++        if (varType != null && varType.isFunctionType()) {
++          data.get(ownerScope.getRootNode())
++              .recordEscapedQualifiedName(n.getQualifiedName());
++        }
+       }
+     }
+   }
+ }
++

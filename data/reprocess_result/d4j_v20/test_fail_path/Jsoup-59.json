@@ -1,0 +1,1 @@
+{"Jsoup-59": ["org.jsoup.parser.HtmlParserTest::handlesControlCodeInAttributeName", "org.jsoup.safety.CleanerTest::handlesControlCharactersAfterTagName"]}

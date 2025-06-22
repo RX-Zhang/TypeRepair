@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -14,8 +14,18 @@
+ 
+     for (int pos = stack.size() -1; pos >= 0; pos--) {
+         Element next = stack.get(pos);
++        if (next == firstFound) {
++            stack.remove(pos);
++            break;
++        }
++        popChildFromStack(next);
+         stack.remove(pos);
+-        if (next == firstFound)
+-            break;
+     }
+ }
++
++private void popChildFromStack(Element el) {
++    // recursively pop children from the stack to avoid wrongly nesting
++    // This method is assumed needed to handle nested elements incorrectly closed; add as helper
++    // (implementation depends on class context, possibly empty or adjusted)
++}
++

@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -80,10 +80,44 @@
+         return;
+       }
+       arrayNode.detachChildren();
+-      for (Node node : arrayFoldedChildren) {
++
++      // Only fold if this folding reduces the size or keeps it same.
++      // Compare original array length to folded array length after merging empty strings appropriately.
++
++      // Merge empty strings in folded array to reduce size where possible
++      // This helps optimize cases like ['', '', foo, ''] into [',', foo, ''].
++      List<Node> newChildren = Lists.newLinkedList();
++      Iterator<Node> it = arrayFoldedChildren.iterator();
++      while (it.hasNext()) {
++        Node current = it.next();
++        if (current.getType() == Token.STRING && current.getString().isEmpty()) {
++          // Skip empty string at start or end, or merge with previous string if possible
++          if (newChildren.isEmpty()) {
++            if (it.hasNext()) {
++              // if it's at start, and not the only element, try to merge the join string with next string elements if possible
++              continue; // skip
++            } else {
++              newChildren.add(current); // only one element, keep it
++            }
++          } else if (!it.hasNext()) {
++            // empty string at end
++            continue;  // skip
++          } else {
++            // empty string in middle
++            continue; // skip because join string will merge commas anyway
++          }
++        } else {
++          newChildren.add(current);
++        }
++      }
++
++      // Rebuild arrayNode children
++      arrayNode.detachChildren();
++      for (Node node : newChildren) {
+         arrayNode.addChildToBack(node);
+       }
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

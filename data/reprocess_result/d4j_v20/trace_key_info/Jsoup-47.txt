@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.nodes.EntitiesTest.escapesGtInXmlAttributesButNotInHtml
+- Error: junit.framework.AssertionFailedError: expected:<<a title="[&lt;p>One&lt;]/p>">One</a>> but was:<<a title="[<p>One<]/p>">One</a>>
+- Location:         assertEquals("<a title=\"&lt;p>One&lt;/p>\">One</a>", element.outerHtml());

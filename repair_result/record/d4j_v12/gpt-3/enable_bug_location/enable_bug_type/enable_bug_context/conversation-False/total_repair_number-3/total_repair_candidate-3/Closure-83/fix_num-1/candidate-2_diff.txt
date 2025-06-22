@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ public int parseArguments(Parameters params) throws CmdLineException {
+   String param = params.getParameter(0);
+ 
+-  if (param == null) {
++  if (param == null || param.isEmpty()) {
+     setter.addValue(true);
+     return 0;
+   } else {
+@@ -11,9 +11,9 @@
+     } else if (FALSES.contains(lowerParam)) {
+       setter.addValue(false);
+     } else {
+-      setter.addValue(true);
+-      return 0;
++      setter.addValue(true); // Default to true if unrecognized
+     }
+     return 1;
+   }
+ }
++

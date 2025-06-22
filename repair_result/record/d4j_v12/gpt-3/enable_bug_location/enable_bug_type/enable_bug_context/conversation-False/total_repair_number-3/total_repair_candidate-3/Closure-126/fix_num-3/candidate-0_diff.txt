@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -34,8 +34,12 @@
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Remove any minimization attempt on the finally block
++      // to avoid removing important exit statements such as "break" in finally.
++      // So skip tryMinimizeExits on finally block.
++      // Node finallyBlock = n.getLastChild();
++      // tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Just do nothing here.
+     }
+   }
+ 
+@@ -94,3 +98,4 @@
+     }
+   }
+ }
++

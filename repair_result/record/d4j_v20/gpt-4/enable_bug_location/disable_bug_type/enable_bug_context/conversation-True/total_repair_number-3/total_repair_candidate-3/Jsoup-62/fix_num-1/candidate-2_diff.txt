@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -8,13 +8,13 @@
+             if (!name.equals(tb.currentElement().nodeName()))
+                 tb.error(this);
+             tb.popStackToClose(name);
+-            break;
+-        } else {
+-            if (tb.isSpecial(node)) {
+-                tb.error(this);
+-                return false;
+-            }
++            return true;
++        }
++        if (tb.isSpecial(node)) {
++            tb.error(this);
++            return false;
+         }
+     }
+     return true;
+ }
++

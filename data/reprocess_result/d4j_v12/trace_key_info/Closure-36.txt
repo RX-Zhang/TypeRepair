@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.IntegrationTest.testSingletonGetter1
+- Error: junit.framework.AssertionFailedError: 
+Expected: 
+Result: function b(a){a.b=function(){return a.a||(a.a=new a)}}b(function(){});b(function(){})
+- Location:     test(options,

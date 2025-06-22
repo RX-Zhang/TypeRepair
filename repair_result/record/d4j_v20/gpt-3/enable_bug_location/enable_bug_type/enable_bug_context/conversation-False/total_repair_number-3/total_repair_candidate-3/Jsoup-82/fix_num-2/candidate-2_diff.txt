@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -50,7 +50,7 @@
+             }
+         }
+         foundCharset = validateCharset(foundCharset);
+-        if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
++        if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset) && !foundCharset.equalsIgnoreCase("UTF-8")) { // need to re-decode.
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+             charsetName = foundCharset;
+             doc = null;
+@@ -79,3 +79,4 @@
+     input.close();
+     return doc;
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -11,8 +11,13 @@
+     }
+     Class lhsClass = lhs.getClass();
+     if (!lhsClass.isArray()) {
+-            // The simple case, not an array, just test the element
++        // The simple case, not an array, just test the element
++        // For BigDecimal, use compareTo instead of equals to ignore scale differences
++        if (lhs instanceof java.math.BigDecimal && rhs instanceof java.math.BigDecimal) {
++            isEquals = ((java.math.BigDecimal) lhs).compareTo((java.math.BigDecimal) rhs) == 0;
++        } else {
+             isEquals = lhs.equals(rhs);
++        }
+     } else if (lhs.getClass() != rhs.getClass()) {
+         // Here when we compare different dimensions, for example: a boolean[][] to a boolean[] 
+         this.setEquals(false);
+@@ -41,3 +46,4 @@
+     }
+     return this;
+ }
++

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -1,15 +1,15 @@
+ String toStringHelper(boolean forAnnotations) {
+   if (hasReferenceName()) {
+     return getReferenceName();
+-  } else if (prettyPrint) {
++  } else if (isPrettyPrint()) {
+     // Don't pretty print recursively.
+-    prettyPrint = false;
++    setPrettyPrint(false);
+ 
+     // Use a tree set so that the properties are sorted.
+     Set<String> propertyNames = Sets.newTreeSet();
+     for (ObjectType current = this;
+          current != null && !current.isNativeObjectType() &&
+-             propertyNames.size() <= MAX_PRETTY_PRINTED_PROPERTIES;
++             propertyNames.size() < MAX_PRETTY_PRINTED_PROPERTIES; // Change to '<'
+          current = current.getImplicitPrototype()) {
+       propertyNames.addAll(current.getOwnPropertyNames());
+     }
+@@ -36,9 +36,10 @@
+ 
+     sb.append("}");
+ 
+-    prettyPrint = true;
++    setPrettyPrint(true);
+     return sb.toString();
+   } else {
+     return "{...}";
+   }
+ }
++

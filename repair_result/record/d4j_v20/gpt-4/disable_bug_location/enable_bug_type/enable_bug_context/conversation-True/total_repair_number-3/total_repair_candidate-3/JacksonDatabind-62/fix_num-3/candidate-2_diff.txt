@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -12,6 +12,10 @@
+                         +") returned true for 'canCreateUsingDelegate()', but null for 'getDelegateType()'");
+             }
+             delegateDeser = findDeserializer(ctxt, delegateType, property);
++            if (delegateDeser == null) {
++                throw new JsonMappingException(ctxt.getParser(),
++                        "Cannot find a delegate deserializer for type "+delegateType);
++            }
+         }
+     }
+     // [databind#1043]: allow per-property allow-wrapping of single overrides:
+@@ -27,6 +31,10 @@
+     final JavaType vt = _collectionType.getContentType();
+     if (valueDeser == null) {
+         valueDeser = ctxt.findContextualValueDeserializer(vt, property);
++        if (valueDeser == null) {
++            throw new JsonMappingException(ctxt.getParser(),
++                    "Cannot find a value deserializer for type "+vt);
++        }
+     } else { // if directly assigned, probably not yet contextual, so:
+         valueDeser = ctxt.handleSecondaryContextualization(valueDeser, property, vt);
+     }
+@@ -37,3 +45,4 @@
+     }
+     return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+ }
++

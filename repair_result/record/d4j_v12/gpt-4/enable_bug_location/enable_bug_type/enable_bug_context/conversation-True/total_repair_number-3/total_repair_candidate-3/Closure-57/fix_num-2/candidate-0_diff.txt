@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -2,16 +2,17 @@
+     String functionName){
+   String className = null;
+   if (NodeUtil.isExprCall(parent)) {
+-    Node callee = node.getFirstChild();
++    Node callee = parent.getFirstChild();
+     if (callee != null && callee.getType() == Token.GETPROP) {
+       String qualifiedName = callee.getQualifiedName();
+       if (functionName.equals(qualifiedName)) {
+-        Node target = callee.getNext();
+-        if (target != null) {
+-          className = target.getString();
++        Node firstArg = callee.getNext();
++        if (firstArg != null && firstArg.isString()) {
++          className = firstArg.getString();
+         }
+       }
+     }
+   }
+   return className;
+ }
++

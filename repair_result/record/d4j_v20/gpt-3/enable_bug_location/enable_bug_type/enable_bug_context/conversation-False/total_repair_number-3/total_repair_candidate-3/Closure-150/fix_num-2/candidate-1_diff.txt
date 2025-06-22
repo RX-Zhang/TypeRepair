@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,8 +1,8 @@
+ @Override public void visit(NodeTraversal t, Node n, Node parent) {
+   if (n == scope.getRootNode()) return;
+ 
+-  if (n.getType() == Token.LP && parent == scope.getRootNode()) {
+-    handleFunctionInputs(parent);
++  if (n.getType() == Token.LP && n.getParent() == scope.getRootNode()) {
++    handleFunctionInputs(n);
+     return;
+   }
+ 
+@@ -10,6 +10,7 @@
+   switch (n.getType()) {
+     case Token.FUNCTION:
+       if (parent.getType() == Token.NAME) {
++        // Do not define function if the parent is a NAME node (e.g., function expressions)
+         return;
+       }
+       defineDeclaredFunction(n, parent);
+@@ -22,3 +23,4 @@
+       break;
+   }
+ }
++

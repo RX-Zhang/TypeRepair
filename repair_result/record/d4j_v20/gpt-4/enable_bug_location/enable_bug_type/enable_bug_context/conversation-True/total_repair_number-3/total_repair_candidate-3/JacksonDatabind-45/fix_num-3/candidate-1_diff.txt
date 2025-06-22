@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -5,13 +5,36 @@
+         JsonFormat.Value format = serializers.getAnnotationIntrospector().findFormat((Annotated)property.getMember());
+         if (format != null) {
+ 
+-        	// Simple case first: serialize as numeric timestamp?
++            // Figure out whether to serialize as timestamp or as string
+             JsonFormat.Shape shape = format.getShape();
++
+             if (shape.isNumeric()) {
+                 return withFormat(Boolean.TRUE, null);
+             }
+ 
+-            if (format.getShape() == JsonFormat.Shape.STRING) {
++            // With Shape.ANY (default), we need to consider pattern/locale/timezone presence,
++            // to decide to force String serialization
++            if (shape == JsonFormat.Shape.ANY) {
++                if (format.hasPattern() || format.hasLocale() || format.getTimeZone() != null) {
++                    TimeZone tz = format.getTimeZone();
++                    final String pattern = format.hasPattern()
++                                    ? format.getPattern()
++                                    : StdDateFormat.DATE_FORMAT_STR_ISO8601;
++                    final Locale loc = format.hasLocale()
++                                    ? format.getLocale()
++                                    : serializers.getLocale();
++                    SimpleDateFormat df = new SimpleDateFormat(pattern, loc);
++                    if (tz == null) {
++                        tz = serializers.getTimeZone();
++                    }
++                    df.setTimeZone(tz);
++                    return withFormat(Boolean.FALSE, df);
++                }
++                // Otherwise, fall back to provider config
++                return withFormat(null, null);
++            }
++
++            if (shape == JsonFormat.Shape.STRING) {
+                 TimeZone tz = format.getTimeZone();
+                 final String pattern = format.hasPattern()
+                                 ? format.getPattern()
+@@ -30,3 +53,4 @@
+     }
+     return this;
+ }
++

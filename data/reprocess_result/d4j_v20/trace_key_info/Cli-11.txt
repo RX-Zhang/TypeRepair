@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.apache.commons.cli.HelpFormatterTest.testPrintOptionWithEmptyArgNameUsage
+- Error: junit.framework.ComparisonFailure: expected:<usage: app -f[]
+> but was:<usage: app -f[ <>]
+>
+- Location:         assertEquals("usage: app -f" + EOL, out.toString());

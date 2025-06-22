@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.zip.X5455_ExtendedTimestampTest.testGettersSetters
+- Error: junit.framework.AssertionFailedError: Time too big for 32 bits!
+- Location:             fail("Time too big for 32 bits!");

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.sym.SymbolsViaParserTest.testSymbolTableExpansionBytes
+- Error: java.lang.ArrayIndexOutOfBoundsException: 512
+- Location:         _testSymbolTableExpansion(true);

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.optimization.fitting.GaussianFitterTest.testMath519
+- Error: org.apache.commons.math.exception.NotStrictlyPositiveException: -1.277 is smaller than, or equal to, the minimum (0)
+- Location:         final double[] p = fitter.fit();

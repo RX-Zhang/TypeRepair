@@ -1,0 +1,63 @@
+--- 
++++ 
+@@ -19,7 +19,6 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+             serializationType = declaredType;
+         }
+         JavaType ct = serializationType.getContentType();
+@@ -37,7 +36,7 @@
+ 
+     // 12-Jul-2016, tatu: [databind#1256] Need to make sure we consider type refinement
+     JavaType actualType = (serializationType == null) ? declaredType : serializationType;
+-    
++
+     // 17-Aug-2016, tatu: Default inclusion covers global default (for all types), as well
+     //   as type-default for enclosing POJO. What we need, then, is per-type default (if any)
+     //   for declared property type... and finally property annotation overrides
+@@ -45,14 +44,14 @@
+             _defaultInclusion);
+ 
+     // property annotation override
+-    
++
+     inclV = inclV.withOverrides(propDef.findInclusion());
+     JsonInclude.Include inclusion = inclV.getValueInclusion();
+ 
+     if (inclusion == JsonInclude.Include.USE_DEFAULTS) { // should not occur but...
+         inclusion = JsonInclude.Include.ALWAYS;
+     }
+-    
++
+     switch (inclusion) {
+     case NON_DEFAULT:
+         // 11-Nov-2015, tatu: This is tricky because semantics differ between cases,
+@@ -71,16 +70,15 @@
+                 am.fixAccess(_config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
+             }
+             valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
++            if (valueToSuppress == null) {
++                suppressNulls = true;
++            }
+         } else {
+             valueToSuppress = getDefaultValue(actualType);
+             suppressNulls = true;
+         }
+-        if (valueToSuppress == null) {
+-            suppressNulls = true;
+-        } else {
+-            if (valueToSuppress.getClass().isArray()) {
+-                valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+-            }
++        if (valueToSuppress != null && valueToSuppress.getClass().isArray()) {
++            valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+         }
+         break;
+     case NON_ABSENT: // new with 2.6, to support Guava/JDK8 Optionals
+@@ -125,3 +123,4 @@
+     }
+     return bpw;
+ }
++

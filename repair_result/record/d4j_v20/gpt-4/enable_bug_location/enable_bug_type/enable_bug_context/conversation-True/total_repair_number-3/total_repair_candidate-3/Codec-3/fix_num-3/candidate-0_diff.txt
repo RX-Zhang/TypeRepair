@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -24,18 +24,18 @@
+     } else if ((contains(value, index + 1, 2, "ER") || 
+                 charAt(value, index + 1) == 'Y') &&
+                !contains(value, 0, 6, "DANGER", "RANGER", "MANGER") &&
+-               !contains(value, index - 1, 1, "E", "I") && 
+-               !contains(value, index - 1, 3, "RGY", "OGY")) {
++               contains(value, index - 1, 1, "E", "I") == false && 
++               contains(value, index - 1, 3, "RGY", "OGY") == false) {
+         //-- -ger-, -gy- --//
+         result.append('K', 'J');
+         index += 2;
+     } else if (contains(value, index + 1, 1, "E", "I", "Y") || 
+                contains(value, index - 1, 4, "AGGI", "OGGI")) {
+         //-- Italian "biaggi" --//
+-        if ((contains(value, 0 ,4, "VAN ", "VON ") || contains(value, 0, 3, "SCH")) || contains(value, index + 1, 2, "ET")) {
++        if ((contains(value, 0 ,4, "VAN ", "VON ") || contains(value, 0, 3, "SCH || contains(value, index + 1, 2, "ET")) {
+             //-- obvious germanic --//
+             result.append('K');
+-        } else if (contains(value, index + 1, 4, "IER")) {
++        } else if (contains(value, index + 1, 3, "IER")) {
+             result.append('J');
+         } else {
+             result.append('J', 'K');
+@@ -50,3 +50,4 @@
+     }
+     return index;
+ }
++

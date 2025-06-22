@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -12,14 +12,20 @@
+         throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
+                 "need JSON Object to contain As.WRAPPER_OBJECT type information for class "+baseTypeName());
+     }
+-        // should always get field name, but just in case...
+-        if (p.nextToken() != JsonToken.FIELD_NAME) {
+-            throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
+-                    "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
+-        }
++    // should always get field name, but just in case...
++    if (p.nextToken() != JsonToken.FIELD_NAME) {
++        throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
++                "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
++    }
+     final String typeId = p.getText();
+     JsonDeserializer<Object> deser = _findDeserializer(ctxt, typeId);
+-    p.nextToken();
++
++    if (!p.nextToken().isStructStart()) {
++        // The next token after type id field name should be the start of the wrapped object (START_OBJECT or START_ARRAY)
++        // If not, throw exception indicating the expected start of object/array for value
++        throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
++                "need START_OBJECT token after type id (for subtype of "+baseTypeName()+")");
++    }
+ 
+     // Minor complication: we may need to merge type id in?
+     if (_typeIdVisible && p.getCurrentToken() == JsonToken.START_OBJECT) {
+@@ -40,3 +46,4 @@
+     }
+     return value;
+ }
++

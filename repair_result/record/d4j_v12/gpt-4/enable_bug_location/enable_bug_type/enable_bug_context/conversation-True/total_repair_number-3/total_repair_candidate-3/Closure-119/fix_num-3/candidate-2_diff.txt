@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -35,8 +35,14 @@
+       break;
+     case Token.NAME:
+       // This may be a variable get or set.
+-      if (parent != null) {
+-        switch (parent.getType()) {
++
++      // Handle catch block parameters specially:
++      if (parent != null && parent.isCatch()) {
++        // In a catch block, the exception parameter is declared here.
++        isSet = true;
++        type = Name.Type.OTHER;
++      } else {
++        switch (parent != null ? parent.getType() : -1) {
+           case Token.VAR:
+             isSet = true;
+             Node rvalue = n.getFirstChild();
+@@ -64,7 +70,7 @@
+             type = Name.Type.OTHER;
+             break;
+           default:
+-            if (NodeUtil.isAssignmentOp(parent) &&
++            if (parent != null && NodeUtil.isAssignmentOp(parent) &&
+                 parent.getFirstChild() == n) {
+               isSet = true;
+               type = Name.Type.OTHER;
+@@ -123,3 +129,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

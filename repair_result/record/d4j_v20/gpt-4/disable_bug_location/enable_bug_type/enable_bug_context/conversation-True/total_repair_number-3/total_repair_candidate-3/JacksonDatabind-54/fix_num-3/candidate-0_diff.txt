@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -14,8 +14,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -52,7 +51,7 @@
+             valueToSuppress = getDefaultValue(actualType);
+         }
+         if (valueToSuppress == null) {
+-            suppressNulls = true;
++            suppressNulls = false; // corrected to false to not suppress nulls if valueToSuppress is null
+         } else {
+             if (valueToSuppress.getClass().isArray()) {
+                 valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+@@ -102,3 +101,4 @@
+     }
+     return bpw;
+ }
++

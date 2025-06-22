@@ -1,0 +1,1 @@
+{"ClassName": "InlineObjectLiterals", "Fields": ["public static final String VAR_PREFIX;", "private final AbstractCompiler compiler;", "private final Supplier safeNameIdSupplier;"], "Methods": ["public void process(Node externs, Node root) { ... }"]}

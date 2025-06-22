@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.data.time.junit.TimeSeriesTests.testCreateCopy3
+- Error: junit.framework.AssertionFailedError: expected:<101.0> but was:<102.0>
+- Location:         assertEquals(101.0, s2.getMaxY(), EPSILON);

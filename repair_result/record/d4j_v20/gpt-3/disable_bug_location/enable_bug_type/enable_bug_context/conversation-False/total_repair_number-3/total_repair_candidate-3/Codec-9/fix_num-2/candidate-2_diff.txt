@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -3,7 +3,10 @@
+         return binaryData;
+     }
+ 
+-    long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);
++    // Use appropriate chunk size based on isChunked flag
++    int chunkSize = isChunked ? MIME_CHUNK_SIZE : 0;
++
++    long len = getEncodeLength(binaryData, chunkSize, CHUNK_SEPARATOR);
+     if (len > maxResultSize) {
+         throw new IllegalArgumentException("Input array too big, the output array would be bigger (" +
+             len +
+@@ -14,3 +17,4 @@
+     Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);
+     return b64.encode(binaryData);
+ }
++

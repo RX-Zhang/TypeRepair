@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVParserTest.testHeaderMissingWithNull
+- Error: java.lang.NullPointerException
+- Location:         CSVFormat.DEFAULT.withHeader().withNullString("").withIgnoreEmptyHeaders(true).parse(in).iterator();

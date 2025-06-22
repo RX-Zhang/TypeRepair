@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -7,9 +7,13 @@
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
++    // Consider entries with names ending in "/" as directories,
++    // but ignore names that are just "/" to avoid treating root as directory.
++    String name = getName();
++    if (name != null && name.length() > 1 && name.endsWith("/")) {
+         return true;
+     }
+ 
+     return false;
+ }
++

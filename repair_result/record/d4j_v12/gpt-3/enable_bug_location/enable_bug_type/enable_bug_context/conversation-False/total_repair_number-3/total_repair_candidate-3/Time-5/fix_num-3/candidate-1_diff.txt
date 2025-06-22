@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -6,12 +6,18 @@
+     millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+     millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
+     millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
++    
++    // Create a new Period with the calculated millis and the provided PeriodType
+     Period result = new Period(millis, type, ISOChronology.getInstanceUTC());
++    
+     int years = getYears();
+     int months = getMonths();
++    
++    // Normalize years and months
+     if (years != 0 || months != 0) {
+         years = FieldUtils.safeAdd(years, months / 12);
+         months = months % 12;
++        
+         if (years != 0) {
+             result = result.withYears(years);
+         }
+@@ -19,5 +25,8 @@
+             result = result.withMonths(months);
+         }
+     }
+-    return result;
++    
++    // Ensure the result Period is valid with the specified type
++    return result.normalizedStandard(type);
+ }
++

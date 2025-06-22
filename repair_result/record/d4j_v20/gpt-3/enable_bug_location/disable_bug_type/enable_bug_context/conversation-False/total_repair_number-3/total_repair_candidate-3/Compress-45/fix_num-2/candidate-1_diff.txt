@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -11,9 +11,11 @@
+ 
+     if (length < 9) {
+         formatLongBinary(value, buf, offset, length, negative);
++        return offset + length;
+     }
+     formatBigIntegerBinary(value, buf, offset, length, negative);
+ 
+     buf[offset] = (byte) (negative ? 0xff : 0x80);
+     return offset + length;
+ }
++

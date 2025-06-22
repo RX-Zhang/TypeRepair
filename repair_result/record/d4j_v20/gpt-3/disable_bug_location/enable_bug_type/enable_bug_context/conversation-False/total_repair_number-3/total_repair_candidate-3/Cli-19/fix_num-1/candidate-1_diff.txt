@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -5,9 +5,10 @@
+         currentOption = options.getOption(token);
+         tokens.add(token);
+     }
+-    else if (stopAtNonOption)
++    else
+     {
+-        eatTheRest = true;
+-        tokens.add(token);
++        // Since the option is unrecognized, throw an exception instead of silently accepting it.
++        throw new UnrecognizedOptionException(token);
+     }
+ }
++

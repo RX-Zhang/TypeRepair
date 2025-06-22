@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -24,9 +24,13 @@
+             }
+         } else if (_tokens[i] == null) {
+             SettableBeanProperty prop = extProp.getProperty();
+-            ctxt.reportInputMismatch(_beanType,
+-                    "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++            if (prop.isRequired() || ctxt.isEnabled(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY)) {
++                ctxt.reportInputMismatch(_beanType,
++                        "Missing property '%s' for external type id '%s'",
++                        prop.getName(), extProp.getTypePropertyName());
++            }
++            // Instead of reporting exception only, should return early to avoid NPEs later
++            return buffer.getParameters() != null ? creator.build(ctxt, buffer) : null;
+         }
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+@@ -41,7 +45,19 @@
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+                 // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+                 //    apply deserializer... fun fun.
+-                buffer.assignParameter(typeProp, typeId);
++                // Here, need to deserialize typeId if typeProp deserializer exists and typeId is not null
++                Object typeIdValue = typeId;
++                JsonDeserializer<?> deser = typeProp.getValueDeserializer();
++                if (deser != null && typeId != null) {
++                    // Create a JsonParser to parse the typeId as JsonToken.VALUE_STRING
++                    // so deserializer can work consistently
++                    TokenBuffer tb = new TokenBuffer(p, ctxt);
++                    tb.writeString(typeId);
++                    JsonParser typeIdParser = tb.asParser(p);
++                    typeIdParser.nextToken(); // move to VALUE_STRING
++                    typeIdValue = deser.deserialize(typeIdParser, ctxt);
++                }
++                buffer.assignParameter(typeProp, typeIdValue);
+             }
+         }
+     }
+@@ -55,3 +71,4 @@
+     }
+     return bean;
+ }
++

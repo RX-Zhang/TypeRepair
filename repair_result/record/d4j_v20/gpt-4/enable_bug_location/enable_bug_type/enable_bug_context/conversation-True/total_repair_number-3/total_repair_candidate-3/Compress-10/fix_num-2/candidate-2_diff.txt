@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+     // the hashcode - see COMPRESS-164
+     // Map needs to be reconstructed in order to keep central
+     // directory order
+-    for (ZipArchiveEntry ze : entries.keySet()) {
++    for (ZipArchiveEntry ze : new LinkedHashSet<>(entries.keySet())) {
+         OffsetEntry offsetEntry = entries.get(ze);
+         long offset = offsetEntry.headerOffset;
+         archive.seek(offset + LFH_OFFSET_FOR_FILENAME_LENGTH);
+@@ -41,3 +41,4 @@
+         }
+     }
+ }
++

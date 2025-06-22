@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -9,6 +9,9 @@
+         if (delegateCreator != null) {
+             JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
+             delegate = findDeserializer(ctxt, delegateType, property);
++            if (delegate != null) {
++                delegate = ctxt.handleSecondaryContextualization(delegate, property, delegateType);
++            }
+         }
+     }
+     JsonDeserializer<?> valueDeser = _valueDeserializer;
+@@ -17,7 +20,7 @@
+         // [databind#125]: May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+@@ -33,3 +36,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -23,8 +23,10 @@
+ 
+     while (true)
+     {
++        // Use substring from pos without trim to preserve any internal spaces, 
++        // trim is only applied after adding padding for indent
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
++        pos = findWrapPos(text, width, nextLineTabStop);
+ 
+         if (pos == -1)
+         {
+@@ -33,7 +35,7 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        if ((text.length() > width) && (pos == nextLineTabStop - 1)) 
+         {
+             pos = width;
+         }
+@@ -41,3 +43,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

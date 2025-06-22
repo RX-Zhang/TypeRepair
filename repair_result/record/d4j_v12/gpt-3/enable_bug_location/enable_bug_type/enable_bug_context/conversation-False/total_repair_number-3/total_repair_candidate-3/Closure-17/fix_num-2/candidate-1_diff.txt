@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -47,5 +47,11 @@
+     }
+   }
+ 
++  // Ensure that we return a valid type if no conditions are met
++  if (lValue != null && lValue.getJSType() != null) {
++    return lValue.getJSType();
++  }
++
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

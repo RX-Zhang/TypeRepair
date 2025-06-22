@@ -1,0 +1,10 @@
+private static ZipLong unixTimeToZipLong(long l) {
+    final long TWO_TO_31 = 0x80000000L;  // 2^31
+    final long TWO_TO_32 = 0x100000000L; // 2^32
+    if (l < 0 || l >= TWO_TO_32) {
+        throw new IllegalArgumentException("X5455 timestamps must fit in an unsigned 32 bit integer: " + l);
+    }
+    // The underlying representation is unsigned 32-bit, in a signed int container (ZipLong).
+    // So the value should be treated as unsigned.
+    return new ZipLong(l);
+}

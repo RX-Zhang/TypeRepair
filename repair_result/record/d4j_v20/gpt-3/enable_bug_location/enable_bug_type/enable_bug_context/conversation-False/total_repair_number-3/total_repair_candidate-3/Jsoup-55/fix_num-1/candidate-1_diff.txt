@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+             t.emitTagPending();
+             t.transition(Data);
+             break;
+-        case eof:
++        case CharacterReader.eof: // Corrected the 'eof' to 'CharacterReader.eof'
+             t.eofError(this);
+             t.transition(Data);
+             break;
+@@ -15,3 +15,4 @@
+             t.transition(BeforeAttributeName);
+     }
+ }
++

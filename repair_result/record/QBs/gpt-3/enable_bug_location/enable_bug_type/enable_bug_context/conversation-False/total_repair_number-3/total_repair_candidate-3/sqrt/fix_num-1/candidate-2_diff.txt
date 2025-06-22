@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,6 +1,14 @@
+ def sqrt(x, epsilon):
++    if x < 0:
++        raise ValueError("Cannot compute square root of a negative number.")
++    if epsilon <= 0:
++        raise ValueError("Epsilon must be a positive number.")
++    
+     approx = x / 2
+-    while abs(x - approx) > epsilon:
+-        approx = 0.5 * (approx + x / approx)
++    while True:
++        next_approx = 0.5 * (approx + x / approx)
++        if abs(next_approx - approx) < epsilon:
++            break
++        approx = next_approx
+     return approx
+ 

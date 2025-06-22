@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -154,7 +154,7 @@
+             System.arraycopy(y, start, y, 0, nbPoints);
+             signChangeIndex -= start;
+ 
+-        } else  if (nbPoints == x.length) {
++        } else if (nbPoints == x.length) {
+ 
+             // we have to drop one point in order to insert the new one
+             nbPoints--;
+@@ -198,6 +198,12 @@
+ 
+         }
+ 
++        // add exception handling for maximum evaluations
++        if (getEvaluations() > maxEval) {
++            throw new TooManyEvaluationsException(maxEval);
++        }
++
+     }
+ 
+ }
++

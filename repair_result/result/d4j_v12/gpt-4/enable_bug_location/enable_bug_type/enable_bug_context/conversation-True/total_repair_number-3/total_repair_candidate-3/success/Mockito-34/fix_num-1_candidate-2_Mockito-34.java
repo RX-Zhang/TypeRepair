@@ -1,0 +1,14 @@
+public void captureArgumentsFrom(Invocation i) {
+    Object[] arguments = i.getArguments();
+    int k = 0;
+    for (Matcher m : matchers) {
+        if (k >= arguments.length) {
+            // Prevent ArrayIndexOutOfBoundsException when argument count is less than matchers
+            break;
+        }
+        if (m instanceof CapturesArguments) {
+            ((CapturesArguments) m).captureFrom(arguments[k]);
+        }
+        k++;
+    }
+}

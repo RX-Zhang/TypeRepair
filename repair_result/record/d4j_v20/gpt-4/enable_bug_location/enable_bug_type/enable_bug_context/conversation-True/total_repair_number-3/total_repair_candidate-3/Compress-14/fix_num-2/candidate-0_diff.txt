@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -32,6 +32,9 @@
+     trailer = buffer[end-1];
+     if (trailer == 0 || trailer == ' '){
+         end--;
++    } else if ((buffer[offset] & 0x80) != 0) {
++        // fallback to parseOctalOrBinary for binary values with high bit set
++        return parseOctalOrBinary(buffer, offset, length);
+     } else {
+         throw new IllegalArgumentException(
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+@@ -55,3 +58,4 @@
+ 
+     return result;
+ }
++

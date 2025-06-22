@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -25,6 +25,7 @@
+                     continue;
+                 }
+                 while (t == JsonToken.FIELD_NAME) {
++                    tokens.writeFieldName(p.getCurrentName());
+                     p.nextToken();
+                     tokens.copyCurrentStructure(p);
+                     t = p.nextToken();
+@@ -68,5 +69,7 @@
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

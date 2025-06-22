@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -8,8 +8,10 @@
+     } else  {
+         try {
+             Complex rhs = (Complex)other;
+-            if (rhs.isNaN()) {
+-                ret = this.isNaN();
++            if (this.isNaN() && rhs.isNaN()) {
++                ret = true;
++            } else if (this.isNaN() || rhs.isNaN()) {
++                ret = false;
+             } else {
+                 ret = (Double.doubleToRawLongBits(real) == Double.doubleToRawLongBits(rhs.getReal())) && (Double.doubleToRawLongBits(imaginary) == Double.doubleToRawLongBits(rhs.getImaginary())); 
+             }
+@@ -21,3 +23,4 @@
+   
+     return ret;
+ }
++

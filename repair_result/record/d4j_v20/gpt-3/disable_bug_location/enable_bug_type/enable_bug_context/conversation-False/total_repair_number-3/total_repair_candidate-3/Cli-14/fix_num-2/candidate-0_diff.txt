@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -1,3 +1,4 @@
++@SuppressWarnings("unchecked")
+ public void validate(final WriteableCommandLine commandLine)
+     throws OptionException {
+     // number of options found
+@@ -6,8 +7,8 @@
+     // reference to first unexpected option
+     Option unexpected = null;
+ 
+-    for (final Iterator i = options.iterator(); i.hasNext();) {
+-        final Option option = (Option) i.next();
++    for (final Iterator<Option> i = options.iterator(); i.hasNext();) {
++        final Option option = i.next();
+ 
+         // needs validation?
+         boolean validate = option.isRequired() || option instanceof Group;
+@@ -39,8 +40,9 @@
+     }
+ 
+     // validate each anonymous argument
+-    for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+-        final Option option = (Option) i.next();
++    for (final Iterator<Option> i = anonymous.iterator(); i.hasNext();) {
++        final Option option = i.next();
+         option.validate(commandLine);
+     }
+ }
++

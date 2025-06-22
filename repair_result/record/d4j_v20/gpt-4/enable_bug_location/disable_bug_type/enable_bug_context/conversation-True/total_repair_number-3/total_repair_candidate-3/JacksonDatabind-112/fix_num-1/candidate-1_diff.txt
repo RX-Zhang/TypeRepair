@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -4,11 +4,17 @@
+     // May need to resolve types for delegate-based creators:
+     JsonDeserializer<Object> delegate = null;
+     if (_valueInstantiator != null) {
+-        // [databind#2324]: check both array-delegating and delegating
++        // [databind#2324]: check both array-delegating and delegating, and property-based creators
+         AnnotatedWithParams delegateCreator = _valueInstantiator.getDelegateCreator();
+         if (delegateCreator != null) {
+             JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
+             delegate = findDeserializer(ctxt, delegateType, property);
++        } else {
++            // check property-based creators as fallback
++            SettableBeanProperty[] creatorProps = _valueInstantiator.getFromObjectArguments(ctxt.getConfig());
++            if (creatorProps != null && creatorProps.length > 0) {
++                delegate = null; // no delegate deserializer for property-based creators
++            }
+         }
+     }
+     JsonDeserializer<?> valueDeser = _valueDeserializer;
+@@ -17,7 +23,7 @@
+         // [databind#125]: May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+@@ -33,3 +39,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

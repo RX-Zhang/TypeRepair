@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -4,6 +4,11 @@
+     } else if (isArray(o1)) {
+         return isArray(o2) && areArraysEqual(o1, o2);
+     } else {
+-        return o1.equals(o2);
++        try {
++            return o1.equals(o2);
++        } catch (RuntimeException e) {
++            return false;
++        }
+     }
+ }
++

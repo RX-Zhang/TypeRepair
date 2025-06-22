@@ -1,0 +1,1 @@
+['isImmutableValue', 'mayHaveSideEffects', 'constructorCallHasSideEffects', 'functionCallHasSideEffects', 'evaluatesToLocalValue']

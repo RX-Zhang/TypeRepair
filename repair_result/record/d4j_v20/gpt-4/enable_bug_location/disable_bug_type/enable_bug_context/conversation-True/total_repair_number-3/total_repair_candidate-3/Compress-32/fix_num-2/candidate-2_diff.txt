@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -19,10 +19,20 @@
+             currEntry.setLinkName(val);
+         } else if ("gid".equals(key)){
+             currEntry.setGroupId(Integer.parseInt(val));
++            try {
++                currEntry.setLongGroupId(Long.parseLong(val));
++            } catch (NumberFormatException e) {
++                // fall back - ignore if it's too big
++            }
+         } else if ("gname".equals(key)){
+             currEntry.setGroupName(val);
+         } else if ("uid".equals(key)){
+             currEntry.setUserId(Integer.parseInt(val));
++            try {
++                currEntry.setLongUserId(Long.parseLong(val));
++            } catch (NumberFormatException e) {
++                // fall back - ignore if it's too big
++            }
+         } else if ("uname".equals(key)){
+             currEntry.setUserName(val);
+         } else if ("size".equals(key)){
+@@ -36,3 +46,4 @@
+         }
+     }
+ }
++

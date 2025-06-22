@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.LooseTypeCheckTest.testMethodInference7
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testMethodInference7
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(
+
+
+Test failure 3:
+- Test: com.google.javascript.rhino.jstype.FunctionTypeTest.testSupAndInfOfReturnTypesWithNumOfParams
+- Error: junit.framework.ComparisonFailure: expected:<[function (number, number): boolea]n> but was:<[Functio]n>
+- Location:     assertLeastSupertype(

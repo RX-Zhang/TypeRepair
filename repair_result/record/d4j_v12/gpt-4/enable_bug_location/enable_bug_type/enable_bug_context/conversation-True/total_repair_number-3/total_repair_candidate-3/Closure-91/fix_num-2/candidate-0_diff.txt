@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -31,6 +31,12 @@
+     }
+ 
+     // Don't traverse functions that are getting lent to a prototype.
++    // Use shouldReportThis to decide if traversal should continue for prototype
++    if (parent != null && parent.getType() == Token.ASSIGN) {
++      if (shouldReportThis(n, parent)) {
++        return false;
++      }
++    }
+   }
+ 
+   if (parent != null && parent.getType() == Token.ASSIGN) {
+@@ -63,3 +69,4 @@
+ 
+   return true;
+ }
++

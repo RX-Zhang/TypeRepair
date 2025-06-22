@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,10 +1,15 @@
+ protected CompilerOptions createOptions() {
+   CompilerOptions options = new CompilerOptions();
+-  if (flags.processJqueryPrimitives) {
+-    options.setCodingConvention(new JqueryCodingConvention());
++
++  CodingConvention conv;
++  if (flags.thirdParty) {
++    conv = CodingConventions.getDefault();
++  } else if (flags.processJqueryPrimitives) {
++    conv = new JqueryCodingConvention();
+   } else {
+-    options.setCodingConvention(new ClosureCodingConvention());
++    conv = new ClosureCodingConvention();
+   }
++  options.setCodingConvention(conv);
+ 
+   options.setExtraAnnotationNames(flags.extraAnnotationName);
+ 
+@@ -58,3 +63,4 @@
+ 
+   return options;
+ }
++

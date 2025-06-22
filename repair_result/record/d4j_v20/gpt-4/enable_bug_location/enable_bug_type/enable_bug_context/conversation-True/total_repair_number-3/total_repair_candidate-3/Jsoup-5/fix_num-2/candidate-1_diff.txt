@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -8,8 +8,14 @@
+ 
+         if (tq.matchChomp(SQ)) {
+             value = tq.chompTo(SQ);
++            if (!tq.matchChomp(SQ)) { // ensure closing quote is consumed if present
++                // do nothing, already at end or malformed; prevent infinite loop
++            }
+         } else if (tq.matchChomp(DQ)) {
+             value = tq.chompTo(DQ);
++            if (!tq.matchChomp(DQ)) { // ensure closing quote is consumed if present
++                // do nothing, already at end or malformed; prevent infinite loop
++            }
+         } else {
+             StringBuilder valueAccum = new StringBuilder();
+             // no ' or " to look for, so scan to end tag or space (or end of stream)
+@@ -23,8 +29,11 @@
+     if (key.length() != 0)
+         return Attribute.createFromEncoded(key, value);
+     else {
+-        tq.consume();
+-            
++        // Defensive: only consume if not empty, to avoid out of bounds
++        if (!tq.isEmpty())
++            tq.consume();
++
+         return null;
+     }
+ }
++

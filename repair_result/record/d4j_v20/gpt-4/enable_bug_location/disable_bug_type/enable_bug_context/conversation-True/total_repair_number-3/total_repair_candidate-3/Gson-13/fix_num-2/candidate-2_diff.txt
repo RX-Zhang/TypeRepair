@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -69,6 +69,7 @@
+         return PEEKED_NONE;
+       }
+       if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {
++        // Allow '0' at the start (to correctly parse "-0")
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+@@ -100,3 +101,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

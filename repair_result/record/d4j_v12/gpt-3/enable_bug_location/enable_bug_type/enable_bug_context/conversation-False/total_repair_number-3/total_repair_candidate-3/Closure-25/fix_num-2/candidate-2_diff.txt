@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -21,9 +21,17 @@
+       }
+     }
+   }
+-  n.setJSType(type);
++  
++  // Added type verification before setting the JSType
++  if (type != null) {
++    n.setJSType(type);
++  } else {
++    n.setJSType(getNativeType(UNKNOWN_TYPE)); // Set to UNKNOWN_TYPE if type is null
++  }
++  
+   for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
+     scope = traverse(arg, scope);
+   }
+   return scope;
+ }
++

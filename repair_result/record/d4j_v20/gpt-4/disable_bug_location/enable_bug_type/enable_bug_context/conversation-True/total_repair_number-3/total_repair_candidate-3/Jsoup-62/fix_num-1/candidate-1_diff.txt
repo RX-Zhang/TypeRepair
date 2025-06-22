@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -5,10 +5,11 @@
+         Element node = stack.get(pos);
+         if (node.nodeName().equals(name)) {
+             tb.generateImpliedEndTags(name);
+-            if (!name.equals(tb.currentElement().nodeName()))
++            if (!name.equals(tb.currentElement().nodeName())) {
+                 tb.error(this);
++            }
+             tb.popStackToClose(name);
+-            break;
++            return true;
+         } else {
+             if (tb.isSpecial(node)) {
+                 tb.error(this);
+@@ -18,3 +19,4 @@
+     }
+     return true;
+ }
++

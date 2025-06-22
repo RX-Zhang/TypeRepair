@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -19,6 +19,33 @@
+         }
+         else if (arg.startsWith("-"))
+         {
++            // Check for long option with '=' sign (e.g. --foo=bar)
++            int equalsIndex = arg.indexOf('=');
++            if (equalsIndex != -1)
++            {
++                String opt;
++                if (arg.startsWith("--"))
++                {
++                    opt = arg.substring(2, equalsIndex);
++                    if (options.hasOption(opt))
++                    {
++                        tokens.add("--" + opt);
++                        tokens.add(arg.substring(equalsIndex + 1));
++                        continue;
++                    }
++                }
++                else if (arg.startsWith("-"))
++                {
++                    opt = arg.substring(1, equalsIndex);
++                    if (opt.length() == 1 && options.hasOption(opt))
++                    {
++                        tokens.add("-" + opt);
++                        tokens.add(arg.substring(equalsIndex + 1));
++                        continue;
++                    }
++                }
++            }
++
+             String opt = Util.stripLeadingHyphens(arg);
+ 
+             if (options.hasOption(opt))
+@@ -27,12 +54,11 @@
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
+                 {
+-                    // the format is --foo=value or -foo=value
+                     // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg.substring(0, 2)); // e.g. -D
++                    tokens.add(arg.substring(2));    // property=value
+                 }
+                 else
+                 {
+@@ -57,3 +83,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

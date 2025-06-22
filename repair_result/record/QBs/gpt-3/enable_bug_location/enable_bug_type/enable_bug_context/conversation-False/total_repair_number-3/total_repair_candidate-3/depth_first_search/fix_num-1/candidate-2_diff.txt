@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -6,8 +6,9 @@
+         elif node is goalnode:
+             return True
+         else:
++            nodesvisited.add(node)  # Mark the node as visited before going deeper
+             return any(
+-                search_from(nextnode) for nextnode in node.successors
++                search_from(nextnode) for nextnode in node.successors if nextnode is not None  # Check for valid successors
+             )
+     return search_from(startnode)
+ 

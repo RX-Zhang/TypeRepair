@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+ 
+   stream.update();
+   int startLineno = stream.getLineno();
+-  int startCharno = stream.getCharno() + 1;
++  int startCharno = stream.getCharno();
+ 
+   // Read the content from the first line.
+   String line = stream.getRemainingJSDocLine();
+@@ -47,7 +47,7 @@
+ 
+       case EOL:
+         if (option != WhitespaceOption.SINGLE_LINE) {
+-          builder.append("\n");
++          builder.append('\n');
+         }
+ 
+         ignoreStar = true;
+@@ -58,7 +58,7 @@
+         ignoreStar = false;
+         state = State.SEARCHING_ANNOTATION;
+ 
+-            // All tokens must be separated by a space.
++        // All tokens must be separated by a space.
+ 
+         if (token == JsDocToken.EOC ||
+             token == JsDocToken.EOF ||
+@@ -99,3 +99,4 @@
+     }
+   } while (true);
+ }
++

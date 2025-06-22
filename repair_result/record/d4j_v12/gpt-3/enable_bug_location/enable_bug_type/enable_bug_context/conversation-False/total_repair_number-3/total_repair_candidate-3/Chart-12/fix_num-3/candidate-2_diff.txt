@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ public MultiplePiePlot(CategoryDataset dataset) {
+     super();
+     this.dataset = dataset;
++    if (this.dataset != null) {
++        // Register the plot as a listener to the dataset
++        this.dataset.addChangeListener(this);
++    }
+     PiePlot piePlot = new PiePlot(null);
+     this.pieChart = new JFreeChart(piePlot);
+     this.pieChart.removeLegend();
+@@ -14,3 +18,4 @@
+     this.aggregatedItemsPaint = Color.lightGray;
+     this.sectionPaints = new HashMap();
+ }
++

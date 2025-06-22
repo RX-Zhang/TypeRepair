@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -2,8 +2,13 @@
+     import heapq
+     heap = arr[:k]
+     heapq.heapify(heap)
+-    for x in arr:
+-        yield heapq.heappushpop(heap, x)
++    for x in arr[k:]:
++        if x > heap[0]:
++            heapq.heapreplace(heap, x)
++    result = []
+     while heap:
+-        yield heapq.heappop(heap)
++        result.append(heapq.heappop(heap))
++    result.sort()
++    for item in result:
++        yield item
+ 

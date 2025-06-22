@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -30,10 +30,11 @@
+             + SHORT + SHORT + fileNameLen + extraFieldLen;
+ 
+         if (entriesWithoutUTF8Flag.containsKey(ze)) {
+-            String orig = ze.getName();
+             NameAndComment nc = entriesWithoutUTF8Flag.get(ze);
+             ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name,
+                                                      nc.comment);
++            String orig = ze.getName();
++            // Update the nameMap only if the name has changed
+             if (!orig.equals(ze.getName())) {
+                 nameMap.remove(orig);
+                 nameMap.put(ze.getName(), ze);
+@@ -41,3 +42,4 @@
+         }
+     }
+ }
++

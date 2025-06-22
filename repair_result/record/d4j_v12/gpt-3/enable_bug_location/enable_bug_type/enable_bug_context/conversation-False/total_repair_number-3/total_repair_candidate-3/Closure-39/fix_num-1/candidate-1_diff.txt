@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+     Set<String> propertyNames = Sets.newTreeSet();
+     for (ObjectType current = this;
+          current != null && !current.isNativeObjectType() &&
+-             propertyNames.size() <= MAX_PRETTY_PRINTED_PROPERTIES;
++             propertyNames.size() < MAX_PRETTY_PRINTED_PROPERTIES; // Changed to '<'
+          current = current.getImplicitPrototype()) {
+       propertyNames.addAll(current.getOwnPropertyNames());
+     }
+@@ -42,3 +42,4 @@
+     return "{...}";
+   }
+ }
++

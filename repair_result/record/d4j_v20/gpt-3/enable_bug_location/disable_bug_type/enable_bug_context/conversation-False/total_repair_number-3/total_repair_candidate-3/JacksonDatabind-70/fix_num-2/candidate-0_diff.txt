@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -24,5 +24,11 @@
+     if (!found) {
+         throw new NoSuchElementException("No entry '"+propToRm.getName()+"' found, can't remove");
+     }
+-    init(props);
++    try {
++        init(props);
++    } catch (ArrayIndexOutOfBoundsException e) {
++        // Handle potential boundary issues when initializing
++        throw new RuntimeException("Initialization failed due to array index issue", e);
++    }
+ }
++

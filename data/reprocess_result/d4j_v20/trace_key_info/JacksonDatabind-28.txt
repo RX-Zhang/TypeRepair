@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.node.TestObjectNode.testIssue941
+- Error: com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of com.fasterxml.jackson.databind.node.ObjectNode out of END_OBJECT token
+- Location:         MyValue de2 = MAPPER.readValue(json, MyValue.class);  // but this throws exception

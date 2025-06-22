@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -10,6 +10,10 @@
+     _inputBuffer = inputBuffer;
+     _inputPtr = start;
+     _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
+     _bufferRecyclable = bufferRecyclable;
++
++    // Adjust offset for current input pointer so that byte offset is correct
++    // This ensures getTokenLocation() will report offsets starting at 0
++    _currInputProcessed = -start;
+ }
++

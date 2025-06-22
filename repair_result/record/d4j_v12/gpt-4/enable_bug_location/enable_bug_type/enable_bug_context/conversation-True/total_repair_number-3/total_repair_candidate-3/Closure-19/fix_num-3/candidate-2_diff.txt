@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,4 +1,10 @@
+ protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
++  JSType refinableType = getTypeIfRefinable(node, scope);
++  if (refinableType == null) {
++    throw new IllegalArgumentException("Node cannot be refined. \n" +
++        node.toStringTree());
++  }
++
+   switch (node.getType()) {
+     case Token.NAME:
+       scope.inferSlotType(node.getString(), type);
+@@ -8,9 +14,7 @@
+       String qualifiedName = node.getQualifiedName();
+       Preconditions.checkNotNull(qualifiedName);
+ 
+-      JSType origType = node.getJSType();
+-      origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+-      scope.inferQualifiedSlot(node, qualifiedName, origType, type);
++      scope.inferQualifiedSlot(node, qualifiedName, refinableType, type);
+       break;
+ 
+       // "this" references aren't currently modeled in the CFG.
+@@ -20,3 +24,4 @@
+           node.toStringTree());
+   }
+ }
++

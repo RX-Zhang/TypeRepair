@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.SystemUtilsTest.testJavaVersionAsInt
+- Error: junit.framework.AssertionFailedError: expected:<0> but was:<0.0>
+- Location:         assertEquals(0, SystemUtils.toJavaVersionInt(null));

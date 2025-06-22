@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+ 
+     boolean isExtern = false;
+     JSDocInfo functionJSDocInfo = functionType.getJSDocInfo();
+-    if(functionJSDocInfo != null) {
++    if (functionJSDocInfo != null) {
+       String sourceName = functionJSDocInfo.getSourceName();
+       CompilerInput functionSource = compiler.getInput(sourceName);
+       isExtern = functionSource.isExtern();
+@@ -32,16 +32,17 @@
+       report(t, n, CONSTRUCTOR_NOT_CALLABLE, childType.toString());
+     }
+ 
+-    // Functions with explcit 'this' types must be called in a GETPROP
++    // Functions with explicit 'this' types must be called in a GETPROP
+     // or GETELEM.
+-
+     visitParameterList(t, n, functionType);
+     ensureTyped(t, n, functionType.getReturnType());
+   } else {
+     ensureTyped(t, n);
+   }
+ 
+-  // TODO: Add something to check for calls of RegExp objects, which is not
+-  // supported by IE.  Either say something about the return type or warn
+-  // about the non-portability of the call or both.
++  // Check for calls of RegExp objects, which are not supported by IE.
++  if (childType instanceof ObjectType && ((ObjectType) childType).isRegexpType()) {
++    report(t, n, NOT_CALLABLE, "RegExp objects cannot be called as functions");
++  }
+ }
++

@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -22,6 +22,7 @@
+   if (n.isTry()) {
+     Node tryBlock = n.getFirstChild();
+     tryMinimizeExits(tryBlock, exitType, labelName);
++
+     Node allCatchNodes = NodeUtil.getCatchBlock(n);
+     if (NodeUtil.hasCatchHandler(allCatchNodes)) {
+       Preconditions.checkState(allCatchNodes.hasOneChild());
+@@ -29,13 +30,15 @@
+       Node catchCodeBlock = catchNode.getLastChild();
+       tryMinimizeExits(catchCodeBlock, exitType, labelName);
+     }
+-    /* Don't try to minimize the exits of finally blocks, as this
++    /*
++     * Don't try to minimize the exits of finally blocks, as this
+      * can cause problems if it changes the completion type of the finally
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Remove passes trying to minimize returns or breaks inside finally blocks,
++      // do not recurse into finally block at all.
++      return;
+     }
+   }
+ 
+@@ -94,3 +97,4 @@
+     }
+   }
+ }
++

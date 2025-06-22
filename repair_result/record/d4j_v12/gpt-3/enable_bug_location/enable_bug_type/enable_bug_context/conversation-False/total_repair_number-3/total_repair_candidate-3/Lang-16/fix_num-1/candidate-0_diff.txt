@@ -1,0 +1,200 @@
+--- 
++++ 
+@@ -12,53 +12,94 @@
+         // a wrong value.
+         return null;
+     }
+-    if (str.startsWith("0x") || str.startsWith("-0x")) {
+-        return createInteger(str);
+-    }   
+-    char lastChar = str.charAt(str.length() - 1);
++    String strCopy = str.trim();
++    boolean isHex = strCopy.startsWith("0x") || strCopy.startsWith("0X") || strCopy.startsWith("-0x") || strCopy.startsWith("-0X");
++    if (isHex) {
++        // Use the right parsing for hex numbers, parse as Integer or Long or BigInteger depending on length and sign
++        int hexStart = (strCopy.startsWith("-")) ? 3 : 2; // skip "-0x" or "0x"
++        String hexDigits = strCopy.substring(hexStart);
++        if (hexDigits.length() == 0) {
++            throw new NumberFormatException(str + " is not a valid number.");
++        }
++        // Validate hex digits
++        for (int i = 0; i < hexDigits.length(); i++) {
++            char ch = hexDigits.charAt(i);
++            boolean validHexDigit = (ch >= '0' && ch <= '9') 
++                                 || (ch >= 'a' && ch <= 'f') 
++                                 || (ch >= 'A' && ch <= 'F');
++            if (!validHexDigit) {
++                throw new NumberFormatException(str + " is not a valid number.");
++            }
++        }
++
++        try {
++            // Try Integer first
++            return Integer.decode(strCopy);
++        } catch (NumberFormatException e) {
++            try {
++                // Try Long
++                return Long.decode(strCopy);
++            } catch (NumberFormatException e2) {
++                // Else BigInteger
++                String biStr = (strCopy.startsWith("-")) ? "-" + hexDigits : hexDigits;
++                return new BigInteger(biStr, 16);
++            }
++        }
++    }
++
++    char lastChar = strCopy.charAt(strCopy.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+-    int decPos = str.indexOf('.');
+-    int expPos = str.indexOf('e') + str.indexOf('E') + 1;
++    int decPos = strCopy.indexOf('.');
++    int expPosE = strCopy.indexOf('e');
++    int expPosEE = strCopy.indexOf('E');
++    int expPos = -1;
++    if (expPosE > -1 && expPosEE > -1) {
++        expPos = Math.min(expPosE, expPosEE);
++    } else if (expPosE > -1) {
++        expPos = expPosE;
++    } else if (expPosEE > -1) {
++        expPos = expPosEE;
++    }
+ 
+     if (decPos > -1) {
+ 
+         if (expPos > -1) {
+-            if (expPos < decPos || expPos > str.length()) {
+-                throw new NumberFormatException(str + " is not a valid number.");
++            if (expPos < decPos || expPos > strCopy.length()) {
++                throw new NumberFormatException(strCopy + " is not a valid number.");
+             }
+-            dec = str.substring(decPos + 1, expPos);
++            dec = strCopy.substring(decPos + 1, expPos);
+         } else {
+-            dec = str.substring(decPos + 1);
++            dec = strCopy.substring(decPos + 1);
+         }
+-        mant = str.substring(0, decPos);
++        mant = strCopy.substring(0, decPos);
+     } else {
+         if (expPos > -1) {
+-            if (expPos > str.length()) {
+-                throw new NumberFormatException(str + " is not a valid number.");
++            if (expPos > strCopy.length()) {
++                throw new NumberFormatException(strCopy + " is not a valid number.");
+             }
+-            mant = str.substring(0, expPos);
++            mant = strCopy.substring(0, expPos);
+         } else {
+-            mant = str;
++            mant = strCopy;
+         }
+         dec = null;
+     }
+     if (!Character.isDigit(lastChar) && lastChar != '.') {
+-        if (expPos > -1 && expPos < str.length() - 1) {
+-            exp = str.substring(expPos + 1, str.length() - 1);
++        if (expPos > -1 && expPos < strCopy.length() - 1) {
++            exp = strCopy.substring(expPos + 1, strCopy.length() - 1);
+         } else {
+             exp = null;
+         }
+         //Requesting a specific type..
+-        String numeric = str.substring(0, str.length() - 1);
+-        boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
++        String numeric = strCopy.substring(0, strCopy.length() - 1);
++        boolean allZeros = isAllZeros(mant) && (exp == null || isAllZeros(exp));
+         switch (lastChar) {
+             case 'l' :
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) { // NOPMD
+@@ -67,7 +108,7 @@
+                     return createBigInteger(numeric);
+ 
+                 }
+-                throw new NumberFormatException(str + " is not a valid number.");
++                throw new NumberFormatException(strCopy + " is not a valid number.");
+             case 'f' :
+             case 'F' :
+                 try {
+@@ -86,7 +127,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) { // NOPMD
+@@ -99,36 +140,36 @@
+                 }
+                 //$FALL-THROUGH$
+             default :
+-                throw new NumberFormatException(str + " is not a valid number.");
++                throw new NumberFormatException(strCopy + " is not a valid number.");
+ 
+         }
+     } else {
+         //User doesn't have a preference on the return type, so let's start
+         //small and go from there...
+-        if (expPos > -1 && expPos < str.length() - 1) {
+-            exp = str.substring(expPos + 1, str.length());
++        if (expPos > -1 && expPos < strCopy.length() - 1) {
++            exp = strCopy.substring(expPos + 1, strCopy.length());
+         } else {
+             exp = null;
+         }
+         if (dec == null && exp == null) {
+             //Must be an int,long,bigint
+             try {
+-                return createInteger(str);
++                return createInteger(strCopy);
+             } catch (NumberFormatException nfe) { // NOPMD
+                 // ignore the bad number
+             }
+             try {
+-                return createLong(str);
++                return createLong(strCopy);
+             } catch (NumberFormatException nfe) { // NOPMD
+                 // ignore the bad number
+             }
+-            return createBigInteger(str);
++            return createBigInteger(strCopy);
+ 
+         } else {
+             //Must be a float,double,BigDec
+-            boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
++            boolean allZeros = isAllZeros(mant) && (exp == null || isAllZeros(exp));
+             try {
+-                Float f = createFloat(str);
++                Float f = createFloat(strCopy);
+                 if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                     return f;
+                 }
+@@ -136,7 +177,7 @@
+                 // ignore the bad number
+             }
+             try {
+-                Double d = createDouble(str);
++                Double d = createDouble(strCopy);
+                 if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                     return d;
+                 }
+@@ -144,8 +185,9 @@
+                 // ignore the bad number
+             }
+ 
+-            return createBigDecimal(str);
++            return createBigDecimal(strCopy);
+ 
+         }
+     }
+ }
++

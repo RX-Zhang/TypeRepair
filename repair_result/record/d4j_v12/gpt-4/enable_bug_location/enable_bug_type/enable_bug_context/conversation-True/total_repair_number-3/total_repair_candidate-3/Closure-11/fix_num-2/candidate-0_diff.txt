@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+ 
+   if (childType.isDict()) {
+     report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, "'.'", "dict");
+-  } else if (n.getJSType() != null && parent.isAssign()) {
++  } else if (parent.isAssign() && n.getJSType() != null) {
+     return;
+   } else if (validator.expectNotNullOrUndefined(t, n, childType,
+       "No properties on this expression", getNativeType(OBJECT_TYPE))) {
+@@ -17,3 +17,4 @@
+   }
+   ensureTyped(t, n);
+ }
++

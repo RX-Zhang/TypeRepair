@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -21,8 +21,17 @@
+         }
+         props.add(prop);
+     }
++    
++    // Add exception handling to prevent runtime errors
+     if (!found) {
+         throw new NoSuchElementException("No entry '"+propToRm.getName()+"' found, can't remove");
+     }
+-    init(props);
++    
++    // Boundary check before initializing
++    if (props.size() > 0) {
++        init(props);
++    } else {
++        throw new IllegalStateException("No properties to initialize.");
++    }
+ }
++

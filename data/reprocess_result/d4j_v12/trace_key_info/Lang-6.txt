@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.StringUtilsTest.testEscapeSurrogatePairs
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 2
+- Location:         assertEquals("\uD83D\uDE30", StringEscapeUtils.escapeCsv("\uD83D\uDE30"));

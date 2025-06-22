@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.AttributeParseTest.dropsSlashFromAttributeName
+- Error: junit.framework.AssertionFailedError: SelfClosingStartTag ignores last character
+- Location:         assertTrue("SelfClosingStartTag ignores last character", doc.select("img[onerror]").size() != 0);

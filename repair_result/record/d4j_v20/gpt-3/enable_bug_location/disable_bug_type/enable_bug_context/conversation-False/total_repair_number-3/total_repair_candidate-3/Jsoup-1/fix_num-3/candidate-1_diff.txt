@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -8,9 +8,12 @@
+         }
+     }
+ 
+-    for (Node node: toMove) {
++    for (int i = 0; i < toMove.size(); i++) {
++        Node node = toMove.get(i);
+         element.removeChild(node);
+-        body().appendChild(new TextNode(" ", ""));
++        if (i > 0)
++            body().appendChild(new TextNode(" ", ""));
+         body().appendChild(node);
+     }
+ }
++

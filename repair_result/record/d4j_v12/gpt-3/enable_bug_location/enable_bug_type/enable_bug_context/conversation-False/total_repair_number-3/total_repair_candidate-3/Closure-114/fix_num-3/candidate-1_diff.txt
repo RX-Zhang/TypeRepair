@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+       //
+       // TODO(user) revisit the dependency scope calculation
+       // logic.
+-      if (parent.getFirstChild().getNext() != n) {
++      if (parent.getFirstChild() != n) {
+         recordDepScope(recordNode, ns);
+       } else {
+         recordDepScope(nameNode, ns);
+@@ -29,3 +29,4 @@
+     }
+   }
+ }
++

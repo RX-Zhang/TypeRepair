@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,6 +1,13 @@
+ public void close() throws IOException {
+     if (!this.closed) {
+-        super.close();
+-        this.closed = true;
++        try {
++            if (!this.finished) {
++                finish();
++            }
++        } finally {
++            super.close();
++            this.closed = true;
++        }
+     }
+ }
++

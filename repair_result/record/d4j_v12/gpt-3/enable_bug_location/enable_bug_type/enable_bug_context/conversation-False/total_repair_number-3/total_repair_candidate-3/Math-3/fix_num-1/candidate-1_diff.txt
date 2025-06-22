@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -5,7 +5,13 @@
+         throw new DimensionMismatchException(len, b.length);
+     }
+ 
+-        // Revert to scalar multiplication.
++    // Handle special case when length is 0 or 1 to avoid ArrayIndexOutOfBoundsException.
++    if (len == 0) {
++        return 0;
++    }
++    if (len == 1) {
++        return a[0] * b[0];
++    }
+ 
+     final double[] prodHigh = new double[len];
+     double prodLowSum = 0;
+@@ -57,3 +63,4 @@
+ 
+     return result;
+ }
++

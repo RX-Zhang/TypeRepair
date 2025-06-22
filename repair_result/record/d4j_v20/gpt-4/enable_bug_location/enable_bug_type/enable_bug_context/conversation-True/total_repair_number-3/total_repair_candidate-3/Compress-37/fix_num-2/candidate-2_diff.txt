@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -19,9 +19,9 @@
+                         final int restLen = len - read;
+                         if (restLen == 1) { // only NL
+                             headers.remove(keyword);
+-                        } else {
++                        } else if (restLen > 1) {
+                             final byte[] rest = new byte[restLen];
+-                            final int got = IOUtils.readFully(i, rest);
++                            final int got = this.read(rest, 0, restLen);
+                             if (got != restLen) {
+                                 throw new IOException("Failed to read "
+                                                       + "Paxheader. Expected "
+@@ -40,6 +40,9 @@
+                 }
+                 break; // Processed single header
+             }
++            if (ch < '0' || ch > '9') {
++                throw new IOException("Invalid length digit: " + (char) ch);
++            }
+             len *= 10;
+             len += ch - '0';
+         }
+@@ -49,3 +52,4 @@
+     }
+     return headers;
+ }
++

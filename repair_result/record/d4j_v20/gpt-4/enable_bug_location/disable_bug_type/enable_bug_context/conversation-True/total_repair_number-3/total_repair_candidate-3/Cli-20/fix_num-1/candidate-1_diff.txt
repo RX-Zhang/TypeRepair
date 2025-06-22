@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -15,10 +15,11 @@
+         // handle long option --foo or --foo=bar
+         if (token.startsWith("--"))
+         {
+-            if (token.indexOf('=') != -1)
++            int equalsPos = token.indexOf('=');
++            if (equalsPos != -1)
+             {
+-                tokens.add(token.substring(0, token.indexOf('=')));
+-                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                tokens.add(token.substring(0, equalsPos));
++                tokens.add(token.substring(equalsPos + 1));
+             }
+             else
+             {
+@@ -61,3 +62,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

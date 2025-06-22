@@ -1,0 +1,59 @@
+private void updateScopeForTypeChange(
+    FlowScope scope, Node left, JSType leftType, JSType resultType) {
+  Preconditions.checkNotNull(resultType);
+  switch (left.getType()) {
+    case Token.NAME:
+      String varName = left.getString();
+      Var var = syntacticScope.getVar(varName);
+      boolean isVarDeclaration = left.hasChildren();
+
+      // When looking at VAR initializers for declared VARs, we tend
+      // to use the declared type over the type it's being
+      // initialized to in the global scope.
+      //
+      // For example,
+      // /** @param {number} */ var f = goog.abstractMethod;
+      // it's obvious that the programmer wants you to use
+      // the declared function signature, not the inferred signature.
+      //
+      // Or,
+      // /** @type {Object.<string>} */ var = {};
+      // the one-time anonymous object on the right side
+      // is as narrow as it can possibly be, but we need to make
+      // sure we back-infer the <string> element constraint on
+      // the left hand side, so we use the left hand side.
+
+      boolean isVarTypeBetter = !isVarDeclaration || var == null || var.isTypeInferred();
+          // Makes it easier to check for NPEs.
+
+      if (isVarTypeBetter) {
+        redeclareSimpleVar(scope, left, resultType);
+      }
+      // Fix for TypeMismatchError:
+      // Only set JSType to resultType when it is compatible or leftType is null
+      // Otherwise keep it null to avoid wrong type assignment
+      if (isVarDeclaration || leftType == null || resultType.isSubtype(leftType)) {
+        left.setJSType(resultType);
+      } else {
+        left.setJSType(null);
+      }
+
+      if (var != null && var.isTypeInferred()) {
+        JSType oldType = var.getType();
+        var.setType(oldType == null ?
+            resultType : oldType.getLeastSupertype(resultType));
+      }
+      break;
+    case Token.GETPROP:
+      String qualifiedName = left.getQualifiedName();
+      if (qualifiedName != null) {
+        scope.inferQualifiedSlot(left, qualifiedName,
+            leftType == null ? unknownType : leftType,
+            resultType);
+      }
+
+      left.setJSType(resultType);
+      ensurePropertyDefined(left, resultType);
+      break;
+  }
+}

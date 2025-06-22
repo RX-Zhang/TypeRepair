@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -1,6 +1,8 @@
+ def gcd(a, b):
+     if b == 0:
+         return a
++    elif a < 0 or b < 0:  # Boundary check for negative values
++        raise ValueError("Inputs must be non-negative integers.")
+     else:
+         return gcd(a % b, b)
+ 

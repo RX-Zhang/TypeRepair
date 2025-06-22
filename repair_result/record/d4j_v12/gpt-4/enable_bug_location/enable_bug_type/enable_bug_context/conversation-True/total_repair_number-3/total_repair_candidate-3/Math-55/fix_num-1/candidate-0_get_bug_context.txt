@@ -1,0 +1,1 @@
+['subtract', 'scalarMultiply', 'dotProduct', 'crossProduct']

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.ParserTest.handlesDataOnlyTags
+- Error: junit.framework.AssertionFailedError: expected:<Hello []There> but was:<Hello ['); i++; ]There>
+- Location:         assertEquals("Hello There", doc.text());

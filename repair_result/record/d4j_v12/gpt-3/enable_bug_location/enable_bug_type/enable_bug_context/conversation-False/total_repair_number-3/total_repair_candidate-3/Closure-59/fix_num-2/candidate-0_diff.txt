@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -31,6 +31,10 @@
+     options.setWarningLevel(
+         DiagnosticGroups.GLOBAL_THIS,
+         options.checkGlobalThisLevel);
++  } else {
++    options.setWarningLevel(
++        DiagnosticGroups.GLOBAL_THIS,
++        CheckLevel.OFF); // Ensure that if it's off, we explicitly set it to OFF
+   }
+ 
+   if (options.getLanguageIn() == LanguageMode.ECMASCRIPT5_STRICT) {
+@@ -61,3 +65,4 @@
+ 
+   this.warningsGuard = composedGuards;
+ }
++

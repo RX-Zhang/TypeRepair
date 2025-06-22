@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,7 +1,9 @@
+ public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+     String str;
+-    
+-    if (value instanceof Date) {
++
++    if (value instanceof Class<?>) {
++        str = ((Class<?>) value).getName();
++    } else if (value instanceof Date) {
+         provider.defaultSerializeDateKey((Date) value, jgen);
+         return;
+     } else {
+@@ -9,3 +11,4 @@
+     }
+     jgen.writeFieldName(str);
+ }
++

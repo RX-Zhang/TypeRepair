@@ -1,0 +1,1 @@
+['getNumObjectiveFunctions', 'getWidth', 'getHeight', 'getEntry']

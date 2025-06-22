@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -1,13 +1,12 @@
+ void writePaxHeaders(String entryName,
+                      Map<String, String> headers) throws IOException {
+     String name = "./PaxHeaders.X/" + stripTo7Bits(entryName);
+-        // TarEntry's constructor would think this is a directory
+-        // and not allow any data to be written
++    // Ensure name is treated as a regular file, not directory, by using correct link flag
+     if (name.length() >= TarConstants.NAMELEN) {
+         name = name.substring(0, TarConstants.NAMELEN - 1);
+     }
+     TarArchiveEntry pex = new TarArchiveEntry(name,
+-                                              TarConstants.LF_PAX_EXTENDED_HEADER_LC);
++                                              TarConstants.LF_PAX_EXTENDED_HEADER);
+ 
+     StringWriter w = new StringWriter();
+     for (Map.Entry<String, String> h : headers.entrySet()) {
+@@ -20,10 +19,8 @@
+         int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+         while (len != actualLength) {
+             // Adjust for cases where length < 10 or > 100
+-            // or where UTF-8 encoding isn't a single octet
+-            // per character.
+-            // Must be in loop as size may go from 99 to 100 in
+-            // first pass so we'd need a second.
++            // or where UTF-8 encoding isn't a single octet per character.
++            // Must be in loop as size may go from 99 to 100 in first pass so we'd need a second.
+             len = actualLength;
+             line = len + " " + key + "=" + value + "\n";
+             actualLength = line.getBytes(CharsetNames.UTF_8).length;
+@@ -36,3 +33,4 @@
+     write(data);
+     closeArchiveEntry();
+ }
++

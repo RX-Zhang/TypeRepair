@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,7 +4,10 @@
+     if (startTag.isSelfClosing()) {
+         Element el = insertEmpty(startTag);
+         stack.add(el);
+-        tokeniser.emit(new Token.EndTag(el.tagName()));  // ensure we get out of whatever state we are in. emitted for yielded processing
++        // Emit end tag only for known self-closing tags
++        if (el.tagName().equals("img") || el.tagName().equals("br") || el.tagName().equals("hr") || el.tagName().equals("input") || el.tagName().equals("meta") || el.tagName().equals("link")) {
++            tokeniser.emit(new Token.EndTag(el.tagName()));  // ensure we get out of whatever state we are in. emitted for yielded processing
++        }
+         return el;
+     }
+     
+@@ -12,3 +15,4 @@
+     insert(el);
+     return el;
+ }
++

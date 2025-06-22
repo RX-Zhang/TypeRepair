@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -30,3 +30,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

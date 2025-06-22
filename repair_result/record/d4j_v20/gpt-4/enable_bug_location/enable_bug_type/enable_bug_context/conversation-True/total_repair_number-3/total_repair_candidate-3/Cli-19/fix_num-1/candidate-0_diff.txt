@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -5,9 +5,16 @@
+         currentOption = options.getOption(token);
+         tokens.add(token);
+     }
+-    else if (stopAtNonOption)
++    else
+     {
+-        eatTheRest = true;
+-        tokens.add(token);
++        if (stopAtNonOption)
++        {
++            eatTheRest = true;
++        }
++        else
++        {
++            throw new UnrecognizedOptionException("Unrecognized option: " + token, token);
++        }
+     }
+ }
++

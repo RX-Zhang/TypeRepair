@@ -1,0 +1,19 @@
+static boolean isSimpleNumber(String s) {
+  int len = s.length();
+  if (len == 0) return false; // Ensure the string is not empty
+  for (int index = 0; index < len; index++) {
+    char c = s.charAt(index);
+    if (c < '0' || c > '9') {
+      // Allow for leading zeros and decimal point
+      if (index == 0 && c == '0' && len > 1) {
+        return false; // Reject numbers like "01", "00", etc.
+      }
+      if (c == '.' && index > 0 && index < len - 1) {
+        // Allow decimal numbers
+        continue;
+      }
+      return false;
+    }
+  }
+  return true; // Return true if the string is a valid simple number
+}

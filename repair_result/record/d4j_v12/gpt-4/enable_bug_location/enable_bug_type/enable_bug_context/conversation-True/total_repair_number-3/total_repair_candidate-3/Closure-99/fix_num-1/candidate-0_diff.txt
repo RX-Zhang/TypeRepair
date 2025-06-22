@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -30,24 +30,28 @@
+     Node rhs = lhs.getNext();
+     
+     if (n == lhs) {
+-      // Always traverse the left side of the assignment. To handle
+-      // nested assignments properly (e.g., (a = this).property = c;),
+-      // assignLhsChild should not be overridden.
++      // Always traverse the left side of the assignment or
++      // nested assignments (e.g., (a = this).property = c;)
+       if (assignLhsChild == null) {
+         assignLhsChild = lhs;
+       }
+     } else {
+       // Only traverse the right side if it's not an assignment to a prototype
+       // property or subproperty.
+-        if (lhs.getType() == Token.GETPROP &&
+-            lhs.getLastChild().getString().equals("prototype")) {
++      if (lhs.getType() == Token.GETPROP) {
++        // Check if the last child is 'prototype' (e.g. a.prototype)
++        if (lhs.getLastChild().getString().equals("prototype")) {
+           return false;
+         }
+-        if (lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")) {
++        // Check for qualified names containing ".prototype."
++        String qName = lhs.getQualifiedName();
++        if (qName != null && qName.contains(".prototype.")) {
+           return false;
+         }
++      }
+     }
+   }
+ 
+   return true;
+ }
++

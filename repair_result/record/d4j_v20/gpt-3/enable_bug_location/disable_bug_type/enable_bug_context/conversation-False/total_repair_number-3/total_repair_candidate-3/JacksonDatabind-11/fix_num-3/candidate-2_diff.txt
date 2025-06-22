@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -5,16 +5,15 @@
+     if (context == null) {
+         // And to prevent infinite loops, now need this:
+         return _unknownType();
+-    } else {
+-        // Ok: here's where context might come in handy!
+-        /* 19-Mar-2015, tatu: As per [databind#609], may need to allow
+-         *   unresolved type variables to handle some cases where bounds
+-         *   are enough. Let's hope it does not hide real fail cases.
+-         */
+-        JavaType actualType = context.findType(name);
+-        if (actualType != null) {
+-            return actualType;
+-        }
++    }
++    // Ok: here's where context might come in handy!
++    /* 19-Mar-2015, tatu: As per [databind#609], may need to allow
++     *   unresolved type variables to handle some cases where bounds
++     *   are enough. Let's hope it does not hide real fail cases.
++     */
++    JavaType actualType = context.findType(name);
++    if (actualType != null) {
++        return actualType;
+     }
+ 
+     /* 29-Jan-2010, tatu: We used to throw exception here, if type was
+@@ -37,6 +36,7 @@
+      *   (T extends Comparable<T>). Need to add "placeholder"
+      *   for resolution to catch those.
+      */
+-    context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++    context = context.withPlaceholder(name);
++    return _constructType(bounds.length > 0 ? bounds[0] : Object.class, context);
+ }
++

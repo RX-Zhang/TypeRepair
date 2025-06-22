@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -1,7 +1,8 @@
+ public StringBuffer format(Calendar calendar, StringBuffer buf) {
+-    if (mTimeZoneForced) {
++    if (getTimeZoneOverridesCalendar()) {
+         calendar = (Calendar) calendar.clone();
+-        calendar.setTimeZone(mTimeZone);
++        calendar.setTimeZone(getTimeZone());
+     }
+     return applyRules(calendar, buf);
+ }
++

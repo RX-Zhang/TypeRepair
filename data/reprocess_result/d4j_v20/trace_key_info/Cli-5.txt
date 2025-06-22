@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.cli.UtilTest.testStripLeadingHyphens
+- Error: java.lang.NullPointerException
+- Location:         assertNull(Util.stripLeadingHyphens(null));
+
+
+Test failure 2:
+- Test: org.apache.commons.cli.bug.BugCLI133Test.testOrder
+- Error: java.lang.NullPointerException
+- Location:         assertFalse(line.hasOption(null));

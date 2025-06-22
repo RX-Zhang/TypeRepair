@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -20,6 +20,9 @@
+         }
+     } catch (final EOFException e) {
+         return null;
++    } catch (final IOException e) {
++        // Handle potential IOException when reading the local file header
++        throw new ZipException("Failed to read local file header: " + e.getMessage(), e);
+     }
+ 
+     final ZipLong sig = new ZipLong(LFH_BUF);
+@@ -68,12 +71,16 @@
+     }
+ 
+     final int fileNameLen = ZipShort.getValue(LFH_BUF, off);
+-
+     off += SHORT;
+ 
+     final int extraLen = ZipShort.getValue(LFH_BUF, off);
+     off += SHORT;
+ 
++    // Validate file name length
++    if (fileNameLen < 0 || fileNameLen > LFH_LEN) {
++        throw new ZipException("Invalid file name length: " + fileNameLen);
++    }
++    
+     final byte[] fileName = new byte[fileNameLen];
+     readFully(fileName);
+     current.entry.setName(entryEncoding.decode(fileName), fileName);
+@@ -104,3 +111,4 @@
+     entriesRead++;
+     return current.entry;
+ }
++

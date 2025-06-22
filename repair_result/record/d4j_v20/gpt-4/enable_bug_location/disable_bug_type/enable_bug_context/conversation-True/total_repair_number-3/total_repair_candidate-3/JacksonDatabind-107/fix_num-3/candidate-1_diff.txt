@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -21,6 +21,10 @@
+                 }
+                 // ... would this actually work?
+                 deser = ctxt.findContextualValueDeserializer(actual, _property);
++                if (deser == null) {
++                    // fallback to NullifyingDeserializer to avoid NPE as per issue #2221
++                    deser = NullifyingDeserializer.instance;
++                }
+             }
+         } else {
+             /* 16-Dec-2010, tatu: Since nominal type we get here has no (generic) type parameters,
+@@ -52,3 +56,4 @@
+     }
+     return deser;
+ }
++

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -23,8 +23,9 @@
+ 
+     while (true)
+     {
+-        text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
++        text = text.substring(pos).trim();
++        sb.append(padding);
++        pos = findWrapPos(text, width - nextLineTabStop, 0);
+ 
+         if (pos == -1)
+         {
+@@ -33,11 +34,12 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        if ( (text.length() > (width - nextLineTabStop)) && (pos == 0) ) 
+         {
+-            pos = width;
++            pos = width - nextLineTabStop;
+         }
+ 
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

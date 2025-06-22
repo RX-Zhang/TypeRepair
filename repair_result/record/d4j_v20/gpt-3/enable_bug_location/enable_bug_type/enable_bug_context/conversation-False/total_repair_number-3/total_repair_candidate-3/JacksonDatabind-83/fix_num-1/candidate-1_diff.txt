@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -12,9 +12,12 @@
+             // 19-May-2017, tatu: Used to require non-null result (assuming `null`
+             //    indicated error; but that seems wrong. Should be able to return
+             //    `null` as value.
+-            if (_deserialize(text, ctxt) != null) {
+-            return _deserialize(text, ctxt);
++            T result = _deserialize(text, ctxt);
++            if (result != null) {
++                return result;
+             }
++            // else fall through and return null
++            return null;
+         } catch (IllegalArgumentException iae) {
+             cause = iae;
+         } catch (MalformedURLException me) {
+@@ -33,7 +36,6 @@
+             e.initCause(cause);
+         }
+         throw e;
+-        // nothing to do here, yet? We'll fail anyway
+     }
+     JsonToken t = p.getCurrentToken();
+     // [databind#381]
+@@ -53,3 +55,4 @@
+     }
+     return (T) ctxt.handleUnexpectedToken(_valueClass, p);
+ }
++

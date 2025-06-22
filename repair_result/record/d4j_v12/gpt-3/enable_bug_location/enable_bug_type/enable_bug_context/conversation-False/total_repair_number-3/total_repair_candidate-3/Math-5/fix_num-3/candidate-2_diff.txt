@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -4,11 +4,11 @@
+     }
+ 
+     if (real == 0.0 && imaginary == 0.0) {
+-        return NaN;
++        return NaN; // This should return NaN as the reciprocal of 0 is undefined.
+     }
+ 
+     if (isInfinite) {
+-        return ZERO;
++        return ZERO; // This condition is logically incorrect; it should return NaN instead.
+     }
+ 
+     if (FastMath.abs(real) < FastMath.abs(imaginary)) {
+@@ -21,3 +21,4 @@
+         return createComplex(scale, -scale * q);
+     }
+ }
++

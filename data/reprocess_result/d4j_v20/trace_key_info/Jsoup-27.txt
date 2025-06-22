@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jsoup.helper.DataUtilTest.testCharset
+- Error: junit.framework.AssertionFailedError: expected:<[utf]-8> but was:<[UTF]-8>
+- Location:         assertEquals("utf-8", DataUtil.getCharsetFromContentType("text/html;charset=utf-8 "));
+
+
+Test failure 2:
+- Test: org.jsoup.helper.DataUtilTest.testQuotedCharset
+- Error: junit.framework.AssertionFailedError: expected:<[utf]-8> but was:<[UTF]-8>
+- Location:         assertEquals("utf-8", DataUtil.getCharsetFromContentType("text/html; charset=\"utf-8\""));

@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -5,6 +5,12 @@
+     this.out = out;
+     this.format = format;
+     this.format.validate();
+-    // TODO: Is it a good idea to do this here instead of on the first call to a print method?
+-    // It seems a pain to have to track whether the header has already been printed or not.
++
++    // If the format has a header, print it immediately upon construction,
++    // so header is present before any records are printed.
++    final String[] header = format.getHeader();
++    if (header != null) {
++        printRecord((Object[]) header);
++    }
+ }
++

@@ -1,0 +1,14 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testIssue1058
+- Error: junit.framework.AssertionFailedError: unexpected warnings(s):
+JSC_TYPE_MISMATCH. actual parameter 1 of Class.prototype.foo does not match formal parameter
+found   : function (number): string
+- Location:     testTypes(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testTemplatized11
+- Error: junit.framework.AssertionFailedError: unexpected warnings(s):
+JSC_TYPE_MISMATCH. initializing variable
+found   : number
+- Location:     testTypes(

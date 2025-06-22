@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -6,7 +6,10 @@
+     add(" ");
+   }
+ 
+-  if ((long) x == x) {
++  if (x == 0.0 && Double.doubleToRawLongBits(x) == Double.doubleToRawLongBits(-0.0)) {
++    // Handle negative zero explicitly
++    add("-0.0");
++  } else if ((long) x == x) {
+     long value = (long) x;
+     long mantissa = value;
+     int exp = 0;
+@@ -26,3 +29,4 @@
+   }
+ 
+ }
++

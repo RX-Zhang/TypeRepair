@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -129,6 +129,8 @@
+                 }
+                 tb.insert(startTag);
+                 tb.framesetOk(false);
++                // Fix: Ignore the first newline character token after a <pre> start tag
++                tb.tokeniser.setIgnoreNextLineFeed(true);
+             } else if (name.equals("form")) {
+                 if (tb.getFormElement() != null) {
+                     tb.error(this);
+@@ -511,3 +513,4 @@
+     }
+     return true;
+ }
++

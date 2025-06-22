@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,6 +2,8 @@
+ 	int totalRead = 0;
+ 
+     if (hasHitEOF || entryOffset >= entrySize) {
++        skipRecordPadding();
++        consumeRemainderOfLastBlock();
+         return -1;
+     }
+ 
+@@ -22,3 +24,4 @@
+ 
+     return totalRead;
+ }
++

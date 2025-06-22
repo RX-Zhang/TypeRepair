@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,3 +1,10 @@
+ public static boolean isAvailableLocale(Locale locale) {
+-    return cAvailableLocaleSet.contains(locale);
++    Set set = cAvailableLocaleSet;
++    if (set == null) {
++        set = new HashSet(availableLocaleList());
++        set = Collections.unmodifiableSet(set);
++        cAvailableLocaleSet = set;
++    }
++    return set.contains(locale);
+ }
++

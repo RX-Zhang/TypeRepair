@@ -1,0 +1,63 @@
+--- 
++++ 
+@@ -19,26 +19,37 @@
+         }
+         else if (arg.startsWith("-"))
+         {
++            // check for args with '=' sign which could be long or short options with value
++            int equalsIndex = arg.indexOf('=');
++            if (equalsIndex != -1)
++            {
++                String opt = arg.substring(0, equalsIndex);
++
++                String optName = Util.stripLeadingHyphens(opt);
++                if (options.hasOption(optName))
++                {
++                    tokens.add(opt);
++                    tokens.add(arg.substring(equalsIndex + 1));
++                    continue;
++                }
++            }
++
+             String opt = Util.stripLeadingHyphens(arg);
+ 
+             if (options.hasOption(opt))
+             {
+                 tokens.add(arg);
+             }
++            else if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
++            {
++                // the format is -Dproperty=value
++                tokens.add(arg.substring(0, 2)); // e.g. -D
++                tokens.add(arg.substring(2));    // property=value
++            }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
+-                {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
+-                }
+-                else
+-                {
+-                    eatTheRest = stopAtNonOption;
+-                    tokens.add(arg);
+-                }
++                eatTheRest = stopAtNonOption;
++                tokens.add(arg);
+             }
+         }
+         else
+@@ -52,8 +63,10 @@
+             {
+                 tokens.add(arguments[i]);
+             }
++            break; // exit outer loop after adding the rest
+         }
+     }
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

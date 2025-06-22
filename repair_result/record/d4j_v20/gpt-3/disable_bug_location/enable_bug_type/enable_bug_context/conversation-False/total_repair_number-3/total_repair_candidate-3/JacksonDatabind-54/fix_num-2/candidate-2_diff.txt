@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -14,7 +14,6 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+             serializationType = declaredType;
+         }
+         JavaType ct = serializationType.getContentType();
+@@ -102,3 +101,4 @@
+     }
+     return bpw;
+ }
++

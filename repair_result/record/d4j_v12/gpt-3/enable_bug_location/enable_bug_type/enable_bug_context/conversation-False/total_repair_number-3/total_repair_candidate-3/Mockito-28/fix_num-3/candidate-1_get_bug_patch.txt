@@ -1,0 +1,7 @@
+private void injectMockCandidate(Class<?> awaitingInjectionClazz, Set<Object> mocks, Object fieldInstance) {
+    for(Field field : orderedInstanceFieldsFrom(awaitingInjectionClazz)) {
+        // Ensure that once a mock is injected, it is removed from the mocks set 
+        // to prevent multiple injections of the same mock instance
+        mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();
+    }
+}

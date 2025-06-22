@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,13 +1,13 @@
+ public Complex reciprocal() {
+-    if (isNaN) {
++    if (isNaN()) {
+         return NaN;
+     }
+ 
+     if (real == 0.0 && imaginary == 0.0) {
+-        return NaN;
++        return INF;
+     }
+ 
+-    if (isInfinite) {
++    if (isInfinite()) {
+         return ZERO;
+     }
+ 
+@@ -21,3 +21,4 @@
+         return createComplex(scale, -scale * q);
+     }
+ }
++

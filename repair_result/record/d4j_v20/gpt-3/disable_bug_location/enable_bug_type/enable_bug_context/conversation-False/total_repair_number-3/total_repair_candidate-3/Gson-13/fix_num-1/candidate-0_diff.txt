@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -72,6 +72,9 @@
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
++        // Accept leading zero only if it's the value '0' itself, i.e., only a single digit '0' allowed
++        // but multiple zeros like "00" are not allowed.
++        // Fix: Only reject leading zeros if value is exactly zero and we haven't just started parsing.
+         if (value == 0) {
+           return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
+         }
+@@ -89,7 +92,13 @@
+ 
+   // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.
+   if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
+-    peekedLong = negative ? value : -value;
++    // Fix here: we must assign peekedLong properly.
++    // If negative is true, value is already stored negative.
++    // If negative is false, value is negative and needs to be inverted.
++    peekedLong = value;
++    if (!negative) {
++      peekedLong = -peekedLong;
++    }
+     pos += i;
+     return peeked = PEEKED_LONG;
+   } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT
+@@ -100,3 +109,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

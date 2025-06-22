@@ -1,0 +1,271 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 10 items
+
+python_testcases/test_knapsack.py .F.FFFFF.s                             [100%]
+
+=================================== FAILURES ===================================
+________________________ test_knapsack[input_data1-30] _________________________
+
+input_data = [40, [[30, 10], [50, 5], [10, 20], [40, 25]]], expected = 30
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_knapsack(input_data, expected):
+        if not pytest.run_slow and input_data == [
+            6404180,
+            [
+                [382745, 825594],
+                [799601, 1677009],
+                [909247, 1676628],
+                [729069, 1523970],
+                [467902, 943972],
+                [44328, 97426],
+                [34610, 69666],
+                [698150, 1296457],
+                [823460, 1679693],
+                [903959, 1902996],
+                [853665, 1844992],
+                [551830, 1049289],
+                [610856, 1252836],
+                [670702, 1319836],
+                [488960, 953277],
+                [951111, 2067538],
+                [323046, 675367],
+                [446298, 853655],
+                [931161, 1826027],
+                [31385, 65731],
+                [496951, 901489],
+                [264724, 577243],
+                [224916, 466257],
+                [169684, 369261],
+            ],
+        ]:
+            pytest.skip("Takes about 4 mins to pass!")
+>       assert knapsack(*input_data) == expected
+E       assert 20 == 30
+E        +  where 20 = knapsack(*[40, [[30, 10], [50, 5], [10, 20], [40, 25]]])
+
+python_testcases/test_knapsack.py:45: AssertionError
+________________________ test_knapsack[input_data3-51] _________________________
+
+input_data = [26, [[12, 24], [7, 13], [11, 23], [8, 15], [9, 16]]]
+expected = 51
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_knapsack(input_data, expected):
+        if not pytest.run_slow and input_data == [
+            6404180,
+            [
+                [382745, 825594],
+                [799601, 1677009],
+                [909247, 1676628],
+                [729069, 1523970],
+                [467902, 943972],
+                [44328, 97426],
+                [34610, 69666],
+                [698150, 1296457],
+                [823460, 1679693],
+                [903959, 1902996],
+                [853665, 1844992],
+                [551830, 1049289],
+                [610856, 1252836],
+                [670702, 1319836],
+                [488960, 953277],
+                [951111, 2067538],
+                [323046, 675367],
+                [446298, 853655],
+                [931161, 1826027],
+                [31385, 65731],
+                [496951, 901489],
+                [264724, 577243],
+                [224916, 466257],
+                [169684, 369261],
+            ],
+        ]:
+            pytest.skip("Takes about 4 mins to pass!")
+>       assert knapsack(*input_data) == expected
+E       assert 47 == 51
+E        +  where 47 = knapsack(*[26, [[12, 24], [7, 13], [11, 23], [8, 15], [9, 16]]])
+
+python_testcases/test_knapsack.py:45: AssertionError
+________________________ test_knapsack[input_data4-107] ________________________
+
+input_data = [50, [[31, 70], [10, 20], [20, 39], [19, 37], [4, 7], [3, 5], ...]]
+expected = 107
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_knapsack(input_data, expected):
+        if not pytest.run_slow and input_data == [
+            6404180,
+            [
+                [382745, 825594],
+                [799601, 1677009],
+                [909247, 1676628],
+                [729069, 1523970],
+                [467902, 943972],
+                [44328, 97426],
+                [34610, 69666],
+                [698150, 1296457],
+                [823460, 1679693],
+                [903959, 1902996],
+                [853665, 1844992],
+                [551830, 1049289],
+                [610856, 1252836],
+                [670702, 1319836],
+                [488960, 953277],
+                [951111, 2067538],
+                [323046, 675367],
+                [446298, 853655],
+                [931161, 1826027],
+                [31385, 65731],
+                [496951, 901489],
+                [264724, 577243],
+                [224916, 466257],
+                [169684, 369261],
+            ],
+        ]:
+            pytest.skip("Takes about 4 mins to pass!")
+>       assert knapsack(*input_data) == expected
+E       assert 102 == 107
+E        +  where 102 = knapsack(*[50, [[31, 70], [10, 20], [20, 39], [19, 37], [4, 7], [3, 5], ...]])
+
+python_testcases/test_knapsack.py:45: AssertionError
+________________________ test_knapsack[input_data5-150] ________________________
+
+input_data = [190, [[56, 50], [59, 50], [80, 64], [64, 46], [75, 50], [17, 5]]]
+expected = 150
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_knapsack(input_data, expected):
+        if not pytest.run_slow and input_data == [
+            6404180,
+            [
+                [382745, 825594],
+                [799601, 1677009],
+                [909247, 1676628],
+                [729069, 1523970],
+                [467902, 943972],
+                [44328, 97426],
+                [34610, 69666],
+                [698150, 1296457],
+                [823460, 1679693],
+                [903959, 1902996],
+                [853665, 1844992],
+                [551830, 1049289],
+                [610856, 1252836],
+                [670702, 1319836],
+                [488960, 953277],
+                [951111, 2067538],
+                [323046, 675367],
+                [446298, 853655],
+                [931161, 1826027],
+                [31385, 65731],
+                [496951, 901489],
+                [264724, 577243],
+                [224916, 466257],
+                [169684, 369261],
+            ],
+        ]:
+            pytest.skip("Takes about 4 mins to pass!")
+>       assert knapsack(*input_data) == expected
+E       assert 146 == 150
+E        +  where 146 = knapsack(*[190, [[56, 50], [59, 50], [80, 64], [64, 46], [75, 50], [17, 5]]])
+
+python_testcases/test_knapsack.py:45: AssertionError
+________________________ test_knapsack[input_data6-900] ________________________
+
+input_data = [104, [[25, 350], [35, 400], [45, 450], [5, 20], [25, 70], [3, 8], ...]]
+expected = 900
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_knapsack(input_data, expected):
+        if not pytest.run_slow and input_data == [
+            6404180,
+            [
+                [382745, 825594],
+                [799601, 1677009],
+                [909247, 1676628],
+                [729069, 1523970],
+                [467902, 943972],
+                [44328, 97426],
+                [34610, 69666],
+                [698150, 1296457],
+                [823460, 1679693],
+                [903959, 1902996],
+                [853665, 1844992],
+                [551830, 1049289],
+                [610856, 1252836],
+                [670702, 1319836],
+                [488960, 953277],
+                [951111, 2067538],
+                [323046, 675367],
+                [446298, 853655],
+                [931161, 1826027],
+                [31385, 65731],
+                [496951, 901489],
+                [264724, 577243],
+                [224916, 466257],
+                [169684, 369261],
+            ],
+        ]:
+            pytest.skip("Takes about 4 mins to pass!")
+>       assert knapsack(*input_data) == expected
+E       assert 898 == 900
+E        +  where 898 = knapsack(*[104, [[25, 350], [35, 400], [45, 450], [5, 20], [25, 70], [3, 8], ...]])
+
+python_testcases/test_knapsack.py:45: AssertionError
+________________________ test_knapsack[input_data7-309] ________________________
+
+input_data = [165, [[23, 92], [31, 57], [29, 49], [44, 68], [53, 60], [38, 43], ...]]
+expected = 309
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_knapsack(input_data, expected):
+        if not pytest.run_slow and input_data == [
+            6404180,
+            [
+                [382745, 825594],
+                [799601, 1677009],
+                [909247, 1676628],
+                [729069, 1523970],
+                [467902, 943972],
+                [44328, 97426],
+                [34610, 69666],
+                [698150, 1296457],
+                [823460, 1679693],
+                [903959, 1902996],
+                [853665, 1844992],
+                [551830, 1049289],
+                [610856, 1252836],
+                [670702, 1319836],
+                [488960, 953277],
+                [951111, 2067538],
+                [323046, 675367],
+                [446298, 853655],
+                [931161, 1826027],
+                [31385, 65731],
+                [496951, 901489],
+                [264724, 577243],
+                [224916, 466257],
+                [169684, 369261],
+            ],
+        ]:
+            pytest.skip("Takes about 4 mins to pass!")
+>       assert knapsack(*input_data) == expected
+E       assert 284 == 309
+E        +  where 284 = knapsack(*[165, [[23, 92], [31, 57], [29, 49], [44, 68], [53, 60], [38, 43], ...]])
+
+python_testcases/test_knapsack.py:45: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_knapsack.py::test_knapsack[input_data1-30] - ass...
+FAILED python_testcases/test_knapsack.py::test_knapsack[input_data3-51] - ass...
+FAILED python_testcases/test_knapsack.py::test_knapsack[input_data4-107] - as...
+FAILED python_testcases/test_knapsack.py::test_knapsack[input_data5-150] - as...
+FAILED python_testcases/test_knapsack.py::test_knapsack[input_data6-900] - as...
+FAILED python_testcases/test_knapsack.py::test_knapsack[input_data7-309] - as...
+==================== 6 failed, 3 passed, 1 skipped in 0.05s ====================

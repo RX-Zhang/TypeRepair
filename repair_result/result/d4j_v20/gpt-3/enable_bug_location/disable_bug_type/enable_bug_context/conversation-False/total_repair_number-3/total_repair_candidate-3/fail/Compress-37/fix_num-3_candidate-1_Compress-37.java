@@ -1,0 +1,92 @@
+Map<String, String> parsePaxHeaders(final InputStream i)
+    throws IOException {
+    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+    // Format is "length keyword=value\n";
+    while(true){ // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+        // Read length field
+        while((ch = i.read()) != -1) {
+            if (ch == '\n') {
+                // Blank line - skip and continue to next header line
+                break;
+            }
+            if (ch == ' ') {
+                break; // length finished
+            }
+            if (ch < '0' || ch > '9') {
+                // Invalid length character
+                throw new IOException("Invalid length character in Pax header: " + ch);
+            }
+            len = len * 10 + (ch - '0');
+        }
+        if (ch == -1) {
+            break; // EOF
+        }
+        if (ch == '\n') {
+            // blank line, just continue next iteration
+            continue;
+        }
+        if (len == 0) {
+            continue; // skip empty length lines
+        }
+        // Now read keyword=value\n part of length bytes - 1 length digit counted ?
+        // length includes space, keyword, '=', value, and a newline
+
+        // read length-1 bytes (length includes the length digits, space, keyword=value\n)
+        // But we have already read length digits and the space separator.
+        // So we need to read len - (length digits + 1 for space) bytes more
+
+        // len includes the length digits themselves, so we have to read (len- (number of digits read + 1)) bytes for keyword=value\n
+        // However in this code, we read length digits one by one, the count of digits is in read
+        // But read includes number of bytes read so far, including length digits and the space after length (which was last read in the while loop).
+
+        // We had read read = (number of bytes read so far in this line), including the length digits and the space.
+        // So restLen = len - read;
+        int restLen = len - read;
+        if(restLen <= 0) {
+            // Not enough bytes to read keyword=value\n, skip line or break
+            // Skip until newline to be safe
+            while ((ch = i.read()) != -1 && ch != '\n') {}
+            continue; // Go to next header line
+        }
+        byte[] rest = new byte[restLen];
+        int got = IOUtils.readFully(i, rest);
+        if (got != restLen) {
+            throw new IOException("Failed to read Paxheader. Expected "
+                                  + restLen
+                                  + " bytes, read "
+                                  + got);
+        }
+        // The rest should be in format: keyword=value\n
+        // Find index of '=' and newline
+        int eqIndex = -1;
+        for (int k = 0; k < restLen - 1; k++) {
+            if (rest[k] == '=') {
+                eqIndex = k;
+                break;
+            }
+        }
+        if (eqIndex == -1) {
+            // malformed header line, ignore or throw IOException
+            continue;
+        }
+        String keyword = new String(rest, 0, eqIndex, CharsetNames.UTF_8);
+        // The value is from eqIndex+1 till last byte (excluding trailing \n)
+        int valueLen = restLen - (eqIndex + 2);
+        if (valueLen < 0) {
+            // no value or just newline, remove header entry
+            headers.remove(keyword);
+            continue;
+        }
+        String value = new String(rest, eqIndex + 1, valueLen, CharsetNames.UTF_8);
+        if (value.trim().isEmpty()) {
+            // treat empty values as removal
+            headers.remove(keyword);
+        } else {
+            headers.put(keyword, value);
+        }
+    }
+    return headers;
+}

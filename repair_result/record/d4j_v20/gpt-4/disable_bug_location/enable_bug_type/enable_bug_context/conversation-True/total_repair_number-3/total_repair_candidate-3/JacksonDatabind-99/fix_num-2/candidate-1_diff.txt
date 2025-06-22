@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -3,6 +3,8 @@
+     StringBuilder sb = new StringBuilder();
+     sb.append(_class.getName());
+     sb.append('<');
+-    sb.append(_referencedType.toCanonical());
++    sb.append(getReferencedType().toCanonical());
++    sb.append('>');
+     return sb.toString();
+ }
++

@@ -1,0 +1,28 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.LooseTypeCheckTest.testDuplicateLocalVarDecl
+- Error: junit.framework.AssertionFailedError: expected:<2> but was:<1>
+- Location:     testClosureTypesMultipleWarnings(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.LooseTypeCheckTest.testFunctionArguments13
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testScoping12
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(
+
+
+Test failure 4:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testDuplicateLocalVarDecl
+- Error: junit.framework.AssertionFailedError: unexpected warning(s) : JSC_DUP_VAR_DECLARATION. variable x redefined with type string, original definition at  [testcode] :2 with type number at  [testcode]  line 2 : 42 expected:<2> but was:<1>
+- Location:     testClosureTypesMultipleWarnings(
+
+
+Test failure 5:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testFunctionArguments13
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(

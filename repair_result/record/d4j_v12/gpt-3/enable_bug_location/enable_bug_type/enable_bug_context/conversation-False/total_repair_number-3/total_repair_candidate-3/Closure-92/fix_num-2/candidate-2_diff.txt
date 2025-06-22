@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -49,10 +49,14 @@
+         // Add it after the parent namespace.
+         ProvidedName parentName =
+             providedNames.get(namespace.substring(0, indexOfDot));
+-        Preconditions.checkNotNull(parentName);
+-        Preconditions.checkNotNull(parentName.replacementNode);
+-        parentName.replacementNode.getParent().addChildAfter(
+-            replacementNode, parentName.replacementNode);
++        if (parentName != null && parentName.replacementNode != null) {
++          parentName.replacementNode.getParent().addChildAfter(
++              replacementNode, parentName.replacementNode);
++        } else {
++          // Handle the case where the parentName is null
++          // This may indicate an inconsistency in namespace definitions.
++          compiler.report(t.makeError(parentName, MISSING_PROVIDE_ERROR, namespace.substring(0, indexOfDot)));
++        }
+       }
+     }
+     if (explicitNode != null) {
+@@ -61,3 +65,4 @@
+     compiler.reportCodeChange();
+   }
+ }
++

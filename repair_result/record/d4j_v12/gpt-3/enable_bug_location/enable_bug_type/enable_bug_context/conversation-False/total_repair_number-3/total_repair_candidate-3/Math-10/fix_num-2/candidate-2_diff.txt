@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -10,7 +10,13 @@
+     add(tmp1, 0, tmp2, 0, tmp2, 0);                 // x^2 + y^2
+     rootN(tmp2, 0, 2, tmp1, 0);                     // r = sqrt(x^2 + y^2)
+ 
+-    if (x[xOffset] >= 0) {
++    if (Double.isNaN(tmp1[0]) || Double.isNaN(x[xOffset])) {
++        // Handle cases where inputs may lead to NaN
++        result[resultOffset] = Double.NaN;
++        return;
++    }
++
++    if (x[xOffset] > 0) {
+ 
+         // compute atan2(y, x) = 2 atan(y / (r + x))
+         add(tmp1, 0, x, xOffset, tmp2, 0);          // r + x
+@@ -20,20 +26,30 @@
+             result[resultOffset + i] = 2 * tmp2[i]; // 2 * atan(y / (r + x))
+         }
+ 
+-    } else {
++    } else if (x[xOffset] < 0) {
+ 
+         // compute atan2(y, x) = +/- pi - 2 atan(y / (r - x))
+         subtract(tmp1, 0, x, xOffset, tmp2, 0);     // r - x
+-        divide(y, yOffset, tmp2, 0, tmp1, 0);       // y /(r - x)
+-        atan(tmp1, 0, tmp2, 0);                     // atan(y / (r - x))
++        divide(y, yOffset, tmp2, 0, tmp1, 0);        // y /(r - x)
++        atan(tmp1, 0, tmp2, 0);                      // atan(y / (r - x))
+         result[resultOffset] =
+                 ((tmp2[0] <= 0) ? -FastMath.PI : FastMath.PI) - 2 * tmp2[0]; // +/-pi - 2 * atan(y / (r - x))
+         for (int i = 1; i < tmp2.length; ++i) {
+             result[resultOffset + i] = -2 * tmp2[i]; // +/-pi - 2 * atan(y / (r - x))
+         }
+ 
++    } else {
++        // Handle special case: x = 0
++        if (y[yOffset] > 0) {
++            result[resultOffset] = FastMath.PI / 2; // +0/0 -> +PI/2
++        } else if (y[yOffset] < 0) {
++            result[resultOffset] = -FastMath.PI / 2; // -0/0 -> -PI/2
++        } else {
++            result[resultOffset] = 0; // 0/0 -> 0
++        }
+     }
+ 
+     // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
+ 
+ }
++

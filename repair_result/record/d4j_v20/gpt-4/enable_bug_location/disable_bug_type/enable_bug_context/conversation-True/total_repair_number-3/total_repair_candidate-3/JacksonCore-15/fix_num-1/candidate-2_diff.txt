@@ -1,0 +1,64 @@
+--- 
++++ 
+@@ -21,21 +21,17 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
+-                // Almost! Most likely still have the current token;
+-                // with the sole exception of 
+-                /*
+-                t = delegate.getCurrentToken();
+-                if (t != JsonToken.FIELD_NAME) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-                */
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                } else if (ctxt.inObject()) {
++                    t = delegate.getCurrentToken();
++                    if (t != JsonToken.FIELD_NAME) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 break;
+             }
+             // If not, traverse down the context chain
+@@ -52,6 +48,23 @@
+     if (t == null) {
+         // no strict need to close, since we have no state here
+         return (_currToken = t);
++    }
++
++    // if multiple matches NOT allowed, and match already found, consume but not return tokens
++    if (!_allowMultipleMatches && getMatchCount() > 0) {
++        // consume tokens but skip returning them until end of current structure
++        switch (t.id()) {
++            case ID_START_OBJECT:
++            case ID_START_ARRAY:
++                delegate.skipChildren();
++                // After skipping children, next token should be END_OBJECT or END_ARRAY; suppress return
++                break;
++            default:
++                // skip this token, do not return
++                break;
++        }
++        // recurse to next token
++        return nextToken();
+     }
+ 
+     // otherwise... to include or not?
+@@ -210,3 +223,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

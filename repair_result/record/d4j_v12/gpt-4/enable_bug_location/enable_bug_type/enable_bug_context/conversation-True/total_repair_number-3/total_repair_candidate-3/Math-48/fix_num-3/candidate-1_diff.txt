@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -27,9 +27,12 @@
+     // larger than the right bound.
+     boolean inverted = false;
+ 
++    // Keep track of the number of evaluations at the same endpoint value to detect stagnation.
++    int update0 = 0;
++
+     // Keep finding better approximations.
+     while (true) {
+-        // Calculate the next approximation.
++        // Calculate the next approximation using the secant formula.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
+ 
+@@ -42,10 +45,9 @@
+ 
+         // Update the bounds with the new approximation.
+         if (f1 * fx < 0) {
+-            // The value of x1 has switched to the other bound, thus inverting
+-            // the interval.
+             x0 = x1;
+             f0 = f1;
++            update0 = 0;
+             inverted = !inverted;
+         } else {
+             switch (method) {
+@@ -58,6 +60,10 @@
+             case REGULA_FALSI:
+                 // Detect early that algorithm is stuck, instead of waiting
+                 // for the maximum number of iterations to be exceeded.
++                if (update0 == 2) { // if stuck after 2 updates
++                    return x1;
++                }
++                update0++;
+                 break;
+             default:
+                 // Should never happen.
+@@ -121,3 +127,4 @@
+         }
+     }
+ }
++

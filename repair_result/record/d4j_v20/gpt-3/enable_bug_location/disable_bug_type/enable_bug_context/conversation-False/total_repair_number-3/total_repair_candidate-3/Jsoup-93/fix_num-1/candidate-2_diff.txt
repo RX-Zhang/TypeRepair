@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -3,12 +3,16 @@
+ 
+     // iterate the form control elements and accumulate their values
+     for (Element el: elements) {
+-        if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submitable
++        if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submittable
+         if (el.hasAttr("disabled")) continue; // skip disabled form inputs
+         String name = el.attr("name");
+         if (name.length() == 0) continue;
+         String type = el.attr("type");
+ 
++        // skip input types that are not successful controls in form submission except for select, checkbox, radio, and textarea
++        if ("button".equalsIgnoreCase(type) || "submit".equalsIgnoreCase(type) || "reset".equalsIgnoreCase(type) || "file".equalsIgnoreCase(type)) {
++            continue;
++        }
+ 
+         if ("select".equals(el.normalName())) {
+             Elements options = el.select("option[selected]");
+@@ -34,3 +38,4 @@
+     }
+     return data;
+ }
++

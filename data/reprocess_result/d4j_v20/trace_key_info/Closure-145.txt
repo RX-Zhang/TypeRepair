@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testFunctionSafariCompatiblity
+- Error: junit.framework.ComparisonFailure: expected:<if(e1)[{A:function goo(){return true}]}> but was:<if(e1)[A:function goo(){return true]}>
+- Location:     assertPrint("if(e1)A:function goo(){return true}",
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testDoLoopIECompatiblity
+- Error: junit.framework.ComparisonFailure: expected:<if(x)[{A:do foo();while(y)}]> but was:<if(x)[A:do foo();while(y)]>
+- Location:     assertPrint("if(x)A:do{foo()}while(y);",

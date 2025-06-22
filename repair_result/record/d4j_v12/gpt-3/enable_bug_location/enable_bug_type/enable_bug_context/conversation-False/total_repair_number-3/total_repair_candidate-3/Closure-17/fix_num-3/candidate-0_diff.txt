@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -47,5 +47,7 @@
+     }
+   }
+ 
++  // Ensure we return a valid type if no conditions are met
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

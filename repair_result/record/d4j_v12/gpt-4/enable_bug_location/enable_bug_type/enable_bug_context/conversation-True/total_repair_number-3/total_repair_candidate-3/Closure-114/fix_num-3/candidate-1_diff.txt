@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -19,13 +19,14 @@
+         recordDepScope(nameNode, ns);
+       }
+     } else {
+-      // The rhs of the assignment is the caller, so it's used by the
+-      // context. Don't associate it w/ the lhs.
+-      // FYI: this fixes only the specific case where the assignment is the
+-      // caller expression, but it could be nested deeper in the caller and
+-      // we would still get a bug.
+-      // See testAssignWithCall2 for an example of this.
+-      recordDepScope(recordNode, ns);
++      // The rhs of the assignment may be consumed by the parent.
++      // If the assignment is used as a call (e.g., (fun = function(){})()),
++      // we do not want to associate it with the lhs since the function is
++      // invoked immediately. This can cause incorrect removal of vars.
++      if (!valueConsumedByParent(n, parent)) {
++        recordDepScope(recordNode, ns);
++      }
+     }
+   }
+ }
++

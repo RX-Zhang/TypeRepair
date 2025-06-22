@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -20,8 +20,7 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+@@ -89,10 +88,13 @@
+       return foldedStringNode;
+     default:
+       // No folding could actually be performed.
+-      if (arrayFoldedChildren.size() == arrayNode.getChildCount()) {
++      // Fix: Explicitly handle the delimiter when it's the default "," and optimize join call accordingly
++      boolean defaultDelimiter = right == null || (right.getType() == Token.STRING && joinString.equals(","));
++      if (arrayFoldedChildren.size() == arrayNode.getChildCount()
++          && (right == null || !defaultDelimiter)) {
+         return n;
+       }
+-      int kJoinOverhead = "[].join()".length();
++      int kJoinOverhead = defaultDelimiter ? "[].join()".length() : "[].join(\"\")".length();
+       foldedSize += kJoinOverhead;
+       foldedSize += (right != null) ? InlineCostEstimator.getCost(right) : 0;
+       if (foldedSize > originalSize) {
+@@ -102,9 +104,14 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      // If delimiter is the default ",", remove it to optimize output as .join()
++      if (right != null && right.getType() == Token.STRING && joinString.equals(",")) {
++        callTarget.removeChild(right);
++      }
+       reportCodeChange();
+       break;
+   }
+ 
+   return n;
+ }
++

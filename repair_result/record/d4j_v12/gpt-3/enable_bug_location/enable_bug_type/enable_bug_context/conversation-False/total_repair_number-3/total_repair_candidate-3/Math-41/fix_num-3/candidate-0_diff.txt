@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -17,16 +17,21 @@
+             }
+ 
+             double sumWts = 0;
+-            for (int i = 0; i < weights.length; i++) {
++            for (int i = begin; i < begin + length; i++) { // Fixed to iterate only over the relevant weights
+                 sumWts += weights[i];
+             }
+ 
+-            if (isBiasCorrected) {
+-                var = (accum - (accum2 * accum2 / sumWts)) / (sumWts - 1.0);
++            if (sumWts > 0) { // Added check to prevent division by zero
++                if (isBiasCorrected) {
++                    var = (accum - (accum2 * accum2 / sumWts)) / (sumWts - 1.0);
++                } else {
++                    var = (accum - (accum2 * accum2 / sumWts)) / sumWts;
++                }
+             } else {
+-                var = (accum - (accum2 * accum2 / sumWts)) / sumWts;
++                var = Double.NaN; // Handle case where sum of weights is zero
+             }
+         }
+     }
+     return var;
+ }
++

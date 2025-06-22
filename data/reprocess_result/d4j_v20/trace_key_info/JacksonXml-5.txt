@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.dataformat.xml.MapperCopyTest.testCopyWith
+- Error: junit.framework.AssertionFailedError: Should NOT use name 'AnnotatedName' but 'Pojo282', xml = <AnnotatedName><a>3</a></AnnotatedName>
+- Location:             fail("Should NOT use name 'AnnotatedName' but 'Pojo282', xml = "+xml1);

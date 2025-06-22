@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -1,5 +1,10 @@
+ public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+ {
++    if (p.getCurrentToken() == null) {
++        // handle null token gracefully
++        return null;
++    }
++
+     if (p.getCurrentToken() == JsonToken.START_OBJECT) {
+         p.nextToken();
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+@@ -9,5 +14,10 @@
+     if (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+     }
++    // For empty object case where token is END_OBJECT, return empty ObjectNode instead of exception
++    if (p.getCurrentToken() == JsonToken.END_OBJECT) {
++        return ctxt.getNodeFactory().objectNode();
++    }
+     throw ctxt.mappingException(ObjectNode.class);
+- }
++}
++

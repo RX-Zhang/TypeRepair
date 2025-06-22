@@ -1,0 +1,1 @@
+{"Mockito-13": ["org.mockitousage.bugs.VerifyingWithAnExtraCallToADifferentMockTest::shouldAllowVerifyingWhenOtherMockCallIsInTheSameLine"]}

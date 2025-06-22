@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -5,5 +5,9 @@
+ 
+     Element element = (Element) o;
+ 
+-    return this == o;
++    return this.tag().equals(element.tag())
++            && this.id().equals(element.id())
++            && this.className().equals(element.className())
++            && this.text().equals(element.text());
+ }
++

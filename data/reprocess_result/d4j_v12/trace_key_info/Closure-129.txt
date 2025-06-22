@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.IntegrationTest.testIssue937
+- Error: junit.framework.AssertionFailedError: 
+Expected: console.log((new x).abc())
+Result: console.log((0,(new x).abc)())
+- Location:     test(options, code, result);

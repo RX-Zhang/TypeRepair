@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -19,10 +19,12 @@
+             {
+                 tokens.add(token.substring(0, token.indexOf('=')));
+                 tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                currentOption = options.getOption(token.substring(0, token.indexOf('=')).substring(2));
+             }
+             else
+             {
+                 tokens.add(token);
++                currentOption = options.getOption(token.substring(2));
+             }
+         }
+ 
+@@ -40,6 +42,7 @@
+             else if (options.hasOption(token))
+             {
+                 tokens.add(token);
++                currentOption = options.getOption(token.substring(1));
+             }
+             // requires bursting
+             else
+@@ -61,3 +64,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

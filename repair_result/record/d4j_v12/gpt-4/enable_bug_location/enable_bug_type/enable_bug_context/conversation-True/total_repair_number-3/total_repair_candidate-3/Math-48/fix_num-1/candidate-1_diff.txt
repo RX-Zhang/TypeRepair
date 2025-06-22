@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -27,6 +27,11 @@
+     // larger than the right bound.
+     boolean inverted = false;
+ 
++    // Keep track of the number of function evaluations to detect stagnation for Regula Falsi
++    int evaluationsSinceLastChange = 0;
++    int maxStagnationIterations = 50; // This number can be adjusted as necessary
++    double lastX = x1;
++
+     // Keep finding better approximations.
+     while (true) {
+         // Calculate the next approximation.
+@@ -47,6 +52,7 @@
+             x0 = x1;
+             f0 = f1;
+             inverted = !inverted;
++            evaluationsSinceLastChange = 0;  // reset stagnation counter
+         } else {
+             switch (method) {
+             case ILLINOIS:
+@@ -58,6 +64,15 @@
+             case REGULA_FALSI:
+                 // Detect early that algorithm is stuck, instead of waiting
+                 // for the maximum number of iterations to be exceeded.
++                if (Math.abs(x - lastX) < atol) {
++                    evaluationsSinceLastChange++;
++                    if (evaluationsSinceLastChange >= maxStagnationIterations) {
++                        // Stagnation detected, return current approximation
++                        return x;
++                    }
++                } else {
++                    evaluationsSinceLastChange = 0;
++                }
+                 break;
+             default:
+                 // Should never happen.
+@@ -65,6 +80,7 @@
+             }
+         }
+         // Update from [x0, x1] to [x0, x].
++        lastX = x1;
+         x1 = x;
+         f1 = fx;
+ 
+@@ -121,3 +137,4 @@
+         }
+     }
+ }
++

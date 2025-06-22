@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public int read(byte[] buf, int offset, int numToRead) throws IOException {
+-	int totalRead = 0;
++    int totalRead = 0;
+ 
+     if (hasHitEOF || entryOffset >= entrySize) {
+         return -1;
+@@ -7,6 +7,17 @@
+ 
+     if (currEntry == null) {
+         throw new IllegalStateException("No current tar entry");
++    }
++
++    // Input validation: Check that buf is not null, offset is within bounds, and numToRead is valid
++    if (buf == null) {
++        throw new IllegalArgumentException("Buffer cannot be null");
++    }
++    if (offset < 0 || offset >= buf.length) {
++        throw new ArrayIndexOutOfBoundsException("Offset is out of bounds");
++    }
++    if (numToRead < 0 || offset + numToRead > buf.length) {
++        throw new ArrayIndexOutOfBoundsException("Number of bytes to read is invalid");
+     }
+ 
+     numToRead = Math.min(numToRead, available());
+@@ -22,3 +33,4 @@
+ 
+     return totalRead;
+ }
++

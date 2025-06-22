@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -13,7 +13,10 @@
+         DurationField first = savedFields[0].iField.getDurationField();
+         if (compareReverse(first, months) >= 0 && compareReverse(first, days) <= 0) {
+             saveField(DateTimeFieldType.year(), iDefaultYear);
+-            return computeMillis(resetFields, text);
++            // After adding the default year, re-fetch saved fields as it may have changed
++            savedFields = iSavedFields;
++            count = iSavedFieldsCount;
++            sort(savedFields, count);
+         }
+     }
+ 
+@@ -46,3 +49,4 @@
+     
+     return millis;
+ }
++

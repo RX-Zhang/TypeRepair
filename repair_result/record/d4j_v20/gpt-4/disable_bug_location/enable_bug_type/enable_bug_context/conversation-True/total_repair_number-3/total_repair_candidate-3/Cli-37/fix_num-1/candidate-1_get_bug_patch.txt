@@ -1,0 +1,28 @@
+private boolean isShortOption(String token)
+{
+    // short options (-S, -SV, -S=V, -SV1=V2, -S1S2)
+    if (!token.startsWith("-") || token.length() < 2) {
+        return false;
+    }
+
+    // Extract the first character after '-'
+    String firstChar = token.substring(1, 2);
+
+    // Check if the first character is a known short option
+    if (!options.hasShortOption(firstChar)) {
+        return false;
+    }
+
+    // If token length is exactly 2 (-S), it's definitely a short option
+    if (token.length() == 2) {
+        return true;
+    }
+
+    // If token length > 2, verify that the next char is either '=' or a digit or another letter that can be part of option values
+    char thirdChar = token.charAt(2);
+    if (thirdChar == '=' || Character.isDigit(thirdChar) || Character.isLetter(thirdChar)) {
+        return true;
+    }
+
+    return false;
+}

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -7,7 +7,13 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
+-      return false;
++    // Check if the value assigned to prototype is of function type or unknown,
++    // if not, it should be considered inferred to avoid type mismatch errors.
++    if (rhsValue != null && !rhsValue.isFunction()
++        && valueType != null && !valueType.isFunctionType() && !valueType.isUnknownType()) {
++      return true;
++    }
++    return false;
+   }
+ 
+   boolean inferred = true;
+@@ -47,3 +53,4 @@
+   }
+   return inferred;
+ }
++

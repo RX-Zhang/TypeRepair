@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -4,10 +4,10 @@
+         _hashArea = Arrays.copyOf(_hashArea, _hashArea.length);
+         _names = Arrays.copyOf(_names, _names.length);
+         _hashShared = false;
+-        // 09-Sep-2015, tatu: As per [jackson-core#216], also need to ensure
+-        //    we rehash as needed, as need-rehash flag is not copied from parent
++        _needRehash = false; // Reset rehash flag explicitly when unsharing
+     }
+     if (_needRehash) {
+         rehash();
+     }
+ }
++

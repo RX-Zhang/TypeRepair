@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -31,11 +31,15 @@
+ 
+         // 25-May-2018, tatu: as per [databind#2051], looks like we have to get
+         //    not implicit name, but name with possible strategy-based-rename
+-          paramName = candidate.findImplicitParamName(0);
+         paramName = candidate.findImplicitParamName(0);
+         useProps = (paramName != null) && paramDef.couldSerialize();
+     }
+     if (useProps) {
++        // Adjusting the property name to ensure it matches the expected naming strategy
++        if (paramName != null) {
++            String modifiedName = convertToSnakeCase(paramName.getSimpleName());
++            paramName = PropertyName.construct(modifiedName);
++        }
+         SettableBeanProperty[] properties = new SettableBeanProperty[] {
+                 constructCreatorProperty(ctxt, beanDesc, paramName, 0, param, injectId)
+         };
+@@ -50,3 +54,9 @@
+         ((POJOPropertyBuilder) paramDef).removeConstructors();
+     }
+ }
++
++// Helper method to convert property names to snake_case
++private String convertToSnakeCase(String paramName) {
++    return paramName.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
++}
++

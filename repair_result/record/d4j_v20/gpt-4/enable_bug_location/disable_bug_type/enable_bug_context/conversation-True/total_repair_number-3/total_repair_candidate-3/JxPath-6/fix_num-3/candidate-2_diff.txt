@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//    System.err.println("COMPARING: " +
++//        (l == null ? "null" : l.getClass().getName()) + " " +
++//        (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -35,5 +35,7 @@
+     if (l instanceof Iterator && r instanceof Iterator) {
+         return findMatch((Iterator) l, (Iterator) r);
+     }
+-    return equal(l, r);
++    // Fix: use this.equal instead of equal to avoid recursion to this method instead of the equal(Object l, Object r)
++    return this.equal(l, r);
+ }
++

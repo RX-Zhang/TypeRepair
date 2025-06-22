@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -13,6 +13,9 @@
+     if (this.in == null) {
+         throw new IOException("stream closed");
+     }
++    if (len == 0) {
++        return 0;
++    }
+ 
+     final int hi = offs + len;
+     int destOffs = offs;
+@@ -25,3 +28,4 @@
+     int c = (destOffs == offs) ? -1 : (destOffs - offs);
+     return c;
+ }
++

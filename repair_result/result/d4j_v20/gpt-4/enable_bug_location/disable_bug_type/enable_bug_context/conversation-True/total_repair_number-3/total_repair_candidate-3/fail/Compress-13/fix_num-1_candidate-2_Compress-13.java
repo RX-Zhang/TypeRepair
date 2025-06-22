@@ -1,0 +1,9 @@
+protected void setName(String name, byte[] rawName) {
+    this.name = name;
+    if (rawName != null) {
+        this.rawName = new byte[rawName.length];
+        System.arraycopy(rawName, 0, this.rawName, 0, rawName.length);
+    } else {
+        this.rawName = null;
+    }
+}

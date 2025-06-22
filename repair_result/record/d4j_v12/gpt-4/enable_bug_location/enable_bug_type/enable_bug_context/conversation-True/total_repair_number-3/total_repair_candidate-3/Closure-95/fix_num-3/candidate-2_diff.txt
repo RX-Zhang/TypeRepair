@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ void defineSlot(Node n, Node parent, JSType type, boolean inferred) {
+   Preconditions.checkArgument(inferred || type != null);
+ 
+-  // Only allow declarations of NAMEs and qualfied names.
++  // Only allow declarations of NAMEs and qualified names.
+   boolean shouldDeclareOnGlobalThis = false;
+   if (n.getType() == Token.NAME) {
+     Preconditions.checkArgument(
+@@ -25,9 +25,6 @@
+   // scope where the root object appears. This helps out people
+   // who declare "global" names in an anonymous namespace.
+   Scope scopeToDeclareIn = scope;
+-
+-    // don't try to declare in the global scope if there's
+-    // already a symbol there with this name.
+ 
+   // declared in closest scope?
+   if (scopeToDeclareIn.isDeclared(variableName, false)) {
+@@ -62,13 +59,16 @@
+       FunctionType fnType = (FunctionType) type;
+       if (fnType.isConstructor() || fnType.isInterface()) {
+         FunctionType superClassCtor = fnType.getSuperClassConstructor();
++
++        // Fix: Only declare prototype if there's an explicit supertype,
++        // or if the superClassCtor's instance type is Object not the native Object.
++        boolean declared = superClassCtor != null ||
++            (superClassCtor != null && !superClassCtor.getInstanceType().equals(getNativeType(JSTypeNative.OBJECT_TYPE)));
+         scopeToDeclareIn.declare(variableName + ".prototype", n,
+             fnType.getPrototype(), compiler.getInput(sourceName),
+-            /* declared iff there's an explicit supertype */
+-            superClassCtor == null ||
+-            superClassCtor.getInstanceType().equals(
+-                getNativeType(OBJECT_TYPE)));
++            declared);
+       }
+     }
+   }
+ }
++

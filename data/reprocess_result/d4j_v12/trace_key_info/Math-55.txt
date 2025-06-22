@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.geometry.Vector3DTest.testCrossProductCancellation
+- Error: junit.framework.AssertionFailedError: expected:<1.0> but was:<0.0>
+- Location:         checkVector(Vector3D.crossProduct(v1, v2), -1, 2, 1);

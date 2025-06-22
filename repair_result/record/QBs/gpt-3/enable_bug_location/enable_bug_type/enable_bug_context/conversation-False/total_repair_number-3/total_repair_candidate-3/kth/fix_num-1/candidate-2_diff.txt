@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -1,4 +1,9 @@
+ def kth(arr, k):
++    if k < 0 or k >= len(arr):  # Boundary check for k
++        raise IndexError("k is out of bounds")
++    if len(arr) == 0:  # Check if arr is empty
++        raise RuntimeError("The array is empty")
++        
+     pivot = arr[0]
+     below = [x for x in arr if x < pivot]
+     above = [x for x in arr if x > pivot]

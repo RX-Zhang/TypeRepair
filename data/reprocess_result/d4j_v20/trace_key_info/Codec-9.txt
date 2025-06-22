@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.codec.binary.Base64Test.testCodec112
+- Error: java.lang.IllegalArgumentException: Input array too big, the output array would be bigger (6) than the specified maxium size of 4
+- Location:         Base64.encodeBase64(in, false, false, out.length);

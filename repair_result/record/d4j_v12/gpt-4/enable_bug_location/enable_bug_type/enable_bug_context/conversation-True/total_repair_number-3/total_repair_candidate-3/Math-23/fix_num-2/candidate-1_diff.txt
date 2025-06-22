@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -78,6 +78,7 @@
+                         } else {
+                             d = -tol1;
+                         }
++                        u = x + d;  // Added this line to update u accordingly
+                     }
+                 } else {
+                     // Golden section step.
+@@ -157,11 +158,9 @@
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return
+-                        best(current,
+-                             previous,
+-                        isMinim);
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -40,7 +40,7 @@
+                 // 28-Aug-2018, tatu: Let's add sanity check here, easier to catch off-by-some
+                 //    problems if we maintain invariants
+                 tokens.writeEndObject();
+-                if (bean.getClass() != _beanType.getRawClass()) {
++                if (!bean.getClass().isAssignableFrom(_beanType.getRawClass())) {
+                     // !!! 08-Jul-2011, tatu: Could probably support; but for now
+                     //   it's too complicated, so bail out
+                     ctxt.reportInputMismatch(creatorProp,
+@@ -99,3 +99,4 @@
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

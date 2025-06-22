@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -10,9 +10,14 @@
+     if (block.isFunction) {
+       break;
+     } else if (block.isLoop) {
+-      return false;
++      // Check if this assignment happens multiple times by looking up references
++      ReferenceCollection references = getReferences(ref.getVar());
++      if (references != null && references.size() > 1) {
++        return false;
++      }
+     }
+   }
+ 
+   return true;
+ }
++

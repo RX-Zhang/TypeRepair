@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -19,6 +19,7 @@
+     // mostly copied from 'nextToken()'
+     while (token == XmlTokenStream.XML_START_ELEMENT) {
+         if (_mayBeLeaf) {
++            // For a leaf node, we should not return null here but properly set the state
+             _nextToken = JsonToken.FIELD_NAME;
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
+@@ -60,6 +61,8 @@
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            // Return null here, because we haven't reached value token yet
++            return null;
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
+@@ -68,7 +71,7 @@
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText; // return text immediately because this is the value we want
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -91,3 +94,4 @@
+     }
+     return null;
+ }
++

@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -14,14 +14,17 @@
+                 int base = m.group(2) != null ? 16 : 10; // 2 is hex indicator
+                 charval = Integer.valueOf(num, base);
+             } catch (NumberFormatException e) {
+-            } // skip
++                // Handle the exception by skipping to the next iteration
++                continue;
++            }
+         } else {
+             String name = m.group(1);
+             if (full.containsKey(name))
+-                charval = full.get(name);
++                charval = (int) full.get(name); // Ensure we retrieve an integer value
+         }
+ 
+-        if (charval != -1 || charval > 0xFFFF) { // out of range
++        // Fix the condition to check for valid character values
++        if (charval != -1 && charval <= 0xFFFF) { // out of range check
+             String c = Character.toString((char) charval);
+             m.appendReplacement(accum, c);
+         } else {
+@@ -31,3 +34,4 @@
+     m.appendTail(accum);
+     return accum.toString();
+ }
++

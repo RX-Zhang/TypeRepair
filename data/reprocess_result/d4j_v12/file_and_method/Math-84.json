@@ -1,0 +1,1 @@
+{"ClassName": "MultiDirectional", "Fields": ["private final double khi;", "private final double gamma;"], "Methods": ["protected void iterateSimplex(Comparator comparator) { ... }", "private RealPointValuePair evaluateNewSimplex(RealPointValuePair[] original, double coeff, Comparator comparator) { ... }"]}

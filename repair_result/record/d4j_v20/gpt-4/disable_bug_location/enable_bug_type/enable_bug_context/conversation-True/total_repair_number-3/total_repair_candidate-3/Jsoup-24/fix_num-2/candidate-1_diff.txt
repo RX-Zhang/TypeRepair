@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -3,11 +3,11 @@
+         String name = r.consumeLetterSequence();
+         t.tagPending.appendTagName(name.toLowerCase());
+         t.dataBuffer.append(name);
+-        r.advance();
++        // Removed r.advance(); because consumeLetterSequence already consumes letters
+         return;
+     }
+ 
+-    if (t.isAppropriateEndTagToken() && !r.isEmpty()) {
++    if (t.isAppropriateEndTagToken() || !r.isEmpty()) {
+         char c = r.consume();
+         switch (c) {
+             case '\t':
+@@ -32,3 +32,4 @@
+         anythingElse(t, r);
+     }
+ }
++

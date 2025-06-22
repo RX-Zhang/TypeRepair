@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -69,8 +69,19 @@
+         return PEEKED_NONE;
+       }
+       if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {
+-        value = -(c - '0');
+-        last = NUMBER_CHAR_DIGIT;
++        // Fixed bug here: allow leading 0 if it is '-0'
++        if (c == '0') {
++          last = NUMBER_CHAR_DIGIT;
++          // value stays 0, for now treat negative separately
++          if (negative) {
++            value = 0;
++          } else {
++            value = -(c - '0');
++          }
++        } else {
++          value = -(c - '0');
++          last = NUMBER_CHAR_DIGIT;
++        }
+       } else if (last == NUMBER_CHAR_DIGIT) {
+         if (value == 0) {
+           return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
+@@ -100,3 +111,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

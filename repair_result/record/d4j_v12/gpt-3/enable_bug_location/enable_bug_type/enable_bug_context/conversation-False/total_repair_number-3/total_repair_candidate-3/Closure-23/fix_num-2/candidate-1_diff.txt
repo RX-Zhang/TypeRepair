@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -15,21 +15,17 @@
+ 
+   double index = right.getDouble();
+   int intIndex = (int) index;
+-  if (intIndex != index) {
+-    error(INVALID_GETELEM_INDEX_ERROR, right);
+-    return n;
+-  }
+-
+-  if (intIndex < 0) {
+-    error(INDEX_OUT_OF_BOUNDS_ERROR, right);
++  
++  // Boundary check for invalid index
++  if (intIndex != index || intIndex < 0) {
++    error(intIndex < 0 ? INDEX_OUT_OF_BOUNDS_ERROR : INVALID_GETELEM_INDEX_ERROR, right);
+     return n;
+   }
+ 
+   Node current = left.getFirstChild();
+   Node elem = null;
+   for (int i = 0; current != null && i < intIndex; i++) {
+-      elem = current;
+-
++    elem = current;
+     current = current.getNext();
+   }
+ 
+@@ -49,3 +45,4 @@
+   reportCodeChange();
+   return elem;
+ }
++

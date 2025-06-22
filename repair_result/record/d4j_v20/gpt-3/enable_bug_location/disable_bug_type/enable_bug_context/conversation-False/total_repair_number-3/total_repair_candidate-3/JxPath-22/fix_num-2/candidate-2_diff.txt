@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ public static String getNamespaceURI(Node node) {
+     if (node instanceof Document) {
+         node = ((Document) node).getDocumentElement();
++    }
++    
++    if (!(node instanceof Element)) {
++        return null;
+     }
+ 
+     Element element = (Element) node;
+@@ -13,9 +17,9 @@
+         Node aNode = node;
+         while (aNode != null) {
+             if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+-                Attr attr = ((Element) aNode).getAttributeNode(qname);
+-                if (attr != null) {
+-                    return attr.getValue();
++                Element aElement = (Element) aNode;
++                if (aElement.hasAttribute(qname)) {
++                    return aElement.getAttribute(qname);
+                 }
+             }
+             aNode = aNode.getParentNode();
+@@ -24,3 +28,4 @@
+     }
+     return uri;
+ }
++

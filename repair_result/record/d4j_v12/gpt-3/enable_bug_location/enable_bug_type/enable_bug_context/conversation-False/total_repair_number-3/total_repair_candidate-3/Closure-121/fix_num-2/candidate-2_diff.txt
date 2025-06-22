@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -61,14 +61,17 @@
+             !isVarInlineForbidden(candidate.alias)) {
+           Reference aliasInit;
+           aliasInit = candidate.refInfo.getInitializingReference();
+-          Node value = aliasInit.getAssignedValue();
+-          Preconditions.checkNotNull(value);
+-          inlineWellDefinedVariable(candidate.alias,
+-              value,
+-              candidate.refInfo.references);
+-          staleVars.add(candidate.alias);
++          if (aliasInit != null) { // Added check to avoid potential NullPointerException
++              Node value = aliasInit.getAssignedValue();
++              Preconditions.checkNotNull(value);
++              inlineWellDefinedVariable(candidate.alias,
++                  value,
++                  candidate.refInfo.references);
++              staleVars.add(candidate.alias);
++          }
+         }
+       }
+     }
+   }
+ }
++

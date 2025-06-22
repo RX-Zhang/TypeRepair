@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -6,7 +6,14 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    // Defensive: if quoteCharObj is null, treat as no quoting needed.
++    if (quoteCharObj == null) {
++        // No quote char set, just print with escaping as needed
++        printAndEscape(value, offset, len, out);
++        return;
++    }
++    final char quoteChar = quoteCharObj.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +43,8 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            // Correct parentheses to properly check ranges:
++            if (newRecord && ((c < '0') || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || (c > 'z'))) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -93,9 +101,10 @@
+ 
+             // add 1 to the length to write out the encapsulator also
+             out.append(value, start, pos + 1);
+-            // put the next starting position on the encapsulator so we will
+-            // write it out again with the next string (effectively doubling it)
+-            start = pos;
++            // double the quote character by writing it again
++            out.append(quoteChar);
++            // put the next starting position after the duplicated quote
++            start = pos + 1;
+         }
+         pos++;
+     }
+@@ -104,3 +113,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

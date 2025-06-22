@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+   // prototype chain. So climb the prototype chain and find out where
+   // the property was originally defined.
+   if (n.isGetProp()) {
+-    ObjectType objectType = getJSType(n.getFirstChild()).dereference();
++    JSType firstChildType = getJSType(n.getFirstChild());
++    ObjectType objectType = firstChildType != null ? firstChildType.dereference() : null;
+     if (objectType != null) {
+       String propName = n.getLastChild().getString();
+       if (objectType.getConstructor() != null &&
+@@ -32,23 +33,24 @@
+ 
+   JSType type = getJSType(n);
+   if (dereference) {
+-    ObjectType dereferenced = type.dereference();
++    ObjectType dereferenced = type != null ? type.dereference() : null;
+     if (dereferenced != null) {
+       type = dereferenced;
+     }
+   }
+-  if (type.isFunctionPrototypeType() ||
++  if (type != null && (type.isFunctionPrototypeType() ||
+       (type.toObjectType() != null &&
+-       type.toObjectType().getConstructor() != null)) {
++       type.toObjectType().getConstructor() != null))) {
+     return type.toString();
+   }
+   String qualifiedName = n.getQualifiedName();
+   if (qualifiedName != null) {
+     return qualifiedName;
+-  } else if (type.isFunctionType()) {
++  } else if (type != null && type.isFunctionType()) {
+     // Don't show complex function names.
+     return "function";
+   } else {
+-    return type.toString();
++    return type != null ? type.toString() : "unknown";
+   }
+ }
++

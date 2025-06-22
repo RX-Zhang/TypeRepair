@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+     int pfxLen = 0;
+     for(final String pfx : hex_prefixes) {
+         if (str.startsWith(pfx)) {
+-            pfxLen += pfx.length();
++            pfxLen = pfx.length();
+             break;
+         }
+     }
+@@ -29,7 +29,7 @@
+     String dec;
+     String exp;
+     final int decPos = str.indexOf('.');
+-    final int expPos = str.indexOf('e') + str.indexOf('E') + 1; // assumes both not present
++    final int expPos = (str.indexOf('e') > -1 ? str.indexOf('e') : str.indexOf('E')); // assumes both not present
+     // if both e and E are present, this is caught by the checks on expPos (which prevent IOOBE)
+     // and the parsing which will detect if e or E appear in a number due to using the wrong offset
+ 
+@@ -84,7 +84,7 @@
+             case 'f' :
+             case 'F' :
+                 try {
+-                    final Float f = NumberUtils.createFloat(numeric);
++                    final Float f = createFloat(numeric);
+                     if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                         //If it's too big for a float or the float value = 0 and the string
+                         //has non-zeros in it, then float does not have the precision we want
+@@ -98,8 +98,8 @@
+             case 'd' :
+             case 'D' :
+                 try {
+-                    final Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    final Double d = createDouble(numeric);
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (final NumberFormatException nfe) { // NOPMD
+@@ -159,3 +159,4 @@
+ 
+     return createBigDecimal(str);
+ }
++

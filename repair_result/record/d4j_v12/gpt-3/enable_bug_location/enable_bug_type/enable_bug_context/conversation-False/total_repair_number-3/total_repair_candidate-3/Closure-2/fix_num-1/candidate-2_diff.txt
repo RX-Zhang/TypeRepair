@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -3,10 +3,18 @@
+     HashMap<String, ObjectType> currentProperties,
+     ObjectType interfaceType) {
+   ObjectType implicitProto = interfaceType.getImplicitPrototype();
++  if (implicitProto == null) {
++    // Defensive: if implicitProto is null, just return to avoid NPE.
++    return;
++  }
+   Set<String> currentPropertyNames;
+-    // This can be the case if interfaceType is proxy to a non-existent
+-    // object (which is a bad type annotation, but shouldn't crash).
+-    currentPropertyNames = implicitProto.getOwnPropertyNames();
++  // This can be the case if interfaceType is proxy to a non-existent
++  // object (which is a bad type annotation, but shouldn't crash).
++  currentPropertyNames = implicitProto.getOwnPropertyNames();
++  if (currentPropertyNames == null) {
++    // Defensive: if property names are null, don't proceed further.
++    return;
++  }
+   for (String name : currentPropertyNames) {
+     ObjectType oType = properties.get(name);
+     if (oType != null) {
+@@ -25,3 +33,4 @@
+         currentProperties, iType);
+   }
+ }
++

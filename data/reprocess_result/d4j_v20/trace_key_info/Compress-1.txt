@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.CpioTestCase.testCpioUnarchive
+- Error: java.io.EOFException
+- Location:         while ((entry = in.getNextEntry()) != null) {

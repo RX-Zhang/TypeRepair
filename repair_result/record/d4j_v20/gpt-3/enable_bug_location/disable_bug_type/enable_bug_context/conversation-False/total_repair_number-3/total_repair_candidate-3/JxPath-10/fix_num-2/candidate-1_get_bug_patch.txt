@@ -1,0 +1,25 @@
+public final Object computeValue(EvalContext context) {
+    Object leftValue = args[0].computeValue(context);
+    Object rightValue = args[1].computeValue(context);
+
+    // Return FALSE immediately if one of the arguments is an empty node-set represented by null or empty collection/iterator
+    if (isEmptyNodeSet(leftValue) || isEmptyNodeSet(rightValue)) {
+        return Boolean.FALSE;
+    }
+
+    return compute(leftValue, rightValue) ? Boolean.TRUE : Boolean.FALSE;
+}
+
+// Helper method to detect empty node-sets
+private boolean isEmptyNodeSet(Object obj) {
+    if (obj == null) {
+        return true;
+    }
+    if (obj instanceof Iterable) {
+        return !((Iterable<?>) obj).iterator().hasNext();
+    }
+    if (obj instanceof Iterator) {
+        return !((Iterator<?>) obj).hasNext();
+    }
+    return false;
+}

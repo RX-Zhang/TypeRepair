@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -8,8 +8,14 @@
+ 
+         if (tq.matchChomp(SQ)) {
+             value = tq.chompTo(SQ);
++            if (tq.isEmpty())
++                return null; // fix: prevent StringIndexOutOfBoundsException by checking end-of-stream after chomp
++            tq.consume(); // consume closing quote
+         } else if (tq.matchChomp(DQ)) {
+             value = tq.chompTo(DQ);
++            if (tq.isEmpty())
++                return null; // fix: prevent StringIndexOutOfBoundsException by checking end-of-stream after chomp
++            tq.consume(); // consume closing quote
+         } else {
+             StringBuilder valueAccum = new StringBuilder();
+             // no ' or " to look for, so scan to end tag or space (or end of stream)
+@@ -23,8 +29,10 @@
+     if (key.length() != 0)
+         return Attribute.createFromEncoded(key, value);
+     else {
+-        tq.consume();
+-            
++        if (!tq.isEmpty()) {
++            tq.consume();
++        }
+         return null;
+     }
+ }
++

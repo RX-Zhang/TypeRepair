@@ -1,0 +1,1 @@
+{"ClassName": "InlineVariables", "Fields": ["private final AbstractCompiler compiler;", "private final Mode mode;", "private final boolean inlineAllStrings;", "private final IdentifyConstants identifyConstants;"], "Methods": ["public void process(Node externs, Node root) { ... }", "private Predicate getFilterForMode() { ... }"]}

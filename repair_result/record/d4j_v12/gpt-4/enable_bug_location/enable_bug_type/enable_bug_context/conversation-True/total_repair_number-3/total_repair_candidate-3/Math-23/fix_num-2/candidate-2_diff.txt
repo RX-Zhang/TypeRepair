@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -125,7 +125,7 @@
+             }
+ 
+             // Update a, b, v, w and x.
+-            if (fu <= fx) {
++            if (fu < fx) {
+                 if (u < x) {
+                     b = x;
+                 } else {
+@@ -157,11 +157,9 @@
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return
+-                        best(current,
+-                             previous,
+-                        isMinim);
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

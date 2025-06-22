@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -26,6 +26,9 @@
+         byte[] localExtraData = new byte[extraFieldLen];
+         archive.readFully(localExtraData);
+         ze.setExtra(localExtraData);
++        // Correct offset calculation here: 
++        // LFH_OFFSET_FOR_FILENAME_LENGTH + SHORT (fileName length field) + SHORT (extra field length field) 
++        // + filename length + extra field length
+         offsetEntry.dataOffset = offset + LFH_OFFSET_FOR_FILENAME_LENGTH
+             + SHORT + SHORT + fileNameLen + extraFieldLen;
+ 
+@@ -41,3 +44,4 @@
+         }
+     }
+ }
++

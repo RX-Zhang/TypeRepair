@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -7,10 +7,10 @@
+         }
+         // fall through
+     case OBJECT_AND_NON_CONCRETE:
+-          return t.isJavaLangObject() || 
+-        return (t.getRawClass() == Object.class)
+-                || (!t.isConcrete()
+-                        // [databind#88] Should not apply to JSON tree models:
++        return t.isJavaLangObject()
++            || (t.getRawClass() == Object.class)
++            || (!t.isConcrete()
++                // [databind#88] Should not apply to JSON tree models:
+                 || TreeNode.class.isAssignableFrom(t.getRawClass()));
+ 
+     case NON_FINAL:
+@@ -21,7 +21,8 @@
+         return !t.isFinal() && !TreeNode.class.isAssignableFrom(t.getRawClass());
+     default:
+     //case JAVA_LANG_OBJECT:
+-          return t.isJavaLangObject();
+-        return (t.getRawClass() == Object.class);
++        return t.isJavaLangObject()
++            || (t.getRawClass() == Object.class);
+     }
+ }
++

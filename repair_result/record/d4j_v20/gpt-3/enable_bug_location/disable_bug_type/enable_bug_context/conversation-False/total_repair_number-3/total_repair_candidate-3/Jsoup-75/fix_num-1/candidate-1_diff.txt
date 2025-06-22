@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -8,10 +8,11 @@
+ 
+         // collapse checked=null, checked="", checked=checked; write out others
+         if (!(out.syntax() == Document.OutputSettings.Syntax.html
+-            && (val == null || val.equals(key) && Attribute.isBooleanAttribute(key)))) {
++            && (val == null || (val.isEmpty() || val.equalsIgnoreCase(key)) && Attribute.isBooleanAttribute(key)))) {
+             accum.append("=\"");
+             Entities.escape(accum, val == null ? EmptyString : val, out, true, false, false);
+             accum.append('"');
+         }
+     }
+ }
++

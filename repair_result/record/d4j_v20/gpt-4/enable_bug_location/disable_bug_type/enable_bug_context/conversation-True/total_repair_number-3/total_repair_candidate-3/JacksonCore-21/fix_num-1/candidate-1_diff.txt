@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -11,13 +11,18 @@
+         //if not scalar and ended successfully, and !includePath, then return null
+             if (_currToken.isStructEnd()) {
+                 if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
++                    // FIX: do not return null immediately; instead clear _currToken and return null
++                    _lastClearedToken = _currToken;
++                    _currToken = null;
++                    return null;
+                 }
+             } else if (_currToken.isScalarValue()) {
+                 //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+                 // then return null 
+                 if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
++                    _lastClearedToken = _currToken;
++                    _currToken = null;
++                    return null;
+                 }
+         }
+     }
+@@ -36,10 +41,11 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    // FIX: Add a null check to avoid returning a token that is START_ARRAY again incorrectly
++                    if (t != null && t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -226,3 +232,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

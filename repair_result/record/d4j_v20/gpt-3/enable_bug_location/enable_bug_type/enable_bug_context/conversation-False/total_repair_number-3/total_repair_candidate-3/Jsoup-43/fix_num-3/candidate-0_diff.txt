@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -4,8 +4,10 @@
+ 
+     for (int i = 0; i < elements.size(); i++) {
+         E element = elements.get(i);
+-        if (element.equals(search))
+-            return i;
++        if (element.equals(search)) {
++            return i; // Return the index if the element matches
++        }
+     }
+-    return null;
++    return -1; // Return -1 if the element is not found, instead of null
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -26,3 +26,13 @@
+     }
+     init(props);
+ }
++
++public void safeRemove(SettableBeanProperty propToRm) {
++    try {
++        remove(propToRm);
++    } catch (NoSuchElementException e) {
++        // Handle the exception (e.g., log it or rethrow it with additional context)
++        System.err.println(e.getMessage());
++    }
++}
++

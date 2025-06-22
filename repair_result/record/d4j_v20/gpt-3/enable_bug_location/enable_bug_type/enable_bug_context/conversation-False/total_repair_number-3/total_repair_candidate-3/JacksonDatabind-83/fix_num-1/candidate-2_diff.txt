@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -9,11 +9,11 @@
+         }
+         Exception cause = null;
+         try {
+-            // 19-May-2017, tatu: Used to require non-null result (assuming `null`
+-            //    indicated error; but that seems wrong. Should be able to return
+-            //    `null` as value.
+-            if (_deserialize(text, ctxt) != null) {
+-            return _deserialize(text, ctxt);
++            // Call _deserialize once and reuse the result to avoid double invocation and preserve logic
++            T result = _deserialize(text, ctxt);
++            // Allow null as valid result
++            if (result != null || (result == null && text.length() > 0)) {
++                return result;
+             }
+         } catch (IllegalArgumentException iae) {
+             cause = iae;
+@@ -53,3 +53,4 @@
+     }
+     return (T) ctxt.handleUnexpectedToken(_valueClass, p);
+ }
++

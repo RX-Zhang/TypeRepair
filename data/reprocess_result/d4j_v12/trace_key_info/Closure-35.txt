@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testIssue669
+- Error: junit.framework.AssertionFailedError: unexpected warnings(s):
+JSC_TYPE_MISMATCH. inconsistent return type
+found   : ({prop1: {a: number}}|{prop2: number})
+- Location:     testTypes(

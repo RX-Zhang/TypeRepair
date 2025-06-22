@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -7,11 +7,19 @@
+   }
+ 
+   for (int i = 1; i < length; i++) {
+-    if (
+-        !Character.isJavaIdentifierPart(s.charAt(i))) {
++    char c = s.charAt(i);
++    // Control characters and non-ASCII characters should not be considered valid JS identifiers.
++    // Only allow ASCII letters, digits, _ and $ as valid identifier parts.
++    if (!Character.isJavaIdentifierPart(c) || c <= 0x1F || c >= 0x7F) {
+       return false;
+     }
+   }
+ 
++  // Exclude keywords from valid identifiers
++  if (isKeyword(s)) {
++    return false;
++  }
++
+   return true;
+ }
++

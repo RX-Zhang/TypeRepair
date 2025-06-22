@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.parsing.JsDocInfoParserTest.testStructuralConstructor2
+- Error: junit.framework.AssertionFailedError: extra warning: Bad type annotation. type not recognized due to syntax error
+- Location:     JSType type = testParseType(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.parsing.JsDocInfoParserTest.testStructuralConstructor3
+- Error: junit.framework.AssertionFailedError: extra warning: Bad type annotation. type not recognized due to syntax error
+- Location:     resolve(parse("@type {function (new:*)} */").getType(),

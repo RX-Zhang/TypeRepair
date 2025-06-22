@@ -1,0 +1,19 @@
+public int parseArguments(Parameters params) throws CmdLineException {
+  String param = params.getParameter(0);
+
+  if (param == null) {
+    setter.addValue(true);
+    return 0;
+  } else {
+    String lowerParam = param.toLowerCase();
+    if (TRUES.contains(lowerParam)) {
+      setter.addValue(true);
+    } else if (FALSES.contains(lowerParam)) {
+      setter.addValue(false);
+    } else {
+      setter.addValue(true); // This line should be changed to handle unexpected values correctly
+      return 1; // Return 1 to indicate an unrecognized parameter
+    }
+    return 1; // Return 1 for recognized true/false parameters
+  }
+}

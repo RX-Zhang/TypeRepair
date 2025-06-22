@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -5,9 +5,14 @@
+         currentOption = options.getOption(token);
+         tokens.add(token);
+     }
+-    else if (stopAtNonOption)
++    else if (!stopAtNonOption)
++    {
++        tokens.add(token);
++    }
++    else
+     {
+         eatTheRest = true;
+         tokens.add(token);
+     }
+ }
++

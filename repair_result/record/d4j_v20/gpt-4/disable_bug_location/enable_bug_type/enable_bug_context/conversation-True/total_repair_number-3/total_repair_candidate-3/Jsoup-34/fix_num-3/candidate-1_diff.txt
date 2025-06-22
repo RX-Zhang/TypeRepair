@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -1,17 +1,21 @@
+ int nextIndexOf(CharSequence seq) {
+-    // doesn't handle scanning for surrogates
++    if (isEmpty()) return -1; // no input left to scan
+     char startChar = seq.charAt(0);
+-    for (int offset = pos; offset < length; offset++) {
+-        // scan to first instance of startchar:
+-        if (startChar != input[offset])
+-            while(++offset < length && startChar != input[offset]);
+-        int i = offset + 1;
+-        int last = i + seq.length()-1;
+-        if (offset < length) {
+-            for (int j = 1; i < last && seq.charAt(j) == input[i]; i++, j++);
+-            if (i == last) // found full sequence
++    int seqLength = seq.length();
++
++    for (int offset = pos; offset <= length - seqLength; offset++) {
++        if (input[offset] == startChar) {
++            int i = offset + 1;
++            int j = 1;
++            while (j < seqLength && input[i] == seq.charAt(j)) {
++                i++;
++                j++;
++            }
++            if (j == seqLength) {
+                 return offset - pos;
++            }
+         }
+     }
+     return -1;
+ }
++

@@ -1,0 +1,1 @@
+['isImmutableValue', 'isSimpleOperator', 'mayHaveSideEffects', 'constructorCallHasSideEffects', 'functionCallHasSideEffects', 'callHasLocalResult', 'isAssignmentOp', 'isGet', 'isGetProp', 'isName', 'isFunction']

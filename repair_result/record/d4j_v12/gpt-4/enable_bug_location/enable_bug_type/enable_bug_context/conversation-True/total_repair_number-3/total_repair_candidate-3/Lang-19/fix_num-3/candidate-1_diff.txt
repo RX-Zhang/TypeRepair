@@ -1,0 +1,70 @@
+--- 
++++ 
+@@ -5,19 +5,39 @@
+         int start = index + 2;
+         boolean isHex = false;
+ 
++        if (start >= seqEnd) {
++            // no chars after '&#'
++            return 0;
++        }
++
+         char firstChar = input.charAt(start);
+         if(firstChar == 'x' || firstChar == 'X') {
+             start++;
+             isHex = true;
+ 
+-            // Check there's more than just an x after the &#
++            if (start >= seqEnd) {
++                // no chars after '&#x' or '&#X'
++                return 0;
++            }
+         }
+ 
+         int end = start;
+         // Note that this supports character codes without a ; on the end
+-        while(input.charAt(end) != ';') 
++        while(end < seqEnd && input.charAt(end) != ';') 
+         {
+             end++;
++        }
++
++        // if we reached the end without finding ';', end should stay at seqEnd (unfinished entity)
++        // but we want to allow unfinished entities per the test, so no exception here
++
++        if (end == seqEnd) {
++            // no semicolon found - unfinished entity, parse until end
++        }
++
++        if(end <= start) {
++            // no digits after '&#' or '&#x'
++            return 0;
+         }
+ 
+         int entityValue;
+@@ -28,7 +48,7 @@
+                 entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+             }
+         } catch(NumberFormatException nfe) {
+-        System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
++            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
+             return 0;
+         }
+ 
+@@ -40,8 +60,14 @@
+             out.write(entityValue);
+         }
+ 
+-
+-        return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++        // Calculate consumed length: 
++        // 2 for '&#', plus length of number (end - start), plus 1 if hex (for x or X), plus 1 if semicolon present
++        int consumed = 2 + (end - start) + (isHex ? 1 : 0);
++        if (end < seqEnd && input.charAt(end) == ';') {
++            consumed++;
++        }
++        return consumed; 
+     }
+     return 0;
+ }
++

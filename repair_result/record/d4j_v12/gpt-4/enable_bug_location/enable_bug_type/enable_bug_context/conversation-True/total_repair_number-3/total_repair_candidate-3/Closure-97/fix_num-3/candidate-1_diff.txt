@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -2,7 +2,6 @@
+   if (left.getType() == Token.NUMBER &&
+       right.getType() == Token.NUMBER) {
+ 
+-    double result;
+     double lval = left.getDouble();
+     double rval = right.getDouble();
+ 
+@@ -33,6 +32,7 @@
+       return n;
+     }
+ 
++    double result;
+     switch (n.getType()) {
+       case Token.LSH:
+         result = lvalInt << rvalInt;
+@@ -42,9 +42,11 @@
+         break;
+       case Token.URSH:
+         // JavaScript handles zero shifts on signed numbers differently than
+-        // Java as an Java int can not represent the unsigned 32-bit number
+-        // where JavaScript can so use a long here.
+-        result = lvalInt >>> rvalInt;
++        // Java; a Java int cannot represent the unsigned 32-bit number
++        // where JavaScript can, so use a long and convert to double correctly.
++        long unsignedLval = lvalInt & 0xffffffffL;
++        long shifted = unsignedLval >>> rvalInt;
++        result = (double) shifted;
+         break;
+       default:
+         throw new AssertionError("Unknown shift operator: " +
+@@ -60,3 +62,4 @@
+ 
+   return n;
+ }
++

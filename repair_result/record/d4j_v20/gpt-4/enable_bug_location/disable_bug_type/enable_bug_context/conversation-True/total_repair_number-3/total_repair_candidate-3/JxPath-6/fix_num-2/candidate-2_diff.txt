@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//    System.err.println("COMPARING: " +
++//        (l == null ? "null" : l.getClass().getName()) + " " +
++//        (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -35,5 +35,15 @@
+     if (l instanceof Iterator && r instanceof Iterator) {
+         return findMatch((Iterator) l, (Iterator) r);
+     }
++
++    // Fix: cast possible XPathValue objects to their underlying values before comparing
++    if (l instanceof org.apache.commons.jxpath.ri.compiler.XPathExpression) {
++        l = ((org.apache.commons.jxpath.ri.compiler.XPathExpression) l).getValue();
++    }
++    if (r instanceof org.apache.commons.jxpath.ri.compiler.XPathExpression) {
++        r = ((org.apache.commons.jxpath.ri.compiler.XPathExpression) r).getValue();
++    }
++
+     return equal(l, r);
+ }
++

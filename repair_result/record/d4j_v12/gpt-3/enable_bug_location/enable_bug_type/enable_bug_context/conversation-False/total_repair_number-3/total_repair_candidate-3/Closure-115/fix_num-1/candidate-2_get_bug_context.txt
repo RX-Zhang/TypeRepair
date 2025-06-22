@@ -1,0 +1,1 @@
+['doesFunctionMeetMinimumRequirements', 'callMeetsBlockInliningRequirements', 'canInlineReferenceDirectly', 'inliningLowersCost', 'inlineCostDelta']

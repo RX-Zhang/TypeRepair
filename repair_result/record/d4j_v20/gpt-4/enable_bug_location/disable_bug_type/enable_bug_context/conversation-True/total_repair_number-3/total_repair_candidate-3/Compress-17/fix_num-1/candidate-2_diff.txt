@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -7,7 +7,16 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
++    // Instead of checking only if the first byte is 0 and returning 0,
++    // handle the case where the entire field is zero or space filled
++    boolean allNulsOrSpaces = true;
++    for (int i = offset; i < offset + length; i++) {
++        if (buffer[i] != 0 && buffer[i] != ' ') {
++            allNulsOrSpaces = false;
++            break;
++        }
++    }
++    if (allNulsOrSpaces) {
+         return 0L;
+     }
+ 
+@@ -48,3 +57,4 @@
+ 
+     return result;
+ }
++

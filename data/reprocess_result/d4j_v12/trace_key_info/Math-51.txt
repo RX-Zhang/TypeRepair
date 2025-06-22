@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.analysis.solvers.RegulaFalsiSolverTest.testIssue631
+- Error: org.apache.commons.math.exception.TooManyEvaluationsException: illegal state: maximal count (3,624) exceeded: evaluations
+- Location:         final double root = solver.solve(3624, f, 1, 10);

@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -55,9 +55,9 @@
+         if (vecAbsoluteTolerance == null) {
+             scale = new double[y0.length];
+             java.util.Arrays.fill(scale, scalAbsoluteTolerance);
+-          } else {
++        } else {
+             scale = vecAbsoluteTolerance;
+-          }
++        }
+         hNew = initializeStep(equations, forward, getOrder(), scale,
+                               stepStart, y, yDotK[0], yTmp, yDotK[1]);
+         firstTime = false;
+@@ -147,7 +147,7 @@
+       // in some rare cases we may get here with stepSize = 0, for example
+       // when an event occurs at integration start, reducing the first step
+       // to zero; we have to reset the step to some safe non zero value
+-        stepSize = filterStep(stepSize, forward, true);
++      stepSize = filterStep(stepSize, forward, true);
+ 
+       // stepsize control for next step
+       final double factor = Math.min(maxGrowth,
+@@ -166,3 +166,4 @@
+   return stopTime;
+ 
+ }
++

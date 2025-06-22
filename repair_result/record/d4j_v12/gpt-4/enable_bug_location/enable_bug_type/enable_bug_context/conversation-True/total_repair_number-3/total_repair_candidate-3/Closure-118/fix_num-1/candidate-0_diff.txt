@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -14,11 +14,15 @@
+       // TODO(user): It doesn't look like the user can do much in this
+       // case right now.
+       if (propertiesToErrorFor.containsKey(name)) {
+-        compiler.report(JSError.make(
++        JSError error = JSError.make(
+             t.getSourceName(), child, propertiesToErrorFor.get(name),
+             Warnings.INVALIDATION, name,
+-            (type == null ? "null" : type.toString()), n.toString(), ""));
++            (type == null ? "null" : type.toString()), n.toString(), "");
++
++        compiler.report(error);
++        addInvalidatingType(type, error);
+       }
+     }
+   }
+ }
++

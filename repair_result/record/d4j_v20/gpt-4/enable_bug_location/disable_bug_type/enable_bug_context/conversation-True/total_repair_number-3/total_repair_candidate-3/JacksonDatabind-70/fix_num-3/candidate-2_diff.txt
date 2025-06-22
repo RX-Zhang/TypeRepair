@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -12,7 +12,7 @@
+         if (!found) {
+             // 09-Jan-2017, tatu: Important: must check name slot and NOT property name,
+             //   as only former is lower-case in case-insensitive case
+-            found = key.equals(prop.getName());
++            found = key.equals(getPropertyName(prop));
+             if (found) {
+                 // need to leave a hole here
+                 _propsInOrder[_findFromOrdered(prop)] = null;
+@@ -26,3 +26,4 @@
+     }
+     init(props);
+ }
++

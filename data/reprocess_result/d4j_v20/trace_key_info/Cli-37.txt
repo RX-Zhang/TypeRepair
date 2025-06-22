@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.bug.BugCLI265Test.shouldParseShortOptionWithoutValue
+- Error: junit.framework.AssertionFailedError: Second option has been used as value for first option. Actual: -last
+- Location:         assertNotEquals("Second option has been used as value for first option", "-last", commandLine.getOptionValue("t1"));

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,9 +1,13 @@
+ public char[] expandCurrentSegment()
+ {
+-    final char[] curr = _currentSegment;
+-    // Let's grow by 50% by default
+-    final int len = curr.length;
+-    // but above intended maximum, slow to increase by 25%
+-    int newLen = (len == MAX_SEGMENT_LEN) ? (MAX_SEGMENT_LEN+1) : Math.min(MAX_SEGMENT_LEN, len + (len >> 1));
+-    return (_currentSegment = Arrays.copyOf(curr, newLen));
++    // Delegate to the private expand method which manages segments properly
++    int minNewSegmentSize = _currentSegment.length + (_currentSegment.length >> 1);
++    if (minNewSegmentSize < MIN_SEGMENT_LEN) {
++        minNewSegmentSize = MIN_SEGMENT_LEN;
++    } else if (minNewSegmentSize > MAX_SEGMENT_LEN) {
++        minNewSegmentSize = MAX_SEGMENT_LEN;
++    }
++    expand(minNewSegmentSize);
++    return _currentSegment;
+ }
++

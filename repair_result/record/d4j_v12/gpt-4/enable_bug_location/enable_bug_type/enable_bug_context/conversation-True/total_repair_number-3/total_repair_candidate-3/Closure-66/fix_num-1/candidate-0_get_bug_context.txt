@@ -1,0 +1,1 @@
+['visitObjLitKey', 'checkEnumInitializer', 'ensureTyped']

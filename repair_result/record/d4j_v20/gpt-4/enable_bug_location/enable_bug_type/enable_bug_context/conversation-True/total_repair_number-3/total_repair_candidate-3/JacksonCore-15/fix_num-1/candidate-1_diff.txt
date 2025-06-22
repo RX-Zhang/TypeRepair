@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -21,10 +21,10 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -52,6 +52,11 @@
+     if (t == null) {
+         // no strict need to close, since we have no state here
+         return (_currToken = t);
++    }
++
++    // If not allowing multiple matches, and match count > 0 and !includePath, return null.
++    if (!_allowMultipleMatches && (_matchCount > 0) && !_includePath) {
++        return (_currToken = null);
+     }
+ 
+     // otherwise... to include or not?
+@@ -194,12 +199,20 @@
+     default: // scalar value
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            if (!_allowMultipleMatches && (_matchCount > 0) && !_includePath) {
++                return (_currToken = null);
++            }
++            _matchCount++;
+             return (_currToken = t);
+         }
+         if (f != null) {
+             f = _headContext.checkValue(f);
+             if ((f == TokenFilter.INCLUDE_ALL)
+                     || ((f != null) && f.includeValue(delegate))) {
++                if (!_allowMultipleMatches && (_matchCount > 0) && !_includePath) {
++                    return (_currToken = null);
++                }
++                _matchCount++;
+                 return (_currToken = t);
+             }
+         }
+@@ -210,3 +223,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

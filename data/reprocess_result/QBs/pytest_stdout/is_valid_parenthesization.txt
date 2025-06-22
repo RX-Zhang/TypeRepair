@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 3 items
+
+python_testcases/test_is_valid_parenthesization.py ..F                   [100%]
+
+=================================== FAILURES ===================================
+______________ test_is_valid_parenthesization[input_data2-False] _______________
+
+input_data = ['(('], expected = False
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_is_valid_parenthesization(input_data, expected):
+>       assert is_valid_parenthesization(*input_data) == expected
+E       AssertionError: assert True == False
+E        +  where True = is_valid_parenthesization(*['(('])
+
+python_testcases/test_is_valid_parenthesization.py:15: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_is_valid_parenthesization.py::test_is_valid_parenthesization[input_data2-False]
+========================= 1 failed, 2 passed in 0.03s ==========================

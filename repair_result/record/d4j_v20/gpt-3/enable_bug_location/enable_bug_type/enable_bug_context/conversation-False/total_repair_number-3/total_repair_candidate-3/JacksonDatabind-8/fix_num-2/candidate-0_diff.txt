@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -6,28 +6,28 @@
+     // already had an explicitly marked one?
+     if (oldOne != null) {
+ 
+-        if ((_explicitCreators & mask) != 0) { // already had explicitly annotated, leave as-is
+-            // but skip, if new one not annotated
+-            if (!explicit) {
+-                return;
+-            }
+-            // both explicit: verify
+-            // otherwise only verify if neither explicitly annotated.
+-        }
+-
+-        // one more thing: ok to override in sub-class
+-        if (oldOne.getClass() == newOne.getClass()) {
+-            // [databind#667]: avoid one particular class of bogus problems
+-
++        boolean oldExplicit = (_explicitCreators & mask) != 0;
++        // if both old and new are explicit, throw error
++        if (oldExplicit && explicit) {
++            // one more thing: ok to override in sub-class
++            if (oldOne.getClass() == newOne.getClass()) {
++                // [databind#667]: avoid one particular class of bogus problems
+                 throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
+                         +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
+-            // otherwise, which one to choose?
+-                // new type more generic, use old
+-            // new type more specific, use it
++            }
++            // If classes differ, allow override (no exception)
+         }
++        // If old explicit but new not explicit, keep old and return
++        else if (oldExplicit && !explicit) {
++            return;
++        }
++        // If old not explicit and new explicit, override
++        // If both non-explicit, continue and override
+     }
++
+     if (explicit) {
+         _explicitCreators |= mask;
+     }
+     _creators[typeIndex] = _fixAccess(newOne);
+ }
++

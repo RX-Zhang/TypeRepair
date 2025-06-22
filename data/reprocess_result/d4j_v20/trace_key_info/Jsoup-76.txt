@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.preSkipsFirstNewline
+- Error: junit.framework.AssertionFailedError: expected:<
+[]One
+Two
+- Location:         assertEquals("\nOne\nTwo\n", pre.wholeText());

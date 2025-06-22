@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -12,7 +12,7 @@
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                doc = null;
++                doc = parser.parseInput(docData, baseUri); // Fix: Parse again with the new charset
+             }
+         }
+     } else { // specified by content type header (or by user on file load)
+@@ -29,3 +29,4 @@
+     }
+     return doc;
+ }
++

@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -1,5 +1,4 @@
+ public static Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {
+-
+ 
+     // rescale both vectors without losing precision,
+     // to ensure their norm are the same order of magnitude
+@@ -11,9 +10,24 @@
+     // available at http://www.cs.berkeley.edu/~wkahan/MathH110/Cross.pdf
+ 
+     // compute rho as an 8 bits approximation of v1.v2 / v2.v2
++    double v2DotV2 = dotProduct(v2, v2);
++    double v1DotV2 = dotProduct(v1, v2);
++    double rho = 0.0;
++    if (v2DotV2 != 0.0) {
++        rho = Math.copySign(Math.floor(Math.abs(v1DotV2 / v2DotV2 * 256.0)) / 256.0, v1DotV2 / v2DotV2);
++    }
+ 
++    // compute v3 = v1 - rho * v2
++    Vector3D v3 = new Vector3D(
++            v1.x - rho * v2.x,
++            v1.y - rho * v2.y,
++            v1.z - rho * v2.z
++    );
+ 
+     // compute cross product from v3 and v2 instead of v1 and v2
+-    return new Vector3D(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
++    return new Vector3D(
++            v3.y * v2.z - v3.z * v2.y,
++            v3.z * v2.x - v3.x * v2.z,
++            v3.x * v2.y - v3.y * v2.x);
++}
+ 
+-}

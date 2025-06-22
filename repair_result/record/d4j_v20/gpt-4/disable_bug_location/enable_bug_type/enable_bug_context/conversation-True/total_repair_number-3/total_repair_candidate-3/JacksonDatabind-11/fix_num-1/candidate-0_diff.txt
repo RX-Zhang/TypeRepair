@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -23,6 +23,10 @@
+      *   current type (for method) since it will be masked.
+      */
+     Type[] bounds = type.getBounds();
++    if (bounds == null || bounds.length == 0) {
++        // Defensive: no bounds? return unknown type.
++        return _unknownType();
++    }
+ 
+     // With type variables we must use bound information.
+     // Theoretically this gets tricky, as there may be multiple
+@@ -38,5 +42,11 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++    try {
++        return _constructType(bounds[0], context);
++    } catch (Exception e) {
++        // Fallback: if unable to resolve bound, return unknown type.
++        return _unknownType();
++    }
+ }
++

@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -7,15 +7,23 @@
+ 
+     String uri = element.getNamespaceURI();
+     if (uri == null) {
++        // For elements without a namespace URI, check for default namespace declarations 
++        // or prefixed namespace declarations on this element or its ancestors.
+         String prefix = getPrefix(node);
+-        String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
+ 
+         Node aNode = node;
+-        while (aNode != null) {
+-            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+-                Attr attr = ((Element) aNode).getAttributeNode(qname);
+-                if (attr != null) {
+-                    return attr.getValue();
++        while (aNode != null && aNode.getNodeType() == Node.ELEMENT_NODE) {
++            Element aElement = (Element) aNode;
++            if (prefix == null) {
++                String defaultNamespace = aElement.getAttribute("xmlns");
++                if (defaultNamespace != null && !defaultNamespace.isEmpty()) {
++                    return defaultNamespace;
++                }
++            } else {
++                String qname = "xmlns:" + prefix;
++                String ns = aElement.getAttribute(qname);
++                if (ns != null && !ns.isEmpty()) {
++                    return ns;
+                 }
+             }
+             aNode = aNode.getParentNode();
+@@ -24,3 +32,4 @@
+     }
+     return uri;
+ }
++

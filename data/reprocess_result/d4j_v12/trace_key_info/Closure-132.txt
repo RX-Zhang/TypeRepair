@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.PeepholeSubstituteAlternateSyntaxTest.testIssue925
+- Error: junit.framework.AssertionFailedError: 
+Expected: x[--y]===1?x[y]=0:x[y]=1
+Result: x[y]=x[--y]===1?0:1
+- Location:     test(

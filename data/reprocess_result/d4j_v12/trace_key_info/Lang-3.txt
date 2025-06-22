@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.math.NumberUtilsTest.testStringCreateNumberEnsureNoPrecisionLoss
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(NumberUtils.createNumber(shouldBeDouble) instanceof Double);

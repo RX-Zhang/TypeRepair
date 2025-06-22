@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -21,9 +21,10 @@
+                  * just placeholder, can't be called)
+                  */
+             } else {
+-                // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
++                // create AnnotatedMethod using the class context (this)
++                mixIns.add(_constructMethod(m));
+             }
+         }
+     }
+ }
++

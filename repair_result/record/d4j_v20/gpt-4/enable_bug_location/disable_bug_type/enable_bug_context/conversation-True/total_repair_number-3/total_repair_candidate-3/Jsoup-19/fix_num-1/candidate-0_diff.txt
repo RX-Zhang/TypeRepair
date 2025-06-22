@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,9 +1,11 @@
+ private boolean testValidProtocol(Element el, Attribute attr, Set<Protocol> protocols) {
+-    // try to resolve relative urls to abs, and optionally update the attribute so output html has abs.
+-    // rels without a baseuri get removed
+-    String value = el.absUrl(attr.getKey());
+-    if (!preserveRelativeLinks)
+-        attr.setValue(value);
++    String value = attr.getValue();
++    if (!preserveRelativeLinks) {
++        String abs = el.absUrl(attr.getKey());
++        if (abs.length() > 0)
++            attr.setValue(abs);
++        value = attr.getValue();
++    }
+     
+     for (Protocol protocol : protocols) {
+         String prot = protocol.toString() + ":";
+@@ -13,3 +15,4 @@
+     }
+     return false;
+ }
++

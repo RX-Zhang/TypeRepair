@@ -1,0 +1,144 @@
+--- 
++++ 
+@@ -2,50 +2,107 @@
+     throws IOException {
+     final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+     // Format is "length keyword=value\n";
+-    while(true){ // get length
++    while (true) { // get length
+         int ch;
+         int len = 0;
+         int read = 0;
+-        while((ch = i.read()) != -1) {
++        boolean gotLength = false;
++
++        // read length characters (digits) until space
++        while ((ch = i.read()) != -1) {
+             read++;
+-            if (ch == ' '){
+-                // Get keyword
+-                final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+-                while((ch = i.read()) != -1) {
+-                    read++;
+-                    if (ch == '='){ // end of keyword
+-                        final String keyword = coll.toString(CharsetNames.UTF_8);
+-                        // Get rest of entry
+-                        final int restLen = len - read;
+-                        if (restLen == 1) { // only NL
+-                            headers.remove(keyword);
+-                        } else {
+-                            final byte[] rest = new byte[restLen];
+-                            final int got = IOUtils.readFully(i, rest);
+-                            if (got != restLen) {
+-                                throw new IOException("Failed to read "
+-                                                      + "Paxheader. Expected "
+-                                                      + restLen
+-                                                      + " bytes, read "
+-                                                      + got);
+-                            }
+-                            // Drop trailing NL
+-                            final String value = new String(rest, 0,
+-                                                      restLen - 1, CharsetNames.UTF_8);
+-                            headers.put(keyword, value);
+-                        }
+-                        break;
+-                    }
+-                    coll.write((byte) ch);
+-                }
+-                break; // Processed single header
++            if (ch == ' ') {
++                gotLength = true;
++                break;
++            }
++            if (ch < '0' || ch > '9') {
++                // Invalid character in length field, ignore and break parsing
++                throw new IOException("Invalid length field in pax header");
+             }
+             len *= 10;
+             len += ch - '0';
+         }
+-        if (ch == -1){ // EOF
++        if (ch == -1) { // EOF while reading length
+             break;
++        }
++
++        if (!gotLength) {
++            // EOF reached without reading length properly
++            break;
++        }
++
++        if (len <= 0) {
++            // Invalid length, possibly blank line, skip it safely.
++            // Consume the remaining line if any bytes are present.
++            int skipCount = 0;
++            while (skipCount < len) {
++                if (i.read() == -1) break;
++                skipCount++;
++            }
++            continue;
++        }
++
++        // Get keyword
++        final ByteArrayOutputStream coll = new ByteArrayOutputStream();
++        // We've read 'len' bytes total for this header line including length field, 
++        // space, keyword, '=', value and trailing '\n'.
++        // We have already consumed 'read' bytes (length digits + space).
++        // Need to read remaining (len - read) bytes.
++
++        // We need to find '=' within remaining bytes.
++        int bytesRemaining = len - read;
++        int keywordLen = 0;
++        boolean foundEquals = false;
++
++        while (bytesRemaining > 0) {
++            int b = i.read();
++            if (b == -1) {
++                // EOF inside header line: error
++                throw new IOException("Failed to read Pax header line completely");
++            }
++            bytesRemaining--;
++            if (b == '=') {
++                foundEquals = true;
++                break;
++            }
++            coll.write((byte)b);
++            keywordLen++;
++        }
++
++        if (!foundEquals) {
++            // '=' not found in expected length, invalid header, skip the rest of the line
++            while (bytesRemaining > 0) {
++                if (i.read() == -1) break;
++                bytesRemaining--;
++            }
++            continue;
++        }
++
++        final String keyword = coll.toString(CharsetNames.UTF_8);
++
++        final int restLen = bytesRemaining; // bytes left for value + trailing \n
++
++        if (restLen == 1) { // only NL (empty value)
++            headers.remove(keyword);
++            // consume trailing NL
++            i.read();
++        } else if (restLen > 1) {
++            final byte[] rest = new byte[restLen];
++            final int got = IOUtils.readFully(i, rest);
++            if (got != restLen) {
++                throw new IOException("Failed to read Paxheader. Expected "
++                        + restLen
++                        + " bytes, read "
++                        + got);
++            }
++            // Drop trailing NL
++            final String value = new String(rest, 0,
++                    restLen - 1, CharsetNames.UTF_8);
++            headers.put(keyword, value);
++        } else {
++            // restLen <= 0 means no value and no newline, error or blank line, ignore
+         }
+     }
+     return headers;
+ }
++

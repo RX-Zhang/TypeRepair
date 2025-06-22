@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -42,7 +42,7 @@
+ 
+   if (value.isFunction()) {
+     Node callNode = reference.getParent();
+-    if (reference.getParent().isCall()) {
++    if (callNode.isCall()) {
+       CodingConvention convention = compiler.getCodingConvention();
+       // Bug 2388531: Don't inline subclass definitions into class defining
+       // calls as this confused class removing logic.
+@@ -54,9 +54,36 @@
+ 
+       // issue 668: Don't inline singleton getter methods
+       // calls as this confused class removing logic.
++      // check if this call is a singleton getter registration
++      if (isSingletonGetterCall(callNode, value)) {
++        return false;
++      }
+     }
+   }
+ 
+   return canMoveAggressively(value) ||
+       canMoveModerately(initialization, reference);
+ }
++
++// Helper method to detect singleton getter registration calls
++private boolean isSingletonGetterCall(Node callNode, Node functionNode) {
++  if (!callNode.isCall()) {
++    return false;
++  }
++  CodingConvention convention = compiler.getCodingConvention();
++  // Check if the call is to goog.addSingletonGetter
++  if (callNode.getFirstChild() != null
++      && callNode.getFirstChild().isGetProp()) {
++    String propName = callNode.getFirstChild().getLastChild().getString();
++    if ("addSingletonGetter".equals(propName)) {
++      // Further check that the functionNode is passed as argument
++      for (Node arg = callNode.getSecondChild(); arg != null; arg = arg.getNext()) {
++        if (arg == functionNode) {
++          return true;
++        }
++      }
++    }
++  }
++  return false;
++}
++

@@ -1,0 +1,50 @@
+--- 
++++ 
+@@ -38,18 +38,22 @@
+                 StringBuilder sb = new StringBuilder(dateStr);
+                 sb.delete(len-3, len-2);
+                 dateStr = sb.toString();
++                len--;
+             } else if (c == '+' || c == '-') { // missing minutes
+                 // let's just append '00'
+                 dateStr += "00";
++                len += 2;
+             }
+             // Milliseconds partial or missing; and even seconds are optional
+-            len = dateStr.length();
+             // remove 'T', '+'/'-' and 4-digit timezone-offset
+-            c = dateStr.charAt(len-9);
+-            if (Character.isDigit(c)) {
+-                StringBuilder sb = new StringBuilder(dateStr);
+-                sb.insert(len-5, ".000");
+-                dateStr = sb.toString();
++            // Make sure len is sufficient before accessing len-9 index
++            if (len >= 19) {
++                c = dateStr.charAt(len-9);
++                if (Character.isDigit(c)) {
++                    StringBuilder sb = new StringBuilder(dateStr);
++                    sb.insert(len-5, ".000");
++                    dateStr = sb.toString();
++                }
+             }
+             df = _formatISO8601;
+             if (_formatISO8601 == null) {
+@@ -59,9 +63,10 @@
+             // If not, plain date. Easiest to just patch 'Z' in the end?
+             StringBuilder sb = new StringBuilder(dateStr);
+             // And possible also millisecond part if missing
+-            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+-            if (timeLen <= 8) {
+-                    sb.append(".000");
++            int tIndex = dateStr.lastIndexOf('T');
++            int timeLen = tIndex < 0 ? 0 : len - tIndex - 1;
++            if (timeLen > 0 && timeLen <= 8) {
++                sb.append(".000");
+             }
+             sb.append('Z');
+             dateStr = sb.toString();
+@@ -74,3 +79,4 @@
+     }
+     return df.parse(dateStr, pos);
+ }
++

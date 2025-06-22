@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -20,10 +20,11 @@
+   // Merges adjacent String nodes.
+   while (elem != null) {
+     if (NodeUtil.isImmutableValue(elem)) {
+-      if (sb.length() > 0) {
++      String elemStr = NodeUtil.getStringValue(elem);
++      if (sb.length() > 0 && !elemStr.isEmpty()) {
+         sb.append(joinString);
+       }
+-      sb.append(NodeUtil.getStringValue(elem));
++      sb.append(elemStr);
+     } else {
+       if (sb.length() > 0) {
+         // + 2 for the quotes.
+@@ -83,7 +84,9 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      parent.replaceChild(n, left);
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

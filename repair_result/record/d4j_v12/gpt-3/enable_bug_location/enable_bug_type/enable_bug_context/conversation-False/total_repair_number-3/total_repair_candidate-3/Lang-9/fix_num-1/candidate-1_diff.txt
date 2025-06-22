@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -12,7 +12,12 @@
+     }
+ 
+     currentFormatField= patternMatcher.group();
++    // Check for unterminated quoted string at the start
++    if (currentFormatField.startsWith("'") && !currentFormatField.endsWith("'")) {
++        throw new IllegalArgumentException("Unterminated quote in pattern: " + currentFormatField);
++    }
+     Strategy currentStrategy= getStrategy(currentFormatField);
++
+     for(;;) {
+         patternMatcher.region(patternMatcher.end(), patternMatcher.regionEnd());
+         if(!patternMatcher.lookingAt()) {
+@@ -20,6 +25,10 @@
+             break;
+         }
+         String nextFormatField= patternMatcher.group();
++        // Check for unterminated quoted string
++        if (nextFormatField.startsWith("'") && !nextFormatField.endsWith("'")) {
++            throw new IllegalArgumentException("Unterminated quote in pattern: " + nextFormatField);
++        }
+         nextStrategy = getStrategy(nextFormatField);
+         if(currentStrategy.addRegex(this, regex)) {
+             collector.add(currentStrategy);
+@@ -34,3 +43,4 @@
+     strategies= collector.toArray(new Strategy[collector.size()]);
+     parsePattern= Pattern.compile(regex.toString());
+ }
++

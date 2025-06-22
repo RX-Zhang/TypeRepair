@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -58,7 +58,7 @@
+         ignoreStar = false;
+         state = State.SEARCHING_ANNOTATION;
+ 
+-            // All tokens must be separated by a space.
++        // All tokens must be separated by a space.
+ 
+         if (token == JsDocToken.EOC ||
+             token == JsDocToken.EOF ||
+@@ -69,7 +69,7 @@
+           String multilineText = builder.toString();
+ 
+           if (option != WhitespaceOption.PRESERVE) {
+-            multilineText = multilineText.trim();
++            multilineText = trimEnd(multilineText);
+           }
+ 
+           int endLineno = stream.getLineno();
+@@ -99,3 +99,4 @@
+     }
+   } while (true);
+ }
++

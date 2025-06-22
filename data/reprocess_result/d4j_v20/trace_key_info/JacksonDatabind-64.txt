@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.filter.JsonIncludeTest.testIssue1351
+- Error: junit.framework.ComparisonFailure: expected:<{[]}> but was:<{["str":null]}>
+- Location:         assertEquals(aposToQuotes("{}"),

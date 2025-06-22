@@ -1,0 +1,71 @@
+--- 
++++ 
+@@ -12,7 +12,8 @@
+         // a wrong value.
+         return null;
+     }
+-    if (str.startsWith("0x") || str.startsWith("-0x")) {
++    String lowerStr = str.toLowerCase();
++    if (lowerStr.startsWith("0x") || lowerStr.startsWith("-0x")) {
+         return createInteger(str);
+     }   
+     char lastChar = str.charAt(str.length() - 1);
+@@ -20,7 +21,7 @@
+     String dec;
+     String exp;
+     int decPos = str.indexOf('.');
+-    int expPos = str.indexOf('e') + str.indexOf('E') + 1;
++    int expPos = Math.max(str.indexOf('e'), str.indexOf('E'));
+ 
+     if (decPos > -1) {
+ 
+@@ -52,13 +53,13 @@
+         }
+         //Requesting a specific type..
+         String numeric = str.substring(0, str.length() - 1);
+-        boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
++        boolean allZeros = isAllZeros(mant) && (exp == null || isAllZeros(exp));
+         switch (lastChar) {
+             case 'l' :
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) { // NOPMD
+@@ -71,7 +72,7 @@
+             case 'f' :
+             case 'F' :
+                 try {
+-                    Float f = NumberUtils.createFloat(numeric);
++                    Float f = createFloat(numeric);
+                     if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                         //If it's too big for a float or the float value = 0 and the string
+                         //has non-zeros in it, then float does not have the precision we want
+@@ -85,8 +86,8 @@
+             case 'd' :
+             case 'D' :
+                 try {
+-                    Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    Double d = createDouble(numeric);
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) { // NOPMD
+@@ -126,7 +127,7 @@
+ 
+         } else {
+             //Must be a float,double,BigDec
+-            boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
++            boolean allZeros = isAllZeros(mant) && (exp == null || isAllZeros(exp));
+             try {
+                 Float f = createFloat(str);
+                 if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+@@ -149,3 +150,4 @@
+         }
+     }
+ }
++

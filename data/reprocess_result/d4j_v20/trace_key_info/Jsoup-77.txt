@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.jsoup.parser.XmlTreeBuilderTest.normalizesDiscordantTags
+- Error: junit.framework.AssertionFailedError: expected:<<div>
+ test
+[</div>
+- Location:         assertEquals("<div>\n test\n</div>\n<p></p>", document.html());

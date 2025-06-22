@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -1,10 +1,14 @@
+ public List<String> getMatchingOptions(String opt)
+ {
+     opt = Util.stripLeadingHyphens(opt);
+-    
++
+     List<String> matchingOpts = new ArrayList<String>();
+ 
+-    // for a perfect match return the single option only
++    // first check if exact match exists, if yes return only it
++    if (longOpts.containsKey(opt)) {
++        matchingOpts.add(opt);
++        return matchingOpts;
++    }
+ 
+     for (String longOpt : longOpts.keySet())
+     {
+@@ -13,6 +17,7 @@
+             matchingOpts.add(longOpt);
+         }
+     }
+-    
++
+     return matchingOpts;
+ }
++

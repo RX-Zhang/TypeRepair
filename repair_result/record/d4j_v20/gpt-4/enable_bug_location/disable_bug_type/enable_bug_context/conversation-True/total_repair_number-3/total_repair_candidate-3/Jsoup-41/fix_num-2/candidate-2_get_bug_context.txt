@@ -1,0 +1,1 @@
+['tagName', 'id', 'children', 'text', 'className', 'equals', 'hashCode']

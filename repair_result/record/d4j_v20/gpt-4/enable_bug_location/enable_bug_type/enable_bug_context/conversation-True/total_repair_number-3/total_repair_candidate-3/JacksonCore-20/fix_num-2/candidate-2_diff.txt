@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,5 +1,17 @@
+ public void writeEmbeddedObject(Object object) throws IOException {
+-    // 01-Sep-2016, tatu: As per [core#318], handle small number of cases
+-    throw new JsonGenerationException("No native support for writing embedded objects",
+-            this);
++    if (object == null) {
++        writeNull();
++    } else if (object instanceof byte[]) {
++        if (canWriteBinaryNatively()) {
++            byte[] data = (byte[]) object;
++            writeBinary(Base64Variants.getDefaultVariant(), data, 0, data.length);
++        } else {
++            // fallback: encode as Base64 string
++            writeString(Base64Variants.getDefaultVariant().encode((byte[]) object));
++        }
++    } else {
++        throw new JsonGenerationException("No native support for writing embedded objects",
++                this);
++    }
+ }
++

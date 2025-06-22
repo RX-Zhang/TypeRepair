@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -60,6 +60,7 @@
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            return null; // Added return to avoid continuing here erroneously
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
+@@ -68,7 +69,7 @@
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText; // Return text immediately to correctly support nextTextValue()
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -91,3 +92,4 @@
+     }
+     return null;
+ }
++
