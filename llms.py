@@ -246,7 +246,7 @@ class QueryEngine:
 class GPT3(QueryEngine):
     def __init__(self, data_type: str, error_types: List[str]) -> None:
         super().__init__(data_type, error_types)
-        self.model = "gpt-3-turbo"
+        self.model = "gpt-3.5-turbo"
         self.url = ''
         self.headers = {"content-type": "application/json",
                         "Authorization": "Bearer sk-"}
