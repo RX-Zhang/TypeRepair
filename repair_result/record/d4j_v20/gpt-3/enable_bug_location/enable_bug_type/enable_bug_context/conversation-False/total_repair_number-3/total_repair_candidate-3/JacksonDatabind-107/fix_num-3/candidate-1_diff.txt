@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -17,7 +17,12 @@
+                 JavaType actual = _handleUnknownTypeId(ctxt, typeId);
+                 if (actual == null) { // what should this be taken to mean?
+                     // 17-Jan-2019, tatu: As per [databind#2221], better NOT return `null` but...
+-                    return null;
++                    if (_defaultImpl == null || _defaultImpl.hasRawClass(Void.class)) {
++                        // if no default impl or default impl is Void, return null
++                        return null;
++                    }
++                    // fall back to default impl if available
++                    actual = _defaultImpl;
+                 }
+                 // ... would this actually work?
+                 deser = ctxt.findContextualValueDeserializer(actual, _property);
+@@ -52,3 +57,4 @@
+     }
+     return deser;
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public ZipArchiveEntry getNextZipEntry() throws IOException {
+-    boolean firstEntry = true;
++    boolean firstEntry = current == null;
+     if (closed || hitCentralDirectory) {
+         return null;
+     }
+@@ -26,6 +26,7 @@
+     if (sig.equals(ZipLong.CFH_SIG) || sig.equals(ZipLong.AED_SIG)) {
+         hitCentralDirectory = true;
+         skipRemainderOfArchive();
++        return null;
+     }
+     if (!sig.equals(ZipLong.LFH_SIG)) {
+         return null;
+@@ -104,3 +105,4 @@
+     entriesRead++;
+     return current.entry;
+ }
++

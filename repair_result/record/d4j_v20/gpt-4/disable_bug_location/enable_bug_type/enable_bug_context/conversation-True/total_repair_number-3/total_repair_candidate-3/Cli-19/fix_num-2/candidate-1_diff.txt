@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -7,7 +7,12 @@
+     }
+     else if (stopAtNonOption)
+     {
++        process(token);
+         eatTheRest = true;
++    }
++    else
++    {
+         tokens.add(token);
+     }
+ }
++

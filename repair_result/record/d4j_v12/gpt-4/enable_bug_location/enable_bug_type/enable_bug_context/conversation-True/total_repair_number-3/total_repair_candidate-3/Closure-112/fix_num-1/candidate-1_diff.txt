@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -10,6 +10,9 @@
+   Map<TemplateType, JSType> inferred = 
+       inferTemplateTypesFromParameters(fnType, n);
+ 
++  if (inferred.isEmpty()) {
++    return false;
++  }
+ 
+   // Replace all template types. If we couldn't find a replacement, we
+   // replace it with UNKNOWN.
+@@ -26,3 +29,4 @@
+ 
+   return replacer.madeChanges;
+ }
++

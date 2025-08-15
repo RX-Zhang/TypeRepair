@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -5,6 +5,6 @@
+     while num > 0:
+         i = num % b
+         num = num // b
+-        result = result + alphabet[i]
+-    return result
++        result = alphabet[i] + result
++    return result or '0'
+ 

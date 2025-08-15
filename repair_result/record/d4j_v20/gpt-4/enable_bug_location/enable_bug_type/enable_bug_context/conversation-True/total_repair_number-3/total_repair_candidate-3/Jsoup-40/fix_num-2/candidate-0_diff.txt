@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,8 +1,12 @@
+ public DocumentType(String name, String publicId, String systemId, String baseUri) {
+     super(baseUri);
+ 
+-    Validate.notEmpty(name);
+-    attr("name", name);
++    if (name == null || name.isEmpty()) {
++        attr("name", "");
++    } else {
++        attr("name", name);
++    }
+     attr("publicId", publicId);
+     attr("systemId", systemId);
+ }
++

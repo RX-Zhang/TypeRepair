@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -119,5 +119,11 @@
+                 throw new MathInternalError();
+             }
+         }
++        
++        // Add exception handling for potential TooManyEvaluationsException
++        if (/* condition to check if max evaluations reached */) {
++            throw new TooManyEvaluationsException();
++        }
+     }
+ }
++

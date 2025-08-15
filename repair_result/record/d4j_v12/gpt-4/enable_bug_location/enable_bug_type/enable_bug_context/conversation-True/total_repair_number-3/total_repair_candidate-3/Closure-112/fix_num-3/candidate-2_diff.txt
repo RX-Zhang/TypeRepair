@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -10,6 +10,10 @@
+   Map<TemplateType, JSType> inferred = 
+       inferTemplateTypesFromParameters(fnType, n);
+ 
++  // If no inferences were made, do not replace types
++  if (inferred.isEmpty()) {
++    return false;
++  }
+ 
+   // Replace all template types. If we couldn't find a replacement, we
+   // replace it with UNKNOWN.
+@@ -26,3 +30,4 @@
+ 
+   return replacer.madeChanges;
+ }
++

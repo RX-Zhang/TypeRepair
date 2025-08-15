@@ -1,0 +1,22 @@
+public static boolean verifyCheckSum(byte[] header) {
+    long storedSum = 0;
+    long unsignedSum = 0;
+    long signedSum = 0;
+
+    int digits = 0;
+    for (int i = 0; i < header.length; i++) {
+        byte b = header[i];
+        if (CHKSUM_OFFSET <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {
+            // Use only first 6 octal digits for stored checksum
+            if ('0' <= b && b <= '7' && digits < 6) {
+                storedSum = (storedSum << 3) + (b - '0'); // multiply by 8 and add digit
+                digits++;
+            }
+            // Replace checksum bytes by space (0x20) for calculation, regardless of digits read
+            b = 0x20;
+        }
+        unsignedSum += 0xff & b;
+        signedSum += b;
+    }
+    return storedSum == unsignedSum || storedSum == signedSum;
+}

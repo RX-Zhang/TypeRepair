@@ -1,0 +1,1 @@
+['setErrorManager', 'createMessageFormatter', 'initOptions', 'checkFirstModule', 'report', 'hasHaltingErrors']

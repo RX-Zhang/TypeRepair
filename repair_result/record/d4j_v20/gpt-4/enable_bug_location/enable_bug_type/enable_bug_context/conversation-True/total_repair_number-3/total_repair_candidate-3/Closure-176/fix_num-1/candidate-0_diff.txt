@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -35,12 +35,21 @@
+       //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+       //     || !resultType.isSubtype(varType));
+ 
+-
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++
++      // Check if the left expression's type is assignable to resultType
++      if (isVarDeclaration || leftType == null) {
++        left.setJSType(resultType);
++      } else {
++        // If leftType is not compatible with resultType, set to null to avoid invalid type info
++        if (leftType.isSubtype(resultType) || resultType.isSubtype(leftType)) {
++          left.setJSType(resultType);
++        } else {
++          left.setJSType(null);
++        }
++      }
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -61,3 +70,4 @@
+       break;
+   }
+ }
++

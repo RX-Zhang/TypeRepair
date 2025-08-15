@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -69,6 +69,7 @@
+         return PEEKED_NONE;
+       }
+       if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {
++        // Fix: Allow a '0' digit immediately after a '-' sign (to allow "-0")
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+@@ -89,7 +90,7 @@
+ 
+   // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.
+   if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
+-    peekedLong = negative ? value : -value;
++    peekedLong = value;
+     pos += i;
+     return peeked = PEEKED_LONG;
+   } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT
+@@ -100,3 +101,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

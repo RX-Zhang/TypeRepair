@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: org.apache.commons.cli.BasicParserTest.testOptionGroupLong
+- Error: junit.framework.ComparisonFailure: selected option expected:<bar> but was:<null>
+- Location:         assertEquals("selected option", "bar", group.getSelected());
+
+
+Test failure 2:
+- Test: org.apache.commons.cli.GnuParserTest.testOptionGroupLong
+- Error: junit.framework.ComparisonFailure: selected option expected:<bar> but was:<null>
+- Location:         assertEquals("selected option", "bar", group.getSelected());
+
+
+Test failure 3:
+- Test: org.apache.commons.cli.PosixParserTest.testOptionGroupLong
+- Error: junit.framework.ComparisonFailure: selected option expected:<bar> but was:<null>
+- Location:         assertEquals("selected option", "bar", group.getSelected());

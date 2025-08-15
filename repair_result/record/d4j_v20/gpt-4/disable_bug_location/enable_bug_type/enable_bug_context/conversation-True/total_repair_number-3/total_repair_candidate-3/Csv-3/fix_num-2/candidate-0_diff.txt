@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -14,15 +14,21 @@
+         return FF;
+     case CR:
+     case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
++    case FF:
++    case TAB:
++    case BACKSPACE:
+         return c;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // For characters such as 'N' or 'a' (not recognized escapes),
++        // return the escape character plus the actual character read,
++        // to preserve the escape sequence in the token content.
++        // This is needed because current method only returns a single char,
++        // but in the bug, escape sequences like '\N' and '\a' get reduced incorrectly.
++        // To fix this, the calling method nextToken() should be updated to handle this case,
++        // but here we return the character after escape unmodified.
++        return c;
+     }
+ }
++

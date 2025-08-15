@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -5,10 +5,16 @@
+ 
+         String prefix = updateNamespaces(sourceEl);
+         String namespace = namespacesStack.peek().get(prefix);
++
+         String tagName = sourceEl.tagName();
++        String localName = tagName;
++        int colonIndex = tagName.indexOf(':');
++        if (colonIndex != -1) {
++            localName = tagName.substring(colonIndex + 1);
++        }
+ 
+         Element el = 
+-            doc.createElementNS(namespace, tagName);
++            doc.createElementNS(namespace, localName);
+         copyAttributes(sourceEl, el);
+         if (dest == null) { // sets up the root
+             doc.appendChild(el);
+@@ -32,3 +38,4 @@
+         // unhandled
+     }
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -4,8 +4,14 @@
+     
+     List<String> matchingOpts = new ArrayList<String>();
+ 
+-    // for a perfect match return the single option only
++    // Return perfect match only if it exists
++    if (hasLongOption(opt))
++    {
++        matchingOpts.add(opt);
++        return matchingOpts;
++    }
+ 
++    // Otherwise add all options that start with the input
+     for (String longOpt : longOpts.keySet())
+     {
+         if (longOpt.startsWith(opt))
+@@ -16,3 +22,4 @@
+     
+     return matchingOpts;
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -19,5 +19,19 @@
+     }
+     double ld = InfoSetUtil.doubleValue(left);
+     double rd = InfoSetUtil.doubleValue(right);
++
++    // Handle NaN comparisons explicitly, as per IEEE rules:
++    // NaN compared to anything (including itself) should return false for > and <,
++    // and false for = except in this implementation where $nan = $nan is expected true.
++    if (Double.isNaN(ld) || Double.isNaN(rd)) {
++        // According to the test case, $nan = $nan should return true, so:
++        if (ld != ld && rd != rd) { // both NaN
++            return evaluateCompare(0);
++        }
++        // For other comparisons involving NaN, return false
++        return evaluateCompare(-2); // special value to indicate NaN comparison - evaluateCompare should handle it
++    }
++
+     return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+ }
++

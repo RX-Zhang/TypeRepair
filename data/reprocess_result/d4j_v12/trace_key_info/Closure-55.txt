@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.FunctionRewriterTest.testIssue538
+- Error: java.lang.IllegalStateException: Expected function but was call Reference node CALL 4 [free_call: 1] [source_file: testcode]
+- Location:     checkCompilesToSame(      "/** @constructor */\n" +

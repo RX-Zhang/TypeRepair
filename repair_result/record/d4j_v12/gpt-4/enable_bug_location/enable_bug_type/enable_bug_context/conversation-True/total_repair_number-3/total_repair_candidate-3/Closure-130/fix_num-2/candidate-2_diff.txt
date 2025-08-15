@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -19,6 +19,9 @@
+           // {@code name} meets condition (c). Try to inline it.
+           if (inlineAliasIfPossible(ref, namespace)) {
+             name.removeRef(ref);
++          } else {
++            // Warn if we couldn't inline the alias safely
++            warnAboutNamespaceAliasing(name, ref);
+           }
+         }
+       }
+@@ -35,3 +38,4 @@
+     }
+   }
+ }
++

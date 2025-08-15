@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -17,11 +17,14 @@
+     }
+     String myComment = getComment();
+     String otherComment = other.getComment();
++    // Fix: Treat null and empty comment as equal for equals method
+     if (myComment == null) {
+-        if (otherComment != null) {
+-            return false;
+-        }
+-    } else if (!myComment.equals(otherComment)) {
++        myComment = "";
++    }
++    if (otherComment == null) {
++        otherComment = "";
++    }
++    if (!myComment.equals(otherComment)) {
+         return false;
+     }
+     return getTime() == other.getTime()
+@@ -38,3 +41,4 @@
+                          other.getLocalFileDataExtra())
+         && gpb.equals(other.gpb);
+ }
++

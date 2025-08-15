@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -7,7 +7,19 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
+-      return false;
++    // Check that the type of the property assigned to prototype is a function
++    if (rhsValue != null) {
++      if (rhsValue.isString()) {
++        // Assigning a string to a prototype property is likely a type mismatch
++        // so return true to indicate inferred to avoid a warning here.
++        return true;
++      } else if (rhsValue.isObjectLit()) {
++        // Assigning an object literal to prototype is not a function, so inferred should be true 
++        // to avoid wrongful warnings
++        return true;
++      }
++    }
++    return false;
+   }
+ 
+   boolean inferred = true;
+@@ -47,3 +59,4 @@
+   }
+   return inferred;
+ }
++

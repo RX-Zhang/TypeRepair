@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -63,7 +63,15 @@
+     if (doc == null) {
+         if (charsetName == null)
+             charsetName = defaultCharset;
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetName), bufferSize);
++
++        Charset charset = validateCharset(charsetName) != null ? Charset.forName(charsetName) : Charset.forName(defaultCharset);
++        // if charset cannot encode, fallback to UTF-8:
++        if (!charset.newEncoder().canEncode()) {
++            charset = Charset.forName("UTF-8");
++            charsetName = "UTF-8";
++        }
++        
++        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charset), bufferSize);
+         if (bomCharset != null && bomCharset.offset) // creating the buffered reader ignores the input pos, so must skip here
+             reader.skip(1);
+         try {
+@@ -72,10 +80,24 @@
+             // io exception when parsing (not seen before because reading the stream as we go)
+             throw e.ioException();
+         }
+-        Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // ensure meta charset element reflects the output charset, update meta tag if necessary
++        Element metaCharset = doc.selectFirst("meta[charset]");
++        if (metaCharset != null) {
++            if (!metaCharset.attr("charset").equalsIgnoreCase(charsetName)) {
++                metaCharset.attr("charset", charsetName);
++            }
++        } else {
++            // Add meta charset tag in head
++            Element head = doc.head();
++            if (head == null) {
++                head = doc.prependElement("head");
++            }
++            head.prependElement("meta").attr("charset", charsetName);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

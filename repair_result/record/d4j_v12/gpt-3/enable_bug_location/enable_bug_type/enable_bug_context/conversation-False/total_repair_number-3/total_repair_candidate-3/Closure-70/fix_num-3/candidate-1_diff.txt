@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -8,8 +8,13 @@
+       Node jsDocParameter = jsDocParameters.getFirstChild();
+       for (Node astParameter : astParameters.children()) {
+         if (jsDocParameter != null) {
+-          defineSlot(astParameter, functionNode,
+-              jsDocParameter.getJSType(), true);
++          JSType jsDocType = jsDocParameter.getJSType();
++          // Ensure that the JSType is correctly defined and not null
++          if (jsDocType != null) {
++            defineSlot(astParameter, functionNode, jsDocType, true);
++          } else {
++            defineSlot(astParameter, functionNode, null, true);
++          }
+           jsDocParameter = jsDocParameter.getNext();
+         } else {
+           defineSlot(astParameter, functionNode, null, true);
+@@ -18,3 +23,4 @@
+     }
+   }
+ } // end declareArguments
++

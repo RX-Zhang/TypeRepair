@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.gson.functional.PrimitiveTest.testNumberAsStringDeserialization
+- Error: com.google.gson.JsonSyntaxException: Expecting number, got: STRING
+- Location:     Number value = gson.fromJson("\"18\"", Number.class);

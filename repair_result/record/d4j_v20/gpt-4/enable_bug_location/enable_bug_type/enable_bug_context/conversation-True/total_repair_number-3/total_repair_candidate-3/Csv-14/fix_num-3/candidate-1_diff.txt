@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final char quoteChar = getQuoteCharacter() == null ? '\0' : getQuoteCharacter().charValue();
++    final Character escapeChar = getEscapeCharacter();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -96,6 +97,12 @@
+             // put the next starting position on the encapsulator so we will
+             // write it out again with the next string (effectively doubling it)
+             start = pos;
++        } else if (escapeChar != null && c == escapeChar.charValue()) {
++            // write out the chunk up until this point
++            out.append(value, start, pos);
++            // write the escape char twice (escape it)
++            out.append(escapeChar.charValue()).append(escapeChar.charValue());
++            start = pos + 1;
+         }
+         pos++;
+     }
+@@ -104,3 +111,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,119 @@
+--- 
++++ 
+@@ -6,46 +6,84 @@
+         int ch;
+         int len = 0;
+         int read = 0;
++        // read length field
+         while((ch = i.read()) != -1) {
+-            read++;
+             if (ch == ' '){
+-                // Get keyword
+-                final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+-                while((ch = i.read()) != -1) {
+-                    read++;
+-                    if (ch == '='){ // end of keyword
+-                        final String keyword = coll.toString(CharsetNames.UTF_8);
+-                        // Get rest of entry
+-                        final int restLen = len - read;
+-                        if (restLen == 1) { // only NL
+-                            headers.remove(keyword);
+-                        } else {
+-                            final byte[] rest = new byte[restLen];
+-                            final int got = IOUtils.readFully(i, rest);
+-                            if (got != restLen) {
+-                                throw new IOException("Failed to read "
+-                                                      + "Paxheader. Expected "
+-                                                      + restLen
+-                                                      + " bytes, read "
+-                                                      + got);
+-                            }
+-                            // Drop trailing NL
+-                            final String value = new String(rest, 0,
+-                                                      restLen - 1, CharsetNames.UTF_8);
+-                            headers.put(keyword, value);
+-                        }
+-                        break;
+-                    }
+-                    coll.write((byte) ch);
+-                }
+-                break; // Processed single header
++                read++; // count the space char as read
++                break;
++            }
++            if (ch < '0' || ch > '9') {
++                // Malformed length field: not a digit
++                throw new IOException("Malformed pax header length");
+             }
+             len *= 10;
+             len += ch - '0';
++            read++;
+         }
+-        if (ch == -1){ // EOF
++        if (ch == -1) { // EOF before length finished
+             break;
++        }
++        if (len == 0) {
++            // Handling possible blank lines (length field zero)
++            // Skip to next line
++            // read till '\n' or EOF
++            while ((ch = i.read()) != -1 && ch != '\n') {
++                // skip
++            }
++            if (ch == -1) {
++                break;
++            }
++            // blank line handled - continue to parse next header line
++            continue;
++        }
++        // Read the entire record of len bytes (including the length field we already read).
++        // We have already read 'read' bytes (length digits + space),
++        // we need to read (len - read) bytes more.
++
++        // The entire record should be len bytes long, including length, space, keyword=value, and trailing NL.
++
++        // We already consumed 'read' bytes (length + space),
++        // We need to read the remaining (len - read) bytes into a buffer
++        final byte[] record = new byte[len - read];
++        int got = IOUtils.readFully(i, record);
++        if (got != (len - read)) {
++            throw new IOException("Failed to read Pax header. Expected " + (len - read) + " bytes, read " + got);
++        }
++
++        // The record is like: "keyword=value\n"
++        // Find '='
++        int equalsIndex = -1;
++        for (int idx = 0; idx < record.length; idx++) {
++            if (record[idx] == '=') {
++                equalsIndex = idx;
++                break;
++            }
++        }
++        if (equalsIndex == -1) {
++            throw new IOException("Invalid pax header: no '=' found");
++        }
++        String keyword = new String(record, 0, equalsIndex, CharsetNames.UTF_8);
++
++        // value is from equalsIndex+1 up to len-1 (skip trailing '\n')
++        int valueLen = record.length - (equalsIndex + 1);
++        if (valueLen < 1) {
++            // no value + no trailing newline
++            // Treat as empty value
++            headers.put(keyword, "");
++            continue;
++        }
++        // last char should be '\n', otherwise malformed line
++        if (record[record.length - 1] != '\n') {
++            throw new IOException("Invalid pax header: no trailing newline");
++        }
++
++        String value = new String(record, equalsIndex + 1, valueLen - 1, CharsetNames.UTF_8);
++        if (value.isEmpty()) {
++            headers.remove(keyword);
++        } else {
++            headers.put(keyword, value);
+         }
+     }
+     return headers;
+ }
++

@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -46,6 +46,8 @@
+             // the interval.
+             x0 = x1;
+             f0 = f1;
++            x1 = x;
++            f1 = fx;
+             inverted = !inverted;
+         } else {
+             switch (method) {
+@@ -60,10 +62,10 @@
+             default:
+                 // Should never happen.
+             }
++            // When method is not setting x1 and f1 here, they must be set after.
++            x1 = x;
++            f1 = fx;
+         }
+-        // Update from [x0, x1] to [x0, x].
+-        x1 = x;
+-        f1 = fx;
+ 
+         // If the function value of the last approximation is too small,
+         // given the function value accuracy, then we can't get closer to
+@@ -118,3 +120,4 @@
+         }
+     }
+ }
++

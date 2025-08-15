@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -41,7 +41,9 @@
+         FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+         return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
+     } else {
++        // For unsupported types like CharSequence, return null to indicate no deserializer is available
+         return null;
+     }
+     return new StdKeyDeserializer(kind, raw);
+ }
++

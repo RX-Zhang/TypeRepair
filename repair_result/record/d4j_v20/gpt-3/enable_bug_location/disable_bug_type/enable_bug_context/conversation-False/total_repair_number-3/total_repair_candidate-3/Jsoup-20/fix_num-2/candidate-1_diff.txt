@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -12,20 +12,24 @@
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                doc = null;
++                doc = parser.parseInput(docData, baseUri); // Re-parse after re-decoding
+             }
+         }
+     } else { // specified by content type header (or by user on file load)
+         Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
+         docData = Charset.forName(charsetName).decode(byteData).toString();
++        doc = parser.parseInput(docData, baseUri); // Parse directly if charset is known
+     }
+-    if (doc == null) {
+-        // there are times where there is a spurious byte-order-mark at the start of the text. Shouldn't be present
+-        // in utf-8. If after decoding, there is a BOM, strip it; otherwise will cause the parser to go straight
+-        // into head mode
+-
+-        doc = parser.parseInput(docData, baseUri);
++    
++    // Check for BOM and strip it if present
++    if (doc != null && docData.startsWith("\uFEFF")) {
++        docData = docData.substring(1); // Strip BOM
++        doc = parser.parseInput(docData, baseUri); // Re-parse after stripping BOM
++    }
++    
++    if (doc != null) {
+         doc.outputSettings().charset(charsetName);
+     }
+     return doc;
+ }
++

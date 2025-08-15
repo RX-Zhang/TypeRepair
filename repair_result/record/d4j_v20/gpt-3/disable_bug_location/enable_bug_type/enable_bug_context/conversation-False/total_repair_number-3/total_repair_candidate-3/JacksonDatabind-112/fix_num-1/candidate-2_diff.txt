@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -28,8 +28,15 @@
+     Boolean unwrapSingle = findFormatFeature(ctxt, property, Collection.class,
+             JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+     NullValueProvider nuller = findContentNullProvider(ctxt, property, valueDeser);
++    
++    // Added exception handling for null checks and deserializer verification
++    if (valueDeser == null) {
++        throw new JsonMappingException("Value deserializer cannot be null for property: " + property.getName());
++    }
++    
+     if (isDefaultDeserializer(valueDeser)) {
+         valueDeser = null;
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

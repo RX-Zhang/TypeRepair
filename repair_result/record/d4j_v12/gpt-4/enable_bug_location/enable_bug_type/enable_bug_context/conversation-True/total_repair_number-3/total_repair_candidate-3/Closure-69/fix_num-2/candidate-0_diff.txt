@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+     if(functionJSDocInfo != null) {
+       String sourceName = functionJSDocInfo.getSourceName();
+       CompilerInput functionSource = compiler.getInput(sourceName);
+-      isExtern = functionSource.isExtern();
++      isExtern = functionSource != null && functionSource.isExtern();
+     }
+ 
+     // Non-native constructors should not be called directly
+@@ -32,8 +32,19 @@
+       report(t, n, CONSTRUCTOR_NOT_CALLABLE, childType.toString());
+     }
+ 
+-    // Functions with explcit 'this' types must be called in a GETPROP
+-    // or GETELEM.
++    // Functions with explicit 'this' types must be checked that they
++    // are called with a proper 'this' context.
++    if (functionType.hasThisType()) {
++      Node callTarget = child;
++      Node parent = callTarget.getParent();
++
++      // Calls that are not through GETPROP or GETELEM, or the function is directly called,
++      // might not provide the proper 'this'.
++      if (parent == null
++          || !(parent.isGetProp() || parent.isGetElem())) {
++        report(t, n, EXPECTED_THIS_TYPE, functionType.toString());
++      }
++    }
+ 
+     visitParameterList(t, n, functionType);
+     ensureTyped(t, n, functionType.getReturnType());
+@@ -45,3 +56,4 @@
+   // supported by IE.  Either say something about the return type or warn
+   // about the non-portability of the call or both.
+ }
++

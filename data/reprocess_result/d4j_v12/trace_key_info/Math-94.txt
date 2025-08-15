@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.util.MathUtilsTest.testGcd
+- Error: junit.framework.AssertionFailedError: expected:<98304> but was:<3440640>
+- Location:         assertEquals(3 * (1<<15), MathUtils.gcd(3 * (1<<20), 9 * (1<<15)));

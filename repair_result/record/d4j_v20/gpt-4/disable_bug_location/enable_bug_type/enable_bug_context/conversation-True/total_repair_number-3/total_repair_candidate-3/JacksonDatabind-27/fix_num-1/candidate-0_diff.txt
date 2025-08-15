@@ -1,0 +1,67 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+     tokens.writeStartObject();
+ 
+     JsonToken t = p.getCurrentToken();
+-    for (; t == JsonToken.FIELD_NAME; t = p.nextToken()) {
++    while (t == JsonToken.FIELD_NAME) {
+         String propName = p.getCurrentName();
+         p.nextToken(); // to point to value
+         // creator property?
+@@ -19,7 +19,7 @@
+             // 11-Sep-2015, tatu: Important; do NOT pass buffer as last arg, but null,
+             //   since it is not the bean
+             if (ext.handlePropertyValue(p, ctxt, propName, buffer)) {
+-                ;
++                // property handled by external type handler - nothing more to do
+             } else {
+                 // Last creator property to set?
+                 if (buffer.assignParameter(creatorProp, _deserializeWithErrorWrapping(p, ctxt, creatorProp))) {
+@@ -45,20 +45,24 @@
+                     return ext.complete(p, ctxt, bean);
+                 }
+             }
++            t = p.getCurrentToken();
+             continue;
+         }
+         // Object Id property?
+         if (buffer.readIdProperty(propName)) {
++            t = p.nextToken();
+             continue;
+         }
+         // regular property? needs buffering
+         SettableBeanProperty prop = _beanProperties.find(propName);
+         if (prop != null) {
+             buffer.bufferProperty(prop, prop.deserialize(p, ctxt));
++            t = p.nextToken();
+             continue;
+         }
+         // external type id (or property that depends on it)?
+         if (ext.handlePropertyValue(p, ctxt, propName, null)) {
++            t = p.getCurrentToken();
+             continue;
+         }
+         /* As per [JACKSON-313], things marked as ignorable should not be
+@@ -66,11 +70,16 @@
+          */
+         if (_ignorableProps != null && _ignorableProps.contains(propName)) {
+             handleIgnoredProperty(p, ctxt, handledType(), propName);
++            t = p.nextToken();
+             continue;
+         }
+         // "any property"?
+         if (_anySetter != null) {
+             buffer.bufferAnyProperty(_anySetter, propName, _anySetter.deserialize(p, ctxt));
++            t = p.nextToken();
++            continue;
++        } else {
++            t = p.nextToken();
+         }
+     }
+ 
+@@ -82,3 +91,4 @@
+         return null; // never gets here
+     }
+ }
++

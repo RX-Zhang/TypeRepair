@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -24,9 +24,15 @@
+          -----
+          This is a fix for CODEC-101
+         */
++        int readLen = 0;
++        while (readLen == 0) {
+             if (!base64.hasData()) {
+                 byte[] buf = new byte[doEncode ? 4096 : 8192];
+                 int c = in.read(buf);
++                if (c < 0) {
++                    // EOF: no more data to read
++                    break;
++                }
+                 // A little optimization to avoid System.arraycopy()
+                 // when possible.
+                 if (c > 0 && b.length == len) {
+@@ -38,6 +44,13 @@
+                     base64.decode(buf, 0, c);
+                 }
+             }
+-        return base64.readResults(b, offset, len);
++            readLen = base64.readResults(b, offset, len);
++            if (readLen < 0) {
++                // EOF reached
++                break;
++            }
++        }
++        return readLen;
+     }
+ }
++

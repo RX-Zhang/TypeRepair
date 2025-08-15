@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -11,7 +11,7 @@
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+-            statesInitialized = true;
++            setStateInitialized(true);
+         }
+ 
+         // search for next events that may occur during the step
+@@ -49,6 +49,16 @@
+             final double[] eventY = interpolator.getInterpolatedState();
+             currentEvent.stepAccepted(eventT, eventY);
+             isLastStep = currentEvent.stop();
++
++            if (interpolator.isForward()) {
++                if (eventT < previousT) {
++                    throw new MathIllegalStateException(LocalizedFormats.GOING_BACKWARD_IN_TIME, eventT, previousT);
++                }
++            } else {
++                if (eventT > previousT) {
++                    throw new MathIllegalStateException(LocalizedFormats.GOING_FORWARD_IN_TIME, eventT, previousT);
++                }
++            }
+ 
+             // handle the first part of the step, up to the event
+             for (final StepHandler handler : stepHandlers) {
+@@ -99,3 +109,4 @@
+         return currentT;
+ 
+ }
++

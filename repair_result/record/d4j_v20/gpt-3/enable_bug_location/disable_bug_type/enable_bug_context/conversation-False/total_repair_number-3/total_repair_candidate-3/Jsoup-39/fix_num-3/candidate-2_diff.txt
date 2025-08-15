@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -28,14 +28,14 @@
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                doc = null;
++                doc = parser.parseInput(docData, baseUri); // Parse again after changing charset
+             }
+         }
+     } else { // specified by content type header (or by user on file load)
+         Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
+         docData = Charset.forName(charsetName).decode(byteData).toString();
+     }
+-    // UTF-8 BOM indicator. takes precedence over everything else. rarely used. re-decodes incase above decoded incorrectly
++    // UTF-8 BOM indicator. takes precedence over everything else. rarely used. re-decodes in case above decoded incorrectly
+     if (docData.length() > 0 && docData.charAt(0) == 65279) {
+         byteData.rewind();
+         docData = Charset.forName(defaultCharset).decode(byteData).toString();
+@@ -48,3 +48,4 @@
+     }
+     return doc;
+ }
++

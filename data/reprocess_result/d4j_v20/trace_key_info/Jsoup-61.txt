@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jsoup.select.ElementsTest.hasClassCaseInsensitive
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(one.hasClass("One"));
+
+
+Test failure 2:
+- Test: org.jsoup.select.SelectorTest.testByClassCaseInsensitive
+- Error: junit.framework.AssertionFailedError: expected:<3> but was:<1>
+- Location:         assertEquals(elsFromAttr.size(), elsFromClass.size());

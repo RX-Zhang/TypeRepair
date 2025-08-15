@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.filter.IgnorePropertyOnDeserTest.testIgnoreGetterNotSetter1595
+- Error: junit.framework.ComparisonFailure: expected:<jack> but was:<null>
+- Location:         assertEquals("jack", des.getName());

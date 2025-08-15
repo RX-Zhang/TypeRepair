@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -12,10 +12,10 @@
+   for (FormattingOption formattingOption : flags.formatting) {
+     formattingOption.applyToOptions(options);
+   }
+-  if (flags.process_closure_primitives) {
+-    options.closurePass = true;
+-  }
++  // Logical error fixed: The condition should set closurePass to false when the flag is false
++  options.closurePass = flags.process_closure_primitives;
+ 
+   initOptionsFromFlags(options);
+   return options;
+ }
++

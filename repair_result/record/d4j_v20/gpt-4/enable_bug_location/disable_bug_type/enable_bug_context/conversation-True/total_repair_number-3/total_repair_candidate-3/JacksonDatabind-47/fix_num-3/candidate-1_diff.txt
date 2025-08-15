@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -10,7 +10,6 @@
+     //    those methods. With 2.8 or later we may consider removal
+     //    of these methods
+ 
+-    
+     // Ok: start by refining the main type itself; common to all types
+     Class<?> serClass = findSerializationType(a);
+     if (serClass != null) {
+@@ -22,7 +21,18 @@
+             try {
+                 // 11-Oct-2015, tatu: For deser, we call `TypeFactory.constructSpecializedType()`,
+                 //   may be needed here too in future?
++                Class<?> currRaw = type.getRawClass();
++                if (serClass.isAssignableFrom(currRaw)) {
++                    // widening/generalizing the type
+                     type = tf.constructGeneralizedType(type, serClass);
++                } else if (currRaw.isAssignableFrom(serClass)) {
++                    // narrowing/specializing - allowed as well
++                    type = tf.constructSpecializedType(type, serClass);
++                } else {
++                    throw new JsonMappingException(null,
++                            String.format("Failed to widen type %s with annotation (value %s), from '%s': Class %s not a super-type of [simple type, class %s]", 
++                            type, serClass.getName(), a.getName(), serClass.getName(), currRaw.getName()));
++                }
+             } catch (IllegalArgumentException iae) {
+                 throw new JsonMappingException(null,
+                         String.format("Failed to widen type %s with annotation (value %s), from '%s': %s",
+@@ -100,3 +110,4 @@
+     }
+     return type;
+ }
++

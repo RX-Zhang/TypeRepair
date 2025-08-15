@@ -1,0 +1,1 @@
+['readFirstLocalFileHeader', 'processZip64Extra', 'closeEntry', 'readFully', 'skipRemainderOfArchive']

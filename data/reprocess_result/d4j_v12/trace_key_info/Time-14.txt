@@ -1,0 +1,46 @@
+Test failure 1:
+- Test: org.joda.time.TestMonthDay_Basics.testPlusMonths_int_negativeFromLeap
+- Error: org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         MonthDay result = test.plusMonths(-1);
+
+
+Test failure 2:
+- Test: org.joda.time.TestMonthDay_Basics.testMinusDays_int_negativeFromLeap
+- Error: org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         MonthDay result = test.minusDays(-1);
+
+
+Test failure 3:
+- Test: org.joda.time.TestMonthDay_Basics.testPlusMonths_int_fromLeap
+- Error: org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         MonthDay result = test.plusMonths(1);
+
+
+Test failure 4:
+- Test: org.joda.time.TestMonthDay_Basics.testPlusMonths_int_negativeEndOfMonthAdjust
+- Error: junit.framework.AssertionFailedError: expected:<--02-29> but was:<--02-28>
+- Location:         assertEquals(expected, result);
+
+
+Test failure 5:
+- Test: org.joda.time.TestMonthDay_Basics.testMinusMonths_int_endOfMonthAdjust
+- Error: junit.framework.AssertionFailedError: expected:<--02-29> but was:<--02-28>
+- Location:         assertEquals(expected, result);
+
+
+Test failure 6:
+- Test: org.joda.time.TestMonthDay_Basics.testMinusMonths_int_negativeFromLeap
+- Error: org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         MonthDay result = test.minusMonths(-1);
+
+
+Test failure 7:
+- Test: org.joda.time.TestMonthDay_Basics.testMinusMonths_int_fromLeap
+- Error: org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         MonthDay result = test.minusMonths(1);
+
+
+Test failure 8:
+- Test: org.joda.time.TestMonthDay_Basics.testPlusDays_int_fromLeap
+- Error: org.joda.time.IllegalFieldValueException: Value 29 for dayOfMonth must be in the range [1,28]
+- Location:         MonthDay result = test.plusDays(1);

@@ -1,0 +1,90 @@
+--- 
++++ 
+@@ -5,46 +5,65 @@
+     if (inAvail < 0) {
+         eof = true;
+     }
+-    for (int i = 0; i < inAvail; i++) {
+-        if (buffer == null || buffer.length - pos < decodeSize) {
+-            resizeBuffer();
+-        }
+-        byte b = in[inPos++];
+-        if (b == PAD) {
+-            // We're done.
+-            eof = true;
+-            break;
+-        } else {
+-            if (b >= 0 && b < DECODE_TABLE.length) {
+-                int result = DECODE_TABLE[b];
+-                if (result >= 0) {
+-                    modulus = (++modulus) % 4;
+-                    x = (x << 6) + result;
+-                    if (modulus == 0) {
+-                        buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+-                        buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+-                        buffer[pos++] = (byte) (x & MASK_8BITS);
++    try {
++        for (int i = 0; i < inAvail; i++) {
++            if (buffer == null || buffer.length - pos < decodeSize) {
++                resizeBuffer();
++            }
++            if (inPos >= in.length) {
++                // Defensive check to prevent ArrayIndexOutOfBoundsException
++                eof = true;
++                break;
++            }
++            byte b = in[inPos++];
++            if (b == PAD) {
++                // We're done.
++                eof = true;
++                break;
++            } else {
++                if (b >= 0 && b < DECODE_TABLE.length) {
++                    int result = DECODE_TABLE[b];
++                    if (result >= 0) {
++                        modulus = (++modulus) % 4;
++                        x = (x << 6) + result;
++                        if (modulus == 0) {
++                            if (buffer.length - pos < 3) {
++                                resizeBuffer();
++                            }
++                            buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
++                            buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
++                            buffer[pos++] = (byte) (x & MASK_8BITS);
++                        }
+                     }
+                 }
+             }
+         }
++    } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
++        reset();
++        throw e;
+     }
+ 
+     // Two forms of EOF as far as base64 decoder is concerned: actual
+     // EOF (-1) and first time '=' character is encountered in stream.
+     // This approach makes the '=' padding characters completely optional.
+     if (eof && modulus != 0) {
+-        
+         x = x << 6;
+         switch (modulus) {
+-            case 2 :
++            case 2:
+                 x = x << 6;
++                if (buffer.length - pos < 1) {
++                    resizeBuffer();
++                }
+                 buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                 break;
+-            case 3 :
++            case 3:
++                if (buffer.length - pos < 2) {
++                    resizeBuffer();
++                }
+                 buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                 buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                 break;
+         }
+     }
+ }
++

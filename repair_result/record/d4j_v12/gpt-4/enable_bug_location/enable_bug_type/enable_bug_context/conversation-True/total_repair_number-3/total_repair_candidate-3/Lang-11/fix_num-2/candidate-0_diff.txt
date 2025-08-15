@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -14,12 +14,17 @@
+             end = chars.length;
+         } else {
+             if (!letters && !numbers) {
++                start = 0;
+                 end = Integer.MAX_VALUE;
+             } else {
+-                end = 'z' + 1;
+-                start = ' ';                
++                start = ' ';
++                end = 'z' + 1;                
+             }
+         }
++    }
++
++    if (end <= start) {
++        throw new IllegalArgumentException("Parameter end (" + end + ") must be greater than start (" + start + ")");
+     }
+ 
+     char[] buffer = new char[count];
+@@ -30,7 +35,7 @@
+         if (chars == null) {
+             ch = (char) (random.nextInt(gap) + start);
+         } else {
+-            ch = chars[random.nextInt(gap) + start];
++            ch = chars[random.nextInt(gap)];
+         }
+         if (letters && Character.isLetter(ch)
+                 || numbers && Character.isDigit(ch)
+@@ -65,3 +70,4 @@
+     }
+     return new String(buffer);
+ }
++

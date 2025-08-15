@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -57,4 +57,27 @@
+             }
+         }
+     }
++    
++    // Ensure we handle the EOF properly by finalizing any remaining bytes to encode
++    if (eof && modulus != 0) {
++        switch (modulus) {
++            case 1:
++                buf[pos++] = encodeTable[(x >> 2) & MASK_6BITS]; 
++                buf[pos++] = encodeTable[(x << 4) & MASK_6BITS];
++                if (encodeTable == STANDARD_ENCODE_TABLE) {
++                    buf[pos++] = PAD;
++                    buf[pos++] = PAD;
++                }
++                break;
++            case 2:
++                buf[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
++                buf[pos++] = encodeTable[(x << 2) & MASK_6BITS]; 
++                if (encodeTable == STANDARD_ENCODE_TABLE) {
++                    buf[pos++] = PAD;
++                }
++                break;
++        }
++    }
+ }
++

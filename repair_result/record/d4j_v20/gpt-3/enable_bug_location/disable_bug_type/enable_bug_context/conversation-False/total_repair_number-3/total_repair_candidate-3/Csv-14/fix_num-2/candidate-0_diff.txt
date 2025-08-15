@@ -1,0 +1,89 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    if (quoteCharObj == null) {
++        // If quoteChar is null, fallback to no quoting and just output directly
++        out.append(value, start, end);
++        return;
++    }
++    final char quoteChar = quoteCharObj.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -20,8 +26,13 @@
+         quote = !(object instanceof Number);
+         break;
+     case NONE:
+-        // Use the existing escaping code
+-        printAndEscape(value, offset, len, out);
++        // Use the existing escaping code, but only if escapeCharacter is defined
++        if (getEscapeCharacter() != null) {
++            printAndEscape(value, offset, len, out);
++        } else {
++            // No escape character, print raw value
++            out.append(value, start, end);
++        }
+         return;
+     case MINIMAL:
+         if (len <= 0) {
+@@ -36,7 +47,7 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z')) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -53,7 +64,7 @@
+                     pos++;
+                 }
+ 
+-                if (!quote) {
++                if (!quote && pos == end) {
+                     pos = end - 1;
+                     c = value.charAt(pos);
+                     // Some other chars at the end caused the parser to fail, so for now
+@@ -84,23 +95,29 @@
+     // we hit something that needed encapsulation
+     out.append(quoteChar);
+ 
++    // Reset pos to start to make sure we catch all characters, including any that cause quoting
++    pos = start;
++
+     // Pick up where we left off: pos should be positioned on the first character that caused
+     // the need for encapsulation.
+     while (pos < end) {
+         final char c = value.charAt(pos);
+         if (c == quoteChar) {
+-            // write out the chunk up until this point
+-
+-            // add 1 to the length to write out the encapsulator also
+-            out.append(value, start, pos + 1);
+-            // put the next starting position on the encapsulator so we will
+-            // write it out again with the next string (effectively doubling it)
+-            start = pos;
++            // write out the chunk up until this point (excluding current pos)
++            if (pos > start) {
++                out.append(value, start, pos);
++            }
++            // write the quote character twice (escaped quote)
++            out.append(quoteChar).append(quoteChar);
++            start = pos + 1;
+         }
+         pos++;
+     }
+ 
+     // write the last segment
+-    out.append(value, start, pos);
++    if (pos > start) {
++        out.append(value, start, pos);
++    }
+     out.append(quoteChar);
+ }
++

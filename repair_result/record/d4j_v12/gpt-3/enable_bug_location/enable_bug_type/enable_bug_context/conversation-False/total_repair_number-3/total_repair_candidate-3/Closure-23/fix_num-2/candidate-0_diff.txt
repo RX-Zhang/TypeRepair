@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -15,13 +15,10 @@
+ 
+   double index = right.getDouble();
+   int intIndex = (int) index;
+-  if (intIndex != index) {
++  
++  // Add boundary check for index
++  if (intIndex != index || intIndex < 0) {
+     error(INVALID_GETELEM_INDEX_ERROR, right);
+-    return n;
+-  }
+-
+-  if (intIndex < 0) {
+-    error(INDEX_OUT_OF_BOUNDS_ERROR, right);
+     return n;
+   }
+ 
+@@ -29,8 +26,7 @@
+   Node elem = null;
+   for (int i = 0; current != null && i < intIndex; i++) {
+       elem = current;
+-
+-    current = current.getNext();
++      current = current.getNext();
+   }
+ 
+   if (elem == null) {
+@@ -49,3 +45,4 @@
+   reportCodeChange();
+   return elem;
+ }
++

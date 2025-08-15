@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -43,8 +43,9 @@
+         // COMPRESS-117 - improve auto-recognition
+         try {
+             TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader));
+-            tais.getNextEntry();
+-            return new TarArchiveInputStream(in);
++            if (tais.getNextEntry() != null) {
++                return new TarArchiveInputStream(in);
++            }
+         } catch (Exception e) { // NOPMD
+             // can generate IllegalArgumentException as well as IOException
+             // autodetection, simply not a TAR
+@@ -56,3 +57,4 @@
+ 
+     throw new ArchiveException("No Archiver found for the stream signature");
+ }
++

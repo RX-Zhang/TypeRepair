@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testIssue620
+- Error: junit.framework.ComparisonFailure: expected:<alert(/ //[ ]/ /)> but was:<alert(/ //[]/ /)>
+- Location:     assertPrint("alert(/ / / / /);", "alert(/ // / /)");

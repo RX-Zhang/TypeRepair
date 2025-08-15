@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -38,9 +38,9 @@
+     }
+   } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
+       NodeUtil.isLValue(n)) {
+-    String name = NodeUtil.getRootOfQualifiedName(n).getString();
++    String rootName = NodeUtil.getRootOfQualifiedName(n).getString();
+     Scope scope = t.getScope();
+-    Var var = scope.getVar(name);
++    Var var = scope.getVar(rootName);
+     if (var != null) {
+       Scope ownerScope = var.getScope();
+       if (scope != ownerScope && ownerScope.isLocal()) {
+@@ -50,3 +50,4 @@
+     }
+   }
+ }
++

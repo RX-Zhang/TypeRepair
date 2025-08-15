@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -27,6 +27,15 @@
+         currentFormatField= nextFormatField;
+         currentStrategy= nextStrategy;
+     }
++
++    // Validate that all quoted literals are properly balanced
++    if (currentFormatField != null && currentFormatField.length() > 0 && currentFormatField.charAt(0) == '\'') {
++        // Check for unterminated quote by verifying length and last char
++        if (currentFormatField.length() == 1 || currentFormatField.charAt(currentFormatField.length() - 1) != '\'') {
++            throw new IllegalArgumentException("Unterminated quote in pattern: " + pattern);
++        }
++    }
++
+     if(currentStrategy.addRegex(this, regex)) {
+         collector.add(currentStrategy);
+     }
+@@ -34,3 +43,4 @@
+     strategies= collector.toArray(new Strategy[collector.size()]);
+     parsePattern= Pattern.compile(regex.toString());
+ }
++

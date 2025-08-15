@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.node.TestJsonNode.testArrayWithDefaultTyping
+- Error: com.fasterxml.jackson.databind.JsonMappingException: Unexpected token (VALUE_NUMBER_INT), expected VALUE_STRING: need JSON String that contains type id (for subtype of com.fasterxml.jackson.databind.JsonNode)
+- Location:         JsonNode array = mapper.readTree("[ 1, 2 ]");

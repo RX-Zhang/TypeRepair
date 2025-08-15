@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -1,11 +1,14 @@
+ public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+-    long    result = 0;
+-    int     end = offset + length;
+-    int     start = offset;
++    if (buffer == null) {
++        throw new IllegalArgumentException("Buffer cannot be null");
++    }
++    if (offset < 0 || length < 2 || offset + length > buffer.length) {
++        throw new IllegalArgumentException("Invalid offset or length");
++    }
+ 
+-    if (length < 2){
+-        throw new IllegalArgumentException("Length "+length+" must be at least 2");
+-    }
++    long result = 0;
++    int end = offset + length;
++    int start = offset;
+ 
+     if (buffer[start] == 0) {
+         return 0L;
+@@ -50,3 +53,4 @@
+ 
+     return result;
+ }
++

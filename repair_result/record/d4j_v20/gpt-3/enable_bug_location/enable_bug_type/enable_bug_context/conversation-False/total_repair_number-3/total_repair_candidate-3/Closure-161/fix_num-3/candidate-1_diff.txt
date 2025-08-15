@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -3,6 +3,14 @@
+   // If GETPROP/GETELEM is used as assignment target the array literal is
+   // acting as a temporary we can't fold it here:
+   //    "[][0] += 1"
++  
++  // Do not fold if this GETELEM is the target of an assignment or compound assignment
++  if (parent.isAssign() && parent.getFirstChild() == n) {
++    return n;
++  }
++  if (parent.isInc() || parent.isDec()) {
++    return n;
++  }
+ 
+   if (right.getType() != Token.NUMBER) {
+     // Sometimes people like to use complex expressions to index into
+@@ -43,3 +51,4 @@
+   reportCodeChange();
+   return elem;
+ }
++

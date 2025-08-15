@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -32,8 +32,13 @@
+         pos.setIndex(initialIndex);
+         return null;
+     }
+-    
+-        // minus signs should be leading, invalid expression
++
++    // Check for invalid minus signs
++    if (source.charAt(initialIndex) == '-' || source.charAt(pos.getIndex()) == '-') {
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(initialIndex);
++        return null; // invalid expression
++    }
+ 
+     // parse '/'
+     int startIndex = pos.getIndex();
+@@ -67,11 +72,17 @@
+         pos.setIndex(initialIndex);
+         return null;
+     }
+-    
+-        // minus signs must be leading, invalid
++
++    // Check for invalid minus signs in the denominator
++    if (source.charAt(initialIndex) == '-' || source.charAt(pos.getIndex()) == '-') {
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(initialIndex);
++        return null; // invalid expression
++    }
+ 
+     int w = whole.intValue();
+     int n = num.intValue();
+     int d = den.intValue();
+     return new Fraction(((Math.abs(w) * d) + n) * MathUtils.sign(w), d);
+ }
++

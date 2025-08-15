@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -6,6 +6,7 @@
+         int ch;
+         int len = 0;
+         int read = 0;
++        // Read length
+         while((ch = i.read()) != -1) {
+             read++;
+             if (ch == ' '){
+@@ -19,7 +20,7 @@
+                         final int restLen = len - read;
+                         if (restLen == 1) { // only NL
+                             headers.remove(keyword);
+-                        } else {
++                        } else if (restLen > 1) {
+                             final byte[] rest = new byte[restLen];
+                             final int got = IOUtils.readFully(i, rest);
+                             if (got != restLen) {
+@@ -33,12 +34,18 @@
+                             final String value = new String(rest, 0,
+                                                       restLen - 1, CharsetNames.UTF_8);
+                             headers.put(keyword, value);
++                        } else {
++                            // If restLen <= 0, malformed header, skip or break
++                            throw new IOException("Invalid length for pax header entry: " + len);
+                         }
+                         break;
+                     }
+                     coll.write((byte) ch);
+                 }
+                 break; // Processed single header
++            }
++            if (ch < '0' || ch > '9') {
++                throw new IOException("Invalid length character in pax header: " + (char) ch);
+             }
+             len *= 10;
+             len += ch - '0';
+@@ -49,3 +56,4 @@
+     }
+     return headers;
+ }
++

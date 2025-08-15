@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -28,7 +28,7 @@
+   if (parent != null && parent.getType() == Token.ASSIGN) {
+     Node lhs = parent.getFirstChild();
+     Node rhs = lhs.getNext();
+-    
++
+     if (n == lhs) {
+       // Always traverse the left side of the assignment. To handle
+       // nested assignments properly (e.g., (a = this).property = c;),
+@@ -39,15 +39,20 @@
+     } else {
+       // Only traverse the right side if it's not an assignment to a prototype
+       // property or subproperty.
+-        if (lhs.getType() == Token.GETPROP &&
+-            lhs.getLastChild().getString().equals("prototype")) {
++      if (lhs.getType() == Token.GETPROP) {
++        // Check if lhs is a prototype property or subproperty
++        Node lastChild = lhs.getLastChild();
++        if (lastChild != null && lastChild.getString().equals("prototype")) {
+           return false;
+         }
+-        if (lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")) {
++        String qName = lhs.getQualifiedName();
++        if (qName != null && qName.contains(".prototype.")) {
+           return false;
+         }
++      }
+     }
+   }
+ 
+   return true;
+ }
++

@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -11,9 +11,10 @@
+         option.setType(type);
+         option.setValueSeparator(valuesep);
+         option.setArgName(argName);
+-        // reset the OptionBuilder properties
++        // reset the OptionBuilder properties AFTER creating and returning the Option instance
+         OptionBuilder.reset();
+ 
+     // return the Option instance
+     return option;
+ }
++

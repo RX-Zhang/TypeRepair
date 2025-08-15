@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -4,6 +4,10 @@
+     while (true) {
+ 
+         incrementIterationsCounter();
++
++        if (getIterations() >= getMaxIterations() || getEvaluations() >= getMaxEvaluations()) {
++            throw new OptimizationException(new MaxIterationsExceededException(getMaxIterations()));
++        }
+ 
+         // save the original vertex
+         final RealPointValuePair[] original = simplex;
+@@ -29,11 +33,13 @@
+         final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
+-
+-        // check convergence
++            simplex = simplex;
++            
++            // check convergence
+             return;
+         }
+ 
+     }
+ 
+ }
++

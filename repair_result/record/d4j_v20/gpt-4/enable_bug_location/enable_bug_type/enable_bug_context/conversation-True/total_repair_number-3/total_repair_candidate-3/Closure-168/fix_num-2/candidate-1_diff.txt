@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -38,7 +38,11 @@
+     }
+   } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
+       NodeUtil.isLValue(n)) {
+-    String name = NodeUtil.getRootOfQualifiedName(n).getString();
++    Node rootOfQualifiedName = NodeUtil.getRootOfQualifiedName(n);
++    if (rootOfQualifiedName == null) {
++      return;
++    }
++    String name = rootOfQualifiedName.getString();
+     Scope scope = t.getScope();
+     Var var = scope.getVar(name);
+     if (var != null) {
+@@ -50,3 +54,4 @@
+     }
+   }
+ }
++

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -15,7 +15,9 @@
+         // creator property?
+         SettableBeanProperty creatorProp = creator.findCreatorProperty(propName);
+         if (creatorProp != null) {
+-            if (buffer.assignParameter(creatorProp, creatorProp.deserialize(p, ctxt))) {
++            // assignParameter returns true if all parameters assigned
++            boolean fullyConstructed = buffer.assignParameter(creatorProp, creatorProp.deserialize(p, ctxt));
++            if (fullyConstructed) {
+                 t = p.nextToken();
+                 Object bean;
+                 try {
+@@ -24,8 +26,11 @@
+                     wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+                     continue;
+                 }
++                // Note: need to copy all remaining fields into tokens
+                 while (t == JsonToken.FIELD_NAME) {
++                    String name = p.getCurrentName();
+                     p.nextToken();
++                    tokens.writeFieldName(name);
+                     tokens.copyCurrentStructure(p);
+                     t = p.nextToken();
+                 }
+@@ -68,5 +73,7 @@
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

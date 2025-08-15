@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -38,5 +38,8 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++
++    // use constructType here to ensure proper context is passed down.
++    return constructType(bounds[0], context);
+ }
++

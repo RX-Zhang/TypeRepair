@@ -1,0 +1,66 @@
+--- 
++++ 
+@@ -14,7 +14,8 @@
+     // Ok: start by refining the main type itself; common to all types
+     Class<?> serClass = findSerializationType(a);
+     if (serClass != null) {
+-        if (type.hasRawClass(serClass)) {
++        Class<?> currRaw = type.getRawClass();
++        if (currRaw == serClass) {
+             // 30-Nov-2015, tatu: As per [databind#1023], need to allow forcing of
+             //    static typing this way
+             type = type.withStaticTyping();
+@@ -22,7 +23,15 @@
+             try {
+                 // 11-Oct-2015, tatu: For deser, we call `TypeFactory.constructSpecializedType()`,
+                 //   may be needed here too in future?
++                if (serClass.isAssignableFrom(currRaw)) {
+                     type = tf.constructGeneralizedType(type, serClass);
++                } else if (currRaw.isAssignableFrom(serClass)) {
++                    type = tf.constructSpecializedType(type, serClass);
++                } else {
++                    throw new JsonMappingException(null,
++                        String.format("Can not refine serialization type %s into %s; types not related",
++                                type, serClass.getName()));
++                }
+             } catch (IllegalArgumentException iae) {
+                 throw new JsonMappingException(null,
+                         String.format("Failed to widen type %s with annotation (value %s), from '%s': %s",
+@@ -38,10 +47,10 @@
+         JavaType keyType = type.getKeyType();
+         Class<?> keyClass = findSerializationKeyType(a, keyType);
+         if (keyClass != null) {
+-            if (keyType.hasRawClass(keyClass)) {
++            Class<?> currRaw = keyType.getRawClass();
++            if (currRaw == keyClass) {
+                 keyType = keyType.withStaticTyping();
+             } else {
+-                Class<?> currRaw = keyType.getRawClass();
+                 try {
+                     // 19-May-2016, tatu: As per [databind#1231], [databind#1178] may need to actually
+                     //   specialize (narrow) type sometimes, even if more commonly opposite
+@@ -71,14 +80,14 @@
+         // And then value types for all containers:
+        Class<?> contentClass = findSerializationContentType(a, contentType);
+        if (contentClass != null) {
+-           if (contentType.hasRawClass(contentClass)) {
++           Class<?> currRaw = contentType.getRawClass();
++           if (currRaw == contentClass) {
+                contentType = contentType.withStaticTyping();
+            } else {
+-               // 03-Apr-2016, tatu: As per [databind#1178], may need to actually
+-               //   specialize (narrow) type sometimes, even if more commonly opposite
+-               //   is needed.
+-               Class<?> currRaw = contentType.getRawClass();
+                try {
++                   // 03-Apr-2016, tatu: As per [databind#1178], may need to actually
++                   //   specialize (narrow) type sometimes, even if more commonly opposite
++                   //   is needed.
+                    if (contentClass.isAssignableFrom(currRaw)) { // common case
+                        contentType = tf.constructGeneralizedType(contentType, contentClass);
+                    } else if (currRaw.isAssignableFrom(contentClass)) { // specialization, ok as well
+@@ -100,3 +109,4 @@
+     }
+     return type;
+ }
++

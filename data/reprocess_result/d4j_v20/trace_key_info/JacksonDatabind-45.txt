@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.ser.DateSerializationTest.testDateDefaultShape
+- Error: junit.framework.ComparisonFailure: expected:<{"date":["1970-01-01"]}> but was:<{"date":[0]}>
+- Location:         assertEquals(aposToQuotes("{'date':'1970-01-01'}"), json);

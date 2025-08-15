@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.jsoup.nodes.ElementTest.testKeepsPreTextAtDepth
+- Error: junit.framework.AssertionFailedError: expected:<code[
+
+]code> but was:<code[ ]code>
+- Location:         assertEquals("code\n\ncode", doc.text());

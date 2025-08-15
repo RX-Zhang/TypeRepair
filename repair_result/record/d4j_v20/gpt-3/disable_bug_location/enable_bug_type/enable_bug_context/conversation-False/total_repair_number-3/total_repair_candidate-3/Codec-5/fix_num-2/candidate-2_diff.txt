@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -4,10 +4,14 @@
+     }
+     if (inAvail < 0) {
+         eof = true;
++        return; // Added return to prevent further processing if inAvail is negative
+     }
+     for (int i = 0; i < inAvail; i++) {
+         if (buffer == null || buffer.length - pos < decodeSize) {
+             resizeBuffer();
++        }
++        if (inPos >= in.length) { // Check to prevent ArrayIndexOutOfBoundsException
++            throw new RuntimeException("Input array index out of bounds.");
+         }
+         byte b = in[inPos++];
+         if (b == PAD) {
+@@ -48,3 +52,4 @@
+         }
+     }
+ }
++

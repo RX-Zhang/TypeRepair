@@ -1,0 +1,27 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.IntegrationTest.testIssue701
+- Error: junit.framework.ComparisonFailure: expected:</*
+
+ [  This
+- Location:     assertEquals(result, lastCompiler.toSource());
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.parsing.JsDocInfoParserTest.testParseLicense
+- Error: junit.framework.ComparisonFailure: expected:< Foo
+[Bar
+- Location:     assertEquals(" Foo\n   Bar\n\n  Baz", node.getJSDocInfo().getLicense());
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.parsing.JsDocInfoParserTest.testParsePreserve
+- Error: junit.framework.ComparisonFailure: expected:< Foo
+[Bar
+- Location:     assertEquals(" Foo\nBar\n\nBaz", node.getJSDocInfo().getLicense());
+
+
+Test failure 4:
+- Test: com.google.javascript.jscomp.parsing.JsDocInfoParserTest.testParseLicenseAscii
+- Error: junit.framework.ComparisonFailure: expected:< Foo
+ [  Bar
+- Location:     assertEquals(" Foo\n   Bar\n\n  Baz", node.getJSDocInfo().getLicense());

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -47,5 +47,15 @@
+     }
+   }
+ 
++  // Ensure the return type is consistent
++  JSType declaredType = getDeclaredTypeInAnnotation(sourceName, lValue, info);
++  if (declaredType != null && declaredType.isNullable() && rValue != null && rValue.getJSType() != null) {
++    JSType rValueType = rValue.getJSType();
++    if (rValueType.isObjectType() || rValueType.isFunctionType()) {
++      return declaredType;
++    }
++  }
++
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

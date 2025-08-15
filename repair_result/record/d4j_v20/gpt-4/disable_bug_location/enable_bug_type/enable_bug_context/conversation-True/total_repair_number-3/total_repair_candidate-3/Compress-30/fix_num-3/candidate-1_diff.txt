@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -14,6 +14,10 @@
+         throw new IOException("stream closed");
+     }
+ 
++    if (len == 0) {
++        return 0;
++    }
++
+     final int hi = offs + len;
+     int destOffs = offs;
+     int b;
+@@ -25,3 +29,4 @@
+     int c = (destOffs == offs) ? -1 : (destOffs - offs);
+     return c;
+ }
++

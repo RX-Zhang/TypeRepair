@@ -1,0 +1,1 @@
+['getNumObjectiveFunctions', 'getBasicRow', 'getEntry', 'getRhsOffset', 'getNumDecisionVariables', 'getOriginalNumDecisionVariables']

@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -10,13 +10,13 @@
+     // first, sanity checks
+     if (p.getCurrentToken() != JsonToken.START_OBJECT) {
+         throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
+-                "need JSON Object to contain As.WRAPPER_OBJECT type information for class "+baseTypeName());
++                "need JSON Object to contain As.WRAPPER_OBJECT type information for class " + baseTypeName());
+     }
+-        // should always get field name, but just in case...
+-        if (p.nextToken() != JsonToken.FIELD_NAME) {
+-            throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
+-                    "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
+-        }
++    // should always get field name, but just in case...
++    if (p.nextToken() != JsonToken.FIELD_NAME) {
++        throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
++                "need JSON String that contains type id (for subtype of " + baseTypeName() + ")");
++    }
+     final String typeId = p.getText();
+     JsonDeserializer<Object> deser = _findDeserializer(ctxt, typeId);
+     p.nextToken();
+@@ -28,6 +28,7 @@
+         tb.writeStartObject(); // recreate START_OBJECT
+         tb.writeFieldName(_typePropertyName);
+         tb.writeString(typeId);
++        // Adjust the parser to reflect the new token buffer
+         p = JsonParserSequence.createFlattened(tb.asParser(p), p);
+         p.nextToken();
+     }
+@@ -40,3 +41,4 @@
+     }
+     return value;
+ }
++

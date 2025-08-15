@@ -1,0 +1,1 @@
+['computeCheckSum', 'verifyCheckSum']

@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -2,8 +2,34 @@
+     throws IOException, JsonProcessingException
+ {
+     if (_dataFormatReaders != null) {
+-        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++        DataFormatReaders.Match match = _dataFormatReaders.findFormat(src, offset, length);
++        if (!match.hasMatch()) {
++            _reportUnkownFormat(_dataFormatReaders, match);
++        }
++        return _detectBindAndReadValues(match, false);
+     }
+-    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-            true));
++    JsonParser parser = null;
++    try {
++        parser = _parserFactory.createParser(src, offset, length);
++        return _bindAndReadValues(_considerFilter(parser, true));
++    } catch (CharConversionException e) {
++        if (parser != null) {
++            try {
++                parser.close();
++            } catch (IOException ex) {
++                // ignore secondary exception on close
++            }
++        }
++        throw e;
++    } catch (IOException e) {
++        if (parser != null) {
++            try {
++                parser.close();
++            } catch (IOException ex) {
++                // ignore secondary exception on close
++            }
++        }
++        throw e;
++    }
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CheckSideEffectsTest.testUselessCode
+- Error: junit.framework.AssertionFailedError: There should be one warning, repeated 1 time(s). expected:<1> but was:<0>
+- Location:     test("var a, b; a = (bar(), 6, 7)",

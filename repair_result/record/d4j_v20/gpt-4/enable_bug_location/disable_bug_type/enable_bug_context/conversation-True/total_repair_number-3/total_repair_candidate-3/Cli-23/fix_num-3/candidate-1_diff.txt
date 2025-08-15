@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ protected StringBuffer renderWrappedText(StringBuffer sb, int width, 
+                                          int nextLineTabStop, String text)
+ {
++    if (text == null || text.isEmpty()) {
++        return sb; // Handle empty or null text
++    }
++
+     int pos = findWrapPos(text, width, 0);
+ 
+     if (pos == -1)
+@@ -26,8 +30,8 @@
+             sb.append(text);
+ 
+             return sb;
+-        } else
+-        if (pos == lastPos)
++        } 
++        else if (pos == lastPos)
+         {
+             throw new RuntimeException("Text too long for line - throwing exception to avoid infinite loop [CLI-162]: " + text);
+         }
+@@ -35,3 +39,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

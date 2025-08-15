@@ -1,0 +1,69 @@
+--- 
++++ 
+@@ -1,11 +1,11 @@
+ public JsonToken nextToken() throws IOException
+ {
+-	//Check for _allowMultipleMatches - false and atleast there is one token - which is _currToken
+-	// check for no buffered context _exposedContext - null
+-	//If all the conditions matches then check for scalar / non-scalar property
+-		//if not scalar and ended successfully, then return null
+-		//else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-		// then return null 
++    //Check for _allowMultipleMatches - false and at least there is one token - which is _currToken
++    // check for no buffered context _exposedContext - null
++    //If all the conditions matches then check for scalar / non-scalar property
++    //if not scalar and ended successfully, then return null
++    //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++    // then return null 
+     // Anything buffered?
+     TokenFilterContext ctxt = _exposedContext;
+ 
+@@ -21,12 +21,13 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
++                    // This is not guaranteed to work without further checks,
++                    // but we keep original logic here.
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 // Almost! Most likely still have the current token;
+                 // with the sole exception of 
+                 /*
+@@ -194,12 +195,23 @@
+     default: // scalar value
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            // Logic fix here for _allowMultipleMatches == false
++            if (!_allowMultipleMatches && _matchCount > 0) {
++                // Skip this token and attempt to get next token that matches filter
++                break;
++            }
++            _matchCount++;
+             return (_currToken = t);
+         }
+         if (f != null) {
+             f = _headContext.checkValue(f);
+             if ((f == TokenFilter.INCLUDE_ALL)
+                     || ((f != null) && f.includeValue(delegate))) {
++                // Same logic fix here for single match
++                if (!_allowMultipleMatches && _matchCount > 0) {
++                    break;
++                }
++                _matchCount++;
+                 return (_currToken = t);
+             }
+         }
+@@ -210,3 +222,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

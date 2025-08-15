@@ -1,0 +1,1 @@
+['readFirstLocalFileHeader', 'processZip64Extra', 'readStored', 'readDeflated', 'readFromInflater', 'closeEntry', 'currentEntryHasOutstandingBytes', 'drainCurrentEntryData', 'readDataDescriptor', 'supportsDataDescriptorFor']

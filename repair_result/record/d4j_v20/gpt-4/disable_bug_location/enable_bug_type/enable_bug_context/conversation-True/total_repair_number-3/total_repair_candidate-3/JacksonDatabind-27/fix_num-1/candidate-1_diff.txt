@@ -1,0 +1,89 @@
+--- 
++++ 
+@@ -9,9 +9,16 @@
+     tokens.writeStartObject();
+ 
+     JsonToken t = p.getCurrentToken();
++
++    if (t != JsonToken.START_OBJECT && t != JsonToken.FIELD_NAME) {
++        // Defensive check for unexpected starting token
++        throw ctxt.mappingException("Expected START_OBJECT or FIELD_NAME token");
++    }
++    
+     for (; t == JsonToken.FIELD_NAME; t = p.nextToken()) {
+         String propName = p.getCurrentName();
+         p.nextToken(); // to point to value
++
+         // creator property?
+         SettableBeanProperty creatorProp = creator.findCreatorProperty(propName);
+         if (creatorProp != null) {
+@@ -19,10 +26,20 @@
+             // 11-Sep-2015, tatu: Important; do NOT pass buffer as last arg, but null,
+             //   since it is not the bean
+             if (ext.handlePropertyValue(p, ctxt, propName, buffer)) {
+-                ;
++                // Handled by external type id
++                // No further processing needed here
+             } else {
+                 // Last creator property to set?
+-                if (buffer.assignParameter(creatorProp, _deserializeWithErrorWrapping(p, ctxt, creatorProp))) {
++                Object deserValue = null;
++                try {
++                    deserValue = _deserializeWithErrorWrapping(p, ctxt, creatorProp);
++                } catch (Exception e) {
++                    wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
++                    // wrapAndThrow does not return, but keep compilation happy
++                    continue;
++                }
++                
++                if (buffer.assignParameter(creatorProp, deserValue)) {
+                     t = p.nextToken(); // to move to following FIELD_NAME/END_OBJECT
+                     Object bean;
+                     try {
+@@ -36,6 +53,9 @@
+                         p.nextToken(); // to skip name
+                         tokens.copyCurrentStructure(p);
+                         t = p.nextToken();
++                    }
++                    if (bean == null) {
++                        throw ctxt.mappingException("Creator.build() returned null");
+                     }
+                     if (bean.getClass() != _beanType.getRawClass()) {
+                         // !!! 08-Jul-2011, tatu: Could theoretically support; but for now
+@@ -54,7 +74,14 @@
+         // regular property? needs buffering
+         SettableBeanProperty prop = _beanProperties.find(propName);
+         if (prop != null) {
+-            buffer.bufferProperty(prop, prop.deserialize(p, ctxt));
++            Object propDeserValue;
++            try {
++                propDeserValue = prop.deserialize(p, ctxt);
++            } catch (Exception e) {
++                wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
++                continue;
++            }
++            buffer.bufferProperty(prop, propDeserValue);
+             continue;
+         }
+         // external type id (or property that depends on it)?
+@@ -70,7 +97,14 @@
+         }
+         // "any property"?
+         if (_anySetter != null) {
+-            buffer.bufferAnyProperty(_anySetter, propName, _anySetter.deserialize(p, ctxt));
++            Object anySetterValue;
++            try {
++                anySetterValue = _anySetter.deserialize(p, ctxt);
++            } catch (Exception e) {
++                wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
++                continue;
++            }
++            buffer.bufferAnyProperty(_anySetter, propName, anySetterValue);
+         }
+     }
+ 
+@@ -82,3 +116,4 @@
+         return null; // never gets here
+     }
+ }
++

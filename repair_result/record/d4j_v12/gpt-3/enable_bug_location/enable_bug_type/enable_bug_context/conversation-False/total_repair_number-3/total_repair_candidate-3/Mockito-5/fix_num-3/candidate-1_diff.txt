@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -13,9 +13,11 @@
+             }
+         } catch (MockitoAssertionError e) {
+             error = handleVerifyException(e);
+-        }
+-        catch (org.mockito.exceptions.verification.junit.ArgumentsAreDifferent e) {
++        } catch (org.mockito.exceptions.verification.junit.ArgumentsAreDifferent e) {
+             error = handleVerifyException(e);
++        } catch (Exception e) {
++            // Added to handle any unexpected exceptions and prevent runtime errors
++            error = new AssertionError("Unexpected exception occurred: " + e.getMessage(), e);
+         }
+     }
+ 
+@@ -23,3 +25,4 @@
+         throw error;
+     }
+ }
++

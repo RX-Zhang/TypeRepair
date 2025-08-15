@@ -1,0 +1,11 @@
+public JSType caseObjectType(ObjectType type) {
+  if (value.equals("function")) {
+    JSType ctorType = getNativeType(U2U_CONSTRUCTOR_TYPE);
+    return matchesExpectation("function") 
+        ? (resultEqualsValue && ctorType.isSubtype(type) ? ctorType : null) 
+        : (resultEqualsValue ? null : type);
+      // Objects are restricted to "Function", subtypes are left
+      // Only filter out subtypes of "function"
+  }
+  return matchesExpectation("object") ? type : null;
+}

@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -12,13 +12,15 @@
+     numToRead = Math.min(numToRead, available());
+     
+     totalRead = is.read(buf, offset, numToRead);
+-    count(totalRead);
+     
+     if (totalRead == -1) {
+         hasHitEOF = true;
+-    } else {
+-        entryOffset += totalRead;
++        return -1;
+     }
++    
++    count(totalRead);
++    entryOffset += totalRead;
+ 
+     return totalRead;
+ }
++

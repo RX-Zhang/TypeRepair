@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -9,6 +9,15 @@
+         if (delegateCreator != null) {
+             JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
+             delegate = findDeserializer(ctxt, delegateType, property);
++        } else {
++            // Also check for property-based creator as delegate creator if no delegateCreator found
++            AnnotatedWithParams propDelegateCreator = _valueInstantiator.getPropertyBasedCreator();
++            if (propDelegateCreator != null) {
++                JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
++                if (delegateType != null) {
++                    delegate = findDeserializer(ctxt, delegateType, property);
++                }
++            }
+         }
+     }
+     JsonDeserializer<?> valueDeser = _valueDeserializer;
+@@ -17,7 +26,7 @@
+         // [databind#125]: May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+@@ -33,3 +42,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

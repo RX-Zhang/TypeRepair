@@ -1,0 +1,1 @@
+['hasAttributes', 'text', 'hasText', 'html']

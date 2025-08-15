@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -5,6 +5,9 @@
+     }
+     if (end < start) {
+         throw new IllegalArgumentException("Requires start <= end.");
++    }
++    if (end >= this.data.size()) {
++        throw new IllegalArgumentException("Requires end < size.");
+     }
+     TimeSeries copy = (TimeSeries) super.clone();
+     copy.data = new java.util.ArrayList();
+@@ -15,11 +18,12 @@
+             TimeSeriesDataItem clone = (TimeSeriesDataItem) item.clone();
+             try {
+                 copy.add(clone);
+-            }
+-            catch (SeriesException e) {
++            } catch (SeriesException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
++    copy.findBoundsByIteration();
+     return copy;
+ }
++

@@ -1,0 +1,38 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.InlineFunctionsTest.testBug4944818
+- Error: junit.framework.AssertionFailedError: 
+Expected: HangoutStarter.prototype.launchHangout=function(){var self$$2=a.b;var JSCompiler_temp_const$$0=goog.Uri;var JSCompiler_inline_result$$1;var self$$inline_2=self$$2;if(!self$$inline_2.domServices_)self$$inline_2.domServices_=goog$component$DomServices.get(self$$inline_2.appContext_);JSCompiler_inline_result$$1=self$$inline_2.domServices_;var myUrl=new JSCompiler_temp_const$$0(JSCompiler_inline_result$$1.getDomHelper().getWindow().location.href)}
+Result: HangoutStarter.prototype.launchHangout=function(){var self$$2=a.b;var JSCompiler_temp_const$$0=goog.Uri;var JSCompiler_inline_result$$1;var JSCompiler_inline_result$$0;var self$$inline_1=self$$2;if(!self$$inline_1.domServices_)self$$inline_1.domServices_=goog$component$DomServices.get(self$$inline_1.appContext_);JSCompiler_inline_result$$0=self$$inline_1.domServices_;JSCompiler_inline_result$$1=JSCompiler_inline_result$$0.getDomHelper().getWindow();var myUrl=new JSCompiler_temp_const$$0(JSCompiler_inline_result$$1.location.href)}
+- Location:     test(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.InlineFunctionsTest.testDoubleInlining1
+- Error: junit.framework.AssertionFailedError: 
+Expected: getWindow(x)
+Result: var foo=function(a){return getWindow(a)};foo(x)
+- Location:     test("var foo = function(a) { return getWindow(a); };" +
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.InlineFunctionsTest.testNoInlineIfParametersModified8
+- Error: junit.framework.AssertionFailedError: 
+Expected: o.x=2
+Result: o.x=2
+- Location:     test("function f(a){return a.x=2}f(o)", "o.x=2");
+
+
+Test failure 4:
+- Test: com.google.javascript.jscomp.InlineFunctionsTest.testNoInlineIfParametersModified9
+- Error: junit.framework.AssertionFailedError: 
+Expected: o[2]=2
+Result: o[2]=2
+- Location:     test("function f(a){return a[2]=2}f(o)", "o[2]=2");
+
+
+Test failure 5:
+- Test: com.google.javascript.jscomp.InlineFunctionsTest.testInlineFunctions6
+- Error: junit.framework.AssertionFailedError: 
+Expected: alert(baz(foo(1+2)))
+Result: var JSCompiler_temp_const$$0=alert;var JSCompiler_inline_result$$1;JSCompiler_inline_result$$1=baz(foo(1+2));JSCompiler_temp_const$$0(JSCompiler_inline_result$$1)
+- Location:     test("function BAR_FN(x, y, z) { return z(foo(x + y)) }" +

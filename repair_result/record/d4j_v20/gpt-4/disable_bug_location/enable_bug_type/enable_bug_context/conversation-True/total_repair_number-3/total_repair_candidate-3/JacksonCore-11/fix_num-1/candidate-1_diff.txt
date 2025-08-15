@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -8,6 +8,15 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (ArrayIndexOutOfBoundsException e) {
++            // Defensive block to prevent ArrayIndexOutOfBoundsException during rehash
++            // Log or handle appropriately, here forcing a reset or alternative recovery could be done
++            _needRehash = false; // Avoid repeated failures
++            // If necessary, we could also call nukeSymbols(true) or other recovery steps
++            throw e; // or remove throw to suppress after handling
++        }
+     }
+ }
++

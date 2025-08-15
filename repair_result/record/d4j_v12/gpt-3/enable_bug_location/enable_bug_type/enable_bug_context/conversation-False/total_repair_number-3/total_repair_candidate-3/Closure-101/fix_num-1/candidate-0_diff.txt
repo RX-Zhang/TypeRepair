@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -12,10 +12,15 @@
+   for (FormattingOption formattingOption : flags.formatting) {
+     formattingOption.applyToOptions(options);
+   }
++  
++  // Correcting the logical expression to ensure closurePass is set correctly
+   if (flags.process_closure_primitives) {
+     options.closurePass = true;
++  } else {
++    options.closurePass = false; // Ensure closurePass is explicitly set to false if not processing closure primitives
+   }
+ 
+   initOptionsFromFlags(options);
+   return options;
+ }
++

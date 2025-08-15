@@ -1,0 +1,23 @@
+public DocumentType(String name, String publicId, String systemId, String baseUri) {
+    super(baseUri);
+
+    // Allow empty or null name, replace control characters if present
+    if (name == null || name.isEmpty()) {
+        attr("name", "");
+    } else {
+        // sanitize name to replace any null chars or other control chars with replacement char
+        StringBuilder sanitized = new StringBuilder();
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (c == 0 || Character.isISOControl(c)) {
+                sanitized.append('\uFFFD'); // replacement char
+            } else {
+                sanitized.append(c);
+            }
+        }
+        attr("name", sanitized.toString());
+    }
+
+    attr("publicId", publicId != null ? publicId : "");
+    attr("systemId", systemId != null ? systemId : "");
+}

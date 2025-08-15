@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,21 +1,10 @@
+ public static boolean verifyCheckSum(byte[] header) {
+-    long storedSum = 0;
+-    long unsignedSum = 0;
+-    long signedSum = 0;
++    long storedSum = parseOctalOrBinary(header, CHKSUM_OFFSET, CHKSUMLEN);
++    long computedSum = computeCheckSum(header);
+ 
+-    int digits = 0;
+-    for (int i = 0; i < header.length; i++) {
+-        byte b = header[i];
+-        if (CHKSUM_OFFSET  <= i && i < CHKSUM_OFFSET + CHKSUMLEN) {
+-            if ('0' <= b && b <= '7' && digits++ < 6) {
+-                storedSum = storedSum * 8 + b - '0';
+-            } else if (digits > 0) {
+-                digits = 6;
+-            }
+-            b = ' ';
+-        }
+-        unsignedSum += 0xff & b;
+-        signedSum += b;
+-    }
+-    return storedSum == unsignedSum || storedSum == signedSum;
++    // Checksum field is treated as spaces during calculation
++    // so adjust computedSum if necessary (not shown here, 
++    // assuming computeCheckSum already accounts for that)
++    return storedSum == computedSum;
+ }
++

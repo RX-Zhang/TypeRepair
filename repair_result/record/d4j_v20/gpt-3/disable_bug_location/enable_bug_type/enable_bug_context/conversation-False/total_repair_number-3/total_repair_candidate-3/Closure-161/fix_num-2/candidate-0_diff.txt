@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -3,6 +3,9 @@
+   // If GETPROP/GETELEM is used as assignment target the array literal is
+   // acting as a temporary we can't fold it here:
+   //    "[][0] += 1"
++  if (NodeUtil.isNamedLc(lhs(parent), n)) {
++    return n;
++  }
+ 
+   if (right.getType() != Token.NUMBER) {
+     // Sometimes people like to use complex expressions to index into
+@@ -39,7 +42,23 @@
+   }
+ 
+   // Replace the entire GETELEM with the value
+-  n.getParent().replaceChild(n, elem);
++  parent.replaceChild(n, elem);
+   reportCodeChange();
+   return elem;
+ }
++
++private static Node lhs(Node n) {
++  Node parent = n.getParent();
++  if (parent == null) {
++    return null;
++  }
++  switch (parent.getToken()) {
++    case ASSIGN:
++      return parent.getFirstChild();
++    case EXPR_RESULT:
++      return null;
++    default:
++      return null;
++  }
++}
++

@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -7,11 +7,11 @@
+ 
+         	// Simple case first: serialize as numeric timestamp?
+             JsonFormat.Shape shape = format.getShape();
+-            if (shape.isNumeric()) {
++            if (shape != null && shape.isNumeric()) {
+                 return withFormat(Boolean.TRUE, null);
+             }
+ 
+-            if (format.getShape() == JsonFormat.Shape.STRING) {
++            if (shape != null && shape == JsonFormat.Shape.STRING) {
+                 TimeZone tz = format.getTimeZone();
+                 final String pattern = format.hasPattern()
+                                 ? format.getPattern()
+@@ -30,3 +30,4 @@
+     }
+     return this;
+ }
++

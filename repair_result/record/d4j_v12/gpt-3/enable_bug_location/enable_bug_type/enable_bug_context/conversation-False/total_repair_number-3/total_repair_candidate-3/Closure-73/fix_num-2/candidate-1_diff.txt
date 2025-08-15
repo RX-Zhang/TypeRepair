@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -46,16 +46,23 @@
+         //  character can be represented in this character set.
+         if (outputCharsetEncoder != null) {
+           if (outputCharsetEncoder.canEncode(c)) {
+-            sb.append(c);
++            // Corrected logic: characters in the ASCII range [0x20,0x7E]
++            // (printable ASCII) can be included as-is.
++            if (c >= 0x20 && c <= 0x7e) {
++              sb.append(c);
++            } else {
++              // Unicode-escape control characters and DEL
++              appendHexJavaScriptRepresentation(sb, c);
++            }
+           } else {
+-            // Unicode-escape the character.
++            // Unicode-escape characters not in charset
+             appendHexJavaScriptRepresentation(sb, c);
+           }
+         } else {
+           // No charsetEncoder provided - pass straight latin characters
+           // through, and escape the rest.  Doing the explicit character
+           // check is measurably faster than using the CharsetEncoder.
+-          if (c > 0x1f && c <= 0x7f) {
++          if (c >= 0x20 && c <= 0x7e) {
+             sb.append(c);
+           } else {
+             // Other characters can be misinterpreted by some js parsers,
+@@ -69,3 +76,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

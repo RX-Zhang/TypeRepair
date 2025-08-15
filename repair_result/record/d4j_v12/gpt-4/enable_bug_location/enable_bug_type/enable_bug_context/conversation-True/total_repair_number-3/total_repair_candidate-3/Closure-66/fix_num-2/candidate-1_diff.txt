@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -86,7 +86,9 @@
+ 
+     case Token.VAR:
+       visitVar(t, n);
+-      typeable = false;
++      // Set typeable to true for VAR declarations so that typedCount accounts
++      // for their types if they are typed.
++      typeable = true;
+       break;
+ 
+     case Token.NEW:
+@@ -351,3 +353,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

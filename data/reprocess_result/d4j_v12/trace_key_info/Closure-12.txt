@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.FlowSensitiveInlineVariablesTest.testIssue794b
+- Error: junit.framework.AssertionFailedError: 
+Expected: function _func(){var x=1;try{x=x+someFunction()}catch(e){}x=x+1;try{x=x+someFunction()}catch(e$$1){}return x}
+Result: function _func(){var x;try{x=1+someFunction()}catch(e){}try{x=x+1+someFunction()}catch(e$$1){}return x}
+- Location:     noInline(

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,10 +1,11 @@
+ protected void addChildren(int index, Node... children) {
+     Validate.noNullElements(children);
+     ensureChildNodes();
+-    for (int i = children.length - 1; i >= 0; i--) {
++    for (int i = 0; i < children.length; i++) { // Fixed the loop to iterate from 0 to length
+         Node in = children[i];
+         reparentChild(in);
+-        childNodes.add(index, in);
++        childNodes.add(index + i, in); // Adjusted index to insert children correctly
+     }
+     reindexChildren(index);
+ }
++

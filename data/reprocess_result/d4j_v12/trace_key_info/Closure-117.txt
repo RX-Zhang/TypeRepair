@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testIssue1047
+- Error: junit.framework.ComparisonFailure: expected:<...p never defined on C[2]> but was:<...p never defined on C[3.c2_]>
+- Location:     testTypes(

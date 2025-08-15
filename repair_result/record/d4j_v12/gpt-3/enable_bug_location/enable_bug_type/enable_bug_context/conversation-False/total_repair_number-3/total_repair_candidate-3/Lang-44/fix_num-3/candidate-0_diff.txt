@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -20,7 +20,14 @@
+     String dec;
+     String exp;
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    int ePos = val.indexOf('e');
++    int EPos = val.indexOf('E');
++    int expPos = -1;
++    if (ePos > -1 && EPos > -1) {
++        expPos = Math.min(ePos, EPos);
++    } else {
++        expPos = Math.max(ePos, EPos);
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -49,13 +56,18 @@
+         }
+         //Requesting a specific type..
+         String numeric = val.substring(0, val.length() - 1);
++
++        if (numeric.length() == 0) {
++            throw new NumberFormatException(val + " is not a valid number.");
++        }
++
+         boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+         switch (lastChar) {
+             case 'l' :
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+@@ -83,7 +95,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -147,3 +159,4 @@
+ 
+     }
+ }
++

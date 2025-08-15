@@ -1,0 +1,104 @@
+--- 
++++ 
+@@ -6,46 +6,67 @@
+         int ch;
+         int len = 0;
+         int read = 0;
++        boolean haveLength = false;
++        // read length as decimal number until a space is found
+         while((ch = i.read()) != -1) {
+-            read++;
+-            if (ch == ' '){
+-                // Get keyword
+-                final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+-                while((ch = i.read()) != -1) {
+-                    read++;
+-                    if (ch == '='){ // end of keyword
+-                        final String keyword = coll.toString(CharsetNames.UTF_8);
+-                        // Get rest of entry
+-                        final int restLen = len - read;
+-                        if (restLen == 1) { // only NL
+-                            headers.remove(keyword);
+-                        } else {
+-                            final byte[] rest = new byte[restLen];
+-                            final int got = IOUtils.readFully(i, rest);
+-                            if (got != restLen) {
+-                                throw new IOException("Failed to read "
+-                                                      + "Paxheader. Expected "
+-                                                      + restLen
+-                                                      + " bytes, read "
+-                                                      + got);
+-                            }
+-                            // Drop trailing NL
+-                            final String value = new String(rest, 0,
+-                                                      restLen - 1, CharsetNames.UTF_8);
+-                            headers.put(keyword, value);
+-                        }
+-                        break;
+-                    }
+-                    coll.write((byte) ch);
++            if (ch == ' ') {
++                haveLength = true;
++                break;
++            }
++            if (ch < '0' || ch > '9') {
++                // Invalid length character - skip until next newline or EOF
++                while (ch != -1 && ch != '\n') {
++                    ch = i.read();
+                 }
+-                break; // Processed single header
++                len = -1; // invalid length flag
++                break;
+             }
+-            len *= 10;
+-            len += ch - '0';
++            len = len * 10 + (ch - '0');
+         }
+-        if (ch == -1){ // EOF
++        if (ch == -1) { // EOF
+             break;
++        }
++        if (!haveLength || len <= 0) {
++            // No valid length found, or length is non-positive; try to skip line and continue
++            // Consume rest of line
++            while (ch != -1 && ch != '\n') {
++                ch = i.read();
++            }
++            if (ch == -1) {
++                break;
++            } else {
++                continue;
++            }
++ }
++
++        int toRead = len - 1; // length includes final \n, which we don't include in the
++        byte[] buf = new byte[toRead];
++        actuallyRead = IOUtils.readFully(i, buf);
++        (actuallyRead != toRead) {
++            throw new IOExceptionFailed to read PaxHeader. Expected " + toRead + bytes, read " + actuallyRead);
++        }
++        // data should be in the form: keyword=value\n
++        equalsIndex = -1;
++        for (int idx =0; idx < buf.length; idx++) {
++            ifbuf[idx] == '=') {
++                equalsIndex = idx;
++                break;
++            }
++        }
++        if (equalsIndex == -1) {
++            // No equals sign found, malformed line, ignore and continue
++            continue;
++        }
++        String keyword = new String(buf, 0, equalsIndex, CharsetNames.UTF_8);
++        int valueLength = buf.length - equalsIndex - 1; // Exclude newline at end
++        if (valueLength <= 0) {
++            // If no value or just newline, remove the header if exists
++            headers.remove(keyword);
++        } else {
++            String value = new String(buf, equalsIndex + 1, valueLength, CharsetNames.UTF_8);
++            headers.put(keyword, value);
+         }
+     }
+     return headers;
+ }
++

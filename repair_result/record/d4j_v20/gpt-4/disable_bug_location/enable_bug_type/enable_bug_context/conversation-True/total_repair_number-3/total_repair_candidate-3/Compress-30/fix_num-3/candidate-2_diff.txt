@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -1,5 +1,4 @@
+-public int read(final byte[] dest, final int offs, final int len)
+-    throws IOException {
++public int read(final byte[] dest, final int offs, final int len) throws IOException {
+     if (offs < 0) {
+         throw new IndexOutOfBoundsException("offs(" + offs + ") < 0.");
+     }
+@@ -14,6 +13,10 @@
+         throw new IOException("stream closed");
+     }
+ 
++    if (len == 0) {
++        return 0;  // Must return 0 if length requested is zero, per InputStream contract
++    }
++
+     final int hi = offs + len;
+     int destOffs = offs;
+     int b;
+@@ -25,3 +28,4 @@
+     int c = (destOffs == offs) ? -1 : (destOffs - offs);
+     return c;
+ }
++

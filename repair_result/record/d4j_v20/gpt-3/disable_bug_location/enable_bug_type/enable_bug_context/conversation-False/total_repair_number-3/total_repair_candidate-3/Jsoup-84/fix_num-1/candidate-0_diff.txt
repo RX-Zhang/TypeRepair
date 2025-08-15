@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -4,7 +4,13 @@
+         org.jsoup.nodes.Element sourceEl = (org.jsoup.nodes.Element) source;
+ 
+         String prefix = updateNamespaces(sourceEl);
++        // null or empty namespace causes createElementNS to throw NAMESPACE_ERR
++        // per test, undeclared namespace should be treated as null namespace (no namespace)
+         String namespace = namespacesStack.peek().get(prefix);
++        if (namespace == null || namespace.isEmpty()) {
++            // createElementNS with null namespace uses no namespace, safe here
++            namespace = null;
++        }
+         String tagName = sourceEl.tagName();
+ 
+         Element el = 
+@@ -32,3 +38,4 @@
+         // unhandled
+     }
+ }
++

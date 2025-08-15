@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -26,8 +26,14 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
+         }
++        
++        // Verify and convert typeId before deserialization
++        if (!(typeId instanceof String)) {
++            throw new TypeError("Invalid typeId, expected String but got: " + typeId.getClass().getName());
++        }
++
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+@@ -41,6 +47,10 @@
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+                 // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+                 //    apply deserializer... fun fun.
++                // Verify and convert typeId before assigning
++                if (!(typeId instanceof String)) {
++                    throw new TypeError("Invalid typeId for typeProp assignment, expected String but got: " + typeId.getClass().getName());
++                }
+                 buffer.assignParameter(typeProp, typeId);
+             }
+         }
+@@ -55,3 +65,4 @@
+     }
+     return bean;
+ }
++

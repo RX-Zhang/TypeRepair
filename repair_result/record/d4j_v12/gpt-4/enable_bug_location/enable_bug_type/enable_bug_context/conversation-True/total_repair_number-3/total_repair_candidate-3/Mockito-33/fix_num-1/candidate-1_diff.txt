@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -3,7 +3,8 @@
+     //sometimes java generates forwarding methods when generics are in play see JavaGenericsForwardingMethodsTest
+     Method m1 = invocation.getMethod();
+     Method m2 = candidate.getMethod();
+-    
+-    	/* Avoid unnecessary cloning */
+-    return m1.equals(m2);
++
++    // Use hasSimilarMethod to account for generics and forwarding methods
++    return hasSimilarMethod(candidate) || m1.equals(m2);
+ }
++

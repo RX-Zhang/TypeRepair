@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -17,10 +17,13 @@
+     options.checkTypes = true;
+   } else if (options.disables(DiagnosticGroups.CHECK_TYPES)) {
+     options.checkTypes = false;
+-  } else if (!options.checkTypes) {
+-    // If DiagnosticGroups did not override the plain checkTypes
+-    // option, and checkTypes is enabled, then turn off the
+-    // parser type warnings.
++  }
++  // The original logic incorrectly turned off parse errors if checkTypes was false.
++  // Instead, we should turn off parser type warnings only if checkTypes was false initially 
++  // and no DiagnosticGroups override was present.
++  if (!options.checkTypes && 
++      !options.enables(DiagnosticGroups.CHECK_TYPES) &&
++      !options.disables(DiagnosticGroups.CHECK_TYPES)) {
+     options.setWarningLevel(
+         DiagnosticGroup.forType(
+             RhinoErrorReporter.TYPE_PARSE_ERROR),
+@@ -40,7 +43,6 @@
+           getDiagnosticGroups().getRegisteredGroups()));
+   guards.add(options.getWarningsGuard());
+ 
+-
+   // All passes must run the variable check. This synthesizes
+   // variables later so that the compiler doesn't crash. It also
+   // checks the externs file for validity. If you don't want to warn
+@@ -55,3 +57,4 @@
+ 
+   this.warningsGuard = new ComposeWarningsGuard(guards);
+ }
++

@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -11,19 +11,20 @@
+             if (!explicit) {
+                 return;
+             }
+-            // both explicit: verify
+-            // otherwise only verify if neither explicitly annotated.
+-        }
+-
+-        // one more thing: ok to override in sub-class
+-        if (oldOne.getClass() == newOne.getClass()) {
+-            // [databind#667]: avoid one particular class of bogus problems
+-
++            // both explicit: verify conflict
++            if (oldOne.getClass() == newOne.getClass()) {
+                 throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
+                         +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
+-            // otherwise, which one to choose?
+-                // new type more generic, use old
+-            // new type more specific, use it
++            }
++            // otherwise, allow override
++        } else {
++            // old one was not explicit, new one is explicit: allow override
++            if (explicit) {
++                // override old one below
++            } else {
++                // both not explicit: skip new one to keep first
++                return;
++            }
+         }
+     }
+     if (explicit) {
+@@ -31,3 +32,4 @@
+     }
+     _creators[typeIndex] = _fixAccess(newOne);
+ }
++

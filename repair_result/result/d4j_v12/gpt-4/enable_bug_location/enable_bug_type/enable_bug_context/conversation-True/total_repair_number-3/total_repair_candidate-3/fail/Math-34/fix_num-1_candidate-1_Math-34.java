@@ -1,0 +1,24 @@
+public Iterator<Chromosome> iterator() {
+    return new Iterator<Chromosome>() {
+        private final Iterator<Chromosome> internalIterator = getChromosomeList().iterator();
+        private boolean canRemove = false;
+
+        public boolean hasNext() {
+            return internalIterator.hasNext();
+        }
+
+        public Chromosome next() {
+            Chromosome next = internalIterator.next();
+            canRemove = true;
+            return next;
+        }
+
+        public void remove() {
+            if (!canRemove) {
+                throw new IllegalStateException("next() has not been called before remove()");
+            }
+            internalIterator.remove();
+            canRemove = false;
+        }
+    };
+}

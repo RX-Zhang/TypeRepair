@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.RandomStringUtilsTest.testLANG807
+- Error: junit.framework.AssertionFailedError: Message (bound must be positive) must contain 'start'
+- Location:             assertTrue("Message (" + msg + ") must contain 'start'", msg.contains("start"));

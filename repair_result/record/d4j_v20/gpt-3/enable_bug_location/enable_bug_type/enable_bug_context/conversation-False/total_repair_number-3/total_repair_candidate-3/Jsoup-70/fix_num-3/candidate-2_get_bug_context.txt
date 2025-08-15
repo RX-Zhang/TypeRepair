@@ -1,0 +1,1 @@
+['isBlock', 'textNodes', 'text', 'ownText', 'preserveWhitespace', 'hasText']

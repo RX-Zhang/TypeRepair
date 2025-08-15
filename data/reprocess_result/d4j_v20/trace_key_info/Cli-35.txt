@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.bug.BugCLI252Test.testExactOptionNameMatch
+- Error: org.apache.commons.cli.AmbiguousOptionException: Ambiguous option: '--prefix'  (could be: 'prefix', 'prefixplusplus')
+- Location:         new DefaultParser().parse(getOptions(), new String[]{"--prefix"});

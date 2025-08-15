@@ -1,0 +1,34 @@
+private String getRemainingJSDocLine() {
+  String result = stream.getRemainingJSDocLine();
+  if (result == null) {
+    // Defensive check: If the stream returns null, return empty string to avoid downstream issues.
+    return "";
+  }
+  // Additional sanitization: trim trailing whitespace to prevent position errors.
+  result = result.trim();
+
+  // Validate that the line is well-formed and does not have invalid characters
+  // Assuming here we want to check for balanced braces to avoid syntax errors.
+  int bracesBalance = 0;
+  for (int i = 0; i < result.length(); i++) {
+    char c = result.charAt(i);
+    if (c == '{') {
+      bracesBalance++;
+    } else if (c == '}') {
+      bracesBalance--;
+      if (bracesBalance < 0) {
+        // More closing braces than opening - bad syntax
+        // Instead of throwing, report syntax warning and return empty to be safe
+        reportTypeSyntaxWarning("Unmatched closing brace '}' in JSDoc line.");
+        return "";
+      }
+    }
+  }
+  if (bracesBalance != 0) {
+    // Unmatched opening braces remain - syntax error
+    reportTypeSyntaxWarning("Unmatched opening brace '{' in JSDoc line.");
+    return "";
+  }
+
+  return result;
+}

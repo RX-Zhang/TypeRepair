@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -30,7 +30,7 @@
+                 }
+                 break;
+         }
+-        if (lineLength > 0) {
++        if (lineLength > 0 && pos > 0) {
+             System.arraycopy(lineSeparator, 0, buf, pos, lineSeparator.length);
+             pos += lineSeparator.length;
+         }
+@@ -41,9 +41,8 @@
+             }
+             modulus = (++modulus) % 3;
+             int b = in[inPos++];
+-            if (b < 0) { b += 256; }
+-            x = (x << 8) + b;
+-            if (0 == modulus) {
++            if (b < 0) { b += 256;            x = (x << 8) + b;
++ if (0 == modulus) {
+                 buf[pos++] = encodeTable[(x >> 18) & MASK_6BITS];
+                 buf[pos++] = encodeTable[(x >> 12) & MASK_6BITS];
+                 buf[pos++] = encodeTable[(x >> 6) & MASK_6BITS];
+@@ -58,3 +57,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+         return -1;
+     }
+     for (int i = 0; i < len; ++i) {
+-        char c = str.charAt(i++);
++        char c = str.charAt(i);
+         if (c > '9' || c < '0') {
+             return -1;
+         }
+@@ -17,5 +17,10 @@
+             return -1;
+         }
+     }
+-    return NumberInput.parseInt(str);
++    try {
++        return NumberInput.parseInt(str);
++    } catch (NumberFormatException e) {
++        return -1; // Handle potential NumberFormatException
++    }
+ }
++

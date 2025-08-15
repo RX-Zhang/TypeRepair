@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -10,15 +10,18 @@
+     }
+ 
+     numToRead = Math.min(numToRead, available());
+-    
++
+     totalRead = is.read(buf, offset, numToRead);
+-    count(totalRead);
+     
+     if (totalRead == -1) {
+-        hasHitEOF = true;
++        setAtEOF(true);
++        // Consume remainder of the last block to maintain stream alignment
++        consumeRemainderOfLastBlock();
+     } else {
++        count(totalRead);
+         entryOffset += totalRead;
+     }
+ 
+     return totalRead;
+ }
++

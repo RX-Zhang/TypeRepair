@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -55,9 +55,11 @@
+             replacementNode, parentName.replacementNode);
+       }
+     }
++    registerAnyProvidedPrefixes(namespace, replacementNode, minimumModule); // Fix: register prefixes to maintain order
+     if (explicitNode != null) {
+       explicitNode.detachFromParent();
+     }
+     compiler.reportCodeChange();
+   }
+ }
++

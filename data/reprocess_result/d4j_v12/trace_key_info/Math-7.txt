@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math3.ode.nonstiff.DormandPrince853IntegratorTest.testEventsScheduling
+- Error: junit.framework.AssertionFailedError
+- Location:       integ.integrate(sincos, t0, y0, t, y);

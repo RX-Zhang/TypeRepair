@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -16,10 +16,12 @@
+         } else if (_hasAnnotation(a, JsonSerialize.class)
+                 || _hasAnnotation(a, JsonView.class)
+                 || _hasAnnotation(a, JsonRawValue.class)) {
+-            name = "";
++            // Instead of empty string, return PropertyName.USE_DEFAULT to indicate no explicit name
++            return PropertyName.USE_DEFAULT;
+         } else {
+             return null;
+         }
+     }
+     return PropertyName.construct(name);
+ }
++

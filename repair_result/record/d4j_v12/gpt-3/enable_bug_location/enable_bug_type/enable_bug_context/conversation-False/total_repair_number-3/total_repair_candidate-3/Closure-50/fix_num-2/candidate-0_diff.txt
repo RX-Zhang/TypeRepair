@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -20,14 +20,14 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+   int foldedSize = 0;
+   Node prev = null;
+   Node elem = arrayNode.getFirstChild();
++  
+   // Merges adjacent String nodes.
+   while (elem != null) {
+     if (NodeUtil.isImmutableValue(elem) || elem.getType() == Token.EMPTY) {
+@@ -108,3 +108,4 @@
+ 
+   return n;
+ }
++

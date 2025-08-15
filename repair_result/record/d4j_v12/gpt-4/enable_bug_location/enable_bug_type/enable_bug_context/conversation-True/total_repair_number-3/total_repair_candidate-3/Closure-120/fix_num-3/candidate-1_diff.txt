@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,6 +1,11 @@
+ boolean isAssignedOnceInLifetime() {
+   Reference ref = getOneAndOnlyAssignment();
+   if (ref == null) {
++    return false;
++  }
++
++  ReferenceCollection references = getReferences(ref.getVariable());
++  if (references == null) {
+     return false;
+   }
+ 
+@@ -16,3 +21,4 @@
+ 
+   return true;
+ }
++

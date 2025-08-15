@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -42,6 +42,12 @@
+             // reported anyway, and we need to process following event.
+             token = _xmlTokens.next();
+             _mayBeLeaf = true;
++            // Fix: ensure empty elements do not get skipped by returning START_OBJECT
++            if (token == XmlTokenStream.XML_END_ELEMENT) {
++                _mayBeLeaf = false;
++                // expose empty object instead of skipping
++                return (_currToken = JsonToken.START_OBJECT);
++            }
+             continue;
+         }
+         String name = _xmlTokens.getLocalName();
+@@ -67,13 +73,13 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         return _currToken;
+-        
++
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+@@ -92,7 +98,7 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            /* One more refinement (pronunced like "hack") is that if
++            /* One more refinement (pronounced like "hack") is that if
+              * we had an empty String (or all white space), and we are
+              * deserializing an array, we better hide the empty text.
+              */
+@@ -127,8 +133,9 @@
+     case XmlTokenStream.XML_END:
+         return (_currToken = null);
+     }
+-    
++
+     // should never get here
+     _throwInternal();
+     return null;
+ }
++

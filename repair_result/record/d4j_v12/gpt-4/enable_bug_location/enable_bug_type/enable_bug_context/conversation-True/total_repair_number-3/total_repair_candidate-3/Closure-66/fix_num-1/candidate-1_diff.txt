@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -182,6 +182,15 @@
+     case Token.GE:
+       leftType = getJSType(n.getFirstChild());
+       rightType = getJSType(n.getLastChild());
++
++      // Added fix: Handle enum keys case by checking if right or left is enum keys
++      if (NodeUtil.isEnumKey(n.getFirstChild()) || NodeUtil.isEnumKey(n.getLastChild())) {
++        checkEnumInitializer(t, n.getFirstChild(), getNativeType(NUMBER_TYPE));
++        checkEnumInitializer(t, n.getLastChild(), getNativeType(NUMBER_TYPE));
++        ensureTyped(t, n, BOOLEAN_TYPE);
++        break;
++      }
++
+       if (rightType.isNumber()) {
+         validator.expectNumber(
+             t, n, leftType, "left side of numeric comparison");
+@@ -351,3 +360,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

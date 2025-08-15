@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -20,11 +20,14 @@
+         }
+         tq.consumeWhitespace();
+     }
+-    if (key.length() != 0)
+-        return Attribute.createFromEncoded(key, value);
+-    else {
+-        tq.consume();
+-            
+-        return null;
++    
++    // Check if the key is empty after processing
++    if (key.length() == 0) {
++        // Handle the case where the attribute key is unexpectedly empty
++        // This resolves runtime issues when the attribute is malformed
++        return null; // or consider throwing an appropriate exception
+     }
++    
++    return Attribute.createFromEncoded(key, value);
+ }
++

@@ -1,0 +1,63 @@
+--- 
++++ 
+@@ -49,6 +49,7 @@
+                     foundCharset = decl.attr("encoding");
+             }
+         }
++
+         foundCharset = validateCharset(foundCharset);
+         if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+@@ -56,6 +57,8 @@
+             doc = null;
+         } else if (!fullyRead) {
+             doc = null;
++        } else {
++            // Fully read and no new charset found: accept default charset doc as is
+         }
+     } else { // specified by content type header (or by user on file load)
+         Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
+@@ -63,19 +66,39 @@
+     if (doc == null) {
+         if (charsetName == null)
+             charsetName = defaultCharset;
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetName), bufferSize);
++
++        Charset charset = Charset.forName(charsetName);
++        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charset), bufferSize);
+         if (bomCharset != null && bomCharset.offset) // creating the buffered reader ignores the input pos, so must skip here
+             reader.skip(1);
++
+         try {
+             doc = parser.parseInput(reader, baseUri);
+         } catch (UncheckedIOException e) {
+             // io exception when parsing (not seen before because reading the stream as we go)
+             throw e.ioException();
+         }
+-        Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        if (!charset.canEncode()) {
++            charset = Charset.forName("UTF-8");
++            doc.outputSettings().charset(charset);
++            Elements metaCharset = doc.select("meta[charset]");
++            if (!metaCharset.isEmpty()) {
++                metaCharset.first().attr("charset", "UTF-8");
++            } else {
++                Elements metaContentType = doc.select("meta[http-equiv=content-type]");
++                if (!metaContentType.isEmpty()) {
++                    metaContentType.first().attr("content", "text/html; charset=UTF-8");
++                } else {
++                    doc.head().appendElement("meta").attr("charset", "UTF-8");
++                }
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

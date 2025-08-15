@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -23,8 +23,8 @@
+           pType == Token.SCRIPT ||
+           pType == Token.NAME ||
+           pType == Token.ASSIGN ||
+-
+-          // object literal keys
++          pType == Token.GETPROP ||  // Added support for prototype properties
++          pType == Token.GETELEM ||  // Also consider array elements
+           pType == Token.STRING ||
+           pType == Token.NUMBER)) {
+       return false;
+@@ -63,3 +63,4 @@
+ 
+   return true;
+ }
++

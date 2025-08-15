@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -9,8 +9,11 @@
+       continue;
+     }
+ 
+-    if (name.globalSets == 1 && name.localSets == 0 &&
+-        name.aliasingGets > 0) {
++    // Ensure that globalSets and localSets are integers before comparison
++    int globalSets = name.globalSets;
++    int localSets = name.localSets;
++
++    if (globalSets == 1 && localSets == 0 && name.aliasingGets > 0) {
+       // {@code name} meets condition (b). Find all of its local aliases
+       // and try to inline them.
+       List<Ref> refs = Lists.newArrayList(name.getRefs());
+@@ -35,3 +38,4 @@
+     }
+   }
+ }
++

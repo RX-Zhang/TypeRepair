@@ -1,0 +1,1 @@
+['close', 'getRecord', 'paxHeaders', 'readGNUSparse', 'isAtEOF', 'setAtEOF']

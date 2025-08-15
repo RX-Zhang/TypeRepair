@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.json.GeneratorFailTest.testFailOnWritingStringNotFieldNameBytes
+- Error: junit.framework.AssertionFailedError: Should not have let com.fasterxml.jackson.core.json.UTF8JsonGenerator.writeString() be used in place of 'writeFieldName()': output = {:"a"
+- Location:         _testFailOnWritingStringNotFieldName(F, false);
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.core.json.GeneratorFailTest.testFailOnWritingStringNotFieldNameChars
+- Error: junit.framework.AssertionFailedError: Should not have let com.fasterxml.jackson.core.json.WriterBasedJsonGenerator.writeString() be used in place of 'writeFieldName()': output = {:"a"
+- Location:         _testFailOnWritingStringNotFieldName(F, true);

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -8,8 +8,10 @@
+     Chronology chrono = instant.getChronology();
+     long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+     chrono = selectChronology(chrono);
+-    int defaultYear = chrono.year().get(instantLocal);
+-    
++
++    // Use the configured default year instead of extracting from instantLocal
++    int defaultYear = getDefaultYear();
++
+     DateTimeParserBucket bucket = new DateTimeParserBucket(
+         instantLocal, chrono, iLocale, iPivotYear, defaultYear);
+     int newPos = parser.parseInto(bucket, text, position);
+@@ -27,3 +29,4 @@
+     }
+     return newPos;
+ }
++

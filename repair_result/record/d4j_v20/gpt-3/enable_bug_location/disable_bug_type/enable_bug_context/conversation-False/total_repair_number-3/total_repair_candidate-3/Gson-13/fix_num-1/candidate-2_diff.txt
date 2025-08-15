@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -73,7 +73,11 @@
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+         if (value == 0) {
+-          return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++          // Leading '0' prefix is only invalid if it is followed by digits and not if we have "-0"
++          // So only return PEEKED_NONE if we have more digits after leading zero
++          if (c == '0') {
++            return PEEKED_NONE; // Prevent multiple leading zeros "00..."
++          }
+         }
+         long newValue = value * 10 - (c - '0');
+         fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+@@ -100,3 +104,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

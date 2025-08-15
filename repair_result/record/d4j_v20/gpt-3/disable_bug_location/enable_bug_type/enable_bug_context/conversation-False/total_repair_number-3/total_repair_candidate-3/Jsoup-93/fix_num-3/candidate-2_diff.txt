@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -9,6 +9,9 @@
+         if (name.length() == 0) continue;
+         String type = el.attr("type");
+ 
++        // exclude buttons and submit inputs - they are form submittable but should not be in form data values
++        if ("button".equalsIgnoreCase(type) || "submit".equalsIgnoreCase(type) || "reset".equalsIgnoreCase(type) || "file".equalsIgnoreCase(type))
++            continue;
+ 
+         if ("select".equals(el.normalName())) {
+             Elements options = el.select("option[selected]");
+@@ -34,3 +37,4 @@
+     }
+     return data;
+ }
++

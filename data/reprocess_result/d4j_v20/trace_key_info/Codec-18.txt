@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.codec.binary.StringUtilsTest.testEqualsCS1
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 3
+- Location:         Assert.assertFalse(StringUtils.equals(new StringBuilder("abc"), new StringBuilder("abcd")));
+
+
+Test failure 2:
+- Test: org.apache.commons.codec.binary.StringUtilsTest.testEqualsCS2
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 3
+- Location:         Assert.assertFalse(StringUtils.equals(new StringBuilder("abc"), "abcd"));

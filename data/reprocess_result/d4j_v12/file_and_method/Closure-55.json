@@ -1,0 +1,1 @@
+{"ClassName": "FunctionRewriter", "Fields": ["private final AbstractCompiler compiler;", "private static final int SAVINGS_THRESHOLD;"], "Methods": ["public void process(Node externs, Node root) { ... }", "public Node parseHelperCode(Reducer reducer) { ... }", "private static boolean isReduceableFunctionExpression(Node n) { ... }"]}

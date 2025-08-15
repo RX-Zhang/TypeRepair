@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -74,8 +74,13 @@
+         }
+         Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        if (!Charset.isSupported(charsetName)) {
++            charsetName = defaultCharset; // fallback to default if the charset is not supported
++            doc.outputSettings().charset(Charset.forName(charsetName));
++        }
+     }
+     input.close();
+     return doc;
+ }
++

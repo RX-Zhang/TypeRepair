@@ -1,0 +1,79 @@
+--- 
++++ 
+@@ -28,13 +28,13 @@
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+         float labelx = (float) dataArea.getCenterX();
+-        float labely = (float) (state.getCursor() - insets.getBottom() 
+-                - h / 2.0);
++        float labely = (float) (state.getCursor() + insets.getTop() 
++                + h / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+                 TextAnchor.CENTER, getLabelAngle(), TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorUp(insets.getTop() + labelBounds.getHeight() 
++        state.cursorDown(insets.getTop() + labelBounds.getHeight() 
+                 + insets.getBottom());
+     }
+     else if (edge == RectangleEdge.BOTTOM) {
+@@ -46,13 +46,13 @@
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+         float labelx = (float) dataArea.getCenterX();
+-        float labely = (float) (state.getCursor() + insets.getTop() 
+-                + h / 2.0);
++        float labely = (float) (state.getCursor() - insets.getBottom() 
++                - h / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+                 TextAnchor.CENTER, getLabelAngle(), TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorDown(insets.getTop() + labelBounds.getHeight() 
++        state.cursorUp(insets.getTop() + labelBounds.getHeight() 
+                 + insets.getBottom());
+     }
+     else if (edge == RectangleEdge.LEFT) {
+@@ -63,15 +63,15 @@
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+-        float labelx = (float) (state.getCursor() - insets.getRight() 
+-                - w / 2.0);
++        float labelx = (float) (state.getCursor() + insets.getLeft() 
++                + w / 2.0);
+         float labely = (float) dataArea.getCenterY();
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+                 TextAnchor.CENTER, getLabelAngle() - Math.PI / 2.0, 
+                 TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorLeft(insets.getLeft() + labelBounds.getWidth() 
++        state.cursorRight(insets.getLeft() + labelBounds.getWidth() 
+                 + insets.getRight());
+     }
+     else if (edge == RectangleEdge.RIGHT) {
+@@ -83,8 +83,7 @@
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+         float h = (float) labelBounds.getHeight();
+-        float labelx = (float) (state.getCursor() 
+-                        + insets.getLeft() + w / 2.0);
++        float labelx = (float) (state.getCursor() - insets.getRight() - w / 2.0);
+         float labely = (float) (dataArea.getY() + dataArea.getHeight() 
+                 / 2.0);
+         TextUtilities.drawRotatedString(label, g2, labelx, labely, 
+@@ -92,7 +91,7 @@
+                 TextAnchor.CENTER);
+         hotspot = new Rectangle2D.Float(labelx - w / 2.0f, 
+                 labely - h / 2.0f, w, h);
+-        state.cursorRight(insets.getLeft() + labelBounds.getWidth() 
++        state.cursorLeft(insets.getLeft() + labelBounds.getWidth() 
+                 + insets.getRight());
+ 
+     }
+@@ -107,3 +106,4 @@
+     return state;
+ 
+ }
++

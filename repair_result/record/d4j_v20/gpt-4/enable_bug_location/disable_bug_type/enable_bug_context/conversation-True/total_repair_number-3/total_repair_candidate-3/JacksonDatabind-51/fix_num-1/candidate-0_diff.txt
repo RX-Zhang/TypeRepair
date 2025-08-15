@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -42,11 +42,15 @@
+                 //   generic type with custom type resolvers. If so, should try to retain them.
+                 //  Whether this is sufficient to avoid problems remains to be seen, but for
+                 //  now it should improve things.
+-                    type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
++                type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
+         }
+-        _deserializers.put(typeId, deser);
++        // Cache deserializer for future use (if not null)
++        if (deser != null) {
++            _deserializers.put(typeId, deser);
++        }
+     }
+     return deser;
+ }
++

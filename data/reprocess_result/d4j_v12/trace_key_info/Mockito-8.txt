@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockito.internal.util.reflection.GenericMetadataSupportTest.typeVariable_of_self_type
+- Error: java.lang.StackOverflowError
+- Location: Unknown location

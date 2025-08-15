@@ -1,0 +1,1 @@
+['findPropertyType', 'forceResolve', 'resolve', 'isResolved', 'safeResolve']

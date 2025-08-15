@@ -1,0 +1,29 @@
+protected JavaType _narrow(Class<?> subclass)
+{
+    if (_class == subclass) {
+        return this;
+    }
+    // Should we check that there is a sub-class relationship?
+    // 15-Jan-2016, tatu: Almost yes, but there are some complications with
+    //    placeholder values (`Void`, `NoClass`), so can not quite do yet.
+    // TODO: fix in 2.8
+    /*
+    throw new IllegalArgumentException("Class "+subclass.getName()+" not sub-type of "
+            +_class.getName());
+    */
+
+    JavaType superClass = _superClass;
+    JavaType[] superInterfaces = _superInterfaces;
+
+    // Let's try to refine superClass and superInterfaces
+    if (superClass != null) {
+        superClass = superClass.refine(subclass, _bindings, superClass._superClass, superClass._superInterfaces);
+    }
+    if (superInterfaces != null) {
+        for (int i = 0, len = superInterfaces.length; i < len; i++) {
+            superInterfaces[i] = superInterfaces[i].refine(subclass, _bindings, superInterfaces[i]._superClass, superInterfaces[i]._superInterfaces);
+        }
+    }
+    return new SimpleType(subclass, _bindings, superClass, superInterfaces,
+            _valueHandler, _typeHandler, _asStatic);
+}

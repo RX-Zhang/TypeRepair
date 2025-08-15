@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -20,10 +20,18 @@
+         return 0;
+     }
+ 
+-    if (depth1 == 1) {
++    // Check if both pointers belong to the same root node before proceeding
++    if (p1.getRootNode() != p2.getRootNode()) {
+         throw new JXPathException(
+                 "Cannot compare pointers that do not belong to the same tree: '"
+                         + p1 + "' and '" + p2 + "'");
++    }
++
++    if (depth1 == 1) {
++        // this condition can now be removed or keep it as a secondary check
++        // but main check is above
++        int r = p1.parent.compareChildNodePointers(p1, p2);
++        return r;
+     }
+     int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
+     if (r != 0) {
+@@ -32,3 +40,4 @@
+ 
+     return p1.parent.compareChildNodePointers(p1, p2);
+ }
++

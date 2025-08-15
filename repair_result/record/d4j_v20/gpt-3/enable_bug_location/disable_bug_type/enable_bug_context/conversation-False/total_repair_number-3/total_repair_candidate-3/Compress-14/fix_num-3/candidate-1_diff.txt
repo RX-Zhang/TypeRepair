@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -18,9 +18,9 @@
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
++    // Skip leading spaces or NULs
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == ' ' || buffer[start] == 0){
+             start++;
+         } else {
+             break;
+@@ -37,9 +37,11 @@
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+     // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    if (end > start) {
++        trailer = buffer[end-1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -55,3 +57,4 @@
+ 
+     return result;
+ }
++

@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -3,7 +3,16 @@
+     throws MaxIterationsExceededException, FunctionEvaluationException {
+ 
+     clearResult();
+-    verifySequence(min, initial, max);
++    verifySequence(min, max);
++    
++    // check endpoints bracket the root
++    double yMin = f.value(min);
++    double yMax = f.value(max);
++
++    if (yMin * yMax > 0) {
++        throw new IllegalArgumentException(
++            NON_BRACKETING_MESSAGE + " Endpoints: [" + min + ", " + max + "], Values: [" + yMin + ", " + yMax + "]");
++    }
+ 
+     // return the initial guess if it is good enough
+     double yInitial = f.value(initial);
+@@ -13,9 +22,8 @@
+     }
+ 
+     // return the first endpoint if it is good enough
+-    double yMin = f.value(min);
+     if (Math.abs(yMin) <= functionValueAccuracy) {
+-        setResult(yMin, 0);
++        setResult(min, 0);
+         return result;
+     }
+ 
+@@ -25,9 +33,8 @@
+     }
+ 
+     // return the second endpoint if it is good enough
+-    double yMax = f.value(max);
+     if (Math.abs(yMax) <= functionValueAccuracy) {
+-        setResult(yMax, 0);
++        setResult(max, 0);
+         return result;
+     }
+ 
+@@ -36,8 +43,8 @@
+         return solve(f, initial, yInitial, max, yMax, initial, yInitial);
+     }
+ 
++    // if no bracket found among initial and endpoints, error
++    throw new IllegalArgumentException(
++        NON_BRACKETING_MESSAGE + " Endpoints: [" + min + ", " + max + "], Values: [" + yMin + ", " + yMax + "]");
++}
+ 
+-    // full Brent algorithm starting with provided initial guess
+-    return solve(f, min, yMin, max, yMax, initial, yInitial);
+-
+-}

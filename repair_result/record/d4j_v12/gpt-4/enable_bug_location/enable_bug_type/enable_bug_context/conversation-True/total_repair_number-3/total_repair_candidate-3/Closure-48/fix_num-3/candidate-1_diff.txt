@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -44,9 +44,9 @@
+           rhsValue.isObjectLit()) {
+         typeRegistry.resetImplicitPrototype(
+             rhsValue.getJSType(), qVarType.getImplicitPrototype());
+-      } else if (!qVar.isTypeInferred()) {
++      } else if (!qVar.isTypeInferred() && rhsValue != null && !rhsValue.isFunction()) {
+         // If the programmer has declared that F inherits from Super,
+-        // and they assign F.prototype to some arbitrary expression,
++        // and they assign F.prototype to some arbitrary expression that is NOT a function,
+         // there's not much we can do. We just ignore the expression,
+         // and hope they've annotated their code in a way to tell us
+         // what props are going to be on that prototype.
+@@ -139,8 +139,9 @@
+           null : typeRegistry.getType(delegateName);
+       if (delegateType != null &&
+           ownerTypeOfThis.isSubtype(delegateType)) {
+-        defineSlot(n, parent, getNativeType(BOOLEAN_TYPE), true);
++        defineSlot(n, parent, getNativeType(JSTypeNative.BOOLEAN_TYPE), true);
+       }
+     }
+   }
+ }
++

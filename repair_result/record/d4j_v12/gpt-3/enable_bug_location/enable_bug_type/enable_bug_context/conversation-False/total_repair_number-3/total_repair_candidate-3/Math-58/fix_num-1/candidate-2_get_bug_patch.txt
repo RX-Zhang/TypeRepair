@@ -1,0 +1,14 @@
+public double[] fit() {
+    final double[] guess = (new ParameterGuesser(getObservations())).guess();
+    try {
+        return fit(new Gaussian.Parametric(), guess);
+    } catch (NotStrictlyPositiveException e) {
+        // Handle the exception gracefully, possibly by returning NaNs or an empty array
+        // Here, returning an array of NaNs with the same length as guess
+        double[] result = new double[guess.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = Double.NaN;
+        }
+        return result;
+    }
+}

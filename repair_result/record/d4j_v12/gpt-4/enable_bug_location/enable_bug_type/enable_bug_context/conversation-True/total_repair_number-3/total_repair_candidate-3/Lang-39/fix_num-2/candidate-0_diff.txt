@@ -1,0 +1,56 @@
+--- 
++++ 
+@@ -13,15 +13,12 @@
+ 
+     // if recursing, this shouldnt be less than 0
+     if (timeToLive < 0) {
+-        throw new IllegalStateException("TimeToLive of " + timeToLive + " is less than 0: " + text);
+-    }
++        throw new IllegalStateException("TimeToLive of " + timeToLive + " is less than 0: " + text    }
+ 
+     int searchLength = searchList.length;
+-    int replacementLength = replacementList.length;
+-
+-    // make sure lengths are ok, these need to be equal
++    int replacementLength = replacementList    // make sure lengths are ok, these need to be
+     if (searchLength != replacementLength) {
+-        throw new IllegalArgumentException("Search and Replace array lengths don't match: "
++        new IllegalArgumentException("Search and Replace array lengths don't match: "
+             + searchLength
+             + " vs "
+             + replacementLength);
+@@ -69,7 +66,12 @@
+ 
+     // count the replacement text elements that are larger than their corresponding text being replaced
+     for (int i = 0; i < searchList.length; i++) {
+-        int greater = replacementList[i].length() - searchList[i].length();
++        String search = searchList[i];
++        String replace = replacementList[i];
++        if (search == null || replace == null) {
++            continue;
++        }
++        int greater = replace.length() - search.length();
+         if (greater > 0) {
+             increase += 3 * greater; // assume 3 matches
+         }
+@@ -84,9 +86,13 @@
+         for (int i = start; i < textIndex; i++) {
+             buf.append(text.charAt(i));
+         }
+-        buf.append(replacementList[replaceIndex]);
++        String replacement = replacementList[replaceIndex];
++        if (replacement == null) {
++            replacement = searchList[replaceIndex];
++        }
++        buf.append(replacement);
+ 
+-        start = textIndex + searchList[replaceIndex].length();
++        start = textIndex + (searchList[replaceIndex] != null ? searchList[replaceIndex].length() : 0);
+ 
+         textIndex = -1;
+         replaceIndex = -1;
+@@ -125,3 +131,4 @@
+ 
+     return replaceEach(result, searchList, replacementList, repeat, timeToLive - 1);
+ }
++

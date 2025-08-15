@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -24,14 +24,14 @@
+     txt = txt.replaceAll("^gn", "2n");
+ 
+     // End 
+-    txt = txt.replaceAll("^mb", "m2");
++    txt = txt.replaceAll("mb$", "m2");
+ 
+     // 4. Handle replacements
+     txt = txt.replaceAll("cq", "2q");
+     txt = txt.replaceAll("ci", "si");
+     txt = txt.replaceAll("ce", "se");
+     txt = txt.replaceAll("cy", "sy");
+-    txt = txt.replaceAll("tch", "2ch");
++    txt = txtAll("tch", "2ch");
+     txt = txt.replaceAll("c", "k");
+     txt = txt.replaceAll("q", "k");
+     txt = txt.replaceAll("x", "k");
+@@ -91,3 +91,4 @@
+     // 7. take the first six characters as the code
+     return txt.substring(0, 10);          // 1.0 truncates to 6
+ }
++

@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -6,9 +6,14 @@
+         int ch;
+         int len = 0;
+         int read = 0;
++        boolean seenDigit = false;
+         while((ch = i.read()) != -1) {
+             read++;
+             if (ch == ' '){
++                if (!seenDigit) {
++                    // blank line or line without length prefix, skip
++                    break;
++                }
+                 // Get keyword
+                 final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+                 while((ch = i.read()) != -1) {
+@@ -17,6 +22,10 @@
+                         final String keyword = coll.toString(CharsetNames.UTF_8);
+                         // Get rest of entry
+                         final int restLen = len - read;
++                        if (restLen < 0) {
++                            // length prefix is smaller than bytes read, ignore this header
++                            break;
++                        }
+                         if (restLen == 1) { // only NL
+                             headers.remove(keyword);
+                         } else {
+@@ -40,6 +49,11 @@
+                 }
+                 break; // Processed single header
+             }
++            if (ch < '0' || ch > '9') {
++                // Invalid character in length field, skip this line
++                break;
++            }
++            seenDigit = true;
+             len *= 10;
+             len += ch - '0';
+         }
+@@ -49,3 +63,4 @@
+     }
+     return headers;
+ }
++

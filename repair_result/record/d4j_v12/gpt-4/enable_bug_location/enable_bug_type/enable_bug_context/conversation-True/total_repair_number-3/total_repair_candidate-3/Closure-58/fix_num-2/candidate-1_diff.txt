@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -25,9 +25,13 @@
+         if (NodeUtil.isVar(lhs)) {
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+-        }
++          addToSetIfLocal(lhs, kill);
++        } else {
++          // lhs can be a general expression, so we only add to gen here
++          // because the iteration variable is being assigned to
+           addToSetIfLocal(lhs, kill);
+           addToSetIfLocal(lhs, gen);
++        }
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +88,4 @@
+       return;
+   }
+ }
++

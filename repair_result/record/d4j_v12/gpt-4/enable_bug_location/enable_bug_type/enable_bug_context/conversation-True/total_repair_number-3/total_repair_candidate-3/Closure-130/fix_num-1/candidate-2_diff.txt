@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -13,11 +13,12 @@
+         name.aliasingGets > 0) {
+       // {@code name} meets condition (b). Find all of its local aliases
+       // and try to inline them.
+-      List<Ref> refs = Lists.newArrayList(name.getRefs());
++      List<Ref> refs =.newArrayList(name.getRefs());
+       for (Ref ref : refs) {
+         if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
+           // {@code name} meets condition (c). Try to inline it.
+           if (inlineAliasIfPossible(ref, namespace)) {
++            // Remove the reference only if inlining succeeded.
+             name.removeRef(ref);
+           }
+         }
+@@ -35,3 +36,4 @@
+     }
+   }
+ }
++

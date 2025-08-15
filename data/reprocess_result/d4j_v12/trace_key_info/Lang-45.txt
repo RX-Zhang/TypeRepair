@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang.WordUtilsTest.testAbbreviate
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 15
+- Location:         assertEquals("0123456789", WordUtils.abbreviate("0123456789", 15, 20, null));

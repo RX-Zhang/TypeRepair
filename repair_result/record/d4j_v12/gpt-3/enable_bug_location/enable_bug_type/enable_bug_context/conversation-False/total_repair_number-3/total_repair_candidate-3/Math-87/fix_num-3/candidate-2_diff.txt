@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -3,11 +3,14 @@
+     for (int i = getNumObjectiveFunctions(); i < getHeight(); i++) {
+         if (!MathUtils.equals(getEntry(i, col), 0.0, epsilon)) {
+             if (row == null) {
+-            row = i;
++                row = i;
+             } else {
+-            return null;
++                // If we find more than one non-zero entry, we should return null
++                return null; 
+             }
+         }
+     }
+-    return row;
++    // Ensure that only one basic row is found, otherwise return null
++    return row != null ? row : null; 
+ }
++

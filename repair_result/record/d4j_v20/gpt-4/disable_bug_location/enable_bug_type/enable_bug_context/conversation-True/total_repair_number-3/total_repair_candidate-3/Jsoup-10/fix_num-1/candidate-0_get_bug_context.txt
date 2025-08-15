@@ -1,0 +1,1 @@
+['attr', 'attributes', 'hasAttr', 'baseUri', 'setBaseUri']

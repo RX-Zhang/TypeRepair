@@ -1,0 +1,6 @@
+public int getLength() {
+    if (getBaseValue() == null) {
+        return 0; // Return 0 if base value is null to prevent runtime error
+    }
+    return ValueUtils.getLength(getBaseValue());
+}

@@ -1,0 +1,68 @@
+--- 
++++ 
+@@ -1,14 +1,52 @@
+ public Period normalizedStandard(PeriodType type) {
+     type = DateTimeUtils.getPeriodType(type);
+-    long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs
+-    millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));
+-    millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));
+-    millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+-    millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
+-    millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
++    long millis = 0L;
++    if (type.isSupported(DurationFieldType.millis())) {
++        millis += getMillis();
++    } else if (getMillis() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++    if (type.isSupported(DurationFieldType.seconds())) {
++        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
++    } else if (getSeconds() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++    if (type.isSupported(DurationFieldType.minutes())) {
++        millis += ((long) getMinutes()) * DateTimeConstants.MILLIS_PER_MINUTE;
++    } else if (getMinutes() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++    if (type.isSupported(DurationFieldType.hours())) {
++        millis += ((long) getHours()) * DateTimeConstants.MILLIS_PER_HOUR;
++    } else if (getHours() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++    if (type.isSupported(DurationFieldType.days())) {
++        millis += ((long) getDays()) * DateTimeConstants.MILLIS_PER_DAY;
++    } else if (getDays() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++    if (type.isSupported(DurationFieldType.weeks())) {
++        millis += ((long) getWeeks()) * DateTimeConstants.MILLIS_PER_WEEK;
++    } else if (getWeeks() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++
+     Period result = new Period(millis, type, ISOChronology.getInstanceUTC());
+-    int years = getYears();
+-    int months = getMonths();
++
++    int years = 0;
++    int months = 0;
++    if (type.isSupported(DurationFieldType.years())) {
++        years = getYears();
++    } else if (getYears() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++    if (type.isSupported(DurationFieldType.months())) {
++        months = getMonths();
++    } else if (getMonths() != 0) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++
+     if (years != 0 || months != 0) {
+         years = FieldUtils.safeAdd(years, months / 12);
+         months = months % 12;
+@@ -21,3 +59,4 @@
+     }
+     return result;
+ }
++

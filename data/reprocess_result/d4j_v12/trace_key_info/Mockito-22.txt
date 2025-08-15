@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockito.internal.matchers.EqualityTest.shouldKnowIfObjectsAreEqual
+- Error: java.lang.RuntimeException
+- Location: 	assertTrue(areEqual(badequals,badequals));

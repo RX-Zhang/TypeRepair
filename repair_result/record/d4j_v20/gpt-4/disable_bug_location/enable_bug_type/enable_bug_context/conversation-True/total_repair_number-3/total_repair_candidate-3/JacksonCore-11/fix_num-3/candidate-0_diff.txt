@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -10,4 +10,13 @@
+     if (_needRehash) {
+         rehash();
+     }
++    
++    // Added boundary check to prevent ArrayIndexOutOfBoundsException
++    if (_spilloverEnd > _hashArea.length) {
++        // Defensive: spilloverEnd should never exceed _hashArea length
++        // Force a rehash to reduce spillover entries
++        _needRehash = true;
++        rehash();
++    }
+ }
++

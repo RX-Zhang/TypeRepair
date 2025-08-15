@@ -1,0 +1,159 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 12 items
+
+python_testcases/test_subsequences.py F..FFFFFFFFF                       [100%]
+
+=================================== FAILURES ===================================
+___________________ test_subsequences[input_data0-expected0] ___________________
+
+input_data = [1, 5, 3], expected = [[1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4]]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[1, 2, 3], [...4], [2, 3, 4]]
+E         
+E         Right contains 4 more items, first extra item: [1, 2, 3]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+___________________ test_subsequences[input_data3-expected3] ___________________
+
+input_data = [4, 10, 4]
+expected = [[4, 5, 6, 7], [4, 5, 6, 8], [4, 5, 6, 9], [4, 5, 7, 8], [4, 5, 7, 9], [4, 5, 8, 9], ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[4, 5, 6, 7]...5, 8, 9], ...]
+E         
+E         Right contains 15 more items, first extra item: [4, 5, 6, 7]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+___________________ test_subsequences[input_data4-expected4] ___________________
+
+input_data = [4, 10, 6], expected = [[4, 5, 6, 7, 8, 9]]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[4, 5, 6, 7, 8, 9]]
+E         
+E         Right contains one more item: [4, 5, 6, 7, 8, 9]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+___________________ test_subsequences[input_data5-expected5] ___________________
+
+input_data = [1, 10, 2]
+expected = [[1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[1, 2], [1, ..., [1, 7], ...]
+E         
+E         Right contains 36 more items, first extra item: [1, 2]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+___________________ test_subsequences[input_data6-expected6] ___________________
+
+input_data = [1, 10, 6]
+expected = [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 7], [1, 2, 3, 4, 5, 8], [1, 2, 3, 4, 5, 9], [1, 2, 3, 4, 6, 7], [1, 2, 3, 4, 6, 8], ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[1, 2, 3, 4,...4, 6, 8], ...]
+E         
+E         Right contains 84 more items, first extra item: [1, 2, 3, 4, 5, 6]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+___________________ test_subsequences[input_data7-expected7] ___________________
+
+input_data = [1, 10, 4]
+expected = [[1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 3, 6], [1, 2, 3, 7], [1, 2, 3, 8], [1, 2, 3, 9], ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[1, 2, 3, 4]...2, 3, 9], ...]
+E         
+E         Right contains 126 more items, first extra item: [1, 2, 3, 4]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+___________________ test_subsequences[input_data8-expected8] ___________________
+
+input_data = [1, 10, 1], expected = [[1], [2], [3], [4], [5], [6], ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[1], [2], [3...[5], [6], ...]
+E         
+E         Right contains 9 more items, first extra item: [1]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+___________________ test_subsequences[input_data9-expected9] ___________________
+
+input_data = [5, 13, 7]
+expected = [[5, 6, 7, 8, 9, 10, ...], [5, 6, 7, 8, 9, 10, ...], [5, 6, 7, 8, 9, 11, ...], [5, 6, 7, 8, 10, 11, ...], [5, 6, 7, 9, 10, 11, ...], [5, 6, 8, 9, 10, 11, ...], ...]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[5, 6, 7, 8,...11, ...], ...]
+E         
+E         Right contains 8 more items, first extra item: [5, 6, 7, 8, 9, 10, ...]
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+__________________ test_subsequences[input_data10-expected10] __________________
+
+input_data = [5, 13, 0], expected = [[]]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[]]
+E         
+E         Right contains one more item: []
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+__________________ test_subsequences[input_data11-expected11] __________________
+
+input_data = [1, 5, 0], expected = [[]]
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_subsequences(input_data, expected):
+>       assert subsequences(*input_data) == expected
+E       assert [] == [[]]
+E         
+E         Right contains one more item: []
+E         Use -v to get more diff
+
+python_testcases/test_subsequences.py:15: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data0-expected0]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data3-expected3]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data4-expected4]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data5-expected5]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data6-expected6]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data7-expected7]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data8-expected8]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data9-expected9]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data10-expected10]
+FAILED python_testcases/test_subsequences.py::test_subsequences[input_data11-expected11]
+========================= 10 failed, 2 passed in 0.04s =========================

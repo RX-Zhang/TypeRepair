@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,5 +1,9 @@
+ public void remove(SettableBeanProperty propToRm)
+ {
++    if (propToRm == null) {
++        throw new IllegalArgumentException("Property to remove cannot be null");
++    }
++
+     ArrayList<SettableBeanProperty> props = new ArrayList<SettableBeanProperty>(_size);
+     String key = getPropertyName(propToRm);
+     boolean found = false;
+@@ -26,3 +30,4 @@
+     }
+     init(props);
+ }
++

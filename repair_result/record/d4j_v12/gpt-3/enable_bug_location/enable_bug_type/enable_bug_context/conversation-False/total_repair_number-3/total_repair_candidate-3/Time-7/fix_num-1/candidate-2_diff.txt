@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -13,6 +13,12 @@
+     DateTimeParserBucket bucket = new DateTimeParserBucket(
+         instantLocal, chrono, iLocale, iPivotYear, defaultYear);
+     int newPos = parser.parseInto(bucket, text, position);
++    
++    // Check if the day value parsed is in a valid range for February
++    if (bucket.getDay() == 29 && !isLeapYear(defaultYear)) {
++        throw new IllegalFieldValueException("dayOfMonth", 29, 1, 28);
++    }
++    
+     instant.setMillis(bucket.computeMillis(false, text));
+     if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+         int parsedOffset = bucket.getOffsetInteger();
+@@ -27,3 +33,8 @@
+     }
+     return newPos;
+ }
++
++private boolean isLeapYear(int year) {
++    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
++}
++

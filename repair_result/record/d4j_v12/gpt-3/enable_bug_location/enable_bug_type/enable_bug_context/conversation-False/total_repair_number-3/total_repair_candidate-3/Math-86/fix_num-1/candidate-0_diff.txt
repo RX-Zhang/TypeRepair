@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -3,6 +3,10 @@
+                                  final double absolutePositivityThreshold)
+     throws NonSquareMatrixException,
+            NotSymmetricMatrixException, NotPositiveDefiniteMatrixException {
++
++    if (matrix == null) {
++        throw new IllegalArgumentException("Input matrix cannot be null.");
++    }
+ 
+     if (!matrix.isSquare()) {
+         throw new NonSquareMatrixException(matrix.getRowDimension(),
+@@ -42,6 +46,9 @@
+         final double[] ltI = lTData[i];
+ 
+         // check diagonal element
++        if (ltI[i] < 0) {
++            throw new NotPositiveDefiniteMatrixException();
++        }
+ 
+         ltI[i] = Math.sqrt(ltI[i]);
+         final double inverse = 1.0 / ltI[i];
+@@ -57,3 +64,4 @@
+     }
+ 
+ }
++

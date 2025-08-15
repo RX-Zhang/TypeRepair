@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.select.SelectorTest.attributeWithBrackets
+- Error: org.jsoup.select.Selector$SelectorParseException: Could not parse query 'div[data='End]'': unexpected token at '''
+- Location:         assertEquals("One", doc.select("div[data='End]'").first().text());

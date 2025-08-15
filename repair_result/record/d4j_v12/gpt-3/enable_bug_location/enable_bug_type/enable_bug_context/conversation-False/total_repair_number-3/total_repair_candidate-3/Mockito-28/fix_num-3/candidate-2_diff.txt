@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -1,5 +1,17 @@
+ private void injectMockCandidate(Class<?> awaitingInjectionClazz, Set<Object> mocks, Object fieldInstance) {
+     for(Field field : orderedInstanceFieldsFrom(awaitingInjectionClazz)) {
+-        mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();
++        boolean injected = mockCandidateFilter.filterCandidate(mocks, field, fieldInstance).thenInject();
++        if (injected) {
++            // After successful injection of a mock into this field, remove that mock from the set to prevent it from being injected more than once.
++            mocks.removeIf(mock -> {
++                try {
++                    return field.get(fieldInstance) == mock;
++                } catch (IllegalAccessException e) {
++                    // If access fails, assume not the injected mock so don't remove anything.
++                    return false;
++                }
++            });
++        }
+     }
+ }
++

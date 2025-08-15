@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -13,6 +13,9 @@
+         pos.setIndex(initialIndex);
+         return null;
+     }
++
++    // parse whitespace
++    parseAndIgnoreWhitespace(source, pos);
+ 
+     // parse sign
+     int startIndex = pos.getIndex();
+@@ -55,9 +58,8 @@
+     int n = getImaginaryCharacter().length();
+     startIndex = pos.getIndex();
+     int endIndex = startIndex + n;
+-    if (
+-        source.substring(startIndex, endIndex).compareTo(
+-        getImaginaryCharacter()) != 0) {
++    if (endIndex > source.length() || 
++        source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {
+         // set index back to initial, error index should be the start index
+         // character examined.
+         pos.setIndex(initialIndex);
+@@ -68,3 +70,4 @@
+ 
+     return new Complex(re.doubleValue(), im.doubleValue() * sign);
+ }
++

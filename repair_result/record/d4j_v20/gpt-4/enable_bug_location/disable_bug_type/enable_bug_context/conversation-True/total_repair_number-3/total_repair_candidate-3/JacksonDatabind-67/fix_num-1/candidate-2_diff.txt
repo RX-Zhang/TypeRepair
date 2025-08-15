@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -30,3 +30,56 @@
+     }
+     return deser;
+ }
++
++private KeyDeserializer _createEnumKeyDeserializer(DeserializationContext ctxt,
++        JavaType type)
++    throws JsonMappingException
++{
++    final DeserializationConfig config = ctxt.getConfig();
++    Class<?> enumClass = type.getRawClass();
++
++    BeanDescription beanDesc = config.introspect(type);
++    // 24-Sep-2015, bim: a key deserializer is the preferred thing.
++    KeyDeserializer des = findKeyDeserializerFromAnnotation(ctxt, beanDesc.getClassInfo());
++    if (des != null) {
++        return des;
++    } else {
++        // 24-Sep-2015, bim: if no key deser, look for enum deserializer first, then a plain deser.
++        JsonDeserializer<?> custom = _findCustomEnumDeserializer(enumClass, config, beanDesc);
++        if (custom != null) {
++            return StdKeyDeserializers.constructDelegatingKeyDeserializer(config, type, custom);
++        }
++        JsonDeserializer<?> valueDesForKey = findDeserializerFromAnnotation(ctxt, beanDesc.getClassInfo());
++        if (valueDesForKey != null) {
++            return StdKeyDeserializers.constructDelegatingKeyDeserializer(config, type, valueDesForKey);
++        }
++    }
++    EnumResolver enumRes = constructEnumResolver(enumClass, config, beanDesc.findJsonValueMethod());
++    // May have @JsonCreator for static factory method:
++    final AnnotationIntrospector ai = config.getAnnotationIntrospector();
++    for (AnnotatedMethod factory : beanDesc.getFactoryMethods()) {
++        if (ai.hasCreatorAnnotation(factory)) {
++            int argCount = factory.getParameterCount();
++            if (argCount == 1) {
++                Class<?> returnType = factory.getRawReturnType();
++                // usually should be class, but may be just plain Enum<?> (for Enum.valueOf()?)
++                if (returnType.isAssignableFrom(enumClass)) {
++                    // note: mostly copied from 'EnumDeserializer.deserializerForCreator(...)'
++                    if (factory.getRawParameterType(0) != String.class) {
++                        throw new IllegalArgumentException("Parameter #0 type for factory method ("+factory+") not suitable, must be java.lang.String");
++                    }
++                    if (config.canOverrideAccessModifiers()) {
++                        ClassUtil.checkAndFixAccess(factory.getMember(),
++                                ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++                    }
++                    return StdKeyDeserializers.constructEnumKeyDeserializer(enumRes, factory);
++                }
++            }
++            throw new IllegalArgumentException("Unsuitable method ("+factory+") decorated with @JsonCreator (for Enum type "
++                    +enumClass.getName()+")");
++        }
++    }
++    // Also, need to consider @JsonValue, if one found
++    return StdKeyDeserializers.constructEnumKeyDeserializer(enumRes);
++}
++

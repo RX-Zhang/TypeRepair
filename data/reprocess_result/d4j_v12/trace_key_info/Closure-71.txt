@@ -1,0 +1,11 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CheckAccessControlsTest.testNoPrivateAccessForProperties6
+- Error: junit.framework.AssertionFailedError: Overriding private property of Foo.prototype.
+ expected:<JSC_BAD_PRIVATE_PROPERTY_ACCESS: Access to private property {0} of {1} not allowed here.> but was:<JSC_PRIVATE_OVERRIDE: Overriding private property of {0}.>
+- Location:     test(new String[] {
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.CheckAccessControlsTest.testNoPrivateAccessForProperties8
+- Error: junit.framework.AssertionFailedError: There should be one error.  expected:<1> but was:<0>
+- Location:     test(new String[] {

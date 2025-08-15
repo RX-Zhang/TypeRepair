@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -12,10 +12,15 @@
+   for (FormattingOption formattingOption : flags.formatting) {
+     formattingOption.applyToOptions(options);
+   }
++  // Use the initialized flag from flags.process_closure_primitives, 
++  // which should be set via initConfigFromFlags
+   if (flags.process_closure_primitives) {
+     options.closurePass = true;
++  } else {
++    options.closurePass = false;
+   }
+ 
+   initOptionsFromFlags(options);
+   return options;
+ }
++

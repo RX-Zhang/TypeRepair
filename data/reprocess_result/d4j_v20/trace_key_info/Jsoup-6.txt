@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jsoup.integration.ParseTest.testYahooArticle
+- Error: java.lang.IllegalArgumentException: Illegal group reference: group index is missing
+- Location:         Document doc = Jsoup.parse(in, "UTF-8", "http://news.yahoo.com/s/nm/20100831/bs_nm/us_gm_china");
+
+
+Test failure 2:
+- Test: org.jsoup.nodes.EntitiesTest.quoteReplacements
+- Error: java.lang.IllegalArgumentException: character to be escaped is missing
+- Location:         assertEquals(unescaped, Entities.unescape(escaped));

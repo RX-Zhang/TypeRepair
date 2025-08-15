@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -19,8 +19,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = declaredType; // Corrected logical error
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -45,7 +44,6 @@
+             _defaultInclusion);
+ 
+     // property annotation override
+-    
+     inclV = inclV.withOverrides(propDef.findInclusion());
+     JsonInclude.Include inclusion = inclV.getValueInclusion();
+ 
+@@ -125,3 +123,4 @@
+     }
+     return bpw;
+ }
++

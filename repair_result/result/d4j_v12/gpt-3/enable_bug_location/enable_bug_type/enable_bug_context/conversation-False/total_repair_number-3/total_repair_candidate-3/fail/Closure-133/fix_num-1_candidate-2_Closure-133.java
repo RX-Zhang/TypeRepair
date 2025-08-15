@@ -1,0 +1,8 @@
+private String getRemainingJSDocLine() {
+  String result = stream.getRemainingJSDocLine();
+  // Add boundary check to avoid negative or invalid positions in downstream usage.
+  if (result == null) {
+    return "";
+  }
+  return result;
+}

@@ -1,0 +1,1 @@
+['getNextTarEntry', 'read', 'canReadEntryData', 'isAtEOF', 'setAtEOF']

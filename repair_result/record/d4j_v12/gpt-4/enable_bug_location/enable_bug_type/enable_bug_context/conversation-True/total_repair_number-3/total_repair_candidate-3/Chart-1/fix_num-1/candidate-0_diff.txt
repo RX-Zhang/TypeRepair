@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,11 +1,12 @@
+ public LegendItemCollection getLegendItems() {
+     LegendItemCollection result = new LegendItemCollection();
+-    if (this.plot == null) {
++    CategoryPlot plot = getPlot();
++    if (plot == null) {
+         return result;
+     }
+-    int index = this.plot.getIndexOf(this);
+-    CategoryDataset dataset = this.plot.getDataset(index);
+-    if (dataset != null) {
++    int index = plot.getIndexOf(this);
++    CategoryDataset dataset = plot.getDataset(index);
++    if (dataset == null) {
+         return result;
+     }
+     int seriesCount = dataset.getRowCount();
+@@ -31,3 +32,4 @@
+     }
+     return result;
+ }
++

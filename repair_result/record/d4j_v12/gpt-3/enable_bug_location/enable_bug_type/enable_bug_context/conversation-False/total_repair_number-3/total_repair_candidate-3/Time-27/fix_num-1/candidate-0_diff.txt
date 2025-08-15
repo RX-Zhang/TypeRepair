@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -3,11 +3,12 @@
+         throw new IllegalStateException("Builder has created neither a printer nor a parser");
+     }
+     int size = elementPairs.size();
+-    if (size >= 2 && elementPairs.get(0) instanceof Separator) {
++    if (size >= 3 && elementPairs.get(0) instanceof Separator) {
+         Separator sep = (Separator) elementPairs.get(0);
+-            PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+-            sep = sep.finish(f.getPrinter(), f.getParser());
+-            return new PeriodFormatter(sep, sep);
++        // Use subList starting from 1 (the element after the Separator), not 2
++        PeriodFormatter f = toFormatter(elementPairs.subList(1, size), notPrinter, notParser);
++        sep = sep.finish(f.getPrinter(), f.getParser());
++        return new PeriodFormatter(sep, sep);
+     }
+     Object[] comp = createComposite(elementPairs);
+     if (notPrinter) {
+@@ -18,3 +19,4 @@
+         return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+     }
+ }
++

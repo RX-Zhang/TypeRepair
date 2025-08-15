@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -54,7 +54,11 @@
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+             charsetName = foundCharset;
+             doc = null;
+-        } else if (!fullyRead) {
++        } else if (fullyRead) {
++            // If fully read and no charset found (or matches default), we can finalize doc here
++            doc.outputSettings().charset(Charset.forName(defaultCharset));
++            return doc;
++        } else {
+             doc = null;
+         }
+     } else { // specified by content type header (or by user on file load)
+@@ -79,3 +83,4 @@
+     input.close();
+     return doc;
+ }
++

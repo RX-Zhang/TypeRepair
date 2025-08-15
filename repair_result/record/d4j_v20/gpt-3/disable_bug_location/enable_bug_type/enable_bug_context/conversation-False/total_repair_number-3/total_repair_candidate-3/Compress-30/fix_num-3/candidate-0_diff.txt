@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -14,6 +14,11 @@
+         throw new IOException("stream closed");
+     }
+ 
++    if (len == 0) {
++        // Return 0 immediately if length to read is 0
++        return 0;
++    }
++
+     final int hi = offs + len;
+     int destOffs = offs;
+     int b;
+@@ -25,3 +30,4 @@
+     int c = (destOffs == offs) ? -1 : (destOffs - offs);
+     return c;
+ }
++

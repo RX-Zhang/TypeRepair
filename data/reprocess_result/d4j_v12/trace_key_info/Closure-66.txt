@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testGetTypedPercent5
+- Error: junit.framework.AssertionFailedError: expected:<100.0> but was:<62.5>
+- Location:     assertEquals(100.0, getTypedPercent(js), 0.1);
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testGetTypedPercent6
+- Error: junit.framework.AssertionFailedError: expected:<100.0> but was:<66.66666666666667>
+- Location:     assertEquals(100.0, getTypedPercent(js), 0.1);

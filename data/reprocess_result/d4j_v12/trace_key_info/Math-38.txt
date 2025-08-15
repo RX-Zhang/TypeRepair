@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.optimization.direct.BOBYQAOptimizerTest.testConstrainedRosenWithMoreInterpolationPoints
+- Error: org.apache.commons.math.optimization.direct.BOBYQAOptimizer$PathIsExploredException: If this exception is thrown, just remove it from the code prelim (at line 1752)
+- Location:             doTest(new Rosen(), startPoint, boundaries,

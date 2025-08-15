@@ -1,0 +1,1 @@
+['getSlot', 'getPropertiesCount', 'hasProperty', 'getPropertyType', 'defineProperty', 'hasReferenceName', 'matchRecordTypeConstraint']

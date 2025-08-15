@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+                 t = p.nextToken();
+                 Object bean;
+                 try {
+-                    bean = creator.build(ctxt, buffer);
++                    bean = finishBuild(ctxt, buffer);
+                 } catch (Exception e) {
+                     wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+                     continue;
+@@ -64,9 +64,10 @@
+     Object bean;
+     // !!! 15-Feb-2012, tatu: Need to modify creator to use Builder!
+     try {
+-        bean = creator.build(ctxt, buffer);
++        bean = finishBuild(ctxt, buffer);
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

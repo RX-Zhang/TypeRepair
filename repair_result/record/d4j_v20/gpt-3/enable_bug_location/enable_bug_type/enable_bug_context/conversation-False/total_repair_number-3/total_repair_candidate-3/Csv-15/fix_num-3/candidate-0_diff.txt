@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -36,30 +36,31 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
+-                quote = true;
+-            } else if (c <= COMMENT) {
+-                // Some other chars at the start of a value caused the parser to fail, so for now
+-                // encapsulate if we start in anything less than '#'. We are being conservative
+-                // by including the default comment char too.
++            // Corrected logical expression to properly quote initial characters that require quoting
++            // Quote if new record and (c < ' ' (space) or c == quoteChar or c == delimChar or c == COMMENT)
++            if (newRecord && (c < SP || c == quoteChar || c == delimChar || c == COMMENT)) {
+                 quote = true;
+             } else {
+-                while (pos < end) {
+-                    c = value.charAt(pos);
+-                    if (c == LF || c == CR || c == quoteChar || c == delimChar) {
+-                        quote = true;
+-                        break;
++                // Also quote if the first character is <= COMMENT (conservative rule)
++                if (c <= COMMENT) {
++                    quote = true;
++                } else {
++                    while (pos < end) {
++                        c = value.charAt(pos);
++                        if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                            quote = true;
++                            break;
++                        }
++                        pos++;
+                     }
+-                    pos++;
+-                }
+ 
+-                if (!quote) {
+-                    pos = end - 1;
+-                    c = value.charAt(pos);
+-                    // Some other chars at the end caused the parser to fail, so for now
+-                    // encapsulate if we end in anything less than ' '
+-                    if (c <= SP) {
+-                        quote = true;
++                    if (!quote && pos == end) {
++                        pos = end - 1;
++                        c = value.charAt(pos);
++                        // encapsulate if we end in anything less or equal to SP (space)
++                        if (c <= SP) {
++                            quote = true;
++                        }
+                     }
+                 }
+             }
+@@ -104,3 +105,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

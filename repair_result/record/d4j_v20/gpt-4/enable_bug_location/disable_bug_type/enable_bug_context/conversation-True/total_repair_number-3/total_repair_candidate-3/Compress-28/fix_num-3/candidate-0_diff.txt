@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public int read(byte[] buf, int offset, int numToRead) throws IOException {
+-	int totalRead = 0;
++    int totalRead = 0;
+ 
+     if (hasHitEOF || entryOffset >= entrySize) {
+         return -1;
+@@ -10,10 +10,15 @@
+     }
+ 
+     numToRead = Math.min(numToRead, available());
+-    
+-    totalRead = is.read(buf, offset, numToRead);
+-    count(totalRead);
+-    
++
++    try {
++        totalRead = is.read(buf, offset, numToRead);
++        count(totalRead);
++    } catch (IOException e) {
++        hasHitEOF = true; // Set EOF flag if an IOException occurs
++        throw new IOException("Error reading from input stream", e);
++    }
++
+     if (totalRead == -1) {
+         hasHitEOF = true;
+     } else {
+@@ -22,3 +27,4 @@
+ 
+     return totalRead;
+ }
++

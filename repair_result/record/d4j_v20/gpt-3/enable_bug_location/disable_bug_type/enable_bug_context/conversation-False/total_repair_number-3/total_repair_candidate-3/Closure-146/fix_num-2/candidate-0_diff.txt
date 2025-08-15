@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -13,8 +13,12 @@
+     case FALSE:
+     case UNKNOWN:
+       return new TypePair(this, that);
++
++    case UNDEFINED:
++      return new TypePair(this, that);
+   }
+ 
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

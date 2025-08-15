@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -200,7 +200,7 @@
+         validator.expectNotNullOrUndefined(
+             t, n, leftType, message, getNativeType(STRING_TYPE));
+         message = "right side of comparison";
+-        validator.expectString(t, n, rightType, message);
++        validator.expectString(t, rightType, message);
+         validator.expectNotNullOrUndefined(
+             t, n, rightType, message, getNativeType(STRING_TYPE));
+       }
+@@ -351,3 +351,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

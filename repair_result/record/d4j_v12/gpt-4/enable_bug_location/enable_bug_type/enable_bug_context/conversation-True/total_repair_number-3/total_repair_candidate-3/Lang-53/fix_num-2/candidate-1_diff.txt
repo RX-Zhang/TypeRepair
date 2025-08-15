@@ -1,0 +1,80 @@
+--- 
++++ 
+@@ -21,27 +21,43 @@
+     int millisecs = val.get(Calendar.MILLISECOND);
+     if (!round || millisecs < 500) {
+         time = time - millisecs;
+-    if (field == Calendar.SECOND) {
+-        done = true;
++        if (field == Calendar.SECOND) {
++            done = true;
+         }
++    } else {
++        if (field == Calendar.SECOND) {
++            done = true;
++        }
++        time = time + (1000 - millisecs);
+     }
+ 
+     // truncate seconds
+     int seconds = val.get(Calendar.SECOND);
+-    if (!done && (!round || seconds < 30)) {
+-        time = time - (seconds * 1000L);
+-    if (field == Calendar.MINUTE) {
+-        done = true;
++    if (!done) {
++        if (!round || seconds < 30) {
++            time = time - (seconds * 1000L);
++            if (field == Calendar.MINUTE) {
++                done = true;
++            }
++        } else {
++            time = time + ((60 - seconds) * 1000L);
++            if (field == Calendar.MINUTE) {
++                done = true;
++            }
+         }
+     }
+ 
+     // truncate minutes
+     int minutes = val.get(Calendar.MINUTE);
+-    if (!done && (!round || minutes < 30)) {
+-        time = time - (minutes * 60000L);
++    if (!done) {
++        if (!round || minutes < 30) {
++            time = time - (minutes * 60000L);
++ } else {
++            time = time + ((60 - minutes * 60000L);
++        }
+     }
+ 
+-    // reset time
++    // time
+     if (date.getTime() != time) {
+         date.setTime(time);
+         val.setTime(date);
+@@ -65,7 +81,7 @@
+                             val.add(Calendar.MONTH, 1);
+                         }
+                     } else {
+-                        //We need at add one to this field since the
++                        //We need to need to add one to this field since the
+                         //  last number causes us to round up
+                         val.add(fields[i][0], 1);
+                     }
+@@ -82,7 +98,7 @@
+                 if (fields[i][0] == Calendar.DATE) {
+                     //If we're going to drop the DATE field's value,
+                     //  we want to do this our own way.
+-                    //We need to subtrace 1 since the date has a minimum of 1
++                    //We need to subtract 1 since the date has a minimum of 1
+                     offset = val.get(Calendar.DATE) - 1;
+                     //If we're above 15 days adjustment, that means we're in the
+                     //  bottom half of the month and should stay accordingly.
+@@ -121,5 +137,5 @@
+         }
+     }
+     throw new IllegalArgumentException("The field " + field + " is not supported");
++}
+ 
+-}

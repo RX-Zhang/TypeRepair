@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,4 +1,9 @@
+ private RealMatrix squareRoot(RealMatrix m) {
+-        final EigenDecomposition dec = new EigenDecomposition(m);
+-        return dec.getSquareRoot();
++    if (m == null) {
++        // if weight matrix is null, return identity to avoid OutOfMemoryError
++        return MatrixUtils.createRealIdentityMatrix(cols);
++    }
++    final EigenDecomposition dec = new EigenDecomposition(m);
++    return dec.getSquareRoot();
+ }
++

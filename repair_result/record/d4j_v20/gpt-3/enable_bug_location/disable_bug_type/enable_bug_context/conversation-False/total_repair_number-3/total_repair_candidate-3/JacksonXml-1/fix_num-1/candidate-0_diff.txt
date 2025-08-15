@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -40,9 +40,9 @@
+         if (_parsingContext.inArray()) {
+             // Yup: in array, so this element could be verified; but it won't be
+             // reported anyway, and we need to process following event.
+-            token = _xmlTokens.next();
+             _mayBeLeaf = true;
+-            continue;
++            // Important: do not advance token here; just break to return FIELD_NAME
++            break;
+         }
+         String name = _xmlTokens.getLocalName();
+         _parsingContext.setCurrentName(name);
+@@ -59,6 +59,13 @@
+         return (_currToken = JsonToken.FIELD_NAME);
+     }
+ 
++    // If we break out of the while loop (like in inArray case above),
++    // then token == XML_START_ELEMENT still; return FIELD_NAME, but do not consume token.
++    if (token == XmlTokenStream.XML_START_ELEMENT) {
++        _parsingContext.setCurrentName(_xmlTokens.getLocalName());
++        return (_currToken = JsonToken.FIELD_NAME);
++    }
++
+     // Ok; beyond start element, what do we get?
+     switch (token) {
+     case XmlTokenStream.XML_END_ELEMENT:
+@@ -67,13 +74,16 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            _currToken = JsonToken.END_OBJECT;
++            _parsingContext = _parsingContext.getParent();
++            _namesToWrap = _parsingContext.getNamesToWrap();
++            return _currToken;
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         return _currToken;
+-        
++
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+@@ -127,8 +137,9 @@
+     case XmlTokenStream.XML_END:
+         return (_currToken = null);
+     }
+-    
++
+     // should never get here
+     _throwInternal();
+     return null;
+ }
++

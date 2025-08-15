@@ -1,0 +1,1 @@
+['ensurePropertyDefined', 'redeclareSimpleVar', 'getJSType']

@@ -1,0 +1,1 @@
+['computeWeightedJacobian', 'updateResidualsAndCost', 'setUp']

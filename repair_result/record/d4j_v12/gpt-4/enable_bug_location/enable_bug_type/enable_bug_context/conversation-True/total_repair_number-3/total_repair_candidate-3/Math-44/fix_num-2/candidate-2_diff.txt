@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -11,7 +11,7 @@
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+-            statesInitialized = true;
++            setStateInitialized(true);
+         }
+ 
+         // search for next events that may occur during the step
+@@ -99,3 +99,4 @@
+         return currentT;
+ 
+ }
++

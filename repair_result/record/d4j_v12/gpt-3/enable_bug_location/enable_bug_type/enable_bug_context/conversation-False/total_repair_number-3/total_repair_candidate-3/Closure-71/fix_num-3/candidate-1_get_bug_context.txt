@@ -1,0 +1,1 @@
+['normalizeClassType', 'checkPropertyVisibility', 'isValidPrivateConstructorAccess', 'shouldEmitDeprecationWarning']

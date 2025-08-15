@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -12,14 +12,19 @@
+         throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
+                 "need JSON Object to contain As.WRAPPER_OBJECT type information for class "+baseTypeName());
+     }
+-        // should always get field name, but just in case...
+-        if (p.nextToken() != JsonToken.FIELD_NAME) {
+-            throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
+-                    "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
+-        }
++    // should always get field name, but just in case...
++    if (p.nextToken() != JsonToken.FIELD_NAME) {
++        throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
++                "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
++    }
+     final String typeId = p.getText();
+     JsonDeserializer<Object> deser = _findDeserializer(ctxt, typeId);
+-    p.nextToken();
++    if (p.nextToken() != JsonToken.START_OBJECT && (!_typeIdVisible || p.getCurrentToken() != JsonToken.VALUE_NULL)) {
++        // If type id is visible and current token is not START_OBJECT nor VALUE_NULL,
++        // then it's a problem -- type id wrapper requires value to be an object or null
++        throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
++                "need JSON Object to contain value for subtype of "+baseTypeName());
++    }
+ 
+     // Minor complication: we may need to merge type id in?
+     if (_typeIdVisible && p.getCurrentToken() == JsonToken.START_OBJECT) {
+@@ -40,3 +45,4 @@
+     }
+     return value;
+ }
++

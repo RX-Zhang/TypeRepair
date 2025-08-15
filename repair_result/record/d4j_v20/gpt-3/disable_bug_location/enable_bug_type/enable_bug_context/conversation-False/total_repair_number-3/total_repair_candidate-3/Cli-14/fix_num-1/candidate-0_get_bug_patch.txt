@@ -1,0 +1,69 @@
+public void validate(final WriteableCommandLine commandLine)
+    throws OptionException {
+    // number of options found
+    int present = 0;
+
+    // reference to first unexpected option
+    Option unexpected = null;
+
+    for (final Iterator i = options.iterator(); i.hasNext();) {
+        final Option option = (Option) i.next();
+
+        // needs validation?
+        boolean validate = option.isRequired() || option instanceof Group;
+        if (validate) {
+            option.validate(commandLine);
+        }
+
+        // if the child option is present then validate it
+        if (commandLine.hasOption(option)) {
+            if (++present > maximum) {
+                unexpected = option;
+
+                break;
+            }
+
+            // Convert option value to expected type if needed before validation
+            Object value = commandLine.getValue(option);
+            if (value != null) {
+                try {
+                    // Assume option.getType() returns Class<?> indicating expected type
+                    Class<?> expectedType = option.getType();
+                    if (expectedType != null && !expectedType.isInstance(value)) {
+                        if (expectedType == String.class) {
+                            value = value.toString();
+                        } else if (expectedType == java.io.File.class && value instanceof String) {
+                            value = new java.io.File((String) value);
+                        } else if (expectedType == Integer.class && value instanceof String) {
+                            value = Integer.valueOf((String) value);
+                        }
+                        // You can add other type conversions as needed
+                        // After conversion, update the value in commandLine or process accordingly
+                        // However, since we cannot modify commandLine here, assume validations handle type properly
+                    }
+                } catch (Exception e) {
+                    throw new OptionException(this, "Type conversion error for option: " + option.getPreferredName());
+                }
+            }
+
+            option.validate(commandLine);
+        }
+    }
+
+    // too many options
+    if (unexpected != null) {
+        throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN,
+                                  unexpected.getPreferredName());
+    }
+
+    // too few option
+    if (present < minimum) {
+        throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+    }
+
+    // validate each anonymous argument
+    for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+        final Option option = (Option) i.next();
+        option.validate(commandLine);
+    }
+}

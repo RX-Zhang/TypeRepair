@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -28,7 +28,7 @@
+       // Check if this is in a conditional block.
+       // Functions assigned in conditional blocks are inferred.
+       for (Node current = n.getParent();
+-           !(current.isScript() || current.isFunction());
++           current != null && !(current.isScript() || current.isFunction());
+            current = current.getParent()) {
+         if (NodeUtil.isControlStructure(current)) {
+           return true;
+@@ -38,7 +38,7 @@
+       // Check if this is assigned in an inner scope.
+       // Functions assigned in inner scopes are inferred.
+       AstFunctionContents contents =
+-          getFunctionAnalysisResults(scope.getRootNode());
++          getFunctionAnalysisResults(n);
+       if (contents == null ||
+           !contents.getEscapedQualifiedNames().contains(qName)) {
+         return false;
+@@ -47,3 +47,4 @@
+   }
+   return inferred;
+ }
++

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -5,6 +5,8 @@
+     if (pendingAttributeName != null) {
+         // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here
+         pendingAttributeName = pendingAttributeName.trim();
++        // robust input validation: ignore empty attribute names (which can happen due to control chars)
++        if (!pendingAttributeName.isEmpty()) {
+             Attribute attribute;
+             if (hasPendingAttributeValue)
+                 attribute = new Attribute(pendingAttributeName,
+@@ -14,6 +16,7 @@
+             else
+                 attribute = new BooleanAttribute(pendingAttributeName);
+             attributes.put(attribute);
++        }
+     }
+     pendingAttributeName = null;
+     hasEmptyAttributeValue = false;
+@@ -21,3 +24,4 @@
+     reset(pendingAttributeValue);
+     pendingAttributeValueS = null;
+ }
++

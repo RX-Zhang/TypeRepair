@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -28,7 +28,7 @@
+       // Check if this is in a conditional block.
+       // Functions assigned in conditional blocks are inferred.
+       for (Node current = n.getParent();
+-           !(current.isScript() || current.isFunction());
++           current != null && !current.isScript() && !current.isFunction();
+            current = current.getParent()) {
+         if (NodeUtil.isControlStructure(current)) {
+           return true;
+@@ -47,3 +47,4 @@
+   }
+   return inferred;
+ }
++

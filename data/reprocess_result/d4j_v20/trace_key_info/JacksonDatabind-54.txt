@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.deser.TestJDKAtomicTypes.testEmpty1256
+- Error: junit.framework.ComparisonFailure: expected:<{[]}> but was:<{["a":null]}>
+- Location:         assertEquals("{}", json);

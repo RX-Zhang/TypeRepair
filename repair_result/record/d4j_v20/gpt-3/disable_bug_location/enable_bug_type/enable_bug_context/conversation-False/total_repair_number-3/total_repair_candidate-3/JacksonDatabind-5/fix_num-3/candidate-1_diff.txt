@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ protected void _addMethodMixIns(Class<?> targetClass, AnnotatedMethodMap methods,
+         Class<?> mixInCls, AnnotatedMethodMap mixIns)
+ {
++    if (mixInCls == null) {
++        return; // Added boundary check to prevent null pointer exception
++    }
++
+     List<Class<?>> parents = new ArrayList<Class<?>>();
+     parents.add(mixInCls);
+     ClassUtil.findSuperTypes(mixInCls, targetClass, parents);
+@@ -22,8 +26,9 @@
+                  */
+             } else {
+                 // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
++                mixIns.add(_constructMethod(m));
+             }
+         }
+     }
+ }
++

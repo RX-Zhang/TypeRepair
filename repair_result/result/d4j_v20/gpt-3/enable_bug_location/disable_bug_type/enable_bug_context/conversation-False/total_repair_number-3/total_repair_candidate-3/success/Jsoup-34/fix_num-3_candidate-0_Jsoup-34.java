@@ -1,0 +1,23 @@
+int nextIndexOf(CharSequence seq) {
+    // doesn't handle scanning for surrogates
+    char startChar = seq.charAt(0);
+    for (int offset = pos; offset <= length - seq.length(); offset++) {
+        // scan to first instance of startChar:
+        if (startChar != input[offset]) {
+            while (++offset <= length - seq.length() && startChar != input[offset]);
+        }
+        if (offset > length - seq.length()) {
+            break;
+        }
+        int i = offset + 1;
+        int last = offset + seq.length();
+        int j = 1;
+        while (i < last && seq.charAt(j) == input[i]) {
+            i++;
+            j++;
+        }
+        if (i == last) // found full sequence
+            return offset - pos;
+    }
+    return -1;
+}

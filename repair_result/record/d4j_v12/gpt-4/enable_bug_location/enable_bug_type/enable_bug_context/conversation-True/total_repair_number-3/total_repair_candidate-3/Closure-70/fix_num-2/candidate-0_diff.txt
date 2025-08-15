@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -8,8 +8,11 @@
+       Node jsDocParameter = jsDocParameters.getFirstChild();
+       for (Node astParameter : astParameters.children()) {
+         if (jsDocParameter != null) {
++          // Use getBestJSDocInfo to get the best JSDocInfo for this parameter node
++          JSDocInfo jsDocInfo = getBestJSDocInfo(astParameter);
++          JSType paramType = jsDocInfo != null ? jsDocInfo.getType() : jsDocParameter.getJSType();
+           defineSlot(astParameter, functionNode,
+-              jsDocParameter.getJSType(), true);
++              paramType, true);
+           jsDocParameter = jsDocParameter.getNext();
+         } else {
+           defineSlot(astParameter, functionNode, null, true);
+@@ -18,3 +21,4 @@
+     }
+   }
+ } // end declareArguments
++

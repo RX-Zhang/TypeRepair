@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.collections4.keyvalue.MultiKeyTest.testEqualsAfterSerializationOfDerivedClass
+- Error: junit.framework.AssertionFailedError: expected:<3> but was:<0>
+- Location:         assertEquals(mk.hashCode(), mk2.hashCode());

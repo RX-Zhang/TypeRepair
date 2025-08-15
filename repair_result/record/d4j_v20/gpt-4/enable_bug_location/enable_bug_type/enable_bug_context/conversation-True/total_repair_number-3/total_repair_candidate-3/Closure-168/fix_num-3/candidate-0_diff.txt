@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -44,9 +44,12 @@
+     if (var != null) {
+       Scope ownerScope = var.getScope();
+       if (scope != ownerScope && ownerScope.isLocal()) {
++        // Added type conversion check to avoid type mismatch issues.
++        // Ensures qualified name is correctly handled as a String.
+         data.get(ownerScope.getRootNode())
+-            .recordEscapedQualifiedName(n.getQualifiedName());
++            .recordEscapedQualifiedName(String.valueOf(n.getQualifiedName()));
+       }
+     }
+   }
+ }
++

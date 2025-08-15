@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     switch (t.type) {
+         case Character: {
+             Token.Character c = t.asCharacter();
+-            if (c.getData().equals(nullString)) {
++            if (c.getData() == null) { // Fixed: Changed .equals(nullString) to c.getData() == null
+                 // todo confirm that check
+                 tb.error(this);
+                 return false;
+@@ -511,3 +511,4 @@
+     }
+     return true;
+ }
++

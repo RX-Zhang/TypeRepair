@@ -1,0 +1,77 @@
+--- 
++++ 
+@@ -1,37 +1,56 @@
+ public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+-    long    result = 0;
++    if (length < 2) {
++        throw new IllegalArgumentException("Length must be at least 2");
++    }
++
++    long result = 0;
+     boolean stillPadding = true;
+-    int     end = offset + length;
+-    int     start = offset;
++    int end = offset + length;
++    int firstDigit = -1;
+ 
+-    for (int i = start; i < end; i++){
++    for (int i = offset; i < end; i++) {
+         final byte currentByte = buffer[i];
++
++        // Trailing NUL marks end of the octal string
+         if (currentByte == 0) {
+             break;
+         }
+ 
+-    // Skip leading spaces
+-        if (currentByte == (byte) ' ' || currentByte == '0') {
++        // Skip leading spaces or '0's as padding
++        if (currentByte == (byte) ' ' || currentByte == (byte) '0') {
+             if (stillPadding) {
+-               continue;
+-        }
++                continue;
++            }
+             if (currentByte == (byte) ' ') {
+-            break;
++                break;
+             }
+         }
+ 
+-    // Must have trailing NUL or space
+-    // May have additional NUL or space
++        stillPadding = false;
+ 
+-        stillPadding = false;
+-        // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
+-            throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, currentByte));
++        // Validate octal digit
++        if (currentByte < '0' || currentByte > '7') {
++            throw new IllegalArgumentException(exceptionMessage(buffer, offset, length, i, currentByte));
+         }
+-        result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
++
++        result = (result << 3) + (currentByte - '0');
++
++        if (firstDigit == -1) {
++            firstDigit = i;
++        }
++    }
++
++    if (stillPadding) {
++        // All were spaces or zeros, invalid input
++        throw new IllegalArgumentException("No valid octal digits");
++    }
++
++    // Check that last byte is a space or NUL (trailer)
++    byte lastByte = buffer[offset + length - 1];
++    if (lastByte != 0 && lastByte != (byte) ' ') {
++        throw new IllegalArgumentException("Invalid octal trailer, must be NUL or space");
+     }
+ 
+     return result;
+ }
++

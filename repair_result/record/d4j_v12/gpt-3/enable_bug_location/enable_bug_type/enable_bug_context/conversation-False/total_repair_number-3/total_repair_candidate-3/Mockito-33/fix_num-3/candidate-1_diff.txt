@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -4,6 +4,7 @@
+     Method m1 = invocation.getMethod();
+     Method m2 = candidate.getMethod();
+     
+-    	/* Avoid unnecessary cloning */
+-    return m1.equals(m2);
++    /* Avoid unnecessary cloning */
++    return m1.getName().equals(m2.getName()) && Arrays.equals(m1.getParameterTypes(), m2.getParameterTypes());
+ }
++

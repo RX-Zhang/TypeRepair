@@ -1,0 +1,65 @@
+--- 
++++ 
+@@ -8,8 +8,6 @@
+     Number re = parseNumber(source, getRealFormat(), pos);
+     if (re == null) {
+         // invalid real number
+-        // set index back to initial, error index should already be set
+-        // character examined.
+         pos.setIndex(initialIndex);
+         return null;
+     }
+@@ -21,7 +19,6 @@
+     switch (c) {
+     case 0 :
+         // no sign
+-        // return real only complex number
+         return new Complex(re.doubleValue(), 0.0);
+     case '-' :
+         sign = -1;
+@@ -30,9 +27,6 @@
+         sign = 1;
+         break;
+     default :
+-        // invalid sign
+-        // set index back to initial, error index should be the last
+-        // character examined.
+         pos.setIndex(initialIndex);
+         pos.setErrorIndex(startIndex);
+         return null;
+@@ -44,9 +38,6 @@
+     // parse imaginary
+     Number im = parseNumber(source, getRealFormat(), pos);
+     if (im == null) {
+-        // invalid imaginary number
+-        // set index back to initial, error index should already be set
+-        // character examined.
+         pos.setIndex(initialIndex);
+         return null;
+     }
+@@ -55,11 +46,15 @@
+     int n = getImaginaryCharacter().length();
+     startIndex = pos.getIndex();
+     int endIndex = startIndex + n;
+-    if (
+-        source.substring(startIndex, endIndex).compareTo(
+-        getImaginaryCharacter()) != 0) {
+-        // set index back to initial, error index should be the start index
+-        // character examined.
++    
++    // Add boundary check to prevent StringIndexOutOfBoundsException
++    if (endIndex > source.length() || startIndex < 0 || endIndex < 0) {
++        pos.setIndex(initialIndex);
++        pos.setErrorIndex(startIndex);
++        return null;
++    }
++
++    if (source.substring(startIndex, endIndex).compareTo(getImaginaryCharacter()) != 0) {
+         pos.setIndex(initialIndex);
+         pos.setErrorIndex(startIndex);
+         return null;
+@@ -68,3 +63,4 @@
+ 
+     return new Complex(re.doubleValue(), im.doubleValue() * sign);
+ }
++

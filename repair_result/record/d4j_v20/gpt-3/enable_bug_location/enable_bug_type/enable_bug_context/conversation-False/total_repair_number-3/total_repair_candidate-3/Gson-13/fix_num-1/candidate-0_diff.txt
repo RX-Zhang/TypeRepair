@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -72,8 +72,16 @@
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
++        // Allow leading zero only if it's the first digit and followed by a decimal or exponent
+         if (value == 0) {
+-          return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++          // Check next character if present in buffer or we need to fill the buffer
++          if (p + i + 1 < l || fillBuffer(i + 2)) {
++            char next = p + i + 1 < l ? buffer[p + i + 1] : buffer[pos + (p + i + 1 - l)];
++            if (next >= '0' && next <= '9') {
++              // Leading zero followed by digit is not allowed
++              return PEEKED_NONE;
++            }
++          }
+         }
+         long newValue = value * 10 - (c - '0');
+         fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+@@ -100,3 +108,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

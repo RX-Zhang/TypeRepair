@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.distribution.NormalDistributionTest.testExtremeValues
+- Error: org.apache.commons.math.MaxIterationsExceededException: Maximal number of iterations (10,000) exceeded
+- Location:             double lowerTail = distribution.cumulativeProbability((double)-i);

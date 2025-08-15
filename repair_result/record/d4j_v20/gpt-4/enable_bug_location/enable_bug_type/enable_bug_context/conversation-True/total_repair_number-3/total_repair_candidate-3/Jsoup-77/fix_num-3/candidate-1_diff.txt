@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -17,5 +17,8 @@
+         stack.remove(pos);
+         if (next == firstFound)
+             break;
++        // Additional behavior: if the tag to close is not found at the expected position,
++        // continue removing until found, ensuring the stack is correctly popped.
+     }
+ }
++

@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -11,7 +11,9 @@
+       NameInformation ns = createNameInformation(t, nameNode, n);
+       if (ns != null) {
+         JsName nameInfo = getName(nameNode.getString(), true);
+-        recordSet(nameInfo.name, nameNode);
++        if (nameInfo != null) { // Added null check for nameInfo
++          recordSet(nameInfo.name, nameNode);
++        }
+       }
+     } else if (NodeUtil.isObjectLitKey(n, parent)) {
+       NameInformation ns = createNameInformation(t, n, parent);
+@@ -38,10 +40,11 @@
+     NameInformation ns = createNameInformation(t, nameNode, n);
+     if (ns != null && ns.onlyAffectsClassDef) {
+       JsName name = getName(ns.name, false);
+-      if (name != null) {
+-      refNodes.add(new ClassDefiningFunctionNode(
+-          name, n, parent, parent.getParent()));
++      if (name != null) { // Added null check for name
++        refNodes.add(new ClassDefiningFunctionNode(
++            name, n, parent, parent.getParent()));
+       }
+     }
+   }
+ }
++

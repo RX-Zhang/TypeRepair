@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -11,15 +11,12 @@
+     }
+     Class lhsClass = lhs.getClass();
+     if (!lhsClass.isArray()) {
+-            // The simple case, not an array, just test the element
+-            isEquals = lhs.equals(rhs);
++        // The simple case, not an array, just test the element
++        isEquals = lhs.equals(rhs);
+     } else if (lhs.getClass() != rhs.getClass()) {
+         // Here when we compare different dimensions, for example: a boolean[][] to a boolean[] 
+         this.setEquals(false);
+-    }
+-    // 'Switch' on type of array, to dispatch to the correct handler
+-    // This handles multi dimensional arrays of the same depth
+-    else if (lhs instanceof long[]) {
++    } else if (lhs instanceof long[]) {
+         append((long[]) lhs, (long[]) rhs);
+     } else if (lhs instanceof int[]) {
+         append((int[]) lhs, (int[]) rhs);
+@@ -41,3 +38,4 @@
+     }
+     return this;
+ }
++

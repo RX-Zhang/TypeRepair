@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -11,8 +11,9 @@
+             if (meta.hasAttr("http-equiv")) {
+                 foundCharset = getCharsetFromContentType(meta.attr("content"));
+                 if (foundCharset == null && meta.hasAttr("charset")) {
++                    foundCharset = meta.attr("charset").trim().replaceAll("[\"']", "");
+                     try {
+-                        if (Charset.isSupported(meta.attr("charset"))) {
++                        if (Charset.isSupported(foundCharset)) {
+                             foundCharset = meta.attr("charset");
+                         }
+                     } catch (IllegalCharsetNameException e) {
+@@ -20,11 +21,10 @@
+                     }
+                 }
+             } else {
+-                foundCharset = meta.attr("charset");
++                foundCharset = meta.attr("charset").trim().replaceAll("[\"']", "");
+             }
+ 
+             if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
+-                foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+@@ -36,7 +36,7 @@
+         docData = Charset.forName(charsetName).decode(byteData).toString();
+     }
+     // UTF-8 BOM indicator. takes precedence over everything else. rarely used. re-decodes incase above decoded incorrectly
+-    if (docData.length() > 0 && docData.charAt(0) == 65279) {
++    if (docData.length() > 0 && docData.charAt(0) == '\uFEFF') {
+         byteData.rewind();
+         docData = Charset.forName(defaultCharset).decode(byteData).toString();
+         docData = docData.substring(1);
+@@ -48,3 +48,4 @@
+     }
+     return doc;
+ }
++

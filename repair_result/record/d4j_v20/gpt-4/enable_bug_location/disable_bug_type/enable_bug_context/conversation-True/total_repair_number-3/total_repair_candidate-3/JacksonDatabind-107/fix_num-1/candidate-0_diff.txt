@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -21,6 +21,9 @@
+                 }
+                 // ... would this actually work?
+                 deser = ctxt.findContextualValueDeserializer(actual, _property);
++                if (deser == null) {
++                    return null;
++                }
+             }
+         } else {
+             /* 16-Dec-2010, tatu: Since nominal type we get here has no (generic) type parameters,
+@@ -47,8 +50,12 @@
+                 }
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
++            if (deser == null) {
++                return null;
++            }
+         }
+         _deserializers.put(typeId, deser);
+     }
+     return deser;
+ }
++

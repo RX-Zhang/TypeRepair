@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testUnicode
+- Error: junit.framework.ComparisonFailure: expected:<var x="[\u007f]"> but was:<var x="[]">
+- Location:     assertPrint("var x ='\\x7f';", "var x=\"\\u007f\"");

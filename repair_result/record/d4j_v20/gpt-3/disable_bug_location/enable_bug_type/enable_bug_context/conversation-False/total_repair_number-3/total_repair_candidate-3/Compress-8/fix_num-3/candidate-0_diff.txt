@@ -1,0 +1,74 @@
+--- 
++++ 
+@@ -1,37 +1,54 @@
+ public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+-    long    result = 0;
++    if (length < 2) {
++        throw new IllegalArgumentException("Input length must be at least 2");
++    }
++    long result = 0;
+     boolean stillPadding = true;
+-    int     end = offset + length;
+-    int     start = offset;
++    int end = offset + length;
++    int start = offset;
++    boolean foundDigit = false;
+ 
+-    for (int i = start; i < end; i++){
++    for (int i = start; i < end; i++) {
+         final byte currentByte = buffer[i];
+-        if (currentByte == 0) {
++
++        if (currentByte == 0) { // NUL byte, end of number
++            // break only if we've found some digits
+             break;
+         }
+ 
+-    // Skip leading spaces
+-        if (currentByte == (byte) ' ' || currentByte == '0') {
++        if (currentByte == (byte) ' ') {
+             if (stillPadding) {
+-               continue;
+-        }
+-            if (currentByte == (byte) ' ') {
+-            break;
++                continue; // skip leading spaces
++            } else {
++                // once digits started, space means end of number
++                break;
+             }
+         }
+ 
+-    // Must have trailing NUL or space
+-    // May have additional NUL or space
++        if (currentByte == (byte) '0') {
++            if (stillPadding) {
++                continue; // skip leading zeros
++            }
++            // if we are here, zero is valid digit after non-padding digits
++        }
+ 
+         stillPadding = false;
+-        // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++
++        // Now validate that currentByte is an octal digit 0-7
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, currentByte));
++                    exceptionMessage(buffer, offset, length, i, currentByte));
+         }
++
++        foundDigit = true;
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
++    }
++
++    // If no digits found throw exception
++    if (!foundDigit) {
++        throw new IllegalArgumentException("No octal digits found in input");
+     }
+ 
+     return result;
+ }
++

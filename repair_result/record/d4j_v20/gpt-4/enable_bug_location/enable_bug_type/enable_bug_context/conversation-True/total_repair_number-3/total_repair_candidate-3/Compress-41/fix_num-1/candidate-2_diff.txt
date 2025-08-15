@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -23,12 +23,16 @@
+     }
+ 
+     final ZipLong sig = new ZipLong(LFH_BUF);
++
+     if (sig.equals(ZipLong.CFH_SIG) || sig.equals(ZipLong.AED_SIG)) {
+         hitCentralDirectory = true;
+         skipRemainderOfArchive();
++        // After skipping central directory, no more entries expected.
++        return null;
+     }
++
+     if (!sig.equals(ZipLong.LFH_SIG)) {
+-        return null;
++        throw new ZipException("Unexpected record signature");
+     }
+ 
+     int off = WORD;
+@@ -104,3 +108,4 @@
+     entriesRead++;
+     return current.entry;
+ }
++

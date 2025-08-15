@@ -1,0 +1,1 @@
+['getNextTarEntry', 'readGlobalPaxHeaders', 'paxHeaders', 'applyPaxHeadersToCurrentEntry']

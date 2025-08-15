@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -3,11 +3,12 @@
+ {
+     Object value = get(bean);
+     if (value == null) { // nulls need specialized handling
+-        if (_nullSerializer != null) {
++        if (_nullSerializer != null && !willSuppressNulls()) {
+             _nullSerializer.serialize(null, jgen, prov);
+         } else { // can NOT suppress entries in tabular output
+             jgen.writeNull();
+         }
++        return; // <-- add return here to avoid continuing after null handling
+     }
+     // otherwise find serializer to use
+     JsonSerializer<Object> ser = _serializer;
+@@ -41,3 +42,4 @@
+         ser.serializeWithType(value, jgen, prov, _typeSerializer);
+     }
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -22,6 +22,11 @@
+         count(1);
+     }
+ 
+-    int c = (destOffs == offs) ? -1 : (destOffs - offs);
+-    return c;
++    // Ensure that if no bytes were read, we return 0 instead of -1
++    if (destOffs == offs) {
++        return 0; // No bytes read
++    }
++    
++    return destOffs - offs; // Return the number of bytes read
+ }
++

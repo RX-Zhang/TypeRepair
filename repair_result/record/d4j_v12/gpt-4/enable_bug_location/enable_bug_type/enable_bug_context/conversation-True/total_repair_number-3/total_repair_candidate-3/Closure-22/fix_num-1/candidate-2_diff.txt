@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -19,12 +19,12 @@
+     Node gramps = parent.getParent();
+     if (gramps.isCall() && parent == gramps.getFirstChild()) {
+       if (n == parent.getFirstChild() && parent.getChildCount() == 2 && n.getNext().isName() && "eval".equals(n.getNext().getString())) {
+-    return;
++        return;
+       }
+-  }
++    }
+ 
+-  // This no-op statement was there so that JSDoc information could
+-  // be attached to the name. This check should not complain about it.
++    // This no-op statement was there so that JSDoc information could
++    // be attached to the name. This check should not complain about it.
+     if (n == parent.getLastChild()) {
+       for (Node an : parent.getAncestors()) {
+         int ancestorType = an.getType();
+@@ -40,7 +40,7 @@
+     if (parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() ||
+          n == parent.getFirstChild().getNext().getNext())) {
+     } else {
+-    return;
++      return;
+     }
+   }
+ 
+@@ -67,6 +67,10 @@
+     // try to protect side-effect free statements as well.
+     if (!NodeUtil.isStatement(n)) {
+       problemNodes.add(n);
++      if (protectSideEffectFreeCode) {
++        protectSideEffects();
++      }
+     }
+   }
+ }
++

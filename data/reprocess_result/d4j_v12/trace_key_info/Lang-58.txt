@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang.math.NumberUtilsTest.testLang300
+- Error: java.lang.NumberFormatException: 1l is not a valid number.
+- Location:         NumberUtils.createNumber("1l");

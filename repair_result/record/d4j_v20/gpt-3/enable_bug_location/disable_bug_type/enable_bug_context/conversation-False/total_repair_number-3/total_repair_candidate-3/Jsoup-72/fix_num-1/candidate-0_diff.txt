@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -10,8 +10,8 @@
+         hash = 31 * hash + charBuf[offset++];
+     }
+ 
+-    // get from cache
+-    final int index = hash & stringCache.length - 1;
++    // fix precedence here: hash & (stringCache.length - 1)
++    final int index = hash & (stringCache.length - 1);
+     String cached = stringCache[index];
+ 
+     if (cached == null) { // miss, add
+@@ -27,3 +27,4 @@
+     }
+     return cached;
+ }
++

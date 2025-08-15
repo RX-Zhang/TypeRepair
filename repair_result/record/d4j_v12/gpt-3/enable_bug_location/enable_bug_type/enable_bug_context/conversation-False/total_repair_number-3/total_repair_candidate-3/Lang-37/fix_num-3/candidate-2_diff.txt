@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -5,9 +5,18 @@
+         return clone(array1);
+     }
+     final Class<?> type1 = array1.getClass().getComponentType();
++    
++    // Verify and convert array2 elements to the desired type if necessary
++    for (T element : array2) {
++        if (!type1.isInstance(element)) {
++            throw new IllegalArgumentException("Incompatible types: cannot store element of type " + element.getClass().getName() + " in array of type " + type1.getName());
++        }
++    }
++    
+     T[] joinedArray = (T[]) Array.newInstance(type1, array1.length + array2.length);
+     System.arraycopy(array1, 0, joinedArray, 0, array1.length);
+-        System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
+-        // Check if problem is incompatible types
++    System.arraycopy(array2, 0, joinedArray, array1.length, array2.length);
++    
+     return joinedArray;
+ }
++

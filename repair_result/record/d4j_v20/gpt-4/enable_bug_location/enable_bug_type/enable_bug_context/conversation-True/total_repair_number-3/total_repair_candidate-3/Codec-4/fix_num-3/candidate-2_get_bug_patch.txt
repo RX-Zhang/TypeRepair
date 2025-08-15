@@ -1,0 +1,25 @@
+public Base64() {
+    this(false);
+}
+
+public Base64(boolean urlSafe) {
+    super();
+    if (urlSafe) {
+        this.encodeTable = URL_SAFE_ENCODE_TABLE;
+        this.lineLength = 0;
+        this.lineSeparator = null;
+    } else {
+        this.encodeTable = STANDARD_ENCODE_TABLE;
+        this.lineLength = CHUNK_SIZE;
+        this.lineSeparator = CHUNK_SEPARATOR;
+    }
+    this.decodeSize = 3;
+    this.encodeSize = 4;
+    this.buffer = null;
+    this.pos = 0;
+    this.readPos = 0;
+    this.currentLinePos = 0;
+    this.modulus = 0;
+    this.eof = false;
+    this.x = 0;
+}

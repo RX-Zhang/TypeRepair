@@ -1,0 +1,1 @@
+['remove', 'replaceChild', 'removeChild', 'reparentChild', 'reindexChildren']

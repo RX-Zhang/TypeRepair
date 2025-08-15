@@ -1,0 +1,1 @@
+['getMatchCount', 'getCurrentToken', 'hasCurrentToken', 'isExpectedStartArrayToken', 'isExpectedStartObjectToken', 'nextToken', '_nextTokenWithBuffering', '_filterContext']

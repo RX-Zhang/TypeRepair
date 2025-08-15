@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -26,8 +26,11 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
++        // lhs can be an expression like a[1], so only kill variables if it is a NAME node
++        if (NodeUtil.isName(lhs)) {
+           addToSetIfLocal(lhs, kill);
+           addToSetIfLocal(lhs, gen);
++        }
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +87,4 @@
+       return;
+   }
+ }
++

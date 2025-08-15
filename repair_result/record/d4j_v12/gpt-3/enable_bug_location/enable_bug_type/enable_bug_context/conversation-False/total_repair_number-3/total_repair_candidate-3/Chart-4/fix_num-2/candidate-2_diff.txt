@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -66,7 +66,8 @@
+                 }
+             }
+             
+-                Collection c = r.getAnnotations();
++            Collection c = r.getAnnotations();
++            if (c != null) { // Added null check before iterating
+                 Iterator i = c.iterator();
+                 while (i.hasNext()) {
+                     XYAnnotation a = (XYAnnotation) i.next();
+@@ -74,6 +75,7 @@
+                         includedAnnotations.add(a);
+                     }
+                 }
++            }
+         }
+     }
+ 
+@@ -93,3 +95,4 @@
+     return result;
+ 
+ }
++

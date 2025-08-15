@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.creators.TestCreatorsDelegating.testDelegateWithTokenBuffer
+- Error: junit.framework.AssertionFailedError: Expected token START_OBJECT, current token FIELD_NAME
+- Location:         assertToken(JsonToken.START_OBJECT, jp.nextToken());

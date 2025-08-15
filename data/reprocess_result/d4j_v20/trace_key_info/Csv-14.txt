@@ -1,0 +1,34 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVPrinterTest.testEscapeNull1
+- Error: junit.framework.AssertionFailedError: expected:<[\]> but was:<["\"]>
+- Location:         assertEquals("\\", sw.toString());
+
+
+Test failure 2:
+- Test: org.apache.commons.csv.CSVPrinterTest.testEscapeNull4
+- Error: junit.framework.AssertionFailedError: expected:<[\\]> but was:<["\\"]>
+- Location:         assertEquals("\\\\", sw.toString());
+
+
+Test failure 3:
+- Test: org.apache.commons.csv.CSVPrinterTest.testEscapeNull5
+- Error: junit.framework.AssertionFailedError: expected:<[\\]> but was:<["\\"]>
+- Location:         assertEquals("\\\\", sw.toString());
+
+
+Test failure 4:
+- Test: org.apache.commons.csv.CSVPrinterTest.testEscapeBackslash1
+- Error: junit.framework.AssertionFailedError: expected:<[\]> but was:<['\']>
+- Location:         assertEquals("\\", sw.toString());
+
+
+Test failure 5:
+- Test: org.apache.commons.csv.CSVPrinterTest.testEscapeBackslash4
+- Error: junit.framework.AssertionFailedError: expected:<[\\]> but was:<['\\']>
+- Location:         assertEquals("\\\\", sw.toString());
+
+
+Test failure 6:
+- Test: org.apache.commons.csv.CSVPrinterTest.testEscapeBackslash5
+- Error: junit.framework.AssertionFailedError: expected:<[\\]> but was:<['\\']>
+- Location:         assertEquals("\\\\", sw.toString());

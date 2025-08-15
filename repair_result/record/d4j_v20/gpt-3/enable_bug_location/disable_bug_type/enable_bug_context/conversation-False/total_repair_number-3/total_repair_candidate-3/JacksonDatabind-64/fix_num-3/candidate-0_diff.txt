@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -19,8 +19,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -68,7 +67,7 @@
+         if (_useRealPropertyDefaults) {
+             // 07-Sep-2016, tatu: may also need to front-load access forcing now
+             if (prov.isEnabled(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)) {
+-                am.fixAccess(_config.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++                am.fixAccess(_config.isEnabled(MapperFeature.CAN_OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
+             }
+             valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
+         } else {
+@@ -125,3 +124,4 @@
+     }
+     return bpw;
+ }
++

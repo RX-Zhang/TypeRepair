@@ -1,0 +1,12 @@
+private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+    for (Attribute attribute : source.attributes()) {
+        // validate xml attribute names using regex
+        String key = attribute.getKey();
+        if (key.matches("^[a-zA-Z_:][-a-zA-Z0-9_:.]*$")) {
+            el.setAttribute(key, attribute.getValue());
+        } else {
+            // Handle invalid attribute names gracefully, e.g., log a warning or ignore
+            System.err.println("Invalid attribute name: " + key);
+        }
+    }
+}

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -315,6 +315,8 @@
+         if (first.isVar()) {
+           add(first, Context.IN_FOR_INIT_CLAUSE);
+         } else {
++          // Use addExpr instead of add to correctly add parentheses around
++          // "in" expressions in the for init clause.
+           addExpr(first, 0, Context.IN_FOR_INIT_CLAUSE);
+         }
+         add(";");
+@@ -663,3 +665,4 @@
+ 
+   cc.endSourceMapping(n);
+ }
++

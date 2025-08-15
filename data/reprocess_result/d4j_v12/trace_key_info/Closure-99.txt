@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CheckGlobalThisTest.testPropertyOfMethod
+- Error: junit.framework.AssertionFailedError: There should be one error.  expected:<1> but was:<0>
+- Location:     testFailure("a.protoype.b = {}; " +
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.CheckGlobalThisTest.testMethod4
+- Error: junit.framework.AssertionFailedError: Unexpected error(s): JSC_USED_GLOBAL_THIS. dangerous use of the global this object at testcode line 1 : 39 expected:<0> but was:<1>
+- Location:     testSame("a.prototype['x' + 'y'] =  function() { this.foo = 3; };");
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.CheckGlobalThisTest.testInterface1
+- Error: junit.framework.AssertionFailedError: Unexpected error(s): JSC_USED_GLOBAL_THIS. dangerous use of the global this object at testcode line 1 : 54 expected:<0> but was:<1>
+- Location:     testSame(

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.joda.time.format.TestDateTimeFormatterBuilder.test_printParseZoneDawsonCreek
+- Error: java.lang.IllegalArgumentException: Invalid format: "2007-03-04 12:30 America/Dawson_Creek" is malformed at "_Creek"
+- Location:         assertEquals(dt, f.parseDateTime("2007-03-04 12:30 America/Dawson_Creek"));

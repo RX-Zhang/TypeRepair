@@ -1,0 +1,60 @@
+--- 
++++ 
+@@ -21,10 +21,10 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -56,7 +56,21 @@
+ 
+     // otherwise... to include or not?
+     TokenFilter f;
+-    
++
++    // Fix for allowing only one match when _allowMultipleMatches == false
++    if (!_allowMultipleMatches && _matchCount > 0) {
++        // skipping tokens until we hit end of current structure or EOF
++        switch (t.id()) {
++        case ID_START_ARRAY:
++        case ID_START_OBJECT:
++            delegate.skipChildren();
++            break;
++        default:
++            break;
++        }
++        return (_currToken = null);
++    }
++
+     switch (t.id()) {
+     case ID_START_ARRAY:
+         f = _itemFilter;
+@@ -194,12 +208,14 @@
+     default: // scalar value
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            _matchCount++; // increment match count here for scalars included
+             return (_currToken = t);
+         }
+         if (f != null) {
+             f = _headContext.checkValue(f);
+             if ((f == TokenFilter.INCLUDE_ALL)
+                     || ((f != null) && f.includeValue(delegate))) {
++                _matchCount++; // increment here as well
+                 return (_currToken = t);
+             }
+         }
+@@ -210,3 +226,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

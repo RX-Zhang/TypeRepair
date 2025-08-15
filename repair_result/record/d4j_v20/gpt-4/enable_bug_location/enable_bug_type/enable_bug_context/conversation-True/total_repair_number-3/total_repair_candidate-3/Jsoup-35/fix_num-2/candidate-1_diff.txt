@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -488,8 +488,8 @@
+                     tb.insertOnStackAfter(furthestBlock, adopter);
+                 }
+             } else if (StringUtil.in(name, "applet", "marquee", "object")) {
+-                if (!tb.inScope("name")) {
+-                    if (!tb.inScope(name)) {
++                if (!tb.inScope(name)) {
++                    if (!tb.inScope(name)) { // fixed line: previously checked !tb.inScope("name"), incorrectly
+                         tb.error(this);
+                         return false;
+                     }
+@@ -515,3 +515,4 @@
+     }
+     return true;
+ }
++

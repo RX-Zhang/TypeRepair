@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -10,16 +10,14 @@
+ 
+     try {
+         if (firstEntry) {
+-            // split archives have a special signature before the
+-            // first local file header - look for it and fail with
+-            // the appropriate error message if this is a split
+-            // archive.
+             readFirstLocalFileHeader(LFH_BUF);
+         } else {
+             readFully(LFH_BUF);
+         }
+     } catch (final EOFException e) {
+         return null;
++    } catch (final IOException e) {
++        throw new ZipException("Error reading ZIP entry: " + e.getMessage(), e);
+     }
+ 
+     final ZipLong sig = new ZipLong(LFH_BUF);
+@@ -74,6 +72,9 @@
+     final int extraLen = ZipShort.getValue(LFH_BUF, off);
+     off += SHORT;
+ 
++    if (fileNameLen < 0) {
++        throw new ZipException("Invalid file name length: " + fileNameLen);
++    }
+     final byte[] fileName = new byte[fileNameLen];
+     readFully(fileName);
+     current.entry.setName(entryEncoding.decode(fileName), fileName);
+@@ -104,3 +105,4 @@
+     entriesRead++;
+     return current.entry;
+ }
++

@@ -1,0 +1,15 @@
+def find_in_sorted(arr, x):
+    def binsearch(start, end):
+        # Check for valid boundaries
+        if start < 0 or end > len(arr):
+            return -1
+        if start == end:
+            return -1
+        mid = start + (end - start) // 2
+        if x < arr[mid]:
+            return binsearch(start, mid)
+        elif x > arr[mid]:
+            return binsearch(mid + 1, end)  # Fix to avoid infinite recursion
+        else:
+            return mid
+    return binsearch(0, len(arr))

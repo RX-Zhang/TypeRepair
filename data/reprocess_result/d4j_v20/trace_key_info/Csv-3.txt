@@ -1,0 +1,20 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVLexerTest.testEscapedMySqlNullValue
+- Error: junit.framework.AssertionFailedError: 
+Expected: token has content "character\NEscaped"
+     but: token content is "characterNEscaped"
+- Location:         assertThat(lexer.nextToken(new Token()), hasContent("character\\NEscaped"));
+
+
+Test failure 2:
+- Test: org.apache.commons.csv.CSVLexerTest.testEscapedCharacter
+- Error: junit.framework.AssertionFailedError: 
+Expected: token has content "character\aEscaped"
+     but: token content is "characteraEscaped"
+- Location:         assertThat(lexer.nextToken(new Token()), hasContent("character\\aEscaped"));
+
+
+Test failure 3:
+- Test: org.apache.commons.csv.CSVParserTest.testBackslashEscaping
+- Error: junit.framework.AssertionFailedError: Records do not match expected result (entry 8): arrays first differed at element [1]; expected:<   "quoted "" [/]" / string"   > but was:<   "quoted "" []" / string"   >
+- Location:         Utils.compare("Records do not match expected result", res, records);

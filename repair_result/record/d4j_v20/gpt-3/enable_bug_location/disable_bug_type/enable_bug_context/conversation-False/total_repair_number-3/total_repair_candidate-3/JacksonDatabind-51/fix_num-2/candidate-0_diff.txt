@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -32,6 +32,11 @@
+              *   type in process (getting SimpleType of Map.class which will not work as expected)
+              */
+             if ((_baseType != null)
++                    && (_baseType.getClass() == type.getClass())
++                    && (!_baseType.getRawClass().isAssignableFrom(type.getRawClass()))) {
++                // If the raw class of base type is not assignable from the raw class of type,
++                // narrowing would break; so skip narrowing in that case
++            } else if (_baseType != null
+                     && _baseType.getClass() == type.getClass()) {
+                 /* 09-Aug-2015, tatu: Not sure if the second part of the check makes sense;
+                  *   but it appears to check that JavaType impl class is the same which is
+@@ -42,7 +47,7 @@
+                 //   generic type with custom type resolvers. If so, should try to retain them.
+                 //  Whether this is sufficient to avoid problems remains to be seen, but for
+                 //  now it should improve things.
+-                    type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
++                type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
+         }
+@@ -50,3 +55,4 @@
+     }
+     return deser;
+ }
++

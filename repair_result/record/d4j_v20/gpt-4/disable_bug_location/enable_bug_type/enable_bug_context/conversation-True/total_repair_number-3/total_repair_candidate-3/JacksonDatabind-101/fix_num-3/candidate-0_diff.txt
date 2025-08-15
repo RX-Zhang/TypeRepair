@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -19,8 +19,9 @@
+         SettableBeanProperty creatorProp = creator.findCreatorProperty(propName);
+         if (creatorProp != null) {
+             // Last creator property to set?
+-            if (buffer.assignParameter(creatorProp,
+-                    _deserializeWithErrorWrapping(p, ctxt, creatorProp))) {
++            boolean last = buffer.assignParameter(creatorProp,
++                    _deserializeWithErrorWrapping(p, ctxt, creatorProp));
++            if (last) {
+                 t = p.nextToken(); // to move to following FIELD_NAME/END_OBJECT
+                 Object bean;
+                 try {
+@@ -97,5 +98,7 @@
+         wrapInstantiationProblem(e, ctxt);
+         return null; // never gets here
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

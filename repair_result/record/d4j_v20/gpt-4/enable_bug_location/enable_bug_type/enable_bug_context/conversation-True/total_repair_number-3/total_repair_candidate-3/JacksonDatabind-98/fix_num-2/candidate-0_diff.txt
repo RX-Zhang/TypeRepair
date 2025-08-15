@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -28,6 +28,7 @@
+                     "Missing property '%s' for external type id '%s'",
+                     prop.getName(), _properties[i].getTypePropertyName());
+         }
++        // Use _deserialize method instead of trying to directly pass p again
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+@@ -55,3 +56,4 @@
+     }
+     return bean;
+ }
++

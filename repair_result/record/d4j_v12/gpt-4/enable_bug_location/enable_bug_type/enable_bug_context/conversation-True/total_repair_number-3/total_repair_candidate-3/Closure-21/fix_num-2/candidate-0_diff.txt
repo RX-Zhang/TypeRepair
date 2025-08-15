@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -62,4 +62,8 @@
+       problemNodes.add(n);
+     }
+   }
++  if (protectSideEffectFreeCode) {
++    protectSideEffects();
++  }
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -3,6 +3,14 @@
+   if (that instanceof UnionType) {
+     TypePair p = that.getTypesUnderInequality(this);
+     return new TypePair(p.typeB, p.typeA);
++  }
++
++  // Handle void and unknown types explicitly
++  if (this.isVoidType() && that.isUnknownType()) {
++    return new TypePair(null, null);
++  }
++  if (this.isUnknownType() && that.isVoidType()) {
++    return new TypePair(null, null);
+   }
+ 
+   // other types
+@@ -18,3 +26,4 @@
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

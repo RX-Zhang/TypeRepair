@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -24,9 +24,11 @@
+     if (deser != null) {
+         if (_factoryConfig.hasDeserializerModifiers()) {
+             for (BeanDeserializerModifier mod : _factoryConfig.deserializerModifiers()) {
++                // fix: pass current deserializer to the modifier to allow chaining
+                 deser = mod.modifyKeyDeserializer(config, type, deser);
+             }
+         }
+     }
+     return deser;
+ }
++

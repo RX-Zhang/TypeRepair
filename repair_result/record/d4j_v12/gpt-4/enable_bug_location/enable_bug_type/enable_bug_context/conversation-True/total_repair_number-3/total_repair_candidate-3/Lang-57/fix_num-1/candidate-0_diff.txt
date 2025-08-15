@@ -1,0 +1,9 @@
+--- 
++++ 
+@@ -1,3 +1,5 @@
+ public static boolean isAvailableLocale(Locale locale) {
+-    return cAvailableLocaleSet.contains(locale);
++    Set set = availableLocaleSet();
++    return set.contains(locale);
+ }
++

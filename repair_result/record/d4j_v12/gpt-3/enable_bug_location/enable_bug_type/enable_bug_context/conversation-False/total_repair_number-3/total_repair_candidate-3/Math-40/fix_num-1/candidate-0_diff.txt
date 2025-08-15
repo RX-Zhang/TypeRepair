@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+         return x[1];
+     }
+ 
+-    // evaluate first  endpoint
++    // evaluate first endpoint
+     y[0] = computeObjectiveValue(x[0]);
+     if (Precision.equals(y[0], 0.0, 1)) {
+         // return the first endpoint if it is a perfect root.
+@@ -154,7 +154,7 @@
+             System.arraycopy(y, start, y, 0, nbPoints);
+             signChangeIndex -= start;
+ 
+-        } else  if (nbPoints == x.length) {
++        } else if (nbPoints == x.length) {
+ 
+             // we have to drop one point in order to insert the new one
+             nbPoints--;
+@@ -201,3 +201,4 @@
+     }
+ 
+ }
++

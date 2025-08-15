@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -24,21 +24,25 @@
+ 
+     while (true)
+     {
+-        text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
++        text = text.substring(pos).trim();
++
++        // If the remaining text length plus padding is less than or equal to width,
++        // then append padding + text and return.
++        if (text.length() + nextLineTabStop <= width) {
++            sb.append(padding).append(text);
++            return sb;
++        }
++
++        pos = findWrapPos(text, width - nextLineTabStop, 0);
+ 
+         if (pos == -1)
+         {
+-            sb.append(text);
++            sb.append(padding).append(text);
+ 
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
+-        {
+-            pos = width;
+-        }
+-
+-        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        sb.append(padding).append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

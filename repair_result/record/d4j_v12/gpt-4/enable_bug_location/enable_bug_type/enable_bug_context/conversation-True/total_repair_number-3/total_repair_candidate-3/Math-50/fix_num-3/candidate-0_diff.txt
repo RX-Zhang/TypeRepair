@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -58,7 +58,11 @@
+             case REGULA_FALSI:
+                 // Nothing.
+                 if (x == x1) {
+-                    x0 = 0.5 * (x0 + x1 - FastMath.max(rtol * FastMath.abs(x1), atol));
++                    // Fix: Instead of arbitrarily modifying x0, respect allowed solution and accuracy:
++                    // Move x0 closer to x1 by half the accuracy threshold, ensuring no infinite loop
++                    // occurs due to no progress.
++                    double shift = FastMath.max(rtol * FastMath.abs(x1), atol);
++                    x0 = x1 - shift;
+                     f0 = computeObjectiveValue(x0);
+                 }
+                 break;
+@@ -124,3 +128,4 @@
+         }
+     }
+ }
++

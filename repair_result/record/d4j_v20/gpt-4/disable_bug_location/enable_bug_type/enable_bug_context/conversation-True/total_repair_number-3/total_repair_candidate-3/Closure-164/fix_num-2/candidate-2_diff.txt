@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -39,7 +39,7 @@
+     JSType thatParamType = thatParam.getJSType();
+     if (thisParamType != null) {
+       if (thatParamType == null ||
+-          !thatParamType.isSubtype(thisParamType)) {
++          !thisParamType.isSubtype(thatParamType)) {
+         return false;
+       }
+     }
+@@ -48,11 +48,7 @@
+     boolean thatIsVarArgs = thatParam.isVarArgs();
+ 
+     // "that" can't be a supertype, because it's missing a required argument.
+-      // NOTE(nicksantos): In our type system, we use {function(...?)} and
+-      // {function(...NoType)} to to indicate that arity should not be
+-      // checked. Strictly speaking, this is not a correct formulation,
+-      // because now a sub-function can required arguments that are var_args
+-      // in the super-function. So we special-case this.
++    // NOTE: This fixes the parameter subtype comparison to ensure contravariance.
+ 
+     // don't advance if we have variable arguments
+     if (!thisIsVarArgs) {
+@@ -69,7 +65,22 @@
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
++  // If this function expects more parameters than the other function,
++  // then it can't be a subtype unless the other function has variable args
++  if (thisParam != null) {
++    // There are still parameters in this, but other ended: not a subtype
++    return false;
++  }
++
++  // If other function has more required parameters not matched by this,
++  // then it's not a subtype
++  while (thatParam != null) {
++    if (!thatParam.isOptionalArg() && !thatParam.isVarArgs()) {
++      return false;
++    }
++    thatParam = thatParam.getNext();
++  }
+ 
+   return true;
+ }
++

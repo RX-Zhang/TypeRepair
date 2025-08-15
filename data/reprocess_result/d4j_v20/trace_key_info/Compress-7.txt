@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.tar.TarUtilsTest.testRoundTripNames
+- Error: junit.framework.ComparisonFailure: expected:<0302-0601-3[±±±F06±W220±ZB±LALALA±±±±±±±±±±CAN±±DC±±±04±060302±]MOE.model> but was:<0302-0601-3[ﾱﾱﾱF06ﾱW220ﾱZBﾱLALALAﾱﾱﾱﾱﾱﾱﾱﾱﾱﾱCANﾱﾱDCﾱﾱﾱ04ﾱ060302ﾱ]MOE.model>
+- Location:         checkName("0302-0601-3±±±F06±W220±ZB±LALALA±±±±±±±±±±CAN±±DC±±±04±060302±MOE.model");

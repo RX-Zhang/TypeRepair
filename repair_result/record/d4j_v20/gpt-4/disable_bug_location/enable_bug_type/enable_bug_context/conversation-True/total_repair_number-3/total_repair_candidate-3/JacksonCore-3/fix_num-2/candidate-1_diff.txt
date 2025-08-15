@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -8,8 +8,8 @@
+     _objectCodec = codec;
+     _symbols = sym;
+     _inputBuffer = inputBuffer;
+-    _inputPtr = start;
++    _inputPtr = 0; // always start parsing at beginning of buffer for location correctness
+     _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
+     _bufferRecyclable = bufferRecyclable;
+ }
++

@@ -1,0 +1,1 @@
+['canWriteBinaryNatively', 'writeBinary', '_writeSimpleObject']

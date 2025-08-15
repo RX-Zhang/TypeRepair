@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -47,5 +47,9 @@
+     }
+   }
+ 
+-  return getDeclaredTypeInAnnotation(sourceName, lValue, info);
++  if (info != null && info.hasType()) {
++    return getDeclaredTypeInAnnotation(sourceName, lValue, info);
++  }
++  return null;
+ }
++

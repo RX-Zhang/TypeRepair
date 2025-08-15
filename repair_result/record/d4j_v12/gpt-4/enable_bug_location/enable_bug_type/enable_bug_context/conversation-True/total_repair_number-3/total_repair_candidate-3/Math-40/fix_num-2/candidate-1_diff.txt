@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+         return x[1];
+     }
+ 
+-    // evaluate first  endpoint
++    // evaluate first endpoint
+     y[0] = computeObjectiveValue(x[0]);
+     if (Precision.equals(y[0], 0.0, 1)) {
+         // return the first endpoint if it is a perfect root.
+@@ -40,7 +40,7 @@
+         }
+ 
+         if (y[1] * y[2] < 0) {
+-            // use all computed point as a start sampling array for solving
++            // use all computed points as a start sampling array for solving
+             nbPoints        = 3;
+             signChangeIndex = 2;
+         } else {
+@@ -91,9 +91,8 @@
+         if (agingA >= MAXIMAL_AGING) {
+             // we keep updating the high bracket, try to compensate this
+             targetY = -REDUCTION_FACTOR * yB;
+-        } else if (agingB >= MAXIMAL_AGING) {
+-            // we keep updating the low bracket, try to compensate this
+-            targetY = -REDUCTION_FACTOR * yA;
++        } else if (agingB >= MAXIMAL_AGING)            // we keep updating the low bracket, try to compensate
++            targetY = -REDUCTION_FACTOR * y;
+         } else {
+             // bracketing is balanced, try to find the root itself
+             targetY = 0;
+@@ -115,7 +114,7 @@
+                 // the guessed root is either not strictly inside the interval or it
+                 // is a NaN (which occurs when some sampling points share the same y)
+                 // we try again with a lower interpolation order
+-                if (signChangeIndex - start >= end - signChangeIndex) {
++                if ((signChangeIndex - start) > (end - signChangeIndex)) {
+                     // we have more points before the sign change, drop the lowest point
+                     ++start;
+                 } else {
+@@ -201,3 +200,4 @@
+     }
+ 
+ }
++

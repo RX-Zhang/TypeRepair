@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -19,7 +19,6 @@
+         if (commandLine.hasOption(option)) {
+             if (++present > maximum) {
+                 unexpected = option;
+-
+                 break;
+             }
+ 
+@@ -33,7 +32,7 @@
+                                   unexpected.getPreferredName());
+     }
+ 
+-    // too few option
++    // too few options
+     if (present < minimum) {
+         throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+     }
+@@ -43,4 +42,19 @@
+         final Option option = (Option) i.next();
+         option.validate(commandLine);
+     }
++
++    // Fix to ensure options are properly validated and cast
++    for (final Iterator i = options.iterator(); i.hasNext();) {
++        final Option option = (Option) i.next();
++        if (commandLine.hasOption(option)) {
++            Object value = commandLine.getValue(option);
++            if (value instanceof File) {
++                // Convert File to String if necessary
++                value = ((File) value).getAbsolutePath();
++            }
++            // Assume there's a method to handle the validated value
++            option.setValue(value); 
++        }
++    }
+ }
++

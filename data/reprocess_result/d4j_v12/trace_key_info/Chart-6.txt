@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jfree.chart.util.junit.ShapeListTests.testSerialization
+- Error: junit.framework.AssertionFailedError: expected:<org.jfree.chart.util.ShapeList@a3a0e818> but was:<org.jfree.chart.util.ShapeList@bd447854>
+- Location:         assertEquals(l1, l2);
+
+
+Test failure 2:
+- Test: org.jfree.chart.util.junit.ShapeListTests.testEquals
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(l1.equals(l2));

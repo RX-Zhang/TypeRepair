@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -28,7 +28,15 @@
+         // ... meaning that we really should never get here.
+         return null;
+     } catch (Exception e) {
++        // Added validation and exception handling for unexpected errors
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
++    
++    // Ensure the class is compatible with the base type before constructing a specialized type
++    if (!_baseType.getRawClass().isAssignableFrom(cls)) {
++        throw new IllegalArgumentException("Class " + cls.getName() + " is not a subtype of " + _baseType.getRawClass().getName());
++    }
++    
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

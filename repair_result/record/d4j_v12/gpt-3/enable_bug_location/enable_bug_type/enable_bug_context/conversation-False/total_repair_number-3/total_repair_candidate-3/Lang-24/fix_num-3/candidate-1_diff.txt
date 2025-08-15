@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -27,7 +27,7 @@
+             return true;
+         }
+     }
+-    sz--; // don't want to loop to the last char, check it afterwords
++    sz--; // don't want to loop to the last char, check it afterwards
+           // for type qualifiers
+     int i = start;
+     // loop to the next to last char or to the last char if we need another digit to
+@@ -98,6 +98,7 @@
+         return false;
+     }
+     // allowSigns is true iff the val ends in 'E'
+-    // found digit it to make sure weird stuff like '.' and '1E-' doesn't pass
++    // found digit is to make sure weird stuff like '.' and '1E-' doesn't pass
+     return !allowSigns && foundDigit;
+ }
++

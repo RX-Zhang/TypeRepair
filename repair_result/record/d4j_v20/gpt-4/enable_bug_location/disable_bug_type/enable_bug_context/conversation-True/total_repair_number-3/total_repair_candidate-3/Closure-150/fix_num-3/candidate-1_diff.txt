@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -7,6 +7,21 @@
+   }
+ 
+   attachLiteralTypes(n);
++
++  // Handle goog.foo style property declarations
++  if (n.getType() == Token.EXPR_RESULT && n.getFirstChild() != null) {
++    Node expr = n.getFirstChild();
++    if (expr.getType() == Token.NAME) {
++      // foo;
++      defineVar(expr, n);
++    } else if (expr.getType() == Token.GETPROP) {
++      Node owner = getPrototypePropertyOwner(expr);
++      if (owner != null) {
++        defineVar(owner, n);
++      }
++    }
++  }
++
+   switch (n.getType()) {
+     case Token.FUNCTION:
+       if (parent.getType() == Token.NAME) {
+@@ -22,3 +37,4 @@
+       break;
+   }
+ }
++

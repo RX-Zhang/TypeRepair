@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -7,11 +7,11 @@
+         resetOccurred = false;
+ 
+         // initialize the events states if needed
+-        if (! statesInitialized) {
++        if (!statesInitialized) {
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+-            statesInitialized = true;
++            setStateInitialized(true);
+         }
+ 
+         // search for next events that may occur during the step
+@@ -80,7 +80,6 @@
+                 // the event occurs during the current step
+                 occuringEvents.add(currentEvent);
+             }
+-
+         }
+ 
+         interpolator.setInterpolatedTime(currentT);
+@@ -89,7 +88,7 @@
+             state.stepAccepted(currentT, currentY);
+             isLastStep = isLastStep || state.stop();
+         }
+-        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1);
++        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 10 * getCurrentSignedStepsize());
+ 
+         // handle the remaining part of the step, after all events if any
+         for (StepHandler handler : stepHandlers) {
+@@ -99,3 +98,4 @@
+         return currentT;
+ 
+ }
++

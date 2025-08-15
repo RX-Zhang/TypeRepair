@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -22,15 +22,18 @@
+             if (g0Positive ^ (gb >= 0)) {
+                 // there is a sign change: an event is expected during this step
+ 
+-                    // this is a corner case:
+-                    // - there was an event near ta,
+-                    // - there is another event between ta and tb
+-                    // - when ta was computed, convergence was reached on the "wrong side" of the interval
+-                    // this implies that the real sign of ga is the same as gb, so we need to slightly
+-                    // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+-                    // about bracketing
+-                        // this should never happen
+-                     
++                // this is a corner case:
++                // - there was an event near ta,
++                // - there is another event between ta and tb
++                // - when ta was computed, convergence was reached on the "wrong side" of the interval
++                // this implies that the real sign of ga is the same as gb, so we need to slightly
++                // shift ta to make sure ga and gb get opposite signs and the solver won't complain
++                // about bracketing
++                if (Math.abs(ga) < convergence && Math.abs(gb) < convergence) {
++                    // If both ga and gb are very close to zero, we need to adjust ta
++                    ta += (interpolator.isForward() ? -convergence : convergence);
++                }
++
+                 // variation direction, with respect to the integration direction
+                 increasing = gb >= ga;
+ 
+@@ -95,3 +98,4 @@
+     }
+ 
+ }
++

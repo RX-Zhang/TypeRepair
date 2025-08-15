@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -36,7 +36,8 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // Correcting the condition to properly quote starting control characters and special characters
++            if (newRecord && (c < 0x20 || c == delimChar || c == quoteChar || c == CR || c == LF)) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -104,3 +105,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

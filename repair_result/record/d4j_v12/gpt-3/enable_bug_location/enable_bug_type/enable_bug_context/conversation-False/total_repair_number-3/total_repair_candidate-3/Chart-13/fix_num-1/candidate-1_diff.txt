@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -13,13 +13,20 @@
+     }
+     w[1] = w[0];
+     if (this.bottomBlock != null) {
++        double remainingHeight = constraint.getHeight() - h[0];
++        if (remainingHeight < 0) {
++            throw new RuntimeException("Not enough height for bottom block.");
++        }
+         RectangleConstraint c2 = new RectangleConstraint(w[0], null,
+                 LengthConstraintType.FIXED, 0.0, new Range(0.0,
+-                constraint.getHeight() - h[0]), LengthConstraintType.RANGE);
++                remainingHeight), LengthConstraintType.RANGE);
+         Size2D size = this.bottomBlock.arrange(g2, c2);
+         h[1] = size.height;
+     }
+     h[2] = constraint.getHeight() - h[1] - h[0];
++    if (h[2] < 0) {
++        throw new RuntimeException("Calculated height for center block is negative.");
++    }
+     if (this.leftBlock != null) {
+         RectangleConstraint c3 = new RectangleConstraint(0.0,
+                 new Range(0.0, constraint.getWidth()),
+@@ -66,3 +73,4 @@
+     }
+     return new Size2D(constraint.getWidth(), constraint.getHeight());
+ }
++

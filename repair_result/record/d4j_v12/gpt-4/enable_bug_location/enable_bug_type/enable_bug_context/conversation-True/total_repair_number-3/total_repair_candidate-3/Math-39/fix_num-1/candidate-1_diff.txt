@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -53,6 +53,11 @@
+         }
+         hNew = initializeStep(forward, getOrder(), scale,
+                               stepStart, y, yDotK[0], yTmp, yDotK[1]);
++        // Fix: limit hNew not to exceed the total integration interval length
++        double maxStep = Math.abs(t - stepStart);
++        if (Math.abs(hNew) > maxStep) {
++            hNew = forward ? maxStep : -maxStep;
++        }
+         firstTime = false;
+       }
+ 
+@@ -136,3 +141,4 @@
+   resetInternalState();
+ 
+ }
++

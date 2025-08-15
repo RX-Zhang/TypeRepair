@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -10,6 +10,9 @@
+             final CSVRecord nextRecord = this.nextRecord();
+             if (nextRecord != null) {
+                 headerRecord = nextRecord.values();
++            } else {
++                // No header record found, avoid NullPointerException
++                return hdrMap;
+             }
+         } else {
+             if (this.format.getSkipHeaderRecord()) {
+@@ -22,15 +25,24 @@
+         if (headerRecord != null) {
+             for (int i = 0; i < headerRecord.length; i++) {
+                 final String header = headerRecord[i];
+-                final boolean containsHeader = hdrMap.containsKey(header);
+-                final boolean emptyHeader = header.trim().isEmpty();
++                if (header == null) {
++                    if (!this.format.getIgnoreEmptyHeaders()) {
++                        throw new IllegalArgumentException("The header contains a null value at index: " + i +
++                                " in " + Arrays.toString(headerRecord));
++                    }
++                    // else treat null as empty string key 
++                }
++                final String normalizedHeader = header == null ? "" : header;
++                final boolean emptyHeader = normalizedHeader.trim().isEmpty();
++                final boolean containsHeader = hdrMap.containsKey(normalizedHeader);
+                 if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getIgnoreEmptyHeaders()))) {
+-                    throw new IllegalArgumentException("The header contains a duplicate name: \"" + header +
++                    throw new IllegalArgumentException("The header contains a duplicate name: \"" + normalizedHeader +
+                             "\" in " + Arrays.toString(headerRecord));
+                 }
+-                hdrMap.put(header, Integer.valueOf(i));
++                hdrMap.put(normalizedHeader, Integer.valueOf(i));
+             }
+         }
+     }
+     return hdrMap;
+ }
++

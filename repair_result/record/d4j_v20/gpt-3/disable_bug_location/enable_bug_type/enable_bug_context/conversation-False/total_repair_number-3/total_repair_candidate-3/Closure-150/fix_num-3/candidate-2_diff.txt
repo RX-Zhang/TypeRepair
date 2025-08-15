@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+   if (n == scope.getRootNode()) return;
+ 
+   if (n.getType() == Token.LP && parent == scope.getRootNode()) {
+-    handleFunctionInputs(parent);
++    handleFunctionInputs(n);  // Fix: pass 'n' (the LP node), not parent (RootNode)
+     return;
+   }
+ 
+@@ -22,3 +22,4 @@
+       break;
+   }
+ }
++

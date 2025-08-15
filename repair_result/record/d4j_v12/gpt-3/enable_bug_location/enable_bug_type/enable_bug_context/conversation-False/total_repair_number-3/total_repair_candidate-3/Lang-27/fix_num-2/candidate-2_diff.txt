@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -23,7 +23,6 @@
+     int expPos = str.indexOf('e') + str.indexOf('E') + 1;
+ 
+     if (decPos > -1) {
+-
+         if (expPos > -1) {
+             if (expPos < decPos) {
+                 throw new NumberFormatException(str + " is not a valid number.");
+@@ -43,7 +42,7 @@
+     }
+     if (!Character.isDigit(lastChar) && lastChar != '.') {
+         if (expPos > -1 && expPos < str.length() - 1) {
+-            exp = str.substring(expPos + 1, str.length() - 1);
++            exp = str.substring(expPos + 1);
+         } else {
+             exp = null;
+         }
+@@ -83,7 +82,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -97,13 +96,12 @@
+                 //$FALL-THROUGH$
+             default :
+                 throw new NumberFormatException(str + " is not a valid number.");
+-
+         }
+     } else {
+         //User doesn't have a preference on the return type, so let's start
+         //small and go from there...
+         if (expPos > -1 && expPos < str.length() - 1) {
+-            exp = str.substring(expPos + 1, str.length());
++            exp = str.substring(expPos + 1);
+         } else {
+             exp = null;
+         }
+@@ -142,7 +140,7 @@
+             }
+ 
+             return createBigDecimal(str);
+-
+         }
+     }
+ }
++

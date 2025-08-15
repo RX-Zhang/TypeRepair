@@ -1,0 +1,68 @@
+public int translate(CharSequence input, int index, Writer out) throws IOException {
+    // Protect from ArrayIndexOutOfBounds
+    if (index < 0 || index + 3 >= input.length()) {
+        return 0;
+    }
+    if(input.charAt(index) == '&' && input.charAt(index + 1) == '#') {
+        int start = index + 2;
+        boolean isHex = false;
+
+        if (start >= input.length()) {
+            return 0;
+        }
+
+        char firstChar = input.charAt(start);
+        if(firstChar == 'x' || firstChar == 'X') {
+            start++;
+            isHex = true;
+            if (start >= input.length()) {
+                return 0;
+            }
+        }
+
+        int end = start;
+        // Search for ';' or end of input
+        while(end < input.length() && input.charAt(end) != ';') {
+            end++;
+        }
+        if (end == input.length()) {
+            // no terminating semicolon found
+            return 0;
+        }
+
+        int entityValue;
+        try {
+            String codePointStr = input.subSequence(start, end).toString();
+            if(codePointStr.isEmpty()) {
+                return 0;
+            }
+            if(isHex) {
+                entityValue = Integer.parseInt(codePointStr, 16);
+            } else {
+                entityValue = Integer.parseInt(codePointStr, 10);
+            }
+        } catch(NumberFormatException nfe) {
+            return 0;
+        }
+
+        if(entityValue > 0x10FFFF || entityValue < 0) {
+            return 0;
+        }
+
+        if(entityValue <= 0xFFFF) {
+            // BMP character
+            out.write(entityValue);
+        } else {
+            // Supplementary character: convert to surrogate pair
+            entityValue -= 0x10000;
+            char highSurrogate = (char)((entityValue >> 10) + 0xD800);
+            char lowSurrogate = (char)((entityValue & 0x3FF) + 0xDC00);
+            out.write(highSurrogate);
+            out.write(lowSurrogate);
+        }
+
+        // return the number of characters consumed
+        return (end - index + 1);
+    }
+    return 0;
+}

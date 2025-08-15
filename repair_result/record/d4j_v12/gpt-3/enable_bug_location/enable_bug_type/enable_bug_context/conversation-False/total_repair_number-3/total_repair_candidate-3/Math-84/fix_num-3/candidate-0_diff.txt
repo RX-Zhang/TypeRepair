@@ -1,0 +1,54 @@
+--- 
++++ 
+@@ -1,9 +1,12 @@
+ protected void iterateSimplex(final Comparator<RealPointValuePair> comparator)
+     throws FunctionEvaluationException, OptimizationException, IllegalArgumentException {
+ 
+-    while (true) {
++    int iterations = 0; // Track the number of iterations
++    final int maxIterations = 100; // Set a maximum number of iterations
+ 
++    while (iterations < maxIterations) {
+         incrementIterationsCounter();
++        iterations++; // Increment the iteration count
+ 
+         // save the original vertex
+         final RealPointValuePair[] original = simplex;
+@@ -14,11 +17,17 @@
+         if (comparator.compare(reflected, best) < 0) {
+ 
+             // compute the expanded simplex
+-            final RealPointValuePair[] reflectedSimplex = simplex;
+             final RealPointValuePair expanded = evaluateNewSimplex(original, khi, comparator);
+             if (comparator.compare(reflected, expanded) <= 0) {
+                 // accept the reflected simplex
+-                simplex = reflectedSimplex;
++                simplex = new RealPointValuePair[original.length];
++                System.arraycopy(original, 0, simplex, 0, original.length);
++                simplex[0] = reflected; // Update the first element with the reflected point
++            } else {
++                // If the expanded point is better, accept it
++                simplex = new RealPointValuePair[original.length];
++                System.arraycopy(original, 0, simplex, 0, original.length);
++                simplex[0] = expanded; // Update the first element with the expanded point
+             }
+ 
+             return;
+@@ -29,11 +38,16 @@
+         final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
++            simplex = new RealPointValuePair[original.length];
++            System.arraycopy(original, 0, simplex, 0, original.length);
++            simplex[0] = contracted; // Update the first element with the contracted point
+ 
+-        // check convergence
++            // check convergence
+             return;
+         }
+ 
+     }
+ 
++    throw new OptimizationException("Maximal number of iterations (" + maxIterations + ") exceeded");
+ }
++

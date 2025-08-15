@@ -1,0 +1,14 @@
+<M extends Map<String, String>> M putIn(final M map) {
+    int size = values.length;
+    for (final Entry<String, Integer> entry : mapping.entrySet()) {
+        final int col = entry.getValue().intValue();
+        if (col >= 0 && col < size) {
+            map.put(entry.getKey(), values[col]);
+        } else {
+            // Optionally handle or skip invalid index
+            // For example, skip or put null
+            map.put(entry.getKey(), null);
+        }
+    }
+    return map;
+}

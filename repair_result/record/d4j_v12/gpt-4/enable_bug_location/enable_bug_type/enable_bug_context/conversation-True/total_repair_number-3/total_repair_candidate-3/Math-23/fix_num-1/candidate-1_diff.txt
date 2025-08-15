@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -73,7 +73,7 @@
+ 
+                     // f must not be evaluated too close to a or b.
+                     if (u - a < tol2 || b - u < tol2) {
+-                        if (x <= m) {
++                        if (x < m) {
+                             d = tol1;
+                         } else {
+                             d = -tol1;
+@@ -157,11 +157,9 @@
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return
+-                        best(current,
+-                             previous,
+-                        isMinim);
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockitousage.bugs.InjectionByTypeShouldFirstLookForExactTypeThenAncestorTest.mock_should_be_injected_once_and_in_the_best_matching_type
+- Error: junit.framework.AssertionFailedError: expected same:<java.lang.Object@10dad714> was not:<mockedBean>
+- Location:         assertSame(REFERENCE, illegalInjectionExample.mockShouldNotGoInHere);

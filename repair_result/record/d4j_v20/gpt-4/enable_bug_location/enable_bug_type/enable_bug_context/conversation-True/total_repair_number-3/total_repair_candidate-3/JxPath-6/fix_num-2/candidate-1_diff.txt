@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//    System.err.println("COMPARING: " +
++//        (l == null ? "null" : l.getClass().getName()) + " " +
++//        (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -27,9 +27,21 @@
+     }
+ 
+     if ((l instanceof Iterator) && !(r instanceof Iterator)) {
++        if (((Iterator) l).hasNext()) {
++            Object first = ((Iterator) l).next();
++            if (equal(first, r)) {
++                return true;
++            }
++        }
+         return contains((Iterator) l, r);
+     }
+     if (!(l instanceof Iterator) && (r instanceof Iterator)) {
++        if (((Iterator) r).hasNext()) {
++            Object first = ((Iterator) r).next();
++            if (equal(l, first)) {
++                return true;
++            }
++        }
+         return contains((Iterator) r, l);
+     }
+     if (l instanceof Iterator && r instanceof Iterator) {
+@@ -37,3 +49,4 @@
+     }
+     return equal(l, r);
+ }
++

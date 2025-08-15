@@ -1,0 +1,1 @@
+['reparseCentralDirectoryData', 'setSize', 'setCompressedSize', 'setRelativeHeaderOffset', 'setDiskStartNumber']

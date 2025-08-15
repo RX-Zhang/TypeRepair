@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -10,7 +10,11 @@
+ 
+     for (Node node: toMove) {
+         element.removeChild(node);
++    }
++
++    for (Node node: toMove) {
+         body().appendChild(new TextNode(" ", ""));
+         body().appendChild(node);
+     }
+ }
++

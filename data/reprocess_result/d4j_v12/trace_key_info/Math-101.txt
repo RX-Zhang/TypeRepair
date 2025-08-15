@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.math.complex.ComplexFormatTest.testForgottenImaginaryCharacter
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 6
+- Location:         assertNull(new ComplexFormat().parse("1 + 1", pos));
+
+
+Test failure 2:
+- Test: org.apache.commons.math.complex.FrenchComplexFormatTest.testForgottenImaginaryCharacter
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 6
+- Location:         assertNull(new ComplexFormat().parse("1 + 1", pos));

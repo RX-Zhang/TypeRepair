@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -9,5 +9,10 @@
+     if (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+     }
++    // Add exception handling for unexpected token scenarios
++    if (p.getCurrentToken() == JsonToken.END_OBJECT) {
++        throw ctxt.mappingException("Unexpected END_OBJECT token, cannot deserialize ObjectNode.");
++    }
+     throw ctxt.mappingException(ObjectNode.class);
+- }
++}
++

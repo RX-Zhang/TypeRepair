@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.nodes.AttributeTest.settersOnOrphanAttribute
+- Error: java.lang.NullPointerException
+- Location:         String oldVal = attr.setValue("four");

@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+       // the declared function signature, not the inferred signature.
+       //
+       // Or,
+-      // /** @type {Object.<string>} */ var x = {};
++      // /** @type {Object.<string>} */ var = {};
+       // the one-time anonymous object on the right side
+       // is as narrow as it can possibly be, but we need to make
+       // sure we back-infer the <string> element constraint on
+@@ -26,21 +26,17 @@
+       boolean isVarTypeBetter = !isVarDeclaration || var == null || var.isTypeInferred();
+           // Makes it easier to check for NPEs.
+ 
+-      // TODO(nicksantos): This might be a better check once we have
+-      // back-inference of object/array constraints.  It will probably
+-      // introduce more type warnings.  It uses the result type iff it's
+-      // strictly narrower than the declared var type.
+-      //
+-      //boolean isVarTypeBetter = isVarDeclaration &&
+-      //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+-      //     || !resultType.isSubtype(varType));
+-
+-
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
+-      left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++      // Fix for TypeMismatchError:
++      // Only set JSType to resultType when it is compatible or leftType is null
++      // Otherwise keep it null to avoid wrong type assignment
++      if (isVarDeclaration || leftType == null || resultType.isSubtype(leftType)) {
++        left.setJSType(resultType);
++      } else {
++        left.setJSType(null);
++      }
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -61,3 +57,4 @@
+       break;
+   }
+ }
++

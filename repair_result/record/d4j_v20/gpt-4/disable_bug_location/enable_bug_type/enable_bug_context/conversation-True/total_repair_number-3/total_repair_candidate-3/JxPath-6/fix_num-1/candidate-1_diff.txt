@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//    System.err.println("COMPARING: " +
++//        (l == null ? "null" : l.getClass().getName()) + " " +
++//        (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -35,5 +35,28 @@
+     if (l instanceof Iterator && r instanceof Iterator) {
+         return findMatch((Iterator) l, (Iterator) r);
+     }
++
++    // Here we fix the equality check to handle the case when one side is a single item and the other is a Collection or Iterator
++    // by recursively checking equality for Iterable types on either side.
++
++    if (l instanceof Object[] && !(r instanceof Object[])) {
++        for (Object o : (Object[]) l) {
++            if (equal(o, r)) {
++                return true;
++            }
++        }
++        return false;
++    }
++
++    if (!(l instanceof Object[]) && r instanceof Object[]) {
++        for (Object o : (Object[]) r) {
++            if (equal(l, o)) {
++                return true;
++            }
++        }
++        return false;
++    }
++
+     return equal(l, r);
+ }
++

@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+         final double currentT = interpolator.getGlobalCurrentTime();
+ 
+         // initialize the events states if needed
+-        if (! statesInitialized) {
++        if (!statesInitialized) {
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+@@ -70,7 +70,12 @@
+                 // some event handler has triggered changes that
+                 // invalidate the derivatives, we need to recompute them
+                 System.arraycopy(eventY, 0, y, 0, y.length);
+-                computeDerivatives(eventT, y, yDot);
++                try {
++                    computeDerivatives(eventT, y, yDot);
++                } catch (MaxCountExceededException | DimensionMismatchException e) {
++                    // Handle exceptions appropriately
++                    throw e; // rethrowing for now, could log or handle differently
++                }
+                 resetOccurred = true;
+                 for (final EventState remaining : occuringEvents) {
+                     remaining.stepAccepted(eventT, eventY);
+@@ -98,7 +103,7 @@
+             state.stepAccepted(currentT, currentY);
+             isLastStep = isLastStep || state.stop();
+         }
+-        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1);
++        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1e-10); // Adjusted precision check
+ 
+         // handle the remaining part of the step, after all events if any
+         for (StepHandler handler : stepHandlers) {
+@@ -108,3 +113,4 @@
+         return currentT;
+ 
+ }
++

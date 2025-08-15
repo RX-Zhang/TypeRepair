@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -28,8 +28,7 @@
+ 
+     // pc data only tags (textarea, script): chomp to end tag, add content as text node
+     if (tag.isData()) {
+-        String data = tq.chompTo("</" + tagName);
+-        tq.chompTo(">");
++        String data = tq.chompTo("</" + tagName + ">");
+         
+         Node dataNode;
+         if (tag.equals(titleTag) || tag.equals(textareaTag)) // want to show as text, but not contain inside tags (so not a data tag?)
+@@ -48,3 +47,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,79 @@
+Map<String, String> parsePaxHeaders(final InputStream i)
+    throws IOException {
+    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+    // Format is "length keyword=value\n";
+    while(true){ // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+        // Read the length field (a decimal number)
+        while((ch = i.read()) != -1) {
+            read++;
+            if (ch == ' '){
+                break;
+            }
+            if (ch < '0' || ch > '9') {
+                // Unexpected character in length field, skip the header line
+                // Attempt to consume until newline before continuing to next header
+                while (ch != -1 && ch != '\n') {
+                    ch = i.read();
+                }
+                len = 0;
+                break;
+            }
+            len *= 10;
+            len += ch - '0';
+        }
+        if (ch == -1) { // EOF
+            break;
+        }
+        if (len == 0) {
+            // Blank line or invalid length, skip line until next header
+            while(ch != -1 && ch != '\n'){
+                ch = i.read();
+            }
+            if (ch == -1) {
+                break;
+            }
+            continue;
+        }
+
+        // Now read the "keyword=value\n" part, length includes the length field itself
+        final int restLen = len - read;
+        if (restLen <= 0) {
+            // Invalid length; skip this header line to avoid negative array size
+            // Skip restLen bytes if any (shouldn't be negative)
+            continue;
+        }
+
+        final byte[] rest = new byte[restLen];
+        final int got = IOUtils.readFully(i, rest);
+        if (got != restLen) {
+            throw new IOException("Failed to read Paxheader. Expected " + restLen + " bytes, read " + got);
+        }
+        // The format is: keyword=value\n
+        // Find '=' separator in rest:
+        int eqPos = -1;
+        for (int idx = 0; idx < restLen; idx++) {
+            if (rest[idx] == '=') {
+                eqPos = idx;
+                break;
+            }
+        }
+        if (eqPos == -1) {
+            // No '=', malformed header, skip this line
+            continue;
+        }
+
+        final String keyword = new String(rest, 0, eqPos, CharsetNames.UTF_8);
+        // Value is from eqPos+1 to restLen-1 (exclude trailing newline)
+        if (restLen - 1 < eqPos + 1) {
+            // No value, remove keyword
+            headers.remove(keyword);
+        } else {
+            final String value = new String(rest, eqPos + 1, restLen - eqPos - 2, CharsetNames.UTF_8);
+            headers.put(keyword, value);
+        }
+    }
+    return headers;
+}

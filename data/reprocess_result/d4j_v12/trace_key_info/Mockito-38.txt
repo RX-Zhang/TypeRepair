@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.mockito.internal.verification.argumentmatching.ArgumentMatchingToolTest.shouldWorkFineWhenGivenArgIsNull
+- Error: java.lang.NullPointerException
+- Location:         Integer[] suspicious = tool.getSuspiciouslyNotMatchingArgsIndexes((List) Arrays.asList(new Equals(20)), new Object[] {null});
+
+
+Test failure 2:
+- Test: org.mockitousage.bugs.ActualInvocationHasNullArgumentNPEBugTest.shouldAllowPassingNullArgument
+- Error: java.lang.NullPointerException
+- Location:             verify(mockFun).doFun("hello");

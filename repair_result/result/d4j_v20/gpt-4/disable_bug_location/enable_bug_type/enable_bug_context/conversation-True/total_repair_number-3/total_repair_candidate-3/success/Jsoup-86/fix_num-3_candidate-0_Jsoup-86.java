@@ -1,0 +1,19 @@
+public XmlDeclaration asXmlDeclaration() {
+    String data = getData();
+    if (data == null || data.length() <= 2) {
+        return null;
+    }
+    XmlDeclaration decl = null;
+    try {
+        Document doc = Jsoup.parse("<" + data.substring(1, data.length() - 1) + ">", baseUri(), Parser.xmlParser());
+        if (doc.childNodeSize() > 0) {
+            Element el = doc.child(0);
+            decl = new XmlDeclaration(NodeUtils.parser(doc).settings().normalizeTag(el.tagName()), data.startsWith("!"));
+            decl.attributes().addAll(el.attributes());
+        }
+    } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+        // parsing failed or substring invalid, return null safely
+        return null;
+    }
+    return decl;
+}

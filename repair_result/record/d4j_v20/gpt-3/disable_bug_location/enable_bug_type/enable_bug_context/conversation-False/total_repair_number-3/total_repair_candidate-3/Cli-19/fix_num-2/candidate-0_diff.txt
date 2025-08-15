@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,7 +7,13 @@
+     }
+     else if (stopAtNonOption)
+     {
++        // throw exception for unrecognized option instead of silently accepting it
++        throw new UnrecognizedOptionException("Unrecognized option: " + token, token);
++    }
++    else
++    {
+         eatTheRest = true;
+         tokens.add(token);
+     }
+ }
++

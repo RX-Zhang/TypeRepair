@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -3,5 +3,8 @@
+      * if annotated to use non-standard one) should also prevent caching.
+      */
+     return (_valueTypeDeserializer == null)
+-            && (_ignorableProperties == null);
++            && (_ignorableProperties == null)
++            && (_keyDeserializer == null) 
++            && (_valueDeserializer == null);
+ }
++

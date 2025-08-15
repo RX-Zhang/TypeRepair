@@ -1,0 +1,70 @@
+--- 
++++ 
+@@ -11,26 +11,52 @@
+         double ta = t0;
+         double ga = g0;
+         double tb = t0 + (interpolator.isForward() ? convergence : -convergence);
++
++        // Ensure that the initial bracket [ta, tb] has function values of opposite signs
++        interpolator.setInterpolatedTime(ta);
++        ga = handler.g(ta, interpolator.getInterpolatedState());
++        interpolator.setInterpolatedTime(tb);
++        double gb = handler.g(tb, interpolator.getInterpolatedState());
++
++        if ((ga == 0.0) || (gb == 0.0) || (ga * gb > 0.0)) {
++            // Expand the bracket if no sign change between ga and gb
++            // Shift tb away from ta until we find a sign change or reach t1
++            double step = (interpolator.isForward() ? convergence : -convergence);
++            double newTb = tb;
++            boolean signChangeFound = false;
++            while (!signChangeFound) {
++                newTb += step;
++                if ((interpolator.isForward() && newTb > t1) || (!interpolator.isForward() && newTb < t1)) {
++                    break;
++                }
++                interpolator.setInterpolatedTime(newTb);
++                gb = handler.g(newTb, interpolator.getInterpolatedState());
++                if (ga * gb <= 0.0) {
++                    signChangeFound = true;
++                    tb = newTb;
++                }
++            }
++            if (!signChangeFound) {
++                // No sign change found, skip event detection in this step
++                ta = tb;
++                ga = gb;
++            }
++        }
++
+         for (int i = 0; i < n; ++i) {
+ 
+             // evaluate handler value at the end of the substep
+             tb += h;
++            if ((interpolator.isForward() && tb > t1) || (!interpolator.isForward() && tb < t1)) {
++                tb = t1;
++            }
+             interpolator.setInterpolatedTime(tb);
+-            final double gb = handler.g(tb, interpolator.getInterpolatedState());
++            gb = handler.g(tb, interpolator.getInterpolatedState());
+ 
+             // check events occurrence
+             if (g0Positive ^ (gb >= 0)) {
+                 // there is a sign change: an event is expected during this step
+ 
+-                    // this is a corner case:
+-                    // - there was an event near ta,
+-                    // - there is another event between ta and tb
+-                    // - when ta was computed, convergence was reached on the "wrong side" of the interval
+-                    // this implies that the real sign of ga is the same as gb, so we need to slightly
+-                    // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+-                    // about bracketing
+-                        // this should never happen
+-                     
+                 // variation direction, with respect to the integration direction
+                 increasing = gb >= ga;
+ 
+@@ -95,3 +121,4 @@
+     }
+ 
+ }
++

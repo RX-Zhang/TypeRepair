@@ -1,0 +1,76 @@
+--- 
++++ 
+@@ -12,15 +12,37 @@
+         // a wrong value.
+         return null;
+     }
+-    if (str.startsWith("0x") || str.startsWith("-0x")) {
+-        return createInteger(str);
+-    }   
++    String lowerStr = str.toLowerCase();
++    if (lowerStr.startsWith("0x") || lowerStr.startsWith("-0x")) {
++        // fix: treat hex strings (0x, -0x) using createInteger (or possibly BigInteger when too large)
++        // but decode throws NFE for some hex strings with sign; we handle it by removing sign and parsing accordingly
++        try {
++            return createInteger(str);
++        } catch (NumberFormatException e) {
++            // fallback to BigInteger for bigger hex values
++            int sign = 1;
++            String hexStr = str;
++            if (str.startsWith("-")) {
++                sign = -1;
++                hexStr = str.substring(1);
++            }
++            String hexNumber = hexStr.substring(2); // remove 0x
++            BigInteger bigInt = new BigInteger(hexNumber, 16);
++            if (sign < 0) {
++                bigInt = bigInt.negate();
++            }
++            return bigInt;
++        }
++    }
+     char lastChar = str.charAt(str.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+     int decPos = str.indexOf('.');
+-    int expPos = str.indexOf('e') + str.indexOf('E') + 1;
++    // fix: find the first occurrence of 'e' or 'E'
++    int expPosE = str.indexOf('e');
++    int expPosEE = str.indexOf('E');
++    int expPos = (expPosE == -1) ? expPosEE : ((expPosEE == -1) ? expPosE : Math.min(expPosE, expPosEE));
+ 
+     if (decPos > -1) {
+ 
+@@ -52,7 +74,7 @@
+         }
+         //Requesting a specific type..
+         String numeric = str.substring(0, str.length() - 1);
+-        boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
++        boolean allZeros = isAllZeros(mant) && (exp == null || isAllZeros(exp));
+         switch (lastChar) {
+             case 'l' :
+             case 'L' :
+@@ -86,7 +108,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) { // NOPMD
+@@ -126,7 +148,7 @@
+ 
+         } else {
+             //Must be a float,double,BigDec
+-            boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
++            boolean allZeros = isAllZeros(mant) && (exp == null || isAllZeros(exp));
+             try {
+                 Float f = createFloat(str);
+                 if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+@@ -149,3 +171,4 @@
+         }
+     }
+ }
++

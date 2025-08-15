@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -11,10 +11,16 @@
+     }
+     Class lhsClass = lhs.getClass();
+     if (!lhsClass.isArray()) {
+-            // The simple case, not an array, just test the element
++        // The simple case, not an array, just test the element
++        if (lhs instanceof BigDecimal && rhs instanceof BigDecimal) {
++            BigDecimal bdlhs = (BigDecimal) lhs;
++            BigDecimal bdrhs = (BigDecimal) rhs;
++            isEquals = (bdlhs.compareTo(bdrhs) == 0);
++        } else {
+             isEquals = lhs.equals(rhs);
++        }
+     } else if (lhs.getClass() != rhs.getClass()) {
+-        // Here when we compare different dimensions, for example: a boolean[][] to a boolean[] 
++        // Here when we compare different dimensions, for example: a boolean[][] to a boolean[]
+         this.setEquals(false);
+     }
+     // 'Switch' on type of array, to dispatch to the correct handler
+@@ -41,3 +47,4 @@
+     }
+     return this;
+ }
++

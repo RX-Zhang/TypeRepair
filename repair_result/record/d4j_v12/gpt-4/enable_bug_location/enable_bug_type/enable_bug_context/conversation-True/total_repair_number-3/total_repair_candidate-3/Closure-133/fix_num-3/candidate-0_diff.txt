@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,4 +1,15 @@
+ private String getRemainingJSDocLine() {
+-  String result = stream.getRemainingJSDocLine();
+-  return result;
++  StringBuilder result = new StringBuilder();
++  skipEOLs();
++  JsDocToken token = next();
++  while (token != JsDocToken.EOL && token != JsDocToken.EOF) {
++    if (token == JsDocToken.STAR) {
++      break;
++    }
++    result.append(token.value);
++    token = next();
++  }
++  restoreLookAhead(token);
++  return result.toString();
+ }
++

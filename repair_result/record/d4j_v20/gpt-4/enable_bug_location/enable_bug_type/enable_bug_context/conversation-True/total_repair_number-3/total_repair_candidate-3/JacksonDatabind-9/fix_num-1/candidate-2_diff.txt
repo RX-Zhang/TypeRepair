@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -4,8 +4,11 @@
+     if (value instanceof Date) {
+         provider.defaultSerializeDateKey((Date) value, jgen);
+         return;
++    } else if (value instanceof Class<?>) {
++        str = ((Class<?>) value).getName();
+     } else {
+         str = value.toString();
+     }
+     jgen.writeFieldName(str);
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.PosixParserTest.testStop3
+- Error: junit.framework.AssertionFailedError: Confirm  3 extra args: 7
+- Location:         assertTrue("Confirm  3 extra args: " + cl.getArgList().size(), cl.getArgList().size() == 3);

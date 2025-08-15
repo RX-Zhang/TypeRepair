@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.read.NonStandardUnquotedNamesTest.testUnquotedIssue510
+- Error: java.lang.ArrayIndexOutOfBoundsException: 256
+- Location:             p.nextToken();

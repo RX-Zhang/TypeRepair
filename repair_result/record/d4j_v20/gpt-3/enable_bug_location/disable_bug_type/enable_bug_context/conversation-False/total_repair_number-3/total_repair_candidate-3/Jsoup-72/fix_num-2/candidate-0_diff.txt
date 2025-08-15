@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ private static String cacheString(final char[] charBuf, final String[] stringCache, final int start, final int count) {
+     // limit (no cache):
+-    if (count > maxStringCacheLen)
+-        return new String(charBuf, start, count);
++    if (count > maxStringCacheLen || count < 0 || start < 0 || start + count > charBuf.length)
++        return new String(charBuf, start, Math.max(0, Math.min(count, charBuf.length - start)));
+ 
+     // calculate hash:
+     int hash = 0;
+@@ -11,7 +11,7 @@
+     }
+ 
+     // get from cache
+-    final int index = hash & stringCache.length - 1;
++    final int index = (hash & (stringCache.length - 1));
+     String cached = stringCache[index];
+ 
+     if (cached == null) { // miss, add
+@@ -27,3 +27,4 @@
+     }
+     return cached;
+ }
++

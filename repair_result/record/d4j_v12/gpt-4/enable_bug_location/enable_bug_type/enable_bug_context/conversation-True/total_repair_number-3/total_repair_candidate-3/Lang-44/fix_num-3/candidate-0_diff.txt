@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -14,13 +14,16 @@
+     }
+     if (val.startsWith("0x") || val.startsWith("-0x")) {
+         return createInteger(val);
+-    }   
++    }
+     char lastChar = val.charAt(val.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    int expPos = val.indexOf('e');
++    if (expPos < 0) {
++        expPos = val.indexOf('E');
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -51,11 +54,11 @@
+         String numeric = val.substring(0, val.length() - 1);
+         boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+         switch (lastChar) {
+-            case 'l' :
++            case 'l :
+             case 'L' :
+-                if (dec == null
++                if (dec ==
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+@@ -147,3 +150,4 @@
+ 
+     }
+ }
++

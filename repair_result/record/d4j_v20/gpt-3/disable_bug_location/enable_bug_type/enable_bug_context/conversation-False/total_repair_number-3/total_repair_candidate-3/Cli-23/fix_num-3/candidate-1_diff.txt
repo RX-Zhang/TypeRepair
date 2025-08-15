@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -17,17 +17,19 @@
+ 
+     while (true)
+     {
+-        int lastPos = pos;
+-        text = padding + text.substring(pos).trim();
++        String remaining = text.substring(pos).trim();
++        text = padding + remaining;
+         pos = findWrapPos(text, width, 0);
+ 
+         if (pos == -1)
+         {
+             sb.append(text);
++            return sb;
++        }
+ 
+-            return sb;
+-        } else
+-        if (pos == lastPos)
++        // Adjust pos relative to remaining without padding, to detect infinite loop properly
++        int adjustedPos = pos - nextLineTabStop;
++        if (adjustedPos <= 0)
+         {
+             throw new RuntimeException("Text too long for line - throwing exception to avoid infinite loop [CLI-162]: " + text);
+         }
+@@ -35,3 +37,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

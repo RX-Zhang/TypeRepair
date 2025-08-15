@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -36,10 +36,15 @@
+             {
+                 // if the value is not yes, true or 1 then don't add the
+                 // option to the CommandLine
+-                break;
++                continue; // changed break to continue to ensure processing of other properties
++            }
++            else
++            {
++                // value is yes, true or 1, add the option without argument
+             }
+ 
+             cmd.addOption(opt);
+         }
+     }
+ }
++

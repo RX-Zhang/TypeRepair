@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -17,9 +17,15 @@
+     }
+ 
+     // if the Option has a value
+-    if (option.hasArg() && (option.getArgName() != null))
++    if (option.hasArg())
+     {
+-        buff.append(" <").append(option.getArgName()).append(">");
++        String argName = option.getArgName();
++        if (argName != null && !argName.isEmpty()) {
++            buff.append(" <").append(argName).append(">");
++        } else {
++            // If the argName is empty, we do not want to append anything
++            buff.append("");
++        }
+     }
+ 
+     // if the Option is not a required option
+@@ -28,3 +34,4 @@
+         buff.append("]");
+     }
+ }
++

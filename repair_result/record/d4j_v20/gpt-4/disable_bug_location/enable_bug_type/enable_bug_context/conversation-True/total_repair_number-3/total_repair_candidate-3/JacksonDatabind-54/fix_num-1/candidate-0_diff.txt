@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -14,8 +14,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -64,7 +63,7 @@
+         // always suppress nulls
+         suppressNulls = true;
+         // and for referential types, also "empty", which in their case means "absent"
+-        if (declaredType.isReferenceType()) {
++        if (actualType.isReferenceType()) {
+             valueToSuppress = BeanPropertyWriter.MARKER_FOR_EMPTY;
+         }
+         break;
+@@ -102,3 +101,4 @@
+     }
+     return bpw;
+ }
++

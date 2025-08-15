@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -136,11 +136,15 @@
+       JSType ownerTypeOfThis = ownerType.getTypeOfThis();
+       String delegateName = codingConvention.getDelegateSuperclassName();
+       JSType delegateType = delegateName == null ?
+-          null : typeRegistry.getType(delegateName);
++          null : getNativeType(JSTypeNative.BOOLEAN_TYPE); // FIXED: Use getNativeType to get BOOL type for delegate proxy
++      if (delegateType == null) {
++        delegateType = typeRegistry.getType(delegateName);
++      }
+       if (delegateType != null &&
+           ownerTypeOfThis.isSubtype(delegateType)) {
+-        defineSlot(n, parent, getNativeType(BOOLEAN_TYPE), true);
++        defineSlot(n, parent, getNativeType(JSTypeNative.BOOLEAN_TYPE), true);
+       }
+     }
+   }
+ }
++

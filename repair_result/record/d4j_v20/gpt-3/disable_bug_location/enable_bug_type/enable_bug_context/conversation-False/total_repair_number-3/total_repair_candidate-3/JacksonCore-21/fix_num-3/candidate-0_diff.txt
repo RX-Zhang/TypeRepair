@@ -1,0 +1,82 @@
+--- 
++++ 
+@@ -8,17 +8,17 @@
+     // check for no buffered context _exposedContext - null
+     // If all the conditions matches then check for scalar / non-scalar property
+     if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+-        //if not scalar and ended successfully, and !includePath, then return null
+-            if (_currToken.isStructEnd()) {
+-                if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
+-                }
+-            } else if (_currToken.isScalarValue()) {
+-                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                // then return null 
+-                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
+-                }
++        // if not scalar and ended successfully, and !includePath, then return null
++        if (_currToken.isStructEnd()) {
++            if (_headContext.isStartHandled()) {
++                return (_currToken = null);
++            }
++        } else if (_currToken.isScalarValue()) {
++            // else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++            // then return null 
++            if (_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                return (_currToken = null);
++            }
+         }
+     }
+     // Anything buffered?
+@@ -36,21 +36,19 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
+-                // Almost! Most likely still have the current token;
+-                // with the sole exception of 
+-                /*
+-                t = delegate.getCurrentToken();
+-                if (t != JsonToken.FIELD_NAME) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-                */
++                    // Fix: The condition here is reversed; should return token if it is START_ARRAY or later in structure
++                    if (t == JsonToken.START_ARRAY || t.isStructStart()) {
++                        _currToken = t;
++                        return t;
++                    }
++                } else if (ctxt.inObject()) {
++                    t = delegate.getCurrentToken();
++                    // For objects, if current token is FIELD_NAME or other start tokens, return it
++                    if (t == JsonToken.FIELD_NAME || t.isStructStart()) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 break;
+             }
+             // If not, traverse down the context chain
+@@ -66,8 +64,8 @@
+     JsonToken t = delegate.nextToken();
+     if (t == null) {
+         // no strict need to close, since we have no state here
+-        _currToken = t;
+-        return t;
++        _currToken = null;
++        return null;
+     }
+ 
+     // otherwise... to include or not?
+@@ -226,3 +224,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

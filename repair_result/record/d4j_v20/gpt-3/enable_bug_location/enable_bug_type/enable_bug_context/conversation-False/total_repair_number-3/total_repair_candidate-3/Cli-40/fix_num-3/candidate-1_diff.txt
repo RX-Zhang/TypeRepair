@@ -1,0 +1,66 @@
+--- 
++++ 
+@@ -1,43 +1,44 @@
+ public static <T> T createValue(final String str, final Class<T> clazz) throws ParseException
+ {
+-    if (PatternOptionBuilder.STRING_VALUE == clazz)
++    if (clazz == String.class)
+     {
+-        return (T) str;
++        return clazz.cast(str);
+     }
+-    else if (PatternOptionBuilder.OBJECT_VALUE == clazz)
++    else if (clazz == Object.class)
+     {
+-        return (T) createObject(str);
++        return clazz.cast(createObject(str));
+     }
+-    else if (PatternOptionBuilder.NUMBER_VALUE == clazz)
++    else if (Number.class.isAssignableFrom(clazz))
+     {
+-        return (T) createNumber(str);
++        return clazz.cast(createNumber(str));
+     }
+-    else if (PatternOptionBuilder.DATE_VALUE == clazz)
++    else if (Date.class.isAssignableFrom(clazz))
+     {
+-        return (T) createDate(str);
++        return clazz.cast(createDate(str));
+     }
+-    else if (PatternOptionBuilder.CLASS_VALUE == clazz)
++    else if (Class.class.isAssignableFrom(clazz))
+     {
+-        return (T) createClass(str);
++        return clazz.cast(createClass(str));
+     }
+-    else if (PatternOptionBuilder.FILE_VALUE == clazz)
++    else if (File.class.isAssignableFrom(clazz))
+     {
+-        return (T) createFile(str);
++        return clazz.cast(createFile(str));
+     }
+-    else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz)
++    else if (FileInputStream.class.isAssignableFrom(clazz))
+     {
+-        return (T) openFile(str);
++        return clazz.cast(openFile(str));
+     }
+-    else if (PatternOptionBuilder.FILES_VALUE == clazz)
++    else if (File[].class.isAssignableFrom(clazz))
+     {
+-        return (T) createFiles(str);
++        return clazz.cast(createFiles(str));
+     }
+-    else if (PatternOptionBuilder.URL_VALUE == clazz)
++    else if (URL.class.isAssignableFrom(clazz))
+     {
+-        return (T) createURL(str);
++        return clazz.cast(createURL(str));
+     }
+     else
+     {
+-        return null;
++        throw new ParseException("Unsupported class type: " + clazz.getName());
+     }
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -4,7 +4,13 @@
+     if (NodeUtil.isLhs(n, n.getParent())) {
+       // The expression to which the assignment is made is evaluated before
+       // the RHS is evaluated (normal left to right evaluation) but the KILL
+-      // occurs after the RHS is evaluated.
++      // occurs after the RHS is evaluated. However, we must check if the LHS
++      // variable is actually read in the LHS expression itself before the assignment.
++      // For example, in a compound assignment like x += foo(x), x is both read and killed.
++      // So, we recursively check if the variable is read before kill on the RHS and LHS.
++      if (isVariableReadBeforeKill(n.getParent(), variable) == VariableLiveness.READ) {
++        return VariableLiveness.READ;
++      }
+       return VariableLiveness.KILL;
+     } else {
+       return VariableLiveness.READ;
+@@ -23,3 +29,4 @@
+   }
+   return VariableLiveness.MAYBE_LIVE;
+ }
++

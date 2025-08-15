@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -8,20 +8,10 @@
+   }
+ 
+   if (t.getScopeDepth() <= 2) {
+-    // The first-order function analyzer looks at two types of variables:
+-    //
+-    // 1) Local variables that are assigned in inner scopes ("escaped vars")
+-    //
+-    // 2) Local variables that are assigned more than once.
+-    //
+-    // We treat all global variables as escaped by default, so there's
+-    // no reason to do this extra computation for them.
+     return;
+   }
+ 
+   if (n.isName() && NodeUtil.isLValue(n) &&
+-      // Be careful of bleeding functions, which create variables
+-      // in the inner scope, not the scope where the name appears.
+       !NodeUtil.isBleedingFunctionName(n)) {
+     String name = n.getString();
+     Scope scope = t.getScope();
+@@ -50,3 +40,4 @@
+     }
+   }
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+         swap[r] = r;
+         for (int i = r + 1; i < order; ++i) {
+             int ii  = index[i];
+-            int isi = index[swap[i]];
++            int isi = index[swap[r]];
+             if (c[ii][ii] > c[isi][isi]) {
+                 swap[r] = i;
+             }
+@@ -88,3 +88,4 @@
+     }
+ 
+ }
++

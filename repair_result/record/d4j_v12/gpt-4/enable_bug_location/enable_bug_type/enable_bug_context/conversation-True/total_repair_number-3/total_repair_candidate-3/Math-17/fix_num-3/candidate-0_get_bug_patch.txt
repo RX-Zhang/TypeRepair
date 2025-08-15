@@ -1,0 +1,51 @@
+public Dfp multiply(final int x) {
+    // Instead of directly calling multiplyFast, handle special cases similarly to multiply(Dfp)
+    if (nans != FINITE) {
+        if (isNaN()) {
+            return this;
+        }
+
+        if (nans == INFINITE && x != 0) {
+            Dfp result = newInstance(this);
+            result.sign = (byte)((sign == (x < 0 ? -1 : 1))?1:-1);
+            return result;
+        }
+
+        if (nans == INFINITE && x == 0) {
+            field.setIEEEFlagsBits(DfpField.FLAG_INVALID);
+            Dfp result = newInstance(getZero());
+            result.nans = QNAN;
+            result = dotrap(DfpField.FLAG_INVALID, MULTIPLY_TRAP, newInstance(getZero()), result);
+            return result;
+        }
+    }
+
+    // Handle multiplication by zero
+    if (x == 0) {
+        Dfp result = newInstance(getZero());
+        // sign of zero depends on sign of multiplicand and multiplier
+        result.sign = (byte)((sign == (x < 0 ? -1 : 1))?1:-1);
+        return result;
+    }
+
+    // Handle multiplication by one
+    if (x == 1) {
+        return newInstance(this);
+    }
+
+    // Handle multiplication by -1
+    if (x == -1) {
+        Dfp result = newInstance(this);
+        result.sign = (byte)(-sign);
+        return result;
+    }
+
+    // For other cases, if x is negative, multiply by -x and negate result
+    if (x < 0) {
+        Dfp result = multiplyFast(-x);
+        result.sign = (byte)(-result.sign);
+        return result;
+    } else {
+        return multiplyFast(x);
+    }
+}

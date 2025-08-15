@@ -1,0 +1,1 @@
+['getAlternates', 'isObject', 'isSubtype']

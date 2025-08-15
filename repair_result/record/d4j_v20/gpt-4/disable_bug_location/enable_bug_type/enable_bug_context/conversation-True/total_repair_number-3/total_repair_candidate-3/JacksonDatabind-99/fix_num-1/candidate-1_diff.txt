@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -4,5 +4,7 @@
+     sb.append(_class.getName());
+     sb.append('<');
+     sb.append(_referencedType.toCanonical());
++    sb.append('>');  // Missing closing '>' added here
+     return sb.toString();
+ }
++

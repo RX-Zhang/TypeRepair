@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -1,5 +1,6 @@
+ public String html() {
+     StringBuilder accum = new StringBuilder();
+-    html(accum);
++    outerHtmlHead(accum, 0, new Document.OutputSettings().prettyPrint(false)); // Ensure to call outerHtmlHead with appropriate parameters
+     return accum.toString().trim();
+ }
++

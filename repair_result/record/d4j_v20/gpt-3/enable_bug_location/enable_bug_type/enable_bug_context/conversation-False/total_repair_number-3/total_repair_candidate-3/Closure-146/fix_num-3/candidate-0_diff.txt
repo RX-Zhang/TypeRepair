@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,20 +1,19 @@
+ public TypePair getTypesUnderInequality(JSType that) {
+-  // unions types
++  // union types
+   if (that instanceof UnionType) {
+-    TypePair p = that.getTypesUnderInequality(this);
++    TypePair p = ((UnionType) that).getTypesUnderInequality(this);
+     return new TypePair(p.typeB, p.typeA);
+   }
+ 
+   // other types
+-  switch (this.testForEquality(that)) {
+-    case TRUE:
+-      return new TypePair(null, null);
+-
+-    case FALSE:
+-    case UNKNOWN:
+-      return new TypePair(this, that);
++  TernaryValue result = this.testForEquality(that);
++  if (result == TernaryValue.TRUE) {
++    return new TypePair(null, null);
++  } else if (result == TernaryValue.FALSE || result == TernaryValue.UNKNOWN) {
++    return new TypePair(this, that);
+   }
+ 
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

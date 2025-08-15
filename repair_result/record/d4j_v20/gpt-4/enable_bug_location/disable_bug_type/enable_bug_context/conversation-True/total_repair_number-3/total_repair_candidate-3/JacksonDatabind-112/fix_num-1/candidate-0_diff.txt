@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -6,6 +6,9 @@
+     if (_valueInstantiator != null) {
+         // [databind#2324]: check both array-delegating and delegating
+         AnnotatedWithParams delegateCreator = _valueInstantiator.getDelegateCreator();
++        if (delegateCreator == null) {
++            delegateCreator = _valueInstantiator.getArrayDelegateCreator();
++        }
+         if (delegateCreator != null) {
+             JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
+             delegate = findDeserializer(ctxt, delegateType, property);
+@@ -33,3 +36,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

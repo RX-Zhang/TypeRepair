@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -5,7 +5,6 @@
+   }
+ 
+   Node block = fnNode.getLastChild();
+-
+ 
+   // CALL NODE: [ NAME, ARG1, ARG2, ... ]
+   Node cArg = callNode.getFirstChild().getNext();
+@@ -57,5 +56,18 @@
+     }
+   }
+ 
++  // Additional check: prevent inlining if any parameter name is modified in the function body.
++  fnParam = NodeUtil.getFunctionParameters(fnNode).getFirstChild();
++  while (fnParam != null) {
++    if (NodeUtil.isNameDeclaredInScope(fnParam)) {
++      // Check if parameter is assigned to within the function body
++      if (NodeUtil.isNameModified(block, fnParam.getString())) {
++        return CanInlineResult.NO;
++      }
++    }
++    fnParam = fnParam.getNext();
++  }
++
+   return CanInlineResult.YES;
+ }
++

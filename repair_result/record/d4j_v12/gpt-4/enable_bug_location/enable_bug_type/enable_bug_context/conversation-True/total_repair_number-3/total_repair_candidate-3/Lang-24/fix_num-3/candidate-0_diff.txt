@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -19,8 +19,8 @@
+             // checking hex (it can't be anything else)
+             for (; i < chars.length; i++) {
+                 if ((chars[i] < '0' || chars[i] > '9')
+-                    && (chars[i] < 'a' || chars[i] > 'f')
+-                    && (chars[i] < 'A' || chars[i] > 'F')) {
++                        && (chars[i] < 'a' || chars[i] > 'f')
++                        && (chars[i] < 'A' || chars[i] > 'F')) {
+                     return false;
+                 }
+             }
+@@ -83,16 +83,25 @@
+             return foundDigit;
+         }
+         if (!allowSigns
+-            && (chars[i] == 'd'
++                && (chars[i] == 'd'
+                 || chars[i] == 'D'
+                 || chars[i] == 'f'
+                 || chars[i] == 'F')) {
++            // reject floats with a trailing 'L' or 'l'
++            if (chars[i] == 'f' || chars[i] == 'F') {
++                if (hasExp || hasDecPoint) {
++                    return foundDigit;
++                } else {
++                    // LANG-664: reject if float qualifier on integer without decimal or exponent
++                    return false;
++                }
++            }
+             return foundDigit;
+         }
+         if (chars[i] == 'l'
+-            || chars[i] == 'L') {
++                || chars[i] == 'L') {
+             // not allowing L with an exponent or decimal point
+-            return foundDigit && !hasExp;
++            return foundDigit && !hasExp && !hasDecPoint;
+         }
+         // last character is illegal
+         return false;
+@@ -101,3 +110,4 @@
+     // found digit it to make sure weird stuff like '.' and '1E-' doesn't pass
+     return !allowSigns && foundDigit;
+ }
++

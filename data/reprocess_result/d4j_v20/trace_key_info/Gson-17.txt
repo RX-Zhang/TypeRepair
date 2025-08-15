@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.gson.DefaultDateTypeAdapterTest.testUnexpectedToken
+- Error: com.google.gson.JsonParseException: The date should be a string value
+- Location:       adapter.fromJson("{}");
+
+
+Test failure 2:
+- Test: com.google.gson.DefaultDateTypeAdapterTest.testNullValue
+- Error: com.google.gson.JsonParseException: The date should be a string value
+- Location:     assertNull(adapter.fromJson("null"));

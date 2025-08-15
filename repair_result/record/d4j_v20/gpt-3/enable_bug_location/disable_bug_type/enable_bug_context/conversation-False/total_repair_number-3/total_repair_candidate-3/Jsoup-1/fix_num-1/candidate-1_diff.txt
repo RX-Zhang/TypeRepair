@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -8,9 +8,14 @@
+         }
+     }
+ 
+-    for (Node node: toMove) {
++    for (int i = 0; i < toMove.size(); i++) {
++        Node node = toMove.get(i);
+         element.removeChild(node);
+-        body().appendChild(new TextNode(" ", ""));
++        if (i > 0) {
++            // add a space before every moved text node except the first to preserve spacing
++            body().appendChild(new TextNode(" ", ""));
++        }
+         body().appendChild(node);
+     }
+ }
++

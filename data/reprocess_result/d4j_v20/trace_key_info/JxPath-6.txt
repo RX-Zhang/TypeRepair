@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.jxpath.ri.compiler.VariableTest.testIterateVariable
+- Error: junit.framework.AssertionFailedError: Evaluating <$d = 'a'> expected:<true> but was:<false>
+- Location:         assertXPathValue(context, "$d = 'a'", Boolean.TRUE);

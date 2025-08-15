@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -27,7 +27,11 @@
+     Reference reference = referenceInfo.references.get(
+         firstRefAfterInit - 1);
+     if (canInline(declaration, init, reference)) {
+-      inline(v, declaration, init, reference);
++      Reference initializationReference = init;
++      if (init == declaration) {
++        initializationReference = null;
++      }
++      inline(v, declaration, initializationReference, reference);
+       staleVars.add(v);
+     }
+   } else if (declaration != init && refCount == 2) {
+@@ -72,3 +76,4 @@
+     }
+   }
+ }
++

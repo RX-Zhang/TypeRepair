@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -9,6 +9,22 @@
+ 
+     if (buffer[start] == 0) {
+         return 0L;
++    }
++
++    // Check for embedded NUL or spaces within the string (not just leading or trailing)
++    for (int i = start; i < end; i++) {
++        if (buffer[i] == 0 || buffer[i] == ' ') {
++            // continue if trailing, break if embedded
++            // trailing NULs or spaces are handled later
++            if (i != end - 1 && buffer[i] == ' ') {
++                throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, i, buffer[i]));
++            }
++            if (i != end - 1 && buffer[i] == 0) {
++                throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, i, buffer[i]));
++            }
++        }
+     }
+ 
+     // Skip leading spaces
+@@ -35,14 +51,13 @@
+         if (currentByte == 0) {
+             break;
+         }
+-        // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+     }
+ 
+     return result;
+ }
++

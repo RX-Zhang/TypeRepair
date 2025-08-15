@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -23,9 +23,9 @@
+     if (endIndex < 0) {             // end period is not in original series
+         endIndex = -(endIndex + 1); // this is first item AFTER end period
+         endIndex = endIndex - 1;    // so this is last item BEFORE end
+-    }
+-    if (endIndex < 0) {
+-        emptyRange = true;
++        if (endIndex < 0) {
++            emptyRange = true;
++        }
+     }
+     if (emptyRange) {
+         TimeSeries copy = (TimeSeries) super.clone();
+@@ -37,3 +37,4 @@
+     }
+ 
+ }
++

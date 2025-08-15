@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -1,22 +1,22 @@
+ private static StringBuilder escapeRegex(StringBuilder regex, String value, boolean unquote) {
+-    boolean wasWhite= false;
+-    for(int i= 0; i<value.length(); ++i) {
+-        char c= value.charAt(i);
+-        if(Character.isWhitespace(c)) {
+-            if(!wasWhite) {
+-                wasWhite= true;
++    boolean wasWhite = false;
++    for (int i = 0; i < value.length(); ++i) {
++        char c = value.charAt(i);
++        if (Character.isWhitespace(c)) {
++            if (!wasWhite) {
++                wasWhite = true;
+                 regex.append("\\s*+");
+             }
+             continue;
+         }
+-        wasWhite= false;
+-        switch(c) {
++        wasWhite = false;
++        switch (c) {
+         case '\'':
+-            if(unquote) {
+-                if(++i==value.length()) {
++            if (unquote) {
++                if (++i == value.length()) {
+                     return regex;
+                 }
+-                c= value.charAt(i);
++                c = value.charAt(i);
+             }
+             break;
+         case '?':
+@@ -34,8 +34,10 @@
+         case '$':
+         case '.':
+             regex.append('\\');
++            break; // Added break statement to avoid falling through
+         }
+         regex.append(c);
+     }
+     return regex;
+ }
++

@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,10 +1,22 @@
+ @Override public void skipValue() throws IOException {
++  if (stackSize == 0) {
++    return; // or throw an exception if appropriate
++  }
++
+   if (peek() == JsonToken.NAME) {
+     nextName();
+-    pathNames[stackSize - 2] = "null";
++    if (stackSize - 2 >= 0 && pathNames.length > stackSize - 2) {
++      pathNames[stackSize - 2] = "null";
++    }
+   } else {
+     popStack();
++    if (stackSize - 1 >= 0 && pathNames.length > stackSize - 1) {
+       pathNames[stackSize - 1] = "null";
++    }
+   }
++
++  if (stackSize - 1 >= 0 && pathIndices.length > stackSize - 1) {
+     pathIndices[stackSize - 1]++;
++  }
+ }
++

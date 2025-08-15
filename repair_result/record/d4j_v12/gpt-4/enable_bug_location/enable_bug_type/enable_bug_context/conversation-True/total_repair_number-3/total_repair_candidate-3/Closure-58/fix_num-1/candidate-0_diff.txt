@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -26,8 +26,12 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
+-          addToSetIfLocal(lhs, kill);
+-          addToSetIfLocal(lhs, gen);
++        // Only add to kill set - the variable is assigned, but not yet live.
++        addToSetIfLocal(lhs, kill);
++        // The lhs expression may use variables, so compute gen for it recursively.
++        if (!NodeUtil.isName(lhs)) {
++          computeGenKill(lhs, gen, kill, conditional);
++        }
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +88,4 @@
+       return;
+   }
+ }
++

@@ -1,0 +1,1 @@
+['addVirtualWrapping', 'getCurrentName', 'overrideCurrentName', 'close', 'isClosed', 'isExpectedStartArrayToken', '_isEmpty']

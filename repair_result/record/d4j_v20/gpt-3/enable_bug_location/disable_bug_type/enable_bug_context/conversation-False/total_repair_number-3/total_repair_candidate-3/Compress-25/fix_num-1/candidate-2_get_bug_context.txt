@@ -1,0 +1,1 @@
+['getNextZipEntry', 'closeEntry', 'readFully', 'readDataDescriptor', 'readStoredEntry']

@@ -1,0 +1,1 @@
+['isRemovableVar', 'removeUnreferencedFunctionArgs', 'markReferencedVar', 'removeUnreferencedVars']

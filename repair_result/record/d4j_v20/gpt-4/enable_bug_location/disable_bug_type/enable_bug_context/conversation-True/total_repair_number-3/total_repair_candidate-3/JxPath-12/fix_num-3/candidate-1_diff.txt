@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+             || testName.getName()
+                     .equals(DOMNodePointer.getLocalName(node))) {
+             String nodeNS = DOMNodePointer.getNamespaceURI(node);
+-            return equalStrings(namespaceURI, nodeNS);
++            return DOMNodePointer.equalStrings(namespaceURI, nodeNS);
+         }
+         return false;
+     }
+@@ -48,3 +48,4 @@
+     }
+     return false;
+ }
++

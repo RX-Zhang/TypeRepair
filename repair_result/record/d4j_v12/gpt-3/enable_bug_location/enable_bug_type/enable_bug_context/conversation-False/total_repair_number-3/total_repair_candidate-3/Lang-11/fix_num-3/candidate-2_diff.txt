@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -7,6 +7,10 @@
+     }
+     if (chars != null && chars.length == 0) {
+         throw new IllegalArgumentException("The chars array must not be empty");
++    }
++
++    if (start >= end) {
++        throw new IllegalArgumentException("The 'start' must be less than 'end'.");
+     }
+ 
+     if (start == 0 && end == 0) {
+@@ -24,6 +28,10 @@
+ 
+     char[] buffer = new char[count];
+     int gap = end - start;
++
++    if (gap <= 0) {
++        throw new IllegalArgumentException("The 'gap' must be positive, meaning 'end' must be greater than 'start'.");
++    }
+ 
+     while (count-- != 0) {
+         char ch;
+@@ -65,3 +73,4 @@
+     }
+     return new String(buffer);
+ }
++

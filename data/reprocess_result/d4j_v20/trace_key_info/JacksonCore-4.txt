@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.util.TestTextBuffer.testExpand
+- Error: junit.framework.AssertionFailedError: Expected buffer of 262145 to expand, did not, length now 262144
+- Location:                   fail("Expected buffer of "+old.length+" to expand, did not, length now "+buf.length);

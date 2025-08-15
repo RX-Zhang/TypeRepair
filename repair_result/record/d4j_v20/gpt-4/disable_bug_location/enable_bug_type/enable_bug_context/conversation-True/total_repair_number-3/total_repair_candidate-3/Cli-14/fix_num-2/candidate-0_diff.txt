@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -6,7 +6,11 @@
+     // reference to first unexpected option
+     Option unexpected = null;
+ 
+-    for (final Iterator i = options.iterator(); i.hasNext();) {
++    List optionsList = getOptions();
++    int maximum = getMaximum();
++    int minimum = getMinimum();
++
++    for (final Iterator i = optionsList.iterator(); i.hasNext();) {
+         final Option option = (Option) i.next();
+ 
+         // needs validation?
+@@ -19,7 +23,6 @@
+         if (commandLine.hasOption(option)) {
+             if (++present > maximum) {
+                 unexpected = option;
+-
+                 break;
+             }
+ 
+@@ -38,9 +41,10 @@
+         throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+     }
+ 
+-    // validate each anonymous argument
+-    for (final Iterator i = anonymous.iterator(); i.hasNext();) {
++    List anonymousList = anonymous;
++    for (final Iterator i = anonymousList.iterator(); i.hasNext();) {
+         final Option option = (Option) i.next();
+         option.validate(commandLine);
+     }
+ }
++

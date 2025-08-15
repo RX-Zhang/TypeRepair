@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,5 +1,14 @@
+ public boolean hasAttr(String attributeKey) {
+     Validate.notNull(attributeKey);
+ 
++    if (attributeKey.toLowerCase().startsWith("abs:")) {
++        String key = attributeKey.substring("abs:".length());
++        if (!attributes.hasKey(key))
++            return false;
++        // Check if abs URL can be resolved and is non-empty
++        String abs = absUrl(key);
++        return abs != null && abs.length() > 0;
++    }
+     return attributes.hasKey(attributeKey);
+ }
++

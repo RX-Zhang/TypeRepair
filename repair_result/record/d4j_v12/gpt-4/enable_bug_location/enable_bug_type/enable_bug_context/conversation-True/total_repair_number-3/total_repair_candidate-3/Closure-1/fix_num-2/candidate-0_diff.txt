@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -25,7 +25,8 @@
+     Node lastArg;
+     while ((lastArg = argList.getLastChild()) != null) {
+       Var var = fnScope.getVar(lastArg.getString());
+-      if (!referenced.contains(var)) {
++      // Fix: check that var is not null before using it in referenced.contains
++      if (var == null || !referenced.contains(var)) {
+         argList.removeChild(lastArg);
+         compiler.reportCodeChange();
+       } else {
+@@ -36,3 +37,4 @@
+     callSiteOptimizer.optimize(fnScope, referenced);
+   }
+ }
++

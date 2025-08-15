@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -17,8 +17,9 @@
+ 
+     while (true)
+     {
+-        text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, nextLineTabStop);
++        text = text.substring(pos).trim(); // Trim the text before adding padding
++        text = padding + text; // Add padding
++        pos = findWrapPos(text, width, 0); // Reset nextLineTabStop to 0 for wrapping
+ 
+         if (pos == -1)
+         {
+@@ -30,3 +31,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

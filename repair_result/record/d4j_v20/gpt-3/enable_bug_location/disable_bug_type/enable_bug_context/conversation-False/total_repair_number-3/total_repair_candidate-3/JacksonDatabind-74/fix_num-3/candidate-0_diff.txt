@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -21,7 +21,14 @@
+     if (p.getCurrentToken() == JsonToken.START_ARRAY) {
+         return super.deserializeTypedFromAny(p, ctxt);
+     }
++    
++    // Check if the current token is a string and handle it as a potential empty value
++    if (p.getCurrentToken() == JsonToken.VALUE_STRING && p.getText().isEmpty()) {
++        return null; // Treat empty string as null
++    }
++    
+     ctxt.reportWrongTokenException(p, JsonToken.FIELD_NAME,
+             "missing property '"+_typePropertyName+"' that is to contain type id  (for class "+baseTypeName()+")");
+     return null;
+ }
++

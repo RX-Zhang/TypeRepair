@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -90,5 +90,13 @@
+         }
+       }
+     }
++  } else {
++    // Handle case where objectType is null
++    // This could be a runtime error if dereferencing fails
++    compiler.report(
++        t.makeError(getprop, BAD_PRIVATE_PROPERTY_ACCESS,
++            propertyName,
++            "Object type is null or invalid."));
+   }
+ }
++

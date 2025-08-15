@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -8,8 +8,9 @@
+     _objectCodec = codec;
+     _symbols = sym;
+     _inputBuffer = inputBuffer;
+-    _inputPtr = start;
+-    _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
++    _inputPtr = 0; // Reset input pointer to 0, offset handled separately
++    _inputEnd = end - start; // Adjust end relative to the new start
++    _currInputProcessed = start; // Track bytes skipped at the start for location calculations
+     _bufferRecyclable = bufferRecyclable;
+ }
++

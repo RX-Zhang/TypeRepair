@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -15,21 +15,26 @@
+               "invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}",
+               lowerBound, initial, upperBound);
+     }
++
+     double a = initial;
+     double b = initial;
+-    double fa;
+-    double fb;
+-    int numIterations = 0 ;
++    double fa = function.value(a);
++    double fb = function.value(b);
++    int numIterations = 0;
+ 
+-    do {
+-        a = Math.max(a - 1.0, lowerBound);
+-        b = Math.min(b + 1.0, upperBound);
+-        fa = function.value(a);
+-        
+-        fb = function.value(b);
+-        numIterations++ ;
+-    } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && 
+-            ((a > lowerBound) || (b < upperBound)));
++    // Attempt to expand the interval until the function values at the ends have opposite signs,
++    // or the bounds are reached or maximum iterations exceeded
++    while ((fa * fb > 0.0) && (numIterations < maximumIterations) && (a > lowerBound || b < upperBound)) {
++        if (a > lowerBound) {
++            a = Math.max(a - 1.0, lowerBound);
++            fa = function.value(a);
++        }
++        if (fb * fa > 0.0 && b < upperBound) {
++            b = Math.min(b + 1.0, upperBound);
++            fb = function.value(b);
++        }
++        numIterations++;
++    }
+ 
+     if (fa * fb >= 0.0 ) {
+         throw new ConvergenceException(
+@@ -42,3 +47,4 @@
+     
+     return new double[]{a, b};
+ }
++

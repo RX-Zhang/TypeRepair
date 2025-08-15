@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public void matchConstraint(ObjectType constraintObj) {
+-  // We only want to match contraints on anonymous types.
++  // We only want to match constraints on anonymous types.
+ 
+   // Handle the case where the constraint object is a record type.
+   //
+@@ -8,7 +8,7 @@
+   // f({});
+   //
+   // We want to modify the object literal to match the constraint, by
+-  // taking any each property on the record and trying to match
++  // taking each property on the record and trying to match
+   // properties on this object.
+   if (constraintObj.isRecordType()) {
+     for (String prop : constraintObj.getOwnPropertyNames()) {
+@@ -19,8 +19,12 @@
+           typeToInfer = getNativeType(JSTypeNative.VOID_TYPE)
+               .getLeastSupertype(propType);
+         }
+-        defineInferredProperty(prop, typeToInfer, null);
++        // Ensure typeToInfer is not null before defining the inferred property
++        if (typeToInfer != null) {
++          defineInferredProperty(prop, typeToInfer, null);
++        }
+       }
+     }
+   }
+ }
++

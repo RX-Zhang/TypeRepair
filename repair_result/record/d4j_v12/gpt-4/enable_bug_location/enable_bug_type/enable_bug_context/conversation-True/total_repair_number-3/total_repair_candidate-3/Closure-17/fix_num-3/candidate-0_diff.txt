@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -43,9 +43,15 @@
+             }
+           }
+         }
++        // If constant is declared and no type found above, fall back to native number for constants without explicit type.
++        if (knownType == null && info.isConstant()) {
++          // Use native number type for constants without explicit type.
++          return getNativeType(JSTypeNative.NUMBER_TYPE);
++        }
+       }
+     }
+   }
+ 
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

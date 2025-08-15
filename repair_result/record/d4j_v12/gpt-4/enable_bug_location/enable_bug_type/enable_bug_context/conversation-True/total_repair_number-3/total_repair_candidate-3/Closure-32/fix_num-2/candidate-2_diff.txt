@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -33,6 +33,7 @@
+       case STAR:
+         if (ignoreStar) {
+           // Mark the position after the star as the new start of the line.
++          // Do nothing, ignores the star at start of line.
+         } else {
+           // The star is part of the comment.
+           if (builder.length() > 0) {
+@@ -58,7 +59,7 @@
+         ignoreStar = false;
+         state = State.SEARCHING_ANNOTATION;
+ 
+-            // All tokens must be separated by a space.
++        // All tokens must be separated by a space.
+ 
+         if (token == JsDocToken.EOC ||
+             token == JsDocToken.EOF ||
+@@ -99,3 +100,4 @@
+     }
+   } while (true);
+ }
++

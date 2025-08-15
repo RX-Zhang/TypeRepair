@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.interop.IllegalTypesCheckTest.testJDKTypes1872
+- Error: java.lang.NullPointerException
+- Location:         Authentication1872 result = mapper.readValue(json, Authentication1872.class);

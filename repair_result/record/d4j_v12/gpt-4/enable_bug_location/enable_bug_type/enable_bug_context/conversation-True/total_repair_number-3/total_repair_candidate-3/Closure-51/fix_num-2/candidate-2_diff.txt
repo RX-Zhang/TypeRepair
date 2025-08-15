@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -4,6 +4,12 @@
+   char prev = getLastChar();
+   if (x < 0 && prev == '-') {
+     add(" ");
++  }
++
++  if (Double.doubleToRawLongBits(x) == Double.doubleToRawLongBits(-0.0d)) {
++    // Handle negative zero explicitly
++    add("-0.0");
++    return;
+   }
+ 
+   if ((long) x == x) {
+@@ -24,5 +30,5 @@
+   } else {
+     add(String.valueOf(x));
+   }
++}
+ 
+-}

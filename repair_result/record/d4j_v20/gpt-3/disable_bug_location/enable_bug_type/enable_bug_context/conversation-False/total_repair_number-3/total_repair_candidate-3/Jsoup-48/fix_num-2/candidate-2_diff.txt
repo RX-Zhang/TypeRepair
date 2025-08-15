@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -18,8 +18,12 @@
+                     cookie(cookieName, cookieVal);
+             }
+         } else { // combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+-            if (!values.isEmpty())
+-                header(name, values.get(0));
++            if (!values.isEmpty()) {
++                // Combine all values with comma and space, per RFC specification
++                String combinedValues = String.join(", ", values);
++                header(name, combinedValues);
++            }
+         }
+     }
+ }
++

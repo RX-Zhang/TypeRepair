@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -27,12 +27,43 @@
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                // Check for options with '=' in them for long and short options
++                int eqIndex = arg.indexOf('=');
++                if (eqIndex != -1)
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
++                    String optName;
++                    if (arg.startsWith("--"))
++                    {
++                        // long option
++                        optName = arg.substring(2, eqIndex);
++                        if (options.hasOption(optName))
++                        {
++                            tokens.add("--" + optName);
++                            tokens.add(arg.substring(eqIndex + 1));
++                            continue;
++                        }
++                    }
++                    else if (arg.startsWith("-"))
++                    {
++                        // short option
++                        optName = arg.substring(1, eqIndex);
++                        if (optName.length() == 1 && options.hasOption(optName))
++                        {
++                            tokens.add("-" + optName);
++                            tokens.add(arg.substring(eqIndex + 1));
++                            continue;
++                        }
++                    }
++                }
++
++                // Check if the initial part (first two chars) is a valid option (e.g., -D)
++                if (arg.length() >= 2 && options.hasOption(arg.substring(0, 2)))
++                {
+                     tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    if (arg.length() > 2)
++                    {
++                        tokens.add(arg.substring(2)); // property=value
++                    }
+                 }
+                 else
+                 {
+@@ -57,3 +88,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -4,11 +4,12 @@
+         throw new IllegalArgumentException("Instant must not be null");
+     }
+     
++    Chronology chrono = instant.getChronology();
++    chrono = selectChronology(chrono);
+     long instantMillis = instant.getMillis();
+-    Chronology chrono = instant.getChronology();
+-    long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+-    chrono = selectChronology(chrono);
+-    
++    DateTimeZone zone = chrono.getZone();
++    long instantLocal = instantMillis + zone.getOffset(instantMillis);
++
+     DateTimeParserBucket bucket = new DateTimeParserBucket(
+         instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
+     int newPos = parser.parseInto(bucket, text, position);
+@@ -26,3 +27,4 @@
+     }
+     return newPos;
+ }
++

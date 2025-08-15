@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -11,19 +11,17 @@
+         for nextnode in node.successors:
+             if nextnode in visited_nodes:
+                 continue
+-            insert_or_update(unvisited_nodes,
+-                (min(
+-                    get(unvisited_nodes, nextnode) or float('inf'),
+-                    get(unvisited_nodes, nextnode) + length_by_edge[node, nextnode]
+-                ),
+-                nextnode)
+-            )
++            # Ensure that we are correctly calculating the distance
++            new_distance = distance + length_by_edge.get((node, nextnode), float('inf'))
++            insert_or_update(unvisited_nodes, (new_distance, nextnode))
+     return float('inf')
++
+ def get(node_heap, wanted_node):
+     for dist, node in node_heap:
+         if node == wanted_node:
+             return dist
+-    return 0
++    return float('inf')  # Return inf if the node is not found
++
+ def insert_or_update(node_heap, dist_node):
+     dist, node = dist_node
+     for i, tpl in enumerate(node_heap):

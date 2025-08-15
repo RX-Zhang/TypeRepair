@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -17,9 +17,12 @@
+                         final String keyword = coll.toString(CharsetNames.UTF_8);
+                         // Get rest of entry
+                         final int restLen = len - read;
++                        if (restLen < 0) {
++                            throw new IOException("Pax header length is invalid: " + len);
++                        }
+                         if (restLen == 1) { // only NL
+                             headers.remove(keyword);
+-                        } else {
++                        } else if (restLen > 0) {
+                             final byte[] rest = new byte[restLen];
+                             final int got = IOUtils.readFully(i, rest);
+                             if (got != restLen) {
+@@ -40,6 +43,9 @@
+                 }
+                 break; // Processed single header
+             }
++            if (ch < '0' || ch > '9') {
++                throw new IOException("Pax header length contains non-digit: " + (char) ch);
++            }
+             len *= 10;
+             len += ch - '0';
+         }
+@@ -49,3 +55,4 @@
+     }
+     return headers;
+ }
++

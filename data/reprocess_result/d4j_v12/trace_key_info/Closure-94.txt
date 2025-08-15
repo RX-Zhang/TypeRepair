@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.NodeUtilTest.testValidDefine
+- Error: junit.framework.AssertionFailedError
+- Location:     assertTrue(testValidDefineValue("1 + 8"));
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.ProcessDefinesTest.testOverridingString1
+- Error: junit.framework.AssertionFailedError: Unexpected error(s): JSC_INVALID_DEFINE_INIT_ERROR. illegal initialization of @define variable DEF_OVERRIDE_STRING at testcode line 1 : 54 expected:<0> but was:<1>
+- Location:     test(
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.ProcessDefinesTest.testOverridingString3
+- Error: junit.framework.AssertionFailedError: Unexpected error(s): JSC_INVALID_DEFINE_INIT_ERROR. illegal initialization of @define variable DEF_OVERRIDE_STRING at testcode line 1 : 54 expected:<0> but was:<1>
+- Location:     test(

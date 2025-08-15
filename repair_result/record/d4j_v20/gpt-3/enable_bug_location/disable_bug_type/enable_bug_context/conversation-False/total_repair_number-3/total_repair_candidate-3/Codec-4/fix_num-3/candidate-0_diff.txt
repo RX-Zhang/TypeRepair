@@ -1,0 +1,8 @@
+--- 
++++ 
+@@ -1,3 +1,4 @@
+ public Base64() {
+-    this(false);
++    this(STANDARD_ENCODE_TABLE, DEFAULT_BUFFER_SIZE, CHUNK_SIZE, CHUNK_SEPARATOR);
+ }
++

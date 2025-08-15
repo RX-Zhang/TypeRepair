@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -14,9 +14,9 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.defaultInstance().constructType(am.getGenericType());
+         }
++
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+         if (ct == null) {
+@@ -24,7 +24,6 @@
+                     +propDef.getName()+"' (of type "+_beanDesc.getType()+"); serialization type "+serializationType+" has no content");
+         }
+         serializationType = serializationType.withContentTypeHandler(contentTypeSer);
+-        ct = serializationType.getContentType();
+     }
+     
+     Object valueToSuppress = null;
+@@ -102,3 +101,4 @@
+     }
+     return bpw;
+ }
++

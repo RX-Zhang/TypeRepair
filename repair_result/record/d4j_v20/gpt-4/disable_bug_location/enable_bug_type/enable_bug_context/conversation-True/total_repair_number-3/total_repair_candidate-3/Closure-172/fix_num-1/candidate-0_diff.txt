@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -38,7 +38,7 @@
+       // Check if this is assigned in an inner scope.
+       // Functions assigned in inner scopes are inferred.
+       AstFunctionContents contents =
+-          getFunctionAnalysisResults(scope.getRootNode());
++          getFunctionAnalysisResults(n);
+       if (contents == null ||
+           !contents.getEscapedQualifiedNames().contains(qName)) {
+         return false;
+@@ -47,3 +47,4 @@
+   }
+   return inferred;
+ }
++

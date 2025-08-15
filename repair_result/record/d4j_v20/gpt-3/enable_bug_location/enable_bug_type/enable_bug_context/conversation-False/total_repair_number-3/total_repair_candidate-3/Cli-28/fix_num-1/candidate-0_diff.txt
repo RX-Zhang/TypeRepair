@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -16,9 +16,8 @@
+             // get the value from the properties instance
+             String value = properties.getProperty(option);
+ 
+-            if (opt.hasArg())
+-            {
+-                if (opt.getValues() == null || opt.getValues().length == 0)
++            if (opt != null) { // Check if the option exists
++                if (opt.hasArg())
+                 {
+                     try
+                     {
+@@ -29,17 +28,18 @@
+                         // if we cannot add the value don't worry about it
+                     }
+                 }
++                else if (!("yes".equalsIgnoreCase(value)
++                        || "true".equalsIgnoreCase(value)
++                        || "1".equalsIgnoreCase(value)))
++                {
++                    // if the value is not yes, true or 1 then don't add the
++                    // option to the CommandLine
++                    continue; // Use continue instead of break to check other properties
++                }
++
++                cmd.addOption(opt);
+             }
+-            else if (!("yes".equalsIgnoreCase(value)
+-                    || "true".equalsIgnoreCase(value)
+-                    || "1".equalsIgnoreCase(value)))
+-            {
+-                // if the value is not yes, true or 1 then don't add the
+-                // option to the CommandLine
+-                break;
+-            }
+-
+-            cmd.addOption(opt);
+         }
+     }
+ }
++

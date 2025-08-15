@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -7,10 +7,11 @@
+         if ('H' == hwChar || 'W' == hwChar) {
+             final char preHWChar = str.charAt(index - 2);
+             final char firstCode = this.map(preHWChar);
+-            if (firstCode == mappedChar || 'H' == preHWChar || 'W' == preHWChar) {
++            if (firstCode == mappedChar && 'H' != preHWChar && 'W' != preHWChar) {
+                 return 0;
+             }
+         }
+     }
+     return mappedChar;
+ }
++

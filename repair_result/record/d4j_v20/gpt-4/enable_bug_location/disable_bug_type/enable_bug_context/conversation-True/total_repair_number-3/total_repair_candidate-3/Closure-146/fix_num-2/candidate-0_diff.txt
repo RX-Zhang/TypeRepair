@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -12,9 +12,13 @@
+ 
+     case FALSE:
+     case UNKNOWN:
++      if (this.isNoType() || that.isNoType()) {
++        return new TypePair(JSType.UNKNOWN, JSType.UNKNOWN);
++      }
+       return new TypePair(this, that);
+   }
+ 
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

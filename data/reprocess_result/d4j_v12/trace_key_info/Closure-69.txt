@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testThisTypeOfFunction2
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testThisTypeOfFunction3
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testThisTypeOfFunction4
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(

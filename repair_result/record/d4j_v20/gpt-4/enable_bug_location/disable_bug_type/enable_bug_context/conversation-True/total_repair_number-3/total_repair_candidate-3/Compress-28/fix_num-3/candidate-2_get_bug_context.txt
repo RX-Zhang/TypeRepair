@@ -1,0 +1,1 @@
+['reset', 'readRecord', 'tryToConsumeSecondEOFRecord', 'canReadEntryData', 'isAtEOF', 'setAtEOF']

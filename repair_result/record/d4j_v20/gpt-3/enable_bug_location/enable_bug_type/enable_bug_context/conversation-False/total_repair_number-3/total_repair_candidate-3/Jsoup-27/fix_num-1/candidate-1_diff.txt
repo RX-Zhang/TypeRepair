@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -3,8 +3,8 @@
+     Matcher m = charsetPattern.matcher(contentType);
+     if (m.find()) {
+         String charset = m.group(1).trim();
+-        charset = charset.toUpperCase(Locale.ENGLISH);
+-        return charset;
++        return charset.toLowerCase(Locale.ENGLISH); // Change to lower case to match expected output
+     }
+     return null;
+ }
++

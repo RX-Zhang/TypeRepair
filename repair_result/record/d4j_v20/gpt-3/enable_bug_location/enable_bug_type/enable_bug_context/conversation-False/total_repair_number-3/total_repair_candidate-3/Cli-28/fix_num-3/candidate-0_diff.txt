@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+ 
+             if (opt.hasArg())
+             {
+-                if (opt.getValues() == null || opt.getValues().length == 0)
++                if (value != null && !value.isEmpty())
+                 {
+                     try
+                     {
+@@ -36,10 +36,11 @@
+             {
+                 // if the value is not yes, true or 1 then don't add the
+                 // option to the CommandLine
+-                break;
++                continue; // Changed from break to continue
+             }
+ 
+             cmd.addOption(opt);
+         }
+     }
+ }
++

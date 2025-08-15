@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -40,8 +40,12 @@
+     } else if (raw == Currency.class) {
+         FromStringDeserializer<?> deser = FromStringDeserializer.findDeserializer(Currency.class);
+         return new StdKeyDeserializer(TYPE_CURRENCY, raw, deser);
++    } else if (CharSequence.class.isAssignableFrom(raw)) {
++        // Handle CharSequence types as String deserializer
++        return StringKD.forType(String.class);
+     } else {
+         return null;
+     }
+     return new StdKeyDeserializer(kind, raw);
+ }
++

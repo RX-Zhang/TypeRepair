@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,6 +1,14 @@
+ public void close() throws IOException {
+     if (!this.closed) {
+-        super.close();
+-        this.closed = true;
++        try {
++            if (this.cpioEntry != null) {
++                closeArchiveEntry();
++            }
++            finish();
++        } finally {
++            super.close();
++            this.closed = true;
++        }
+     }
+ }
++

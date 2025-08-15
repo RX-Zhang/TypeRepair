@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -156,8 +156,9 @@
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return current;
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

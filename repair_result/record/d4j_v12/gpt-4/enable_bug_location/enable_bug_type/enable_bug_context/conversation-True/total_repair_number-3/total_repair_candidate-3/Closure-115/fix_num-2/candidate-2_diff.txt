@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -4,7 +4,7 @@
+     return CanInlineResult.NO;
+   }
+ 
+-  Node block = fnNode.getLastChild();
++  Node block = NodeUtil.getFunctionBody(fnNode);
+ 
+   boolean hasSideEffects = false;
+   if (block.hasChildren()) {
+@@ -68,3 +68,4 @@
+ 
+   return CanInlineResult.YES;
+ }
++

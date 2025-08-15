@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -21,9 +21,12 @@
+     }
+ 
+     if (depth1 == 1) {
+-        throw new JXPathException(
+-                "Cannot compare pointers that do not belong to the same tree: '"
+-                        + p1 + "' and '" + p2 + "'");
++        // Added exception handling to prevent runtime errors
++        if (p1 == null || p2 == null) {
++            throw new JXPathException(
++                    "Cannot compare pointers that do not belong to the same tree: '"
++                            + p1 + "' and '" + p2 + "'");
++        }
+     }
+     int r = compareNodePointers(p1.parent, depth1 - 1, p2.parent, depth2 - 1);
+     if (r != 0) {
+@@ -32,3 +35,4 @@
+ 
+     return p1.parent.compareChildNodePointers(p1, p2);
+ }
++

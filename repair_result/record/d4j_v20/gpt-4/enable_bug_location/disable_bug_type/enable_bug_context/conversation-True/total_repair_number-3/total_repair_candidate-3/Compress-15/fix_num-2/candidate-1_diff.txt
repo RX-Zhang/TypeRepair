@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -17,8 +17,13 @@
+     }
+     String myComment = getComment();
+     String otherComment = other.getComment();
++    // Treat null and empty comments as equal
+     if (myComment == null) {
+-        if (otherComment != null) {
++        if (otherComment != null && otherComment.length() != 0) {
++            return false;
++        }
++    } else if (myComment.length() == 0) {
++        if (otherComment != null && otherComment.length() != 0) {
+             return false;
+         }
+     } else if (!myComment.equals(otherComment)) {
+@@ -36,5 +41,6 @@
+                          other.getCentralDirectoryExtra())
+         && Arrays.equals(getLocalFileDataExtra(),
+                          other.getLocalFileDataExtra())
+-        && gpb.equals(other.gpb);
++        && getGeneralPurposeBit().equals(other.getGeneralPurposeBit());
+ }
++

@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -65,15 +65,15 @@
+         // Simple, except that if this is a leaf, need to suppress end:
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-                // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
++            // expose as empty Object, not null
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         return _currToken;
+-        
++
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+@@ -92,7 +92,7 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            /* One more refinement (pronunced like "hack") is that if
++            /* One more refinement (pronounced like "hack") is that if
+              * we had an empty String (or all white space), and we are
+              * deserializing an array, we better hide the empty text.
+              */
+@@ -101,10 +101,10 @@
+             if (_parsingContext.inArray()) {
+                 if (_isEmpty(_currText)) {
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                    //    expose as empty Object, not null (or, worse, as used to
+-                    //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
+-                    _parsingContext = _parsingContext.getParent();
++                    // expose as empty Object, not null (or, worse, as used to
++                    // be done, by swallowing the token)
++                    _currToken = JsonToken.START_OBJECT;
++                    _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+                     _namesToWrap = _parsingContext.getNamesToWrap();
+                     return _currToken;
+                 }
+@@ -132,3 +132,4 @@
+     _throwInternal();
+     return null;
+ }
++

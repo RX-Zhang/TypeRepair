@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -11,7 +11,8 @@
+     Preconditions.checkState(block.hasOneChild());
+     Node stmt = block.getFirstChild();
+     if (stmt.isReturn()) {
+-      hasSideEffects = NodeUtil.mayHaveSideEffects(stmt.getFirstChild(), compiler);
++      Node returnExpr = stmt.getFirstChild();
++      hasSideEffects = NodeUtil.mayHaveSideEffects(returnExpr, compiler);
+     }
+   }
+   // CALL NODE: [ NAME, ARG1, ARG2, ... ]
+@@ -68,3 +69,4 @@
+ 
+   return CanInlineResult.YES;
+ }
++

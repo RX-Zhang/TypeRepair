@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -3,10 +3,16 @@
+ {
+     Object value = get(bean);
+     if (value == null) { // nulls need specialized handling
++        if (willSuppressNulls()) {
++            serializeAsPlaceholder(bean, jgen, prov);
++            return;
++        }
+         if (_nullSerializer != null) {
+             _nullSerializer.serialize(null, jgen, prov);
++            return;
+         } else { // can NOT suppress entries in tabular output
+             jgen.writeNull();
++            return;
+         }
+     }
+     // otherwise find serializer to use
+@@ -41,3 +47,4 @@
+         ser.serializeWithType(value, jgen, prov, _typeSerializer);
+     }
+ }
++

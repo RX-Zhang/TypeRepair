@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+       // and try to inline them.
+       List<Ref> refs = Lists.newArrayList(name.getRefs());
+       for (Ref ref : refs) {
+-        if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
++        if (ref.type == Ref.Type.ALIASING_GET && ref.scope.isLocal()) {
+           // {@code name} meets condition (c). Try to inline it.
+           if (inlineAliasIfPossible(ref, namespace)) {
+             name.removeRef(ref);
+@@ -35,3 +35,4 @@
+     }
+   }
+ }
++

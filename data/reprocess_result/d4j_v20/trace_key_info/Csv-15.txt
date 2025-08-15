@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVPrinterTest.testDontQuoteEuroFirstChar
+- Error: junit.framework.AssertionFailedError: expected:<[€],Deux
+> but was:<["€"],Deux
+>
+- Location:             assertEquals(EURO_CH + ",Deux" + recordSeparator, sw.toString());

@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -10,13 +10,17 @@
+         buff.append(getRequiredOptions().size() == 1 ? "" : "s");
+         buff.append(": ");
+ 
+-
+         // loop through the required options
+         while (iter.hasNext())
+         {
+             buff.append(iter.next());
++            if (iter.hasNext())
++            {
++                buff.append(", ");
++            }
+         }
+ 
+         throw new MissingOptionException(buff.toString());
+     }
+ }
++

@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -6,11 +6,6 @@
+           || NodeUtil.mayBeString(right, false))) {
+     return null;
+   }
+-
+-  double result;
+-
+-  // TODO(johnlenz): Handle NaN with unknown value. BIT ops convert NaN
+-  // to zero so this is a little akward here.
+ 
+   Double lValObj = NodeUtil.getNumberValue(left);
+   if (lValObj == null) {
+@@ -23,6 +18,8 @@
+ 
+   double lval = lValObj;
+   double rval = rValObj;
++
++  double result;
+ 
+   switch (opType) {
+     case Token.BITAND:
+@@ -45,14 +42,16 @@
+       break;
+     case Token.MOD:
+       if (rval == 0) {
+-        error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
++        // Allow folding to keep "x = 1 / 0" as "x = 1 / 0" (do not fold)
++        // Don't error here to allow preserve original code representation
+         return null;
+       }
+       result = lval % rval;
+       break;
+     case Token.DIV:
+       if (rval == 0) {
+-        error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
++        // Allow folding to keep "x = 1 / 0" as "x = 1 / 0" (do not fold)
++        // Don't error here to allow preserve original code representation
+         return null;
+       }
+       result = lval / rval;
+@@ -81,3 +80,4 @@
+ 
+   return null;
+ }
++

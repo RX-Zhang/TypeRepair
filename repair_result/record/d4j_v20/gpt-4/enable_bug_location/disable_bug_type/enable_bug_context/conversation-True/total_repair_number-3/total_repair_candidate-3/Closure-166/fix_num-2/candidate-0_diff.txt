@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -11,9 +11,16 @@
+   // f({});
+   //
+   // We want to modify the object literal to match the constraint, by
+-  // taking any each property on the record and trying to match
++  // taking each property on the record and trying to match
+   // properties on this object.
+   if (constraint.isRecordType()) {
+-    matchRecordTypeConstraint(constraint.toObjectType());
++    ObjectType constraintObj = constraint.toObjectType();
++    for (String prop : constraintObj.getOwnPropertyNames()) {
++      JSType propType = constraintObj.getPropertyType(prop);
++      if (!this.hasOwnProperty(prop)) {
++        defineProperty(prop, propType, true, null);
++      }
++    }
+   }
+ }
++

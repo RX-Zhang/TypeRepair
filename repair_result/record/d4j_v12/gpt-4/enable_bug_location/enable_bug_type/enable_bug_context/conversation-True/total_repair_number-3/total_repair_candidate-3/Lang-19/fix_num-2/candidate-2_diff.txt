@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -5,19 +5,32 @@
+         int start = index + 2;
+         boolean isHex = false;
+ 
++        if(start >= seqEnd) {
++            // No characters after &#, return 0 to indicate no translation
++            return 0;
++        }
++
+         char firstChar = input.charAt(start);
+         if(firstChar == 'x' || firstChar == 'X') {
+             start++;
+             isHex = true;
+ 
+-            // Check there's more than just an x after the &#
++            if(start >= seqEnd) {
++                // No characters after &#x or &#X, return 0 to indicate no translation
++                return 0;
++            }
+         }
+ 
+         int end = start;
+         // Note that this supports character codes without a ; on the end
+-        while(input.charAt(end) != ';') 
+-        {
++        // So the loop should not go out of bounds, check bounds first
++        while(end < seqEnd && input.charAt(end) != ';') {
+             end++;
++        }
++
++        // if no semicolon found, end == seqEnd, treat as unfinished entity so we do not translate
++        if(end == seqEnd) {
++            return 0;
+         }
+ 
+         int entityValue;
+@@ -28,7 +41,7 @@
+                 entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);
+             }
+         } catch(NumberFormatException nfe) {
+-        System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start +"]["+ end +"]");
++            System.err.println("FAIL: " + input.subSequence(start, end) + "[" + start + "][" + end + "]");
+             return 0;
+         }
+ 
+@@ -40,8 +53,9 @@
+             out.write(entityValue);
+         }
+ 
++        return 2 + (end - (index + 2)) + (isHex ? 1 : 0) + 1;
++    }
+ 
+-        return 2 + (end - start) + (isHex ? 1 : 0) + 1;
+-    }
+     return 0;
+ }
++

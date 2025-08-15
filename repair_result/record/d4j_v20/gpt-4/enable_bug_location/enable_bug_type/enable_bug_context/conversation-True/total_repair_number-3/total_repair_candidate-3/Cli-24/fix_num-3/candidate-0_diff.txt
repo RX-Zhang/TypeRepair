@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -11,7 +11,11 @@
+     }
+     sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+ 
+-    if (nextLineTabStop >= width)
++    int descPad = getDescPadding();
++    int leftPad = getLeftPadding();
++
++    // Adjust check to consider leftPad and descPad to prevent exception
++    if (nextLineTabStop >= width - descPad - leftPad)
+     {
+         // stops infinite loop happening
+         throw new IllegalStateException("Total width is less than the width of the argument and indent " + 
+@@ -42,3 +46,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

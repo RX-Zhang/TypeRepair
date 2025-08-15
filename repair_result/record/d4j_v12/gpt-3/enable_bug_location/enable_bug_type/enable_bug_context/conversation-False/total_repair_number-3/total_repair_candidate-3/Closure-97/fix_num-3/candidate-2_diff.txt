@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -44,7 +44,10 @@
+         // JavaScript handles zero shifts on signed numbers differently than
+         // Java as an Java int can not represent the unsigned 32-bit number
+         // where JavaScript can so use a long here.
+-        result = lvalInt >>> rvalInt;
++        // Use long and mask with 0xFFFFFFFFL to handle unsigned 32-bit integers correctly.
++        long lvalLong = lvalInt & 0xFFFFFFFFL;
++        long shifted = lvalLong >>> rvalInt;
++        result = (double) shifted;
+         break;
+       default:
+         throw new AssertionError("Unknown shift operator: " +
+@@ -60,3 +63,4 @@
+ 
+   return n;
+ }
++

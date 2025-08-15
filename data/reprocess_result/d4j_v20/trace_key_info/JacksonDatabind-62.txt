@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.creators.ArrayDelegatorCreatorForCollectionTest.testUnmodifiable
+- Error: java.lang.IllegalStateException: No default constructor for [collection type; class java.util.Collections$UnmodifiableSet, contains [simple type, class java.lang.Object]]
+- Location:         Set<?> foo = mapper.readValue(EXPECTED_JSON, Set.class);

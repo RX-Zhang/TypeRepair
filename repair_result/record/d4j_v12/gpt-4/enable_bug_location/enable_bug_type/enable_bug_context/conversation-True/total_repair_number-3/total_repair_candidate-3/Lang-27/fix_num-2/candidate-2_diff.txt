@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -20,7 +20,14 @@
+     String dec;
+     String exp;
+     int decPos = str.indexOf('.');
+-    int expPos = str.indexOf('e') + str.indexOf('E') + 1;
++    int ePos = str.indexOf('e');
++    int EPos = str.indexOf('E');
++    int expPos = -1;
++    if (ePos > -1 && EPos > -1) {
++        expPos = Math.min(ePos, EPos);
++    } else {
++        expPos = Math.max(ePos, EPos);
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -55,7 +62,7 @@
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+@@ -83,7 +90,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -146,3 +153,4 @@
+         }
+     }
+ }
++

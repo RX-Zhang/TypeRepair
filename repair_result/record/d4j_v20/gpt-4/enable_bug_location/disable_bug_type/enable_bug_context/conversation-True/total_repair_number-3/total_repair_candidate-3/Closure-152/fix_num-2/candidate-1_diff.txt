@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -4,10 +4,8 @@
+   call = (ArrowType) safeResolve(call, t, scope);
+   prototype = (FunctionPrototypeType) safeResolve(prototype, t, scope);
+ 
+-  // Warning about typeOfThis if it doesn't resolve to an ObjectType
+-  // is handled further upstream.
+-  // TODO(nicksantos): Handle this correctly if we have a UnionType.
+-  typeOfThis = (ObjectType) safeResolve(typeOfThis, t, scope);
++  // Use getTypeOfThis() to ensure typeOfThis resolves to a valid ObjectType or a default object type
++  typeOfThis = getTypeOfThis();
+ 
+   boolean changed = false;
+   ImmutableList.Builder<ObjectType> resolvedInterfaces =
+@@ -29,3 +27,4 @@
+ 
+   return super.resolveInternal(t, scope);
+ }
++

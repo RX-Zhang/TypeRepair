@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -325,6 +325,8 @@
+         if ((n.getType() == Token.OBJECTLIT)
+             && (parent.getJSType() instanceof EnumType)) {
+           ensureTyped(t, n, parent.getJSType());
++          // Also explicitly check the enum initializer
++          checkEnumInitializer(t, n, parent.getJSType().toMaybeEnumType().getPrimitiveType());
+         } else {
+           ensureTyped(t, n);
+         }
+@@ -351,3 +353,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

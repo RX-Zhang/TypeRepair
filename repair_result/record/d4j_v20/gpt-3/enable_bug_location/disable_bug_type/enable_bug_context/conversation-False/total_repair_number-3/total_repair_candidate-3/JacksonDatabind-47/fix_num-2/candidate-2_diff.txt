@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -22,7 +22,17 @@
+             try {
+                 // 11-Oct-2015, tatu: For deser, we call `TypeFactory.constructSpecializedType()`,
+                 //   may be needed here too in future?
++                if (serClass.isAssignableFrom(type.getRawClass())) {
++                    // The annotation specifies a supertype of the current; widen/generalize
+                     type = tf.constructGeneralizedType(type, serClass);
++                } else if (type.getRawClass().isAssignableFrom(serClass)) {
++                    // The annotation specifies a subtype; specialize/narrow
++                    type = tf.constructSpecializedType(type, serClass);
++                } else {
++                    throw new IllegalArgumentException(String.format(
++                            "Class %s not a super-type of %s",
++                            serClass.getName(), type));
++                }
+             } catch (IllegalArgumentException iae) {
+                 throw new JsonMappingException(null,
+                         String.format("Failed to widen type %s with annotation (value %s), from '%s': %s",
+@@ -100,3 +110,4 @@
+     }
+     return type;
+ }
++

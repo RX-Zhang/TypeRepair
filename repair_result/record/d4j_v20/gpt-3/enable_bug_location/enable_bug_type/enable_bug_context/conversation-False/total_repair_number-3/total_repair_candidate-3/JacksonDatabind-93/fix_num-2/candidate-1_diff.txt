@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -2,12 +2,18 @@
+ {
+     // There are certain nasty classes that could cause problems, mostly
+     // via default typing -- catch them here.
++    if (type == null || type.getRawClass() == null) {
++        // Defensive check to prevent possible NullPointerException
++        throw JsonMappingException.from(ctxt,
++                String.format("Illegal type (null) to deserialize: prevented for security reasons"));
++    }
++
+     final Class<?> raw = type.getRawClass();
+     String full = raw.getName();
+ 
+     main_check:
+     do {
+-        if (_cfgIllegalClassNames.contains(full)) {
++        if (_cfgIllegalClassNames != null && _cfgIllegalClassNames.contains(full)) {
+             break;
+         }
+ 
+@@ -15,7 +21,10 @@
+         //    for some Spring framework types
+         // 05-Jan-2017, tatu: ... also, only applies to classes, not interfaces
+         if (full.startsWith(PREFIX_STRING)) {
+-            for (Class<?> cls = raw; cls != Object.class; cls = cls.getSuperclass()) {
++            for (Class<?> cls = raw; cls != null && cls != Object.class; cls = cls.getSuperclass()) {
++                if (cls == null) {
++                    break;
++                }
+                 String name = cls.getSimpleName();
+                 // looking for "AbstractBeanFactoryPointcutAdvisor" but no point to allow any is there?
+                 if ("AbstractPointcutAdvisor".equals(name)
+@@ -31,3 +40,4 @@
+     throw JsonMappingException.from(ctxt,
+             String.format("Illegal type (%s) to deserialize: prevented for security reasons", full));
+ }
++

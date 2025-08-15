@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -37,7 +37,11 @@
+             if (!orig.equals(ze.getName())) {
+                 nameMap.remove(orig);
+                 nameMap.put(ze.getName(), ze);
++                // Update the entries map to use the modified ZipArchiveEntry as key
++                OffsetEntry offsetVal = entries.remove(ze);
++                entries.put(ze, offsetVal);
+             }
+         }
+     }
+ }
++

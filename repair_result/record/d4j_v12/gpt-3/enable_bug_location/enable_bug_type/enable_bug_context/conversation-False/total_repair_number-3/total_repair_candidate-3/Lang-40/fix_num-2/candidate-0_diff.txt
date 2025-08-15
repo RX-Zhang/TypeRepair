@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -2,5 +2,7 @@
+     if (str == null || searchStr == null) {
+         return false;
+     }
+-    return contains(str.toUpperCase(), searchStr.toUpperCase());
++    // Use Locale.ROOT to avoid locale-specific upper case mappings
++    return contains(str.toUpperCase(Locale.ROOT), searchStr.toUpperCase(Locale.ROOT));
+ }
++

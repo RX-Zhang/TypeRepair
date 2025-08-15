@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,6 +1,9 @@
+ protected void _addMethodMixIns(Class<?> targetClass, AnnotatedMethodMap methods,
+         Class<?> mixInCls, AnnotatedMethodMap mixIns)
+ {
++    if (mixInCls == null) {
++        return;
++    }
+     List<Class<?>> parents = new ArrayList<Class<?>>();
+     parents.add(mixInCls);
+     ClassUtil.findSuperTypes(mixInCls, targetClass, parents);
+@@ -15,15 +18,16 @@
+              * without masking (no such annotation)
+              */
+             if (am != null) {
+-                _addMixUnders(m, am);
++                _addMixOvers(m, am);
+                 /* Otherwise will have precedence, but must wait
+                  * until we find the real method (mixIn methods are
+                  * just placeholder, can't be called)
+                  */
+             } else {
+                 // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
++                mixIns.add(_constructMethod(m));
+             }
+         }
+     }
+ }
++

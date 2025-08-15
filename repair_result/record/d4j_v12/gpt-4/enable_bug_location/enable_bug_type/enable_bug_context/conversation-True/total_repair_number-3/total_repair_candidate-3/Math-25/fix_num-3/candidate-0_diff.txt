@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -18,7 +18,7 @@
+         currentX = observations[i].getX();
+         currentY = observations[i].getY();
+ 
+-        // update the integrals of f<sup>2</sup> and f'<sup>2</sup>
++        // update the integrals of f^2 and f'^2
+         // considering a linear model for f (and therefore constant f')
+         final double dx = currentX - previousX;
+         final double dy = currentY - previousY;
+@@ -41,6 +41,7 @@
+     double c1 = sy2 * sxz - sxy * syz;
+     double c2 = sxy * sxz - sx2 * syz;
+     double c3 = sx2 * sy2 - sxy * sxy;
++
+     if ((c1 / c2 < 0) || (c2 / c3 < 0)) {
+         final int last = observations.length - 1;
+         // Range of the observations, assuming that the
+@@ -53,7 +54,7 @@
+ 
+         double yMin = Double.POSITIVE_INFINITY;
+         double yMax = Double.NEGATIVE_INFINITY;
+-        for (int i = 1; i < observations.length; ++i) {
++        for (int i = 0; i < observations.length; ++i) {
+             final double y = observations[i].getY();
+             if (y < yMin) {
+                 yMin = y;
+@@ -64,10 +65,11 @@
+         }
+         a = 0.5 * (yMax - yMin);
+     } else {
+-            // In some ill-conditioned cases (cf. MATH-844), the guesser
+-            // procedure cannot produce sensible results.
++        // In some ill-conditioned cases (cf. MATH-844), the guesser
++        // procedure cannot produce sensible results.
+ 
+         a = FastMath.sqrt(c1 / c2);
+         omega = FastMath.sqrt(c2 / c3);
+     }
+ }
++

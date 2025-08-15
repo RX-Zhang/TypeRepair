@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public int parseArguments(Parameters params) throws CmdLineException {
+-  String param = params.getParameter(0);
++  String param = null;
++  if (params.getParameters() != null && params.getParameters().size() > 0) {
++    param = params.getParameter(0);
++  }
+ 
+   if (param == null) {
+     setter.addValue(true);
+@@ -11,9 +14,9 @@
+     } else if (FALSES.contains(lowerParam)) {
+       setter.addValue(false);
+     } else {
+-      setter.addValue(true);
+-      return 0;
++      throw new CmdLineException("Invalid boolean value: " + param);
+     }
+     return 1;
+   }
+ }
++

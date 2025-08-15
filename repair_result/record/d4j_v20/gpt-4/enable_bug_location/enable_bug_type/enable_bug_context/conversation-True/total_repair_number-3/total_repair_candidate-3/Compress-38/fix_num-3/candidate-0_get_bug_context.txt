@@ -1,0 +1,1 @@
+['getName', 'getFile', 'isDirectory', 'parseTarHeader', 'normalizeFileName']

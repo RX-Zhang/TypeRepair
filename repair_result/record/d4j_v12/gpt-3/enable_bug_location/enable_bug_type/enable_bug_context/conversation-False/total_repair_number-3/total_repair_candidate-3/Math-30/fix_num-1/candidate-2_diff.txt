@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -13,5 +13,6 @@
+ 
+     final NormalDistribution standardNormal = new NormalDistribution(0, 1);
+ 
+-    return 2 * standardNormal.cumulativeProbability(z);
++    return 2 * standardNormal.cumulativeProbability(-Math.abs(z));
+ }
++

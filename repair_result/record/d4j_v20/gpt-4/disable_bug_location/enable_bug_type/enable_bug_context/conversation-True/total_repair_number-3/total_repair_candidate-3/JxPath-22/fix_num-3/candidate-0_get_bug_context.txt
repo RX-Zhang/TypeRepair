@@ -1,0 +1,1 @@
+['getNamespaceURI', 'matchesQName', 'getRelativePositionOfElement', 'getRelativePositionOfTextNode', 'getPrefix']

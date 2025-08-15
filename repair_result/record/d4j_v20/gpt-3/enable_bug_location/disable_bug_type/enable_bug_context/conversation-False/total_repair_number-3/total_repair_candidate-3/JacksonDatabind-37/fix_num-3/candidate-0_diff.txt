@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -3,9 +3,9 @@
+     if (_class == subclass) {
+         return this;
+     }
+-    // Should we check that there is a sub-class relationship?
+     // 15-Jan-2016, tatu: Almost yes, but there are some complications with
+     //    placeholder values, so no.
++    // Commented out check left as is:
+     /*
+     if (!_class.isAssignableFrom(subclass)) {
+         throw new IllegalArgumentException("Class "+subclass.getName()+" not sub-type of "
+@@ -16,3 +16,4 @@
+     return new SimpleType(subclass, _bindings, _superClass, _superInterfaces,
+             _valueHandler, _typeHandler, _asStatic);
+ }
++

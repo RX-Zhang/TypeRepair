@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     if (eof) {
+         return;
+     }
+-    if (inAvail < 0) {
++    if (inAvail <= 0) { // Changed < to <= to handle the case where inAvail is 0
+         eof = true;
+     }
+     for (int i = 0; i < inAvail; i++) {
+@@ -48,3 +48,4 @@
+         }
+     }
+ }
++

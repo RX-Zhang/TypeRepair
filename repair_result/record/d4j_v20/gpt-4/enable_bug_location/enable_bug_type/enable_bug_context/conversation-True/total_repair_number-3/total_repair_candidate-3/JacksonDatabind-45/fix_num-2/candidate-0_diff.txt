@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -11,7 +11,26 @@
+                 return withFormat(Boolean.TRUE, null);
+             }
+ 
+-            if (format.getShape() == JsonFormat.Shape.STRING) {
++            // For 'any' shape with pattern, locale or timezone, use STRING shape overriding global config
++            if (shape == JsonFormat.Shape.ANY) {
++                if (format.hasPattern() || format.hasLocale() || format.getTimeZone() != null) {
++                    TimeZone tz = format.getTimeZone();
++                    final String pattern = format.hasPattern()
++                                    ? format.getPattern()
++                                    : StdDateFormat.DATE_FORMAT_STR_ISO8601;
++                    final Locale loc = format.hasLocale()
++                                    ? format.getLocale()
++                                    : serializers.getLocale();
++                    SimpleDateFormat df = new SimpleDateFormat(pattern, loc);
++                    if (tz == null) {
++                        tz = serializers.getTimeZone();
++                    }
++                    df.setTimeZone(tz);
++                    return withFormat(Boolean.FALSE, df);
++                }
++            }
++
++            if (shape == JsonFormat.Shape.STRING) {
+                 TimeZone tz = format.getTimeZone();
+                 final String pattern = format.hasPattern()
+                                 ? format.getPattern()
+@@ -30,3 +49,4 @@
+     }
+     return this;
+ }
++

@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -67,7 +67,10 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            _currToken = JsonToken.END_OBJECT;
++            _parsingContext = _parsingContext.getParent();
++            _namesToWrap = _parsingContext.getNamesToWrap();
++            return _currToken;
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+@@ -92,7 +95,7 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            /* One more refinement (pronunced like "hack") is that if
++            /* One more refinement (pronounced like "hack") is that if
+              * we had an empty String (or all white space), and we are
+              * deserializing an array, we better hide the empty text.
+              */
+@@ -132,3 +135,4 @@
+     _throwInternal();
+     return null;
+ }
++

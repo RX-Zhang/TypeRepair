@@ -1,0 +1,1 @@
+['getAutoSort', 'getAllowDuplicateXValues', 'getItemCount', 'add', 'remove', 'indexOf']

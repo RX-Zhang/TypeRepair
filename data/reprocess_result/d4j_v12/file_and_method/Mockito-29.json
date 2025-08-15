@@ -1,0 +1,1 @@
+{"ClassName": "Same", "Fields": ["private static final long serialVersionUID;", "private final Object wanted;"], "Methods": ["public boolean matches(Object actual) { ... }", "public void describeTo(Description description) { ... }", "private void appendQuoting(Description description) { ... }"]}

@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     import heapq
+     heap = arr[:k]
+     heapq.heapify(heap)
+-    for x in arr:
++    for x in arr[k:]:  # Start iterating from index k
+         yield heapq.heappushpop(heap, x)
+     while heap:
+         yield heapq.heappop(heap)

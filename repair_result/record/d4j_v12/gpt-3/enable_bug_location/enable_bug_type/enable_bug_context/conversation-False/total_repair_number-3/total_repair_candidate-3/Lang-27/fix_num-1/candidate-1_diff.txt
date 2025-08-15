@@ -1,0 +1,68 @@
+--- 
++++ 
+@@ -23,7 +23,6 @@
+     int expPos = str.indexOf('e') + str.indexOf('E') + 1;
+ 
+     if (decPos > -1) {
+-
+         if (expPos > -1) {
+             if (expPos < decPos) {
+                 throw new NumberFormatException(str + " is not a valid number.");
+@@ -62,7 +61,6 @@
+                         //Too big for a long
+                     }
+                     return createBigInteger(numeric);
+-
+                 }
+                 throw new NumberFormatException(str + " is not a valid number.");
+             case 'f' :
+@@ -74,7 +72,6 @@
+                         //has non-zeros in it, then float does not have the precision we want
+                         return f;
+                     }
+-
+                 } catch (NumberFormatException nfe) {
+                     // ignore the bad number
+                 }
+@@ -83,7 +80,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -97,12 +94,11 @@
+                 //$FALL-THROUGH$
+             default :
+                 throw new NumberFormatException(str + " is not a valid number.");
+-
+         }
+     } else {
+         //User doesn't have a preference on the return type, so let's start
+         //small and go from there...
+-        if (expPos > -1 && expPos < str.length() - 1) {
++        if (expPos > -1 && expPos < str.length()) {
+             exp = str.substring(expPos + 1, str.length());
+         } else {
+             exp = null;
+@@ -120,7 +116,6 @@
+                 // ignore the bad number
+             }
+             return createBigInteger(str);
+-
+         } else {
+             //Must be a float,double,BigDec
+             boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+@@ -140,9 +135,8 @@
+             } catch (NumberFormatException nfe) {
+                 // ignore the bad number
+             }
+-
+             return createBigDecimal(str);
+-
+         }
+     }
+ }
++

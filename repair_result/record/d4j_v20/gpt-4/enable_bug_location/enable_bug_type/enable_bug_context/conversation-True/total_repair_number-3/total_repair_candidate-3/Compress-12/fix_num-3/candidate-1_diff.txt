@@ -1,0 +1,61 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+ 
+     byte[] headerBuf = getRecord();
+ 
+-    if (hasHitEOF) {
++    if (headerBuf == null) {
+         currEntry = null;
+         return null;
+     }
+@@ -30,11 +30,20 @@
+ 
+     if (currEntry.isGNULongNameEntry()) {
+         // read in the name
+-        StringBuffer longName = new StringBuffer();
++        StringBuilder longName = new StringBuilder();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+         int length = 0;
+-        while ((length = read(buf)) >= 0) {
+-            longName.append(new String(buf, 0, length));
++        while ((length = read(buf, 0, buf.length)) > 0) {
++            longName.append(new String(buf, 0, length, "UTF-8"));
++        }
++        // Skip padding to the next header
++        long numToSkip = entrySize - entryOffset;
++        while (numToSkip > 0) {
++            long skipped = skip(numToSkip);
++            if (skipped <= 0) {
++                throw new IOException("failed to skip extended long name entry");
++            }
++            numToSkip -= skipped;
+         }
+         getNextEntry();
+         if (currEntry == null) {
+@@ -44,17 +53,17 @@
+         }
+         // remove trailing null terminator
+         if (longName.length() > 0
+-            && longName.charAt(longName.length() - 1) == 0) {
++            && longName.charAt(longName.length() - 1) == '\0') {
+             longName.deleteCharAt(longName.length() - 1);
+         }
+         currEntry.setName(longName.toString());
+     }
+ 
+-    if (currEntry.isPaxHeader()){ // Process Pax headers
++    if (currEntry.isPaxHeader()) { // Process Pax headers
+         paxHeaders();
+     }
+ 
+-    if (currEntry.isGNUSparse()){ // Process sparse files
++    if (currEntry.isGNUSparse()) { // Process sparse files
+         readGNUSparse();
+     }
+ 
+@@ -65,3 +74,4 @@
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

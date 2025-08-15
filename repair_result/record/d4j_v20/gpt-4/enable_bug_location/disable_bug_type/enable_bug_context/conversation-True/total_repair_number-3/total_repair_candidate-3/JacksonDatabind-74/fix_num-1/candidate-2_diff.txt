@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -21,7 +21,9 @@
+     if (p.getCurrentToken() == JsonToken.START_ARRAY) {
+         return super.deserializeTypedFromAny(p, ctxt);
+     }
+-    ctxt.reportWrongTokenException(p, JsonToken.FIELD_NAME,
++    // changed the token check from FIELD_NAME to START_OBJECT or FIELD_NAME as expected
++    ctxt.reportWrongTokenException(p, JsonToken.START_OBJECT,
+             "missing property '"+_typePropertyName+"' that is to contain type id  (for class "+baseTypeName()+")");
+     return null;
+ }
++

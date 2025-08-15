@@ -1,0 +1,46 @@
+Test failure 1:
+- Test: org.mockitousage.annotation.SpyAnnotationTest.should_spy_inner_class
+- Error: junit.framework.ComparisonFailure: expected:<[inner] strength> but was:<[null] strength>
+- Location:         assertEquals("inner strength", outer.strength.fullStrength());
+
+
+Test failure 2:
+- Test: org.mockitousage.annotation.SpyAnnotationTest.should_report_when_constructor_is_explosive
+- Error: junit.framework.AssertionFailedError
+- Location:             fail();
+
+
+Test failure 3:
+- Test: org.mockitousage.constructor.CreatingMocksWithConstructorTest.can_spy_abstract_classes
+- Error: junit.framework.ComparisonFailure: expected:<hey!> but was:<null>
+- Location:         assertEquals("hey!", mock.getMessage());
+
+
+Test failure 4:
+- Test: org.mockitousage.constructor.CreatingMocksWithConstructorTest.exception_message_when_constructor_not_found
+- Error: junit.framework.AssertionFailedError
+- Location:             fail();
+
+
+Test failure 5:
+- Test: org.mockitousage.constructor.CreatingMocksWithConstructorTest.can_create_mock_with_constructor
+- Error: junit.framework.ComparisonFailure: expected:<hey!> but was:<null>
+- Location:         assertEquals("hey!", mock.getMessage());
+
+
+Test failure 6:
+- Test: org.mockitousage.constructor.CreatingMocksWithConstructorTest.can_mock_inner_classes
+- Error: junit.framework.ComparisonFailure: expected:<hey!> but was:<null>
+- Location:         assertEquals("hey!", mock.getMessage());
+
+
+Test failure 7:
+- Test: org.mockitousage.constructor.CreatingMocksWithConstructorTest.mocking_inner_classes_with_wrong_outer_instance
+- Error: junit.framework.AssertionFailedError
+- Location:             fail();
+
+
+Test failure 8:
+- Test: org.mockitousage.constructor.CreatingMocksWithConstructorTest.can_mock_abstract_classes
+- Error: junit.framework.ComparisonFailure: expected:<hey!> but was:<null>
+- Location:         assertEquals("hey!", mock.getMessage());

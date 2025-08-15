@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -4,23 +4,29 @@
+     Node n = v.getNode();
+     int type = n.getType();
+     Node parent = n.getParent();
+-    if (parent.isVar()) {
++    if (parent != null && parent.isVar()) {
+       if (n.hasChildren() && n.getFirstChild().isQualifiedName()) {
+-      String name = n.getString();
+-      Var aliasVar = scope.getVar(name);
+-      aliases.put(name, aliasVar);
++        String name = n.getString();
++        Var aliasVar = scope.getVar(name);
++        if (aliasVar != null && aliasVar.getInitialValue() != null) {
++          aliases.put(name, aliasVar);
+ 
+-      String qualifiedName =
+-          aliasVar.getInitialValue().getQualifiedName();
+-      transformation.addAlias(name, qualifiedName);
+-      // Bleeding functions already get a BAD_PARAMETERS error, so just
+-      // do nothing.
+-      // Parameters of the scope function also get a BAD_PARAMETERS
+-      // error.
+-    } else {
+-      // TODO(robbyw): Support using locals for private variables.
+-      report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL, n.getString());
+-    }
++          String qualifiedName =
++              aliasVar.getInitialValue().getQualifiedName();
++          transformation.addAlias(name, qualifiedName);
++          // Bleeding functions already get a BAD_PARAMETERS error, so just
++          // do nothing.
++          // Parameters of the scope function also get a BAD_PARAMETERS
++          // error.
++        } else {
++          // If aliasVar or initial value is null, report as non-alias local
++          report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL, n.getString());
++        }
++      } else {
++        // TODO(robbyw): Support using locals for private variables.
++        report(t, n, GOOG_SCOPE_NON_ALIAS_LOCAL, n.getString());
++      }
+     }
+   }
+ }
++

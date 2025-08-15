@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -3,6 +3,10 @@
+         node = ((Document) node).getDocumentElement();
+     }
+ 
++    if (!(node instanceof Element)) {
++        return null;
++    }
++    
+     Element element = (Element) node;
+ 
+     String uri = element.getNamespaceURI();
+@@ -11,11 +15,12 @@
+         String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
+ 
+         Node aNode = node;
+-        while (aNode != null) {
+-            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+-                Attr attr = ((Element) aNode).getAttributeNode(qname);
+-                if (attr != null) {
+-                    return attr.getValue();
++        while (aNode != null && aNode.getNodeType() == Node.ELEMENT_NODE) {
++            Element aElement = (Element) aNode;
++            if (aElement.hasAttribute(qname)) {
++                String value = aElement.getAttribute(qname);
++                if (value != null && !value.isEmpty()) {
++                    return value;
+                 }
+             }
+             aNode = aNode.getParentNode();
+@@ -24,3 +29,4 @@
+     }
+     return uri;
+ }
++

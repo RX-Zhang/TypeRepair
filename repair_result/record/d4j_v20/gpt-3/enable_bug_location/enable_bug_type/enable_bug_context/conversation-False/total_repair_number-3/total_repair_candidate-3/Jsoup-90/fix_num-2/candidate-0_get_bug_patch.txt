@@ -1,0 +1,48 @@
+private static boolean looksLikeUtf8(byte[] input) {
+    if (input == null || input.length == 0) {
+        return false; // Boundary check for null or empty input
+    }
+
+    int i = 0;
+    // BOM:
+    if (input.length >= 3 && (input[0] & 0xFF) == 0xEF
+        && (input[1] & 0xFF) == 0xBB && (input[2] & 0xFF) == 0xBF) {
+        i = 3;
+    }
+
+    int end;
+    for (int j = input.length; i < j; ++i) {
+        int o = input[i];
+        if ((o & 0x80) == 0) {
+            continue; // ASCII
+        }
+
+        // UTF-8 leading:
+        if ((o & 0xE0) == 0xC0) {
+            end = i + 1;
+        } else if ((o & 0xF0) == 0xE0) {
+            end = i + 2;
+        } else if ((o & 0xF8) == 0xF0) {
+            end = i + 3;
+        } else {
+            return false;
+        }
+
+        // Boundary check to prevent ArrayIndexOutOfBoundsException
+        if (end > input.length) {
+            return false;
+        }
+
+        while (i < end) {
+            i++;
+            if (i >= input.length) {
+                return false; // Additional boundary check
+            }
+            o = input[i];
+            if ((o & 0xC0) != 0x80) {
+                return false;
+            }
+        }
+    }
+    return true;
+}

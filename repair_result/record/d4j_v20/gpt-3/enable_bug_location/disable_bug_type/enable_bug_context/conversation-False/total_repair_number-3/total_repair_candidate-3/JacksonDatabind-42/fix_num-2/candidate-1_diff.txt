@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -4,5 +4,9 @@
+         return URI.create("");
+     }
+     // As per [databind#1123], Locale too
++    if (_valueClass == Locale.class) {
++        return Locale.ROOT;
++    }
+     return super._deserializeFromEmptyString();
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -4,8 +4,13 @@
+     
+     List<String> matchingOpts = new ArrayList<String>();
+ 
+-    // for a perfect match return the single option only
++    // if there is an exact match, return only that option
++    if (longOpts.containsKey(opt)) {
++        matchingOpts.add(opt);
++        return matchingOpts;
++    }
+ 
++    // otherwise, find all options that start with the given prefix
+     for (String longOpt : longOpts.keySet())
+     {
+         if (longOpt.startsWith(opt))
+@@ -16,3 +21,4 @@
+     
+     return matchingOpts;
+ }
++

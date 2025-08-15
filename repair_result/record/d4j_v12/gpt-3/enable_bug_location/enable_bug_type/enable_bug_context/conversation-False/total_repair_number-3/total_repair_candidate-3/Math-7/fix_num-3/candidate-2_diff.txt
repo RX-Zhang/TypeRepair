@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+         final double currentT = interpolator.getGlobalCurrentTime();
+ 
+         // initialize the events states if needed
+-        if (! statesInitialized) {
++        if (!statesInitialized) {
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+@@ -40,6 +40,12 @@
+ 
+             // restrict the interpolator to the first part of the step, up to the event
+             final double eventT = currentEvent.getEventTime();
++
++            // Preventing potential runtime errors if the event time exceeds current time
++            if (eventT > currentT) {
++                break; // exit the loop if the event time is in the future
++            }
++
+             interpolator.setSoftPreviousTime(previousT);
+             interpolator.setSoftCurrentTime(eventT);
+ 
+@@ -98,7 +104,7 @@
+             state.stepAccepted(currentT, currentY);
+             isLastStep = isLastStep || state.stop();
+         }
+-        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1);
++        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1e-10); // changed to a more precise check
+ 
+         // handle the remaining part of the step, after all events if any
+         for (StepHandler handler : stepHandlers) {
+@@ -108,3 +114,4 @@
+         return currentT;
+ 
+ }
++

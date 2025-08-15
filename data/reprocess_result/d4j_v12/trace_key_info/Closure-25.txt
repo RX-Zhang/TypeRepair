@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeInferenceTest.testBackwardsInferenceNew
+- Error: junit.framework.ComparisonFailure: expected:<{[foo: (number|undefined)]}> but was:<{[]}>
+- Location:     assertEquals("{foo: (number|undefined)}", getType("y").toString());

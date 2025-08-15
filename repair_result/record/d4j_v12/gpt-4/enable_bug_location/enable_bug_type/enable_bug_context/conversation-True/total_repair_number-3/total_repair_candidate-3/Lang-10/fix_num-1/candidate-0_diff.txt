@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+         if(Character.isWhitespace(c)) {
+             if(!wasWhite) {
+                 wasWhite= true;
+-                regex.append("\\s*+");
++                regex.append("\\s++");
+             }
+             continue;
+         }
+@@ -39,3 +39,4 @@
+     }
+     return regex;
+ }
++

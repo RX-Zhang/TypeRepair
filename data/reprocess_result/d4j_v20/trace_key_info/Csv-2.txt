@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVRecordTest.testGetStringInconsistentRecord
+- Error: java.lang.Exception: Unexpected exception, expected<java.lang.IllegalArgumentException> but was<java.lang.ArrayIndexOutOfBoundsException>
+- Location:         recordWithHeader.get("fourth");

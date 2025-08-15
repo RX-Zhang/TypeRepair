@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,6 +1,9 @@
+ void read(Tokeniser t, CharacterReader r) {
+     char c = r.consume();
+     switch (c) {
++        case '/':
++            t.transition(SelfClosingStartTag);
++            break;
+         case '>':
+             t.tagPending.selfClosing = true;
+             t.emitTagPending();
+@@ -15,3 +18,4 @@
+             t.transition(BeforeAttributeName);
+     }
+ }
++

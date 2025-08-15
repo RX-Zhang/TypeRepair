@@ -1,0 +1,1 @@
+['defineProperty', 'isEquivalentTo', 'isSubtype', 'getInstanceType', 'hasInstanceType', 'getTypeOfThis', 'resolveInternal']

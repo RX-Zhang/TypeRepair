@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -3,9 +3,9 @@
+     Document doc = null;
+ 
+     // look for BOM - overrides any other header or input
+-
+     if (charsetName == null) { // determine from meta. safe parse as UTF-8
+         // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
++        byteData.mark();
+         docData = Charset.forName(defaultCharset).decode(byteData).toString();
+         doc = parser.parseInput(docData, baseUri);
+         Element meta = doc.select("meta[http-equiv=content-type], meta[charset]").first();
+@@ -24,28 +24,40 @@
+                 }
+             }
+ 
+-            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
++            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode
+                 foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+                 charsetName = foundCharset;
+-                byteData.rewind();
++                byteData.reset();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+                 doc = null;
++            } else {
++                byteData.reset();
+             }
++        } else {
++            byteData.reset();
+         }
+     } else { // specified by content type header (or by user on file load)
+         Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
++        byteData.mark();
+         docData = Charset.forName(charsetName).decode(byteData).toString();
++        byteData.reset();
+     }
++
+     if (docData.length() > 0 && docData.charAt(0) == UNICODE_BOM) {
+         byteData.rewind();
+-        docData = Charset.forName(defaultCharset).decode(byteData).toString();
++        // decode again using detected charsetName or defaultCharset
++        String decodeCharset = charsetName != null ? charsetName : defaultCharset;
++        docData = Charset.forName(decodeCharset).decode(byteData).toString();
+         docData = docData.substring(1);
+-        charsetName = defaultCharset;
++        charsetName = decodeCharset;
+         doc = null;
+     }
++
+     if (doc == null) {
+         doc = parser.parseInput(docData, baseUri);
+-        doc.outputSettings().charset(charsetName);
++        if (charsetName != null)
++            doc.outputSettings().charset(charsetName);
+     }
+     return doc;
+ }
++

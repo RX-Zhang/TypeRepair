@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -7,9 +7,15 @@
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
++    // Skip entries that are Pax headers as they may have names ending with "/"
++    if (isPaxHeader()) {
++        return false;
++    }
++
++    if (getName() != null && getName().endsWith("/")) {
+         return true;
+     }
+ 
+     return false;
+ }
++

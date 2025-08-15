@@ -1,0 +1,1 @@
+['handleGH', 'isVowel', 'charAt', 'contains']

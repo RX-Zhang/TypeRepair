@@ -1,0 +1,13 @@
+static boolean isSimpleNumber(String s) {
+  int len = s.length();
+  if (len == 0) {
+    return false; // return false if the string is empty
+  }
+  for (int index = 0; index < len; index++) {
+    char c = s.charAt(index);
+    if (c != '0' && (c < '1' || c > '9')) {
+      return false; // allow '0' as a valid leading character for non-simple numbers
+    }
+  }
+  return true; // return true if all characters are valid for a simple number
+}

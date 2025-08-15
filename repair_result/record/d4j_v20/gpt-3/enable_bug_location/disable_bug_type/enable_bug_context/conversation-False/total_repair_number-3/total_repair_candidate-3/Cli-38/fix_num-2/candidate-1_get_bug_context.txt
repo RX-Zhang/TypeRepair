@@ -1,0 +1,1 @@
+['isShortOption', 'handleOption', 'handleConcatenatedOptions']

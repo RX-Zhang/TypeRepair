@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -56,19 +56,20 @@
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            _nextToken = JsonToken.FIELD_NAME;
++            _nextToken = JsonToken.VALUE_STRING;
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            return null;
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
++            return null;
+         }
+-        break;
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText;
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -88,6 +89,11 @@
+         break;
+     case XmlTokenStream.XML_END:
+         _currToken = null;
++        break;
++    default:
++        // in case of unknown token, just clear current token
++        _currToken = null;
+     }
+     return null;
+ }
++

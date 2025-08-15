@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -38,15 +38,21 @@
+     }
+   } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
+       NodeUtil.isLValue(n)) {
+-    String name = NodeUtil.getRootOfQualifiedName(n).getString();
+-    Scope scope = t.getScope();
+-    Var var = scope.getVar(name);
+-    if (var != null) {
+-      Scope ownerScope = var.getScope();
+-      if (scope != ownerScope && ownerScope.isLocal()) {
+-        data.get(ownerScope.getRootNode())
+-            .recordEscapedQualifiedName(n.getQualifiedName());
++    // Verify that the root of the qualified name corresponds to a variable,
++    // and check its scope before recording escaped qualified names.
++    Node root = NodeUtil.getRootOfQualifiedName(n);
++    if (root != null) {
++      String name = root.getString();
++      Scope scope = t.getScope();
++      Var var = scope.getVar(name);
++      if (var != null) {
++        Scope ownerScope = var.getScope();
++        if (scope != ownerScope && ownerScope.isLocal()) {
++          data.get(ownerScope.getRootNode())
++              .recordEscapedQualifiedName(n.getQualifiedName());
++        }
+       }
+     }
+   }
+ }
++

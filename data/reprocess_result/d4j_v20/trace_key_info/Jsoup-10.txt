@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.nodes.NodeTest.absHandlesRelativeQuery
+- Error: junit.framework.AssertionFailedError: expected:<...tp://jsoup.org/path/[file]?foo> but was:<...tp://jsoup.org/path/[]?foo>
+- Location:         assertEquals("http://jsoup.org/path/file?foo", a1.absUrl("href"));

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -11,9 +11,16 @@
+         option.setType(type);
+         option.setValueSeparator(valuesep);
+         option.setArgName(argName);
++        
+         // reset the OptionBuilder properties
+         OptionBuilder.reset();
++
++        // Ensure that the description is reset after creating the option
++        if (description != null) {
++            throw new IllegalArgumentException("Description should be reset after creating the option");
++        }
+ 
+     // return the Option instance
+     return option;
+ }
++

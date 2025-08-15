@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -34,6 +34,7 @@
+                     ctxt.reportMappingException("Can not create polymorphic instances with unwrapped values");
+                     return null;
+                 }
++                bean = finishBuild(ctxt, bean);
+                 return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+             }
+             continue;
+@@ -68,5 +69,7 @@
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
++    bean = finishBuild(ctxt, bean);
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -14,9 +14,9 @@
+         return -1;
+     }
+     char[] thisBuf = buffer;
+-    int len = thisBuf.length - strLen;
++    int len = size - strLen; // Fixed: Use 'size' instead of 'thisBuf.length'
+     outer:
+-    for (int i = startIndex; i < len; i++) {
++    for (int i = startIndex; i <= len; i++) { // Fixed: Change '<' to '<=' to include the last possible start index
+         for (int j = 0; j < strLen; j++) {
+             if (str.charAt(j) != thisBuf[i + j]) {
+                 continue outer;
+@@ -26,3 +26,4 @@
+     }
+     return -1;
+ }
++

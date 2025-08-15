@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -7,6 +7,11 @@
+     // Don't attempt to inline a getter or setter property as a variable.
+     if (name.type == Name.Type.GET || name.type == Name.Type.SET) {
+       continue;
++    }
++
++    // Check for boundary conditions to prevent runtime errors
++    if (name.globalSets < 0 || name.localSets < 0 || name.aliasingGets < 0) {
++      throw new IllegalArgumentException("Invalid counts for name: " + name);
+     }
+ 
+     if (name.globalSets == 1 && name.localSets == 0 &&
+@@ -35,3 +40,4 @@
+     }
+   }
+ }
++

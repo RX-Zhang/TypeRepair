@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -36,12 +36,14 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // The original condition incorrectly includes a range of characters
++            // that causes the Euro character to be quoted unnecessarily.
++            // Replace with clearer conditions covering control characters and reserved chars.
++
++            if (newRecord && (c == '#' || c == '"' || c == delimChar || c == '\n' || c == '\r')) {
+                 quote = true;
+-            } else if (c <= COMMENT) {
+-                // Some other chars at the start of a value caused the parser to fail, so for now
+-                // encapsulate if we start in anything less than '#'. We are being conservative
+-                // by including the default comment char too.
++            } else if (c <= ' ') {
++                // encapsulate if starting with whitespace or control character
+                 quote = true;
+             } else {
+                 while (pos < end) {
+@@ -56,9 +58,8 @@
+                 if (!quote) {
+                     pos = end - 1;
+                     c = value.charAt(pos);
+-                    // Some other chars at the end caused the parser to fail, so for now
+-                    // encapsulate if we end in anything less than ' '
+-                    if (c <= SP) {
++                    // encapsulate if ending with whitespace or control character
++                    if (c <= ' ') {
+                         quote = true;
+                     }
+                 }
+@@ -104,3 +105,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

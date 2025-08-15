@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -2,19 +2,34 @@
+   if (n.getType() == Token.BLOCK) {
+     if (n.hasOneChild()) {
+       Node maybeExpr = n.getFirstChild();
+-        // IE has a bug where event handlers behave differently when
+-        // their return value is used vs. when their return value is in
+-        // an EXPR_RESULT. It's pretty freaking weird. See:
+-        // http://code.google.com/p/closure-compiler/issues/detail?id=291
+-        // We try to detect this case, and not fold EXPR_RESULTs
+-        // into other expressions.
++      // IE has a bug where event handlers behave differently when
++      // their return value is used vs. when their return value is in
++      // an EXPR_RESULT. It's pretty freaking weird. See:
++      // http://code.google.com/p/closure-compiler/issues/detail?id=291
++      // We try to detect this case, and not fold EXPR_RESULTs
++      // into other expressions.
+ 
+-          // We only have to worry about methods with an implicit 'this'
+-          // param, or this doesn't happen.
++      // We only have to worry about methods with an implicit 'this'
++      // param, or this doesn't happen.
+ 
+-        return NodeUtil.isExpressionNode(maybeExpr);
++      if (NodeUtil.isExpressionNode(maybeExpr)) {
++        // Check for the specific bug: Do not fold if the expression is a call to a method named "onchange"
++        if (NodeUtil.isCall(maybeExpr)) {
++          Node callee = maybeExpr.getFirstChild();
++          if (callee != null
++              && ((callee.getType() == Token.GETPROP && "onchange".equals(callee.getLastChild().getString()))
++                  || (callee.getType() == Token.GETELEM
++                      && callee.getLastChild().isString()
++                      && "onchange".equals(callee.getLastChild().getString())))) {
++            // If the callee is f.onchange() or f['onchange'](), do not fold
++            return false;
++          }
++        }
++        return true;
++      }
+     }
+   }
+ 
+   return false;
+ }
++

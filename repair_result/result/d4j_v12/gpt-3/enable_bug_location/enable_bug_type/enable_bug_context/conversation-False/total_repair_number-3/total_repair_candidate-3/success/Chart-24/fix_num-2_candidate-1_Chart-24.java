@@ -1,0 +1,12 @@
+public Paint getPaint(double value) {
+    // Check for boundary conditions and handle exceptions
+    if (value < this.lowerBound || value > this.upperBound) {
+        // Return black for values below the lower bound and white for values above the upper bound
+        return value < this.lowerBound ? Color.black : Color.white;
+    }
+    
+    double v = Math.max(value, this.lowerBound);
+    v = Math.min(v, this.upperBound);
+    int g = (int) ((v - this.lowerBound) / (this.upperBound - this.lowerBound) * 255.0);
+    return new Color(g, g, g);
+}

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -47,7 +47,7 @@
+       break;
+     case Token.FOR:
+       if (NodeUtil.isForIn(parent)) {
+-        return parent;
++        return parent.getFirstChild().getNext();
+       } else {
+         return parent.getFirstChild().getNext().getNext();
+       }
+@@ -78,6 +78,7 @@
+         }
+         return computeFollowNode(fromNode, parent, cfa);
+       }
++      break; // Added break statement to avoid fall-through
+   }
+ 
+   // Now that we are done with the special cases follow should be its
+@@ -96,3 +97,4 @@
+     return computeFollowNode(fromNode, parent, cfa);
+   }
+ }
++

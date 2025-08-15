@@ -1,0 +1,64 @@
+--- 
++++ 
+@@ -21,16 +21,52 @@
+         {
+             String opt = Util.stripLeadingHyphens(arg);
+ 
+-            if (options.hasOption(opt))
++            // Check if argument contains '=' character to handle cases like --foo=bar or -f=bar
++            int equalsIndex = arg.indexOf('=');
++            if (equalsIndex != -1)
++            {
++                String optName;
++                if (arg.startsWith("--"))
++                {
++                    optName = arg.substring(2, equalsIndex);
++                    if (options.hasOption(optName))
++                    {
++                        tokens.add("--" + optName);
++                        tokens.add(arg.substring(equalsIndex + 1));
++                    }
++                    else
++                    {
++                        tokens.add(arg);
++                    }
++                }
++                else if (arg.startsWith("-") && arg.length() > 1)
++                {
++                    optName = arg.substring(1, equalsIndex);
++                    // Here, optName would usually be a single character for short options
++                    if (options.hasOption(optName))
++                    {
++                        tokens.add("-" + optName);
++                        tokens.add(arg.substring(equalsIndex + 1));
++                    }
++                    else
++                    {
++                        tokens.add(arg);
++                    }
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
++            }
++            else if (options.hasOption(opt))
+             {
+                 tokens.add(arg);
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                // check if option prefix like -D is an option
++                if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+                     tokens.add(arg.substring(0, 2)); // -D
+                     tokens.add(arg.substring(2)); // property=value
+                 }
+@@ -57,3 +93,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -9,7 +9,9 @@
+ 
+   if (childType.isDict()) {
+     report(t, property, TypeValidator.ILLEGAL_PROPERTY_ACCESS, "'.'", "dict");
+-  } else if (n.getJSType() != null && parent.isAssign()) {
++  } else if (parent.isAssign() && n.getJSType() != null) {
++    // The original condition was `n.getJSType() != null && parent.isAssign()`
++    // but this should be reversed for correct logic to skip reporting on assignments
+     return;
+   } else if (validator.expectNotNullOrUndefined(t, n, childType,
+       "No properties on this expression", getNativeType(OBJECT_TYPE))) {
+@@ -17,3 +19,4 @@
+   }
+   ensureTyped(t, n);
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.linear.EigenDecompositionImplTest.testMathpbx02
+- Error: junit.framework.AssertionFailedError: expected:<16828.208208485466> but was:<20654.74511575945>
+- Location:             assertEquals(refEigenValues[i], eigenValues[i], 1.0e-3);

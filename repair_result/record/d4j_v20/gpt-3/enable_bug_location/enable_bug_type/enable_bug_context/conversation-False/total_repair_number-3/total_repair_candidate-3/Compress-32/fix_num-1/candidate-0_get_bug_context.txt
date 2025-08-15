@@ -1,0 +1,1 @@
+['getNextTarEntry', 'isEOFRecord', 'applyPaxHeadersToCurrentEntry', 'setCurrentEntry']

@@ -1,0 +1,5 @@
+protected BasePeriod(long duration) {
+    this(duration, null, null);
+    // bug [3264409]
+    setPeriod(0, 0, 0, 0, 0, 0, 0, (int) duration);
+}

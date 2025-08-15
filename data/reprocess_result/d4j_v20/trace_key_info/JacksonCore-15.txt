@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.filter.BasicParserFilteringTest.testNotAllowMultipleMatches
+- Error: junit.framework.ComparisonFailure: expected:<3[]> but was:<3[ 4]>
+- Location:         assertEquals(aposToQuotes("3"), result);

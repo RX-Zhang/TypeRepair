@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -18,8 +18,19 @@
+                     cookie(cookieName, cookieVal);
+             }
+         } else { // combine same header names with comma: http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2
+-            if (!values.isEmpty())
+-                header(name, values.get(0));
++            if (!values.isEmpty()) {
++                // Join all header values with comma and space as per standard
++                StringBuilder combined = new StringBuilder();
++                for (int i = 0; i < values.size(); i++) {
++                    if (values.get(i) != null && !values.get(i).isEmpty()) {
++                        if (combined.length() > 0)
++                            combined.append(", ");
++                        combined.append(values.get(i));
++                    }
++                }
++                header(name, combined.toString());
++            }
+         }
+     }
+ }
++

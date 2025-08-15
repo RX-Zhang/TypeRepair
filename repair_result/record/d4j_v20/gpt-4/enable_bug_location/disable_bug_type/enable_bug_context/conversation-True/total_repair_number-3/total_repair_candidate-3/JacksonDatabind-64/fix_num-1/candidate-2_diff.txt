@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -19,8 +19,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.unknownType();
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -110,7 +109,7 @@
+         break;
+     }
+     BeanPropertyWriter bpw = new BeanPropertyWriter(propDef,
+-            am, _beanDesc.getClassAnnotations(), declaredType,
++            am, getClassAnnotations(), declaredType,
+             ser, typeSer, serializationType, suppressNulls, valueToSuppress);
+ 
+     // How about custom null serializer?
+@@ -125,3 +124,4 @@
+     }
+     return bpw;
+ }
++

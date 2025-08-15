@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.lang.text.StrBuilderTest.testIndexOfLang294
+- Error: junit.framework.AssertionFailedError: expected:<-1> but was:<6>
+- Location:         assertEquals(-1, sb.indexOf("three"));
+
+
+Test failure 2:
+- Test: org.apache.commons.lang.text.StrBuilderTest.testLang294
+- Error: java.lang.ArrayIndexOutOfBoundsException
+- Location:         sb.deleteAll("\n%BLAH%");

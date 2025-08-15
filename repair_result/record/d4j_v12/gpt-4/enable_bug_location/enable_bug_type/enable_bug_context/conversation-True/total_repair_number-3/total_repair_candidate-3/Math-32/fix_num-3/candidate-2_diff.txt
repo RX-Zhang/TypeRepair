@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -4,7 +4,11 @@
+ 
+     if (v.length == 0) {
+         final BSPTree<Euclidean2D> tree = getTree(false);
+-        if ((Boolean) tree.getAttribute()) {
++        Boolean inside = Boolean.FALSE;
++        if (tree.getAttribute() instanceof Boolean) {
++            inside = (Boolean) tree.getAttribute();
++        }
++        if (inside) {
+             // the instance covers the whole space
+             setSize(Double.POSITIVE_INFINITY);
+             setBarycenter(Vector2D.NaN);
+@@ -50,3 +54,4 @@
+     }
+ 
+ }
++

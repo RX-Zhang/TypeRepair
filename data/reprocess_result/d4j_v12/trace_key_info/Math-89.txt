@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.stat.FrequencyTest.testAddNonComparable
+- Error: java.lang.ClassCastException: java.lang.Object cannot be cast to java.lang.Comparable
+- Location:             f.addValue(new Object()); // This was previously OK

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -33,8 +33,9 @@
+     if (trailer == 0 || trailer == ' '){
+         end--;
+     } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
++        // Instead of throwing exception here, fallback to parseOctalOrBinary
++        // For broken time header handling
++        return parseOctalOrBinary(buffer, offset, length);
+     }
+     // May have additional NUL or space
+     trailer = buffer[end-1];
+@@ -55,3 +56,4 @@
+ 
+     return result;
+ }
++

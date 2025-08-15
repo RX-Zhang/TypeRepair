@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -28,7 +28,15 @@
+                     "Missing property '%s' for external type id '%s'",
+                     prop.getName(), _properties[i].getTypePropertyName());
+         }
+-        values[i] = _deserialize(p, ctxt, i, typeId);
++        
++        // Verify and convert types before deserialization
++        Object deserializedValue = _deserialize(p, ctxt, i, typeId);
++        if (deserializedValue instanceof Integer) {
++            values[i] = deserializedValue;
++        } else {
++            // Handle type conversion if necessary
++            values[i] = deserializedValue; // Adjust this line if specific conversion is needed
++        }
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+         // also: if it's creator prop, fill in
+@@ -55,3 +63,4 @@
+     }
+     return bean;
+ }
++

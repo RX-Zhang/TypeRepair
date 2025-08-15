@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -72,10 +72,41 @@
+             // io exception when parsing (not seen before because reading the stream as we go)
+             throw e.ioException();
+         }
+-        Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        Charset parsedCharset = Charset.forName(charsetName);
++        if (!parsedCharset.canEncode()) {
++            parsedCharset = Charset.forName("UTF-8");
++            // update charsetName to UTF-8 so doc charset and output matches
++            charsetName = "UTF-8";
++            // update outputSettings charset to UTF-8
++            doc.outputSettings().charset(parsedCharset);
++            // update meta charset element to UTF-8
++            Elements metaCharset = doc.select("meta[charset]");
++            if (metaCharset.size() > 0) {
++                for (Element meta : metaCharset) {
++                    meta.attr("charset", "UTF-8");
++                }
++            } else {
++                Elements httpEquiv = doc.select("meta[http-equiv=content-type]");
++                if (httpEquiv.size() > 0) {
++                    for (Element meta : httpEquiv) {
++                        String content = meta.attr("content");
++                        content = content.replaceAll("(?i)(charset=)[^;]*", "charset=UTF-8");
++                        meta.attr("content", content);
++                    }
++                } else {
++                    // add meta charset element if none exists
++                    Element head = doc.head();
++                    if (head == null) {
++                        head = doc.prependElement("head");
++                    }
++                    head.appendElement("meta").attr("charset", "UTF-8");
++                }
++            }
++        } else {
++            doc.outputSettings().charset(parsedCharset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

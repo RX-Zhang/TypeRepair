@@ -1,0 +1,1 @@
+['getCurrentToken', 'getCurrentTokenId', 'hasCurrentToken', 'isExpectedStartArrayToken', 'isExpectedStartObjectToken', 'clearCurrentToken', '_nextToken2', '_nextTokenWithBuffering']

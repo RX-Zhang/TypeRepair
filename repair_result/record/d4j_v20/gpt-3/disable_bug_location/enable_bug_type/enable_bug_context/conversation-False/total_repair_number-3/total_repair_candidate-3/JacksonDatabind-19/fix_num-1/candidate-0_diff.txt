@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -10,5 +10,10 @@
+     if (typeParams.length != 2) {
+         throw new IllegalArgumentException("Strange Map type "+rawClass.getName()+": can not determine type parameters");
+     }
++    // Ensure that the types are not null to avoid TypeError
++    if (typeParams[0] == null || typeParams[1] == null) {
++        throw new IllegalArgumentException("Type parameters cannot be null");
++    }
+     return MapType.construct(rawClass, typeParams[0], typeParams[1]);
+ }
++

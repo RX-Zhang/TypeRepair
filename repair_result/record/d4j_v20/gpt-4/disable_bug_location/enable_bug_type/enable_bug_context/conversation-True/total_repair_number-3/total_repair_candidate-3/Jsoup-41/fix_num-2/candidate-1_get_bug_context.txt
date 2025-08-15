@@ -1,0 +1,1 @@
+['nodeName', 'tagName', 'tag', 'id', 'text', 'html', 'equals', 'hashCode']

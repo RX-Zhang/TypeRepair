@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -18,11 +18,19 @@
+         } else if ("linkpath".equals(key)){
+             currEntry.setLinkName(val);
+         } else if ("gid".equals(key)){
+-            currEntry.setGroupId(Integer.parseInt(val));
++            try {
++                currEntry.setGroupId(Long.parseLong(val)); // Changed from Integer to Long
++            } catch (NumberFormatException e) {
++                // Handle the exception, maybe log it
++            }
+         } else if ("gname".equals(key)){
+             currEntry.setGroupName(val);
+         } else if ("uid".equals(key)){
+-            currEntry.setUserId(Integer.parseInt(val));
++            try {
++                currEntry.setUserId(Long.parseLong(val)); // Changed from Integer to Long
++            } catch (NumberFormatException e) {
++                // Handle the exception, maybe log it
++            }
+         } else if ("uname".equals(key)){
+             currEntry.setUserName(val);
+         } else if ("size".equals(key)){
+@@ -30,9 +38,18 @@
+         } else if ("mtime".equals(key)){
+             currEntry.setModTime((long) (Double.parseDouble(val) * 1000));
+         } else if ("SCHILY.devminor".equals(key)){
+-            currEntry.setDevMinor(Integer.parseInt(val));
++            try {
++                currEntry.setDevMinor(Integer.parseInt(val));
++            } catch (NumberFormatException e) {
++                // Handle the exception, maybe log it
++            }
+         } else if ("SCHILY.devmajor".equals(key)){
+-            currEntry.setDevMajor(Integer.parseInt(val));
++            try {
++                currEntry.setDevMajor(Integer.parseInt(val));
++            } catch (NumberFormatException e) {
++                // Handle the exception, maybe log it
++            }
+         }
+     }
+ }
++

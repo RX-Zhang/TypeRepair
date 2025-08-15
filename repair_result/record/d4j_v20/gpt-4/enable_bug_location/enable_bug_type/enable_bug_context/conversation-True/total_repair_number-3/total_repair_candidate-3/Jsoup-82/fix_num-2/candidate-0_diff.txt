@@ -1,0 +1,62 @@
+--- 
++++ 
+@@ -50,9 +50,19 @@
+             }
+         }
+         foundCharset = validateCharset(foundCharset);
+-        if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
+-            foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+-            charsetName = foundCharset;
++
++        if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { 
++            // validate and re-decode only if foundCharset is supported and different from defaultCharset
++            try {
++                Charset charsetTest = Charset.forName(foundCharset);
++                if (!charsetTest.canEncode()) {
++                    // fallback to UTF-8 if charset can't encode
++                    foundCharset = "UTF-8";
++                }
++            } catch (IllegalCharsetNameException | UnsupportedCharsetException e) {
++                foundCharset = "UTF-8";
++            }
++            charsetName = foundCharset.trim().replaceAll("[\"']", "");
+             doc = null;
+         } else if (!fullyRead) {
+             doc = null;
+@@ -74,8 +84,35 @@
+         }
+         Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        // We add a check here to fallback to UTF-8 if charset can't be encoded
++        if (!charset.canEncode()) {
++            Charset utf8 = StandardCharsets.UTF_8;
++            doc.outputSettings().charset(utf8);
++            // update meta charset if present
++            Elements metaCharset = doc.select("meta[charset]");
++            if (metaCharset.size() > 0) {
++                metaCharset.first().attr("charset", utf8.name());
++            } else {
++                // try to update http-equiv content-type meta
++                Elements metaEquiv = doc.select("meta[http-equiv=content-type]");
++                if (metaEquiv.size() > 0) {
++                    Element meta = metaEquiv.first();
++                    String content = meta.attr("content");
++                    content = content.replaceAll("(?i)charset=\\S+", "charset=" + utf8.name());
++                    meta.attr("content", content);
++                } else {
++                    // no meta tag, add one to head
++                    Element head = doc.head();
++                    if (head == null) {
++                        head = doc.appendElement("head");
++                    }
++                    head.appendElement("meta").attr("charset", utf8.name());
++                }
++            }
++        }
+     }
+     input.close();
+     return doc;
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -83,6 +83,8 @@
+ 
+     if (staleInputs) {
+       repartitionInputs();
++      // Reset jsRoot because inputs have changed
++      jsRoot.detachChildren();
+     }
+ 
+     // Build the AST.
+@@ -121,3 +123,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

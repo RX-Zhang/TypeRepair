@@ -1,0 +1,29 @@
+public Iterator<Chromosome> iterator() {
+    return new Iterator<Chromosome>() {
+        private final Iterator<Chromosome> iterator = chromosomes.iterator();
+        private boolean canRemove = false;
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public Chromosome next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            canRemove = true;
+            return iterator.next();
+        }
+
+        @Override
+        public void remove() {
+            if (!canRemove) {
+                throw new IllegalStateException("Cannot remove before calling next()");
+            }
+            iterator.remove();
+            canRemove = false;
+        }
+    };
+}

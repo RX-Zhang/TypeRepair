@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -24,10 +24,8 @@
+     // The ustar and POSIX tar specs require a trailing NUL or
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    while (start < end && (trailer == 0 || trailer == ' ')) {
++    while (start < end && (buffer[end - 1] == 0 || buffer[end - 1] == ' ')) {
+         end--;
+-        trailer = buffer[end - 1];
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -46,3 +44,4 @@
+ 
+     return result;
+ }
++

@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -15,6 +15,9 @@
+     while (start < end){
+         if (buffer[start] == ' '){
+             start++;
++        } else if (buffer[start] == 0) {  // embedded NUL in leading spaces - invalid
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, buffer[start]));
+         } else {
+             break;
+         }
+@@ -27,22 +30,32 @@
+     byte trailer = buffer[end - 1];
+     while (start < end && (trailer == 0 || trailer == ' ')) {
+         end--;
+-        trailer = buffer[end - 1];
++        if (end > start) {
++            trailer = buffer[end - 1];
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+         if (currentByte == 0) {
+-            break;
++            // embedded NUL inside octal digits - invalid
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, currentByte));
++        }
++        if (currentByte == ' ') {
++            // embedded space inside octal digits is invalid
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
++        // CheckStyle:MagicNumber ON
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+     }
+ 
+     return result;
+ }
++

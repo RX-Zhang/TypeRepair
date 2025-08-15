@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -27,11 +27,20 @@
+     // larger than the right bound.
+     boolean inverted = false;
+ 
++    // Keep track of the number of evaluations
++    int evaluations = 0;
++
+     // Keep finding better approximations.
+     while (true) {
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
++        evaluations++;
++
++        // Add a boundary check to prevent exceeding max evaluations
++        if (evaluations > maxEval) {
++            throw new TooManyEvaluationsException(maxEval);
++        }
+ 
+         // If the new approximation is the exact root, return it. Since
+         // this is not an under-approximation or an over-approximation,
+@@ -118,3 +127,4 @@
+         }
+     }
+ }
++

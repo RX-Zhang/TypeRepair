@@ -1,0 +1,95 @@
+--- 
++++ 
+@@ -24,7 +24,7 @@
+             df = _formatISO8601_z = _cloneFormat(DATE_FORMAT_ISO8601_Z, DATE_FORMAT_STR_ISO8601_Z, _timezone, _locale);
+         }
+         // [JACKSON-334]: may be missing milliseconds... if so, add
+-        if (dateStr.charAt(len-4) == ':') {
++        if (len > 4 && dateStr.charAt(len-4) == ':') {
+             StringBuilder sb = new StringBuilder(dateStr);
+             sb.insert(len-1, ".000");
+             dateStr = sb.toString();
+@@ -32,25 +32,56 @@
+     } else {
+         // Let's see if we have timezone indicator or not...
+         if (hasTimeZone(dateStr)) {
++            // Recalculate length in case dateStr changed externally before call? 
++            len = dateStr.length();
+             c = dateStr.charAt(len-3);
++
+             if (c == ':') { // remove optional colon
+                 // remove colon
+                 StringBuilder sb = new StringBuilder(dateStr);
+                 sb.delete(len-3, len-2);
+                 dateStr = sb.toString();
++                len = dateStr.length();
+             } else if (c == '+' || c == '-') { // missing minutes
+                 // let's just append '00'
+                 dateStr += "00";
++                len = dateStr.length();
+             }
++
++            // Now, check if milliseconds are missing or partially present
+             // Milliseconds partial or missing; and even seconds are optional
+-            len = dateStr.length();
+-            // remove 'T', '+'/'-' and 4-digit timezone-offset
+-            c = dateStr.charAt(len-9);
+-            if (Character.isDigit(c)) {
+-                StringBuilder sb = new StringBuilder(dateStr);
+-                sb.insert(len-5, ".000");
+-                dateStr = sb.toString();
++            // The position to check to insert milliseconds depends on format length
++
++            // We'll find position of 'T' (start of time portion)
++            int tIndex = dateStr.indexOf('T');
++            if (tIndex >= 0) {
++                // Calculate expected minimal length for milliseconds insertion
++                // We try to insert ".000" if no milliseconds exist
++                
++                // Look for decimal point in time (for milliseconds)
++                int dotIndex = dateStr.indexOf('.', tIndex);
++                if (dotIndex < 0) {
++                    // No milliseconds - insert before timezone offset
++                    // The timezone offset starts at position len-5 (like +/-hhmm), insert before that
++                    StringBuilder sb = new StringBuilder(dateStr);
++                    sb.insert(len-5, ".000");
++                    dateStr = sb.toString();
++                    len = dateStr.length();
++                } else {
++                    // There are milliseconds but might be partial
++                    int fracLen = len - (dotIndex + 1) - 5; // 5 is length of timezone offset "+hhmm"
++                    if (fracLen < 3) {
++                        // Pad milliseconds to 3 digits
++                        StringBuilder sb = new StringBuilder(dateStr);
++                        for (int i = 0; i < 3 - fracLen; i++) {
++                            sb.insert(len - 5, '0');
++                        }
++                        dateStr = sb.toString();
++                        len = dateStr.length();
++                    }
++                }
+             }
++
+             df = _formatISO8601;
+             if (_formatISO8601 == null) {
+                 df = _formatISO8601 = _cloneFormat(DATE_FORMAT_ISO8601, DATE_FORMAT_STR_ISO8601, _timezone, _locale);
+@@ -58,10 +89,10 @@
+         } else {
+             // If not, plain date. Easiest to just patch 'Z' in the end?
+             StringBuilder sb = new StringBuilder(dateStr);
+-            // And possible also millisecond part if missing
+-            int timeLen = len - dateStr.lastIndexOf('T') - 1;
+-            if (timeLen <= 8) {
+-                    sb.append(".000");
++            int tIndex = dateStr.indexOf('T');
++            int timeLen = (tIndex < 0) ? 0 : len - tIndex - 1;
++            if (timeLen > 0 && timeLen <= 8) {
++                sb.append(".000");
+             }
+             sb.append('Z');
+             dateStr = sb.toString();
+@@ -74,3 +105,4 @@
+     }
+     return df.parse(dateStr, pos);
+ }
++

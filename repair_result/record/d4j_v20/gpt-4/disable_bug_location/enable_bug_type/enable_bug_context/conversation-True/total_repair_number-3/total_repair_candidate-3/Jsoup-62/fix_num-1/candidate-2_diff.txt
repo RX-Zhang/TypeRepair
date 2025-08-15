@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+             if (!name.equals(tb.currentElement().nodeName()))
+                 tb.error(this);
+             tb.popStackToClose(name);
+-            break;
++            return true;  // Correctly return true upon handling the tag
+         } else {
+             if (tb.isSpecial(node)) {
+                 tb.error(this);
+@@ -18,3 +18,4 @@
+     }
+     return true;
+ }
++

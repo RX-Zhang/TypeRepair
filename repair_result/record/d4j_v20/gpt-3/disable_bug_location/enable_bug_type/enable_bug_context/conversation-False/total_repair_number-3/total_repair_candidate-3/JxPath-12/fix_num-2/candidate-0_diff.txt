@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -12,15 +12,20 @@
+         String namespaceURI = nodeNameTest.getNamespaceURI();
+         boolean wildcard = nodeNameTest.isWildcard();
+         String testPrefix = testName.getPrefix();
++
++        // Correct logical condition here:
++        // If it's a wildcard and testPrefix is not null, we need to match namespace and local name like usual
++        // But if wildcard with null prefix, matches any node, so return true
+         if (wildcard && testPrefix == null) {
+             return true;
+         }
+-        if (wildcard
+-            || testName.getName()
+-                    .equals(DOMNodePointer.getLocalName(node))) {
++
++        // For wildcard with a prefix (namespace), or exact name match
++        if (wildcard || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+             String nodeNS = DOMNodePointer.getNamespaceURI(node);
+             return equalStrings(namespaceURI, nodeNS);
+         }
++
+         return false;
+     }
+     if (test instanceof NodeTypeTest) {
+@@ -48,3 +53,4 @@
+     }
+     return false;
+ }
++

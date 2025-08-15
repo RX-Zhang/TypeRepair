@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -37,18 +37,22 @@
+       type = dereferenced;
+     }
+   }
+-  if (type.isFunctionPrototypeType() ||
++
++  // Ensure type is not null before checking its properties
++  if (type != null && (type.isFunctionPrototypeType() ||
+       (type.toObjectType() != null &&
+-       type.toObjectType().getConstructor() != null)) {
++       type.toObjectType().getConstructor() != null))) {
+     return type.toString();
+   }
++
+   String qualifiedName = n.getQualifiedName();
+   if (qualifiedName != null) {
+     return qualifiedName;
+-  } else if (type.isFunctionType()) {
++  } else if (type != null && type.isFunctionType()) {
+     // Don't show complex function names.
+     return "function";
+   } else {
+-    return type.toString();
++    return type != null ? type.toString() : "unknown type";
+   }
+ }
++

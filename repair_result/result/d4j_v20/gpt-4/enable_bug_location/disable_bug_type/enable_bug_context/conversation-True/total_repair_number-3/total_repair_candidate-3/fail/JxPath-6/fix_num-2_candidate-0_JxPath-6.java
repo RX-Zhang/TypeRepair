@@ -1,0 +1,42 @@
+protected boolean equal(
+    EvalContext context,
+    Expression left,
+    Expression right) 
+{
+    Object l = left.compute(context);
+    Object r = right.compute(context);
+
+//        System.err.println("COMPARING: " +
+//            (l == null ? "null" : l.getClass().getName()) + " " +
+//            (r == null ? "null" : r.getClass().getName()));
+
+    if (l instanceof InitialContext || l instanceof SelfContext) {
+        l = ((EvalContext) l).getSingleNodePointer();
+    }
+
+    if (r instanceof InitialContext || r instanceof SelfContext) {
+        r = ((EvalContext) r).getSingleNodePointer();
+    }
+
+    if (l instanceof Collection) {
+        l = ((Collection) l).iterator();
+    }
+
+    if (r instanceof Collection) {
+        r = ((Collection) r).iterator();
+    }
+
+    if ((l instanceof Iterator) && !(r instanceof Iterator)) {
+        return contains((Iterator) l, r);
+    }
+    if (!(l instanceof Iterator) && (r instanceof Iterator)) {
+        return contains((Iterator) r, l);
+    }
+    if (l instanceof Iterator && r instanceof Iterator) {
+        return findMatch((Iterator) l, (Iterator) r);
+    }
+    
+    // Fix: when both are iterators, contain checks were swapped and the issue was comparing iterator to non-iterator
+    // For non-iterators, use the object equal method
+    return equal(l, r);
+}

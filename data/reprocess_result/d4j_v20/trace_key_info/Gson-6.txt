@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.gson.regression.JsonAdapterNullSafeTest.testNullSafeBugDeserialize
+- Error: java.lang.NullPointerException
+- Location:     Device device = gson.fromJson("{'id':'ec57803e2'}", Device.class);
+
+
+Test failure 2:
+- Test: com.google.gson.regression.JsonAdapterNullSafeTest.testNullSafeBugSerialize
+- Error: java.lang.NullPointerException
+- Location:     gson.toJson(device);

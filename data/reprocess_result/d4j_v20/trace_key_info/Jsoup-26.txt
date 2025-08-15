@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.safety.CleanerTest.handlesFramesets
+- Error: java.lang.NullPointerException
+- Location:         Document cleanDoc = new Cleaner(Whitelist.basic()).clean(dirtyDoc);

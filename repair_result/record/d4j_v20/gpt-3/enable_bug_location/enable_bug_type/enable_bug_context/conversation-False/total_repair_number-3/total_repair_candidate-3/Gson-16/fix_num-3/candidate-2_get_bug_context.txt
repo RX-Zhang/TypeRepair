@@ -1,0 +1,1 @@
+['subtypeOf', 'supertypeOf', 'canonicalize', 'resolve', 'resolveTypeVariable']

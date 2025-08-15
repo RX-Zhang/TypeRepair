@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -11,5 +11,7 @@
+     _inputPtr = start;
+     _inputEnd = end;
+     // If we have offset, need to omit that from byte offset, so:
++    _currInputProcessed = start; // Correctly set the current input processed to the start offset
+     _bufferRecyclable = bufferRecyclable;
+ }
++

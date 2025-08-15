@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -12,4 +12,8 @@
+     _inputEnd = end;
+     // If we have offset, need to omit that from byte offset, so:
+     _bufferRecyclable = bufferRecyclable;
++
++    // Adjust input offset (for tracking location offsets correctly)
++    _currInputProcessed = -start;
+ }
++

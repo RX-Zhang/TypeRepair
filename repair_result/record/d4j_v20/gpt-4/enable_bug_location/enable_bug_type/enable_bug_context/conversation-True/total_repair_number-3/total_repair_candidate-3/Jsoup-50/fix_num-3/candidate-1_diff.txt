@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -1,8 +1,6 @@
+ static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
+     String docData;
+     Document doc = null;
+-
+-    // look for BOM - overrides any other header or input
+ 
+     if (charsetName == null) { // determine from meta. safe parse as UTF-8
+         // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
+@@ -16,15 +14,16 @@
+             }
+             if (foundCharset == null && meta.hasAttr("charset")) {
+                 try {
+-                    if (Charset.isSupported(meta.attr("charset"))) {
+-                        foundCharset = meta.attr("charset");
++                    String cs = meta.attr("charset").trim();
++                    if (Charset.isSupported(cs)) {
++                        foundCharset = cs;
+                     }
+                 } catch (IllegalCharsetNameException e) {
+                     foundCharset = null;
+                 }
+             }
+ 
+-            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
++            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode
+                 foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+                 charsetName = foundCharset;
+                 byteData.rewind();
+@@ -37,8 +36,6 @@
+         docData = Charset.forName(charsetName).decode(byteData).toString();
+     }
+     if (docData.length() > 0 && docData.charAt(0) == UNICODE_BOM) {
+-        byteData.rewind();
+-        docData = Charset.forName(defaultCharset).decode(byteData).toString();
+         docData = docData.substring(1);
+         charsetName = defaultCharset;
+         doc = null;
+@@ -49,3 +46,4 @@
+     }
+     return doc;
+ }
++

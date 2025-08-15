@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -32,7 +32,12 @@
+     switch (token) {
+       case STAR:
+         if (ignoreStar) {
++          // Skip the star that appears at the beginning of a comment line only if we are ignoring stars
++          // This star should be ignored (do not append)
+           // Mark the position after the star as the new start of the line.
++          // The next line's starting position can be tracked here if needed.
++          token = next();
++          continue;
+         } else {
+           // The star is part of the comment.
+           if (builder.length() > 0) {
+@@ -40,10 +45,9 @@
+           }
+ 
+           builder.append('*');
++          token = next();
++          continue;
+         }
+-
+-        token = next();
+-        continue;
+ 
+       case EOL:
+         if (option != WhitespaceOption.SINGLE_LINE) {
+@@ -58,7 +62,7 @@
+         ignoreStar = false;
+         state = State.SEARCHING_ANNOTATION;
+ 
+-            // All tokens must be separated by a space.
++        // All tokens must be separated by a space.
+ 
+         if (token == JsDocToken.EOC ||
+             token == JsDocToken.EOF ||
+@@ -99,3 +103,4 @@
+     }
+   } while (true);
+ }
++

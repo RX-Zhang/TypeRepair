@@ -1,0 +1,75 @@
+--- 
++++ 
+@@ -19,8 +19,9 @@
+ 
+     byte[] headerBuf = getRecord();
+ 
+-    if (hasHitEOF) {
++    if (headerBuf == null) {
+         currEntry = null;
++        hasHitEOF = true;
+         return null;
+     }
+ 
+@@ -30,38 +31,46 @@
+ 
+     if (currEntry.isGNULongNameEntry()) {
+         // read in the name
+-        StringBuffer longName = new StringBuffer();
++        StringBuilder longName = new StringBuilder();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+         int length = 0;
+-        while ((length = read(buf)) >= 0) {
+-            longName.append(new String(buf, 0, length));
++        while ((length = read(buf, 0, buf.length)) >= 0) {
++            longName.append(new String(buf, 0, length, "ISO-8859-1"));
+         }
+-        getNextEntry();
+-        if (currEntry == null) {
++
++        // Move to the next entry header after reading the long name entry data
++        TarArchiveEntry nextEntry = getNextTarEntry();
++
++        if (nextEntry == null) {
+             // Bugzilla: 40334
+             // Malformed tar file - long entry name not followed by entry
++            currEntry = null;
++            hasHitEOF = true;
+             return null;
+         }
+-        // remove trailing null terminator
+-        if (longName.length() > 0
+-            && longName.charAt(longName.length() - 1) == 0) {
+-            longName.deleteCharAt(longName.length() - 1);
++        currEntry = nextEntry;
++
++        // remove trailing null terminator if present
++        int lastCharIndex = longName.length() - 1;
++        if (lastCharIndex >= 0 && longName.charAt(lastCharIndex) == '\0') {
++            longName.deleteCharAt(lastCharIndex);
+         }
+         currEntry.setName(longName.toString());
++        entryOffset = 0;
++        entrySize = currEntry.getSize();
+     }
+ 
+-    if (currEntry.isPaxHeader()){ // Process Pax headers
++    if (currEntry.isPaxHeader()) { // Process Pax headers
+         paxHeaders();
+     }
+ 
+-    if (currEntry.isGNUSparse()){ // Process sparse files
++    if (currEntry.isGNUSparse()) { // Process sparse files
+         readGNUSparse();
+     }
+ 
+-    // If the size of the next element in the archive has changed
+-    // due to a new size being reported in the posix header
+-    // information, we update entrySize here so that it contains
+-    // the correct value.
++    // Update entrySize after processing headers (e.g. pax header adjustments)
+     entrySize = currEntry.getSize();
++
+     return currEntry;
+ }
++

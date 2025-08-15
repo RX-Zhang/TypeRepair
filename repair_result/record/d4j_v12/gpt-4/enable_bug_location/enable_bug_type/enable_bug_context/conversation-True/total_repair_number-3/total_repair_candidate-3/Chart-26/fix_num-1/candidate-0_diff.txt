@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -21,8 +21,8 @@
+     
+     if (edge == RectangleEdge.TOP) {
+         AffineTransform t = AffineTransform.getRotateInstance(
+-                getLabelAngle(), labelBounds.getCenterX(), 
+-                labelBounds.getCenterY());
++                getLabelAngle(), labelBounds.getWidth() / 2.0, 
++                labelBounds.getHeight() / 2.0);
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+@@ -39,8 +39,8 @@
+     }
+     else if (edge == RectangleEdge.BOTTOM) {
+         AffineTransform t = AffineTransform.getRotateInstance(
+-                getLabelAngle(), labelBounds.getCenterX(), 
+-                labelBounds.getCenterY());
++                getLabelAngle(), labelBounds.getWidth() / 2.0, 
++                labelBounds.getHeight() / 2.0);
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+@@ -57,8 +57,8 @@
+     }
+     else if (edge == RectangleEdge.LEFT) {
+         AffineTransform t = AffineTransform.getRotateInstance(
+-                getLabelAngle() - Math.PI / 2.0, labelBounds.getCenterX(), 
+-                labelBounds.getCenterY());
++                getLabelAngle() - Math.PI / 2.0, labelBounds.getWidth() / 2.0, 
++                labelBounds.getHeight() / 2.0);
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+@@ -78,7 +78,7 @@
+ 
+         AffineTransform t = AffineTransform.getRotateInstance(
+                 getLabelAngle() + Math.PI / 2.0, 
+-                labelBounds.getCenterX(), labelBounds.getCenterY());
++                labelBounds.getWidth() / 2.0, labelBounds.getHeight() / 2.0);
+         Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
+         labelBounds = rotatedLabelBounds.getBounds2D();
+         float w = (float) labelBounds.getWidth();
+@@ -107,3 +107,4 @@
+     return state;
+ 
+ }
++

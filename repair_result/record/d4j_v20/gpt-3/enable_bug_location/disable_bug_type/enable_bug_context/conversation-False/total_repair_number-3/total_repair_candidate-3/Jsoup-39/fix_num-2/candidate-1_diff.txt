@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -7,25 +7,22 @@
+         doc = parser.parseInput(docData, baseUri);
+         Element meta = doc.select("meta[http-equiv=content-type], meta[charset]").first();
+         if (meta != null) { // if not found, will keep utf-8 as best attempt
+-            String foundCharset;
++            String foundCharset = null;
+             if (meta.hasAttr("http-equiv")) {
+                 foundCharset = getCharsetFromContentType(meta.attr("content"));
+                 if (foundCharset == null && meta.hasAttr("charset")) {
+-                    try {
+-                        if (Charset.isSupported(meta.attr("charset"))) {
+-                            foundCharset = meta.attr("charset");
+-                        }
+-                    } catch (IllegalCharsetNameException e) {
++                    foundCharset = meta.attr("charset").trim();
++                    if (!foundCharset.isEmpty() && Charset.isSupported(foundCharset)) {
++                        foundCharset = foundCharset;
++                    } else {
+                         foundCharset = null;
+                     }
+                 }
+             } else {
+-                foundCharset = meta.attr("charset");
++                foundCharset = meta.attr("charset").trim();
+             }
+ 
+-            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
+-                foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+-                charsetName = foundCharset;
++            if (foundCharset != null && !foundCharset.equals(defaultCharset)) { // need to re-decode
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+                 doc = null;
+@@ -48,3 +45,4 @@
+     }
+     return doc;
+ }
++

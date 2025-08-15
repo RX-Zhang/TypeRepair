@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -28,7 +28,7 @@
+                     "Missing property '%s' for external type id '%s'",
+                     prop.getName(), _properties[i].getTypePropertyName());
+         }
+-        values[i] = _deserialize(p, ctxt, i, typeId);
++        values[i] = _deserialize(null, ctxt, i, typeId);
+ 
+         final SettableBeanProperty prop = extProp.getProperty();
+         // also: if it's creator prop, fill in
+@@ -55,3 +55,4 @@
+     }
+     return bean;
+ }
++

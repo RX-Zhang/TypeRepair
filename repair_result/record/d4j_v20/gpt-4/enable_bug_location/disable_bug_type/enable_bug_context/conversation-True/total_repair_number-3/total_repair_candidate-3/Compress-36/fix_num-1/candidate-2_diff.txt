@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -12,5 +12,10 @@
+         stream.close();
+     }
+ 
+-    return deferredBlockStreams.get(0);
++    InputStream currentStream = deferredBlockStreams.get(0);
++    if (currentStream == null) {
++        throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++    }
++    return currentStream;
+ }
++

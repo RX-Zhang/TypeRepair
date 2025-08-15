@@ -1,0 +1,27 @@
+public DocumentType(String name, String publicId, String systemId, String baseUri) {
+    super(baseUri);
+
+    // Allow empty or blank names, but sanitize input to replace control characters and null chars
+    if (name == null) {
+        name = "";
+    } else {
+        // Replace null characters with U+FFFD replacement character
+        name = name.replace("\u0000", "\uFFFD");
+        // Optional: trim or further sanitize if needed
+    }
+    attr("name", name);
+
+    if (publicId == null) {
+        publicId = "";
+    } else {
+        publicId = publicId.replace("\u0000", "\uFFFD");
+    }
+    attr("publicId", publicId);
+
+    if (systemId == null) {
+        systemId = "";
+    } else {
+        systemId = systemId.replace("\u0000", "\uFFFD");
+    }
+    attr("systemId", systemId);
+}

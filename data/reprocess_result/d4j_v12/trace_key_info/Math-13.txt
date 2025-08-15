@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math3.optimization.fitting.PolynomialFitterTest.testLargeSample
+- Error: java.lang.OutOfMemoryError: Java heap space
+- Location:             PolynomialFunction fitted = new PolynomialFunction(fitter.fit(init));

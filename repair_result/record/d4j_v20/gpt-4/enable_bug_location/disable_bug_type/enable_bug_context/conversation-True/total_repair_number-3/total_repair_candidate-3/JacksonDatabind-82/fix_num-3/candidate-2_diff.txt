@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -36,10 +36,10 @@
+         builder.setAnySetter(constructAnySetter(ctxt, beanDesc, anySetterMethod));
+     }
+     else {
+-    	anySetterField = beanDesc.findAnySetterField();
+-    	if(anySetterField != null) {
+-    		builder.setAnySetter(constructAnySetter(ctxt, beanDesc, anySetterField));
+-    	}
++        anySetterField = beanDesc.findAnySetterField();
++        if(anySetterField != null) {
++            builder.setAnySetter(constructAnySetter(ctxt, beanDesc, anySetterField));
++        }
+     }
+     // NOTE: we do NOT add @JsonIgnore'd properties into blocked ones if there's any-setter
+     // Implicit ones via @JsonIgnore and equivalent?
+@@ -142,3 +142,4 @@
+         }
+     }
+ }
++

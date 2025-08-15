@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -11,9 +11,9 @@
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
++    // Skip leading spaces and NULs
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == ' ' || buffer[start] == 0){
+             start++;
+         } else {
+             break;
+@@ -24,14 +24,13 @@
+     // The ustar and POSIX tar specs require a trailing NUL or
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    while (start < end && (trailer == 0 || trailer == ' ')) {
++    while (start < end && (buffer[end - 1] == 0 || buffer[end - 1] == ' ')) {
+         end--;
+-        trailer = buffer[end - 1];
+     }
++
+     if (start == end) {
+         throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, start, trailer));
++                exceptionMessage(buffer, offset, length, start > 0 ? start -1 : start, start > 0 ? buffer[start - 1] : 0));
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -47,3 +46,4 @@
+ 
+     return result;
+ }
++

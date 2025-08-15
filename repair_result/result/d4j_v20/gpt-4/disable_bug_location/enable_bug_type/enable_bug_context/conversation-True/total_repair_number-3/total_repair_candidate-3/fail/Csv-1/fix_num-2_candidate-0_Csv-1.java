@@ -1,0 +1,22 @@
+public int read() throws IOException {
+    int current = super.read();
+    if (current == '\n' || current == '\r') {
+        lineCounter++;
+        // Handle CRLF (\r\n) case by checking if next char is '\n' after '\r'
+        if (current == '\r') {
+            int next = super.read();
+            if (next != '\n' && next != -1) {
+                // push back the character if not '\n' or EOF
+                if (super instanceof java.io.PushbackReader) {
+                    ((java.io.PushbackReader) super).unread(next);
+                }
+            } else if (next == '\n') {
+                // do not increment lineCounter here, since '\r' already incremented
+                lastChar = next; // update lastChar to '\n'
+                return lastChar;
+            }
+        }
+    }
+    lastChar = current;
+    return lastChar;
+}

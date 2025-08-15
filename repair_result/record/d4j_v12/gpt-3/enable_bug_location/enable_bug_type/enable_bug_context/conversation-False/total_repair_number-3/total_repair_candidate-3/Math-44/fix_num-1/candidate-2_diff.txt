@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+         resetOccurred = false;
+ 
+         // initialize the events states if needed
+-        if (! statesInitialized) {
++        if (!statesInitialized) {
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+@@ -41,6 +41,9 @@
+ 
+             // restrict the interpolator to the first part of the step, up to the event
+             final double eventT = currentEvent.getEventTime();
++            if (eventT < previousT) {
++                throw new MathIllegalStateException("Going backward in time!");
++            }
+             interpolator.setSoftPreviousTime(previousT);
+             interpolator.setSoftCurrentTime(eventT);
+ 
+@@ -99,3 +102,4 @@
+         return currentT;
+ 
+ }
++

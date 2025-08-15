@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.cli.OptionsTest.testMissingOptionsException
+- Error: junit.framework.ComparisonFailure: expected:<[Missing required options: ]fx> but was:<[]fx>
+- Location:             assertEquals("Missing required options: fx", e.getMessage());
+
+
+Test failure 2:
+- Test: org.apache.commons.cli.OptionsTest.testMissingOptionException
+- Error: junit.framework.ComparisonFailure: expected:<[Missing required option: ]f> but was:<[]f>
+- Location:             assertEquals("Missing required option: f", e.getMessage());

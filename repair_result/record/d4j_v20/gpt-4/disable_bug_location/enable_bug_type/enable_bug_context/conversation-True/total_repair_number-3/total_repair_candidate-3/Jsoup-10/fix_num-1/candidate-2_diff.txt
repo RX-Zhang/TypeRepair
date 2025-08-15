@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+         URL base;
+         try {
+             try {
+-                base = new URL(baseUri);
++                base = new URL(baseUri());
+             } catch (MalformedURLException e) {
+                 // the base is unsuitable, but the attribute may be abs on its own, so try that
+                 URL abs = new URL(relUrl);
+@@ -22,3 +22,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -17,23 +17,38 @@
+                                    + rawCentralDirectoryData.length);
+         }
+         int offset = 0;
+-        if (hasUncompressedSize) {
+-            size = new ZipEightByteInteger(rawCentralDirectoryData, offset);
+-            offset += DWORD;
+-        }
+-        if (hasCompressedSize) {
+-            compressedSize = new ZipEightByteInteger(rawCentralDirectoryData,
+-                                                     offset);
+-            offset += DWORD;
+-        }
+-        if (hasRelativeHeaderOffset) {
+-            relativeHeaderOffset =
+-                new ZipEightByteInteger(rawCentralDirectoryData, offset);
+-            offset += DWORD;
+-        }
+-        if (hasDiskStart) {
+-            diskStart = new ZipLong(rawCentralDirectoryData, offset);
+-            offset += WORD;
++        try {
++            if (hasUncompressedSize) {
++                if (offset + DWORD > rawCentralDirectoryData.length) {
++                    throw new ZipException("Insufficient data for uncompressed size.");
++                }
++                size = new ZipEightByteInteger(rawCentralDirectoryData, offset);
++                offset += DWORD;
++            }
++            if (hasCompressedSize) {
++                if (offset + DWORD > rawCentralDirectoryData.length) {
++                    throw new ZipException("Insufficient data for compressed size.");
++                }
++                compressedSize = new ZipEightByteInteger(rawCentralDirectoryData, offset);
++                offset += DWORD;
++            }
++            if (hasRelativeHeaderOffset) {
++                if (offset + DWORD > rawCentralDirectoryData.length) {
++                    throw new ZipException("Insufficient data for relative header offset.");
++                }
++                relativeHeaderOffset = new ZipEightByteInteger(rawCentralDirectoryData, offset);
++                offset += DWORD;
++            }
++            if (hasDiskStart) {
++                if (offset + WORD > rawCentralDirectoryData.length) {
++                    throw new ZipException("Insufficient data for disk start.");
++                }
++                diskStart = new ZipLong(rawCentralDirectoryData, offset);
++                offset += WORD;
++            }
++        } catch (ArrayIndexOutOfBoundsException e) {
++            throw new ZipException("Error while parsing central directory data.", e);
+         }
+     }
+ }
++

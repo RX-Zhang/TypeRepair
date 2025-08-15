@@ -1,0 +1,17 @@
+<M extends Map<String, String>> M putIn(final M map) {
+    if (mapping == null || values == null) {
+        // Defensive check to avoid NullPointerException
+        return map;
+    }
+    for (final Entry<String, Integer> entry : mapping.entrySet()) {
+        if (entry == null || entry.getKey() == null || entry.getValue() == null) {
+            // Skip null entries to avoid potential NPE
+            continue;
+        }
+        final int col = entry.getValue().intValue();
+        if (col >= 0 && col < values.length) {
+            map.put(entry.getKey(), values[col]);
+        }
+    }
+    return map;
+}

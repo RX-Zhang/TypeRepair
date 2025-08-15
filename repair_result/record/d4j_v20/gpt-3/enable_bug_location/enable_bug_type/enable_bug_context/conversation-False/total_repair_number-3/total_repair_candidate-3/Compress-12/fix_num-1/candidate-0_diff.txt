@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -24,17 +24,21 @@
+         return null;
+     }
+ 
+-    currEntry = new TarArchiveEntry(headerBuf);
++    try {
++        currEntry = new TarArchiveEntry(headerBuf);
++    } catch (IllegalArgumentException e) {
++        throw new IOException("Invalid tar entry header", e);
++    }
+     entryOffset = 0;
+     entrySize = currEntry.getSize();
+ 
+     if (currEntry.isGNULongNameEntry()) {
+         // read in the name
+-        StringBuffer longName = new StringBuffer();
++        StringBuilder longName = new StringBuilder();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+-        int length = 0;
+-        while ((length = read(buf)) >= 0) {
+-            longName.append(new String(buf, 0, length));
++        int length;
++        while ((length = read(buf)) > 0) {
++            longName.append(new String(buf, 0, length, "UTF-8"));
+         }
+         getNextEntry();
+         if (currEntry == null) {
+@@ -42,10 +46,10 @@
+             // Malformed tar file - long entry name not followed by entry
+             return null;
+         }
+-        // remove trailing null terminator
+-        if (longName.length() > 0
+-            && longName.charAt(longName.length() - 1) == 0) {
+-            longName.deleteCharAt(longName.length() - 1);
++        // remove trailing null terminator (if any)
++        int lastCharIndex = longName.length() - 1;
++        if (lastCharIndex >= 0 && longName.charAt(lastCharIndex) == '\0') {
++            longName.deleteCharAt(lastCharIndex);
+         }
+         currEntry.setName(longName.toString());
+     }
+@@ -58,10 +62,8 @@
+         readGNUSparse();
+     }
+ 
+-    // If the size of the next element in the archive has changed
+-    // due to a new size being reported in the posix header
+-    // information, we update entrySize here so that it contains
+-    // the correct value.
++    // Update entrySize in case it changed due to headers (PAX, etc)
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

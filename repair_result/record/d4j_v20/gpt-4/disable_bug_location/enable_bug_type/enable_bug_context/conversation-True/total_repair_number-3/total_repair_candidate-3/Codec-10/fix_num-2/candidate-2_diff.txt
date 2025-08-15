@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -23,8 +23,8 @@
+     txt = txt.replaceAll("^trough", "trou2f");  // 2.0 only - note the spec says ^enough here again, c+p error I assume
+     txt = txt.replaceAll("^gn", "2n");
+ 
+-    // End 
+-    txt = txt.replaceAll("^mb", "m2");
++    // End
++    txt = txt.replaceAll("mb$", "m2");
+ 
+     // 4. Handle replacements
+     txt = txt.replaceAll("cq", "2q");
+@@ -88,6 +88,7 @@
+     // 6. put ten 1s on the end
+     txt = txt + "111111" + "1111";        // 1.0 only has 6 1s
+ 
+-    // 7. take the first six characters as the code
++    // 7. take the first ten characters as the code
+     return txt.substring(0, 10);          // 1.0 truncates to 6
+ }
++

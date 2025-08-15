@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -18,6 +18,11 @@
+         } else {
+             break;
+         }
++    }
++
++    if (start == end) {
++        throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, (byte) ' '));
+     }
+ 
+     // Trim all trailing NULs and spaces.
+@@ -47,3 +52,4 @@
+ 
+     return result;
+ }
++

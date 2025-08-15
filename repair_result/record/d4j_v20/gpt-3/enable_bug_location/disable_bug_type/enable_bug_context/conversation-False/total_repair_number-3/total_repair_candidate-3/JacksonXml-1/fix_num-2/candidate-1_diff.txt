@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -67,7 +67,7 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+@@ -103,9 +103,7 @@
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                     //    expose as empty Object, not null (or, worse, as used to
+                     //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
+-                    _parsingContext = _parsingContext.getParent();
+-                    _namesToWrap = _parsingContext.getNamesToWrap();
++                    _currToken = JsonToken.START_OBJECT;
+                     return _currToken;
+                 }
+             }
+@@ -132,3 +130,4 @@
+     _throwInternal();
+     return null;
+ }
++

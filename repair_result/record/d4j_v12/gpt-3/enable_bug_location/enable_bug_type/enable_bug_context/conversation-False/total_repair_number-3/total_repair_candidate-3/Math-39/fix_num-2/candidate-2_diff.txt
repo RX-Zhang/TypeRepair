@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -123,6 +123,11 @@
+         final boolean filteredNextIsLast = forward ? (filteredNextT >= t) : (filteredNextT <= t);
+         if (filteredNextIsLast) {
+             hNew = t - stepStart;
++        } else {
++            // Boundary check to ensure hNew is not negative
++            if (hNew < 0) {
++                throw new MathIllegalArgumentException("Calculated step size is negative.");
++            }
+         }
+ 
+     }
+@@ -136,3 +141,4 @@
+   resetInternalState();
+ 
+ }
++

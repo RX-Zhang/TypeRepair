@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -2,7 +2,6 @@
+     char c = r.consume();
+     switch (c) {
+         case '>':
+-            t.tagPending.selfClosing = true;
+             t.emitTagPending();
+             t.transition(Data);
+             break;
+@@ -15,3 +14,4 @@
+             t.transition(BeforeAttributeName);
+     }
+ }
++

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -8,11 +8,12 @@
+             + (hasCompressedSize ? DWORD : 0)
+             + (hasRelativeHeaderOffset ? DWORD : 0)
+             + (hasDiskStart ? WORD : 0);
+-        if (rawCentralDirectoryData.length != expectedLength) {
++        // Adjust check to allow rawCentralDirectoryData length to be greater or equal expectedLength
++        if (rawCentralDirectoryData.length < expectedLength) {
+             throw new ZipException("central directory zip64 extended"
+                                    + " information extra field's length"
+                                    + " doesn't match central directory"
+-                                   + " data.  Expected length "
++                                   + " data.  Expected length at least "
+                                    + expectedLength + " but is "
+                                    + rawCentralDirectoryData.length);
+         }
+@@ -37,3 +38,4 @@
+         }
+     }
+ }
++

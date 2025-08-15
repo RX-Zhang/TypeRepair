@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.jsonschema.NewSchemaTest.testSimpleNumbers
+- Error: junit.framework.ComparisonFailure: expected:<...dec([numberType=BIG_[DECIMAL]])][optProp bigInt([...> but was:<...dec([numberType=BIG_[INTEGER]])][optProp bigInt([...>
+- Location:         assertEquals("[optProp dec([numberType=BIG_DECIMAL])][optProp bigInt([numberType=BIG_INTEGER])]",

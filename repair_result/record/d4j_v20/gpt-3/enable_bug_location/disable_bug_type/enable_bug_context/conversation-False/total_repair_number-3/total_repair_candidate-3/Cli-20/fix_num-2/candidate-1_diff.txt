@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -4,13 +4,13 @@
+     this.options = options;
+ 
+     // an iterator for the command line tokens
+-    Iterator iter = Arrays.asList(arguments).iterator();
++    Iterator<String> iter = Arrays.asList(arguments).iterator();
+ 
+     // process each command line token
+     while (iter.hasNext())
+     {
+         // get the next command line token
+-        String token = (String) iter.next();
++        String token = iter.next();
+ 
+         // handle long option --foo or --foo=bar
+         if (token.startsWith("--"))
+@@ -18,7 +18,7 @@
+             if (token.indexOf('=') != -1)
+             {
+                 tokens.add(token.substring(0, token.indexOf('=')));
+-                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                tokens.add(token.substring(token.indexOf('=') + 1));
+             }
+             else
+             {
+@@ -40,6 +40,7 @@
+             else if (options.hasOption(token))
+             {
+                 tokens.add(token);
++                currentOption = options.getOption(token); // Set currentOption for further processing
+             }
+             // requires bursting
+             else
+@@ -59,5 +60,7 @@
+         gobble(iter);
+     }
+ 
+-    return (String[]) tokens.toArray(new String[tokens.size()]);
++    // Ensure we return a properly sized array
++    return tokens.toArray(new String[0]);
+ }
++

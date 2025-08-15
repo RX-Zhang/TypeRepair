@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,8 +1,12 @@
+-protected Object _deserializeFromEmptyString() throws IOException {
++protected T _deserializeFromEmptyString() throws IOException {
+     // As per [databind#398], URI requires special handling
+     if (_kind == STD_URI) {
+-        return URI.create("");
++        return (T) URI.create("");
+     }
+     // As per [databind#1123], Locale too
++    if (_kind == STD_LOCALE) {
++        return (T) Locale.ROOT;
++    }
+     return super._deserializeFromEmptyString();
+ }
++

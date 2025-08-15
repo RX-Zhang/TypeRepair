@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -35,6 +35,11 @@
+     // This approach makes the '=' padding characters completely optional.
+     if (eof && modulus != 0) {
+         
++        // Ensure enough space in buffer before writing final bytes
++        if (buffer == null || buffer.length - pos < decodeSize) {
++            resizeBuffer();
++        }
++
+         x = x << 6;
+         switch (modulus) {
+             case 2 :
+@@ -48,3 +53,4 @@
+         }
+     }
+ }
++

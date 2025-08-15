@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -4,21 +4,25 @@
+   call = (ArrowType) safeResolve(call, t, scope);
+   prototype = (FunctionPrototypeType) safeResolve(prototype, t, scope);
+ 
+-  // Warning about typeOfThis if it doesn't resolve to an ObjectType
+-  // is handled further upstream.
+-  // TODO(nicksantos): Handle this correctly if we have a UnionType.
+-  typeOfThis = (ObjectType) safeResolve(typeOfThis, t, scope);
++  // Safely resolve typeOfThis and convert to ObjectType if possible to avoid ClassCastException
++  JSType resolvedTypeOfThis = safeResolve(typeOfThis, t, scope);
++  if (resolvedTypeOfThis.isObject() || resolvedTypeOfThis.isUnknownType()) {
++    typeOfThis = (ObjectType) resolvedTypeOfThis;
++  } else {
++    // Handle the case where typeOfThis is not an ObjectType:
++    // Use getTypeOfThis() method which handles NoObjectType internally.
++    typeOfThis = getTypeOfThis();
++  }
+ 
+   boolean changed = false;
+-  ImmutableList.Builder<ObjectType> resolvedInterfaces =
+-      ImmutableList.builder();
++  ImmutableList.Builder<ObjectType> resolvedInterfaces = ImmutableList.builder();
+   for (ObjectType iface : implementedInterfaces) {
+     ObjectType resolvedIface = (ObjectType) iface.resolve(t, scope);
+     resolvedInterfaces.add(resolvedIface);
+     changed |= (resolvedIface != iface);
+   }
+   if (changed) {
+-    implementedInterfaces = resolvedInterfaces.build();
++    setImplementedInterfaces(resolvedInterfaces.build());
+   }
+ 
+   if (subTypes != null) {
+@@ -29,3 +33,4 @@
+ 
+   return super.resolveInternal(t, scope);
+ }
++

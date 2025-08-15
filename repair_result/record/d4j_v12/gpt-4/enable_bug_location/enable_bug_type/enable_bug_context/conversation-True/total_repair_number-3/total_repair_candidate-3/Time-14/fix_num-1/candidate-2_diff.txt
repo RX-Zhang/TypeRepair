@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -4,15 +4,21 @@
+     if (valueToAdd == 0) {
+         return values;
+     }
+-        // month is largest field and being added to, such as month-day
++    // month is largest field and being added to, such as month-day
+     if (DateTimeUtils.isContiguous(partial)) {
+         long instant = 0L;
+         for (int i = 0, isize = partial.size(); i < isize; i++) {
+             instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+         }
+-        instant = add(instant, valueToAdd);
++        if (fieldIndex == 0) { // assuming month is fieldIndex 0
++            instant = add(instant, valueToAdd);
++        } else {
++            instant = iChronology.getZone().getMillisKeepLocal(iChronology, instant);
++            instant += valueToAdd;
++        }
+         return iChronology.get(partial, instant);
+     } else {
+         return super.add(partial, fieldIndex, values, valueToAdd);
+     }
+ }
++

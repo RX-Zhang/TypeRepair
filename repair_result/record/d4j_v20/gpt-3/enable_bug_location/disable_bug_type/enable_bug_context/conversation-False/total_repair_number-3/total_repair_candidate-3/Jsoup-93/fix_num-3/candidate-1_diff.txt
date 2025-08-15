@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -9,6 +9,9 @@
+         if (name.length() == 0) continue;
+         String type = el.attr("type");
+ 
++        // skip button, submit, reset types which are not successful controls
++        if ("button".equalsIgnoreCase(type) || "submit".equalsIgnoreCase(type) || "reset".equalsIgnoreCase(type))
++            continue;
+ 
+         if ("select".equals(el.normalName())) {
+             Elements options = el.select("option[selected]");
+@@ -34,3 +37,4 @@
+     }
+     return data;
+ }
++

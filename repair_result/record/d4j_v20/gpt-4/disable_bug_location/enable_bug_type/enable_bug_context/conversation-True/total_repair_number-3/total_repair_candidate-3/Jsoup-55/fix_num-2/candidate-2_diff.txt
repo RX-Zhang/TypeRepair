@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,12 +1,12 @@
+ void read(Tokeniser t, CharacterReader r) {
+-    char c = r.consume();
++    int c = r.consume();
+     switch (c) {
+         case '>':
+             t.tagPending.selfClosing = true;
+             t.emitTagPending();
+             t.transition(Data);
+             break;
+-        case eof:
++        case CharacterReader.EOF:
+             t.eofError(this);
+             t.transition(Data);
+             break;
+@@ -15,3 +15,4 @@
+             t.transition(BeforeAttributeName);
+     }
+ }
++

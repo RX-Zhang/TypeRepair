@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.cli.bug.BugCLI162Test.testInfiniteLoop
+- Error: java.lang.RuntimeException: Text too long for line - throwing exception to avoid infinite loop [CLI-162]:              looooong description
+- Location:         formatter.printHelp("app", options); // used to hang & crash
+
+
+Test failure 2:
+- Test: org.apache.commons.cli.bug.BugCLI162Test.testPrintHelpLongLines
+- Error: java.lang.RuntimeException: Text too long for line - throwing exception to avoid infinite loop [CLI-162]:                              used if omited. Example: -e "Runs such and such"
+- Location:         this.testPrintHelp(commandLineOptions);

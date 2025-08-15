@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -1,11 +1,10 @@
+ public ZipArchiveEntry getNextZipEntry() throws IOException {
+-    boolean firstEntry = true;
++    boolean firstEntry = current == null;
+     if (closed || hitCentralDirectory) {
+         return null;
+     }
+     if (current != null) {
+         closeEntry();
+-        firstEntry = false;
+     }
+ 
+     try {
+@@ -26,6 +25,7 @@
+     if (sig.equals(ZipLong.CFH_SIG) || sig.equals(ZipLong.AED_SIG)) {
+         hitCentralDirectory = true;
+         skipRemainderOfArchive();
++        return null;  // return here because archive is finished
+     }
+     if (!sig.equals(ZipLong.LFH_SIG)) {
+         return null;
+@@ -100,7 +100,8 @@
+             current.in = new BZip2CompressorInputStream(new BoundedInputStream(in, current.entry.getCompressedSize()));
+         }
+     }
+-    
++
+     entriesRead++;
+     return current.entry;
+ }
++

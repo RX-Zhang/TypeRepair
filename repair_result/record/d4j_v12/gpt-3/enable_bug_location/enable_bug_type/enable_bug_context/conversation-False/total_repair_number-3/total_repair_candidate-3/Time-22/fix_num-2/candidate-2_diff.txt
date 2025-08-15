@@ -1,0 +1,9 @@
+--- 
++++ 
+@@ -1,4 +1,5 @@
+ protected BasePeriod(long duration) {
+-    this(duration, null, null);
++    this(duration, null, ISOChronology.getInstanceUTC());
+     // bug [3264409]
+ }
++

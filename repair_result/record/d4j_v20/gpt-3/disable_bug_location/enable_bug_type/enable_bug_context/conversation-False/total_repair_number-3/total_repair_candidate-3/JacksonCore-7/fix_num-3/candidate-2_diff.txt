@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ public int writeValue() {
+     // Most likely, object:
+     if (_type == TYPE_OBJECT) {
++        if (!_gotName) {
++            // Trying to write value without field name
++            return STATUS_EXPECT_NAME;
++        }
+         _gotName = false;
+         ++_index;
+         return STATUS_OK_AFTER_COLON;
+@@ -18,3 +22,4 @@
+     ++_index;
+     return (_index == 0) ? STATUS_OK_AS_IS : STATUS_OK_AFTER_SPACE;
+ }
++

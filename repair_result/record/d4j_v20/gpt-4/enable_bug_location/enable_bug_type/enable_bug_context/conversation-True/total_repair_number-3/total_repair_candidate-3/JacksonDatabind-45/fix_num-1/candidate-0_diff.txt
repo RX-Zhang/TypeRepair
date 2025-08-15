@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -11,7 +11,13 @@
+                 return withFormat(Boolean.TRUE, null);
+             }
+ 
+-            if (format.getShape() == JsonFormat.Shape.STRING) {
++            // If shape is ANY, need to determine timestamp usage based on context
++            if (shape == JsonFormat.Shape.ANY) {
++                // FALL THROUGH to determine from serializers config or custom format
++                return withFormat(null, null);
++            }
++
++            if (shape == JsonFormat.Shape.STRING) {
+                 TimeZone tz = format.getTimeZone();
+                 final String pattern = format.hasPattern()
+                                 ? format.getPattern()
+@@ -28,5 +34,7 @@
+             }
+         }
+     }
+-    return this;
++    // If no format found or no relevant Shape specified, defer to current or defaults
++    return withFormat(null, null);
+ }
++

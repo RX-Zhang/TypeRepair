@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -3,6 +3,13 @@
+         throw new IllegalStateException(
+                 "No header mapping was specified, the record values can't be accessed by name");
+     }
++    if (!isMapped(name)) {
++        throw new IllegalArgumentException("Mapping does not contain the specified name: " + name);
++    }
++    if (!isConsistent()) {
++        throw new IllegalStateException("Record is not consistent with header mapping");
++    }
+     final Integer index = mapping.get(name);
+-        return index != null ? values[index.intValue()] : null;
++    return values[index.intValue()];
+ }
++

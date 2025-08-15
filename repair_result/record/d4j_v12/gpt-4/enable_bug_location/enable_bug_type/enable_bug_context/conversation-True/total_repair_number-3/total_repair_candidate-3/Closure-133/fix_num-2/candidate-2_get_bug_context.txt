@@ -1,0 +1,1 @@
+['restoreLookAhead', 'next', 'current', 'getRemainingJSDocLine']

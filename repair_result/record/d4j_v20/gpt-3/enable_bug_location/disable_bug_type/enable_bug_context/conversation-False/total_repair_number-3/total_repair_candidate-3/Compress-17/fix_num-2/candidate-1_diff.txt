@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -11,31 +11,31 @@
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
++    // Skip leading spaces and leading NULs
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == ' ' || buffer[start] == 0){
+             start++;
+         } else {
+             break;
+         }
+     }
+ 
+-    // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    // Must have trailing NUL or space or NULs and spaces at the end
++    while (end > start) {
++        byte trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        } else {
++            break;
++        }
+     }
+ 
+-    for ( ;start < end; start++) {
++    if (start == end) {
++        // If no digits found
++        return 0L;
++    }
++
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -48,3 +48,4 @@
+ 
+     return result;
+ }
++

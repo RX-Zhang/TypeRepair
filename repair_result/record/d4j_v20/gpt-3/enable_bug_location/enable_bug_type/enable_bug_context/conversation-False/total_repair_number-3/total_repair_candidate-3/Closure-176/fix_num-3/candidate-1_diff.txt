@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -23,8 +23,7 @@
+       // sure we back-infer the <string> element constraint on
+       // the left hand side, so we use the left hand side.
+ 
+-      boolean isVarTypeBetter = !isVarDeclaration || var == null || var.isTypeInferred();
+-          // Makes it easier to check for NPEs.
++      boolean isVarTypeBetter = isVarDeclaration && var != null && !var.isTypeInferred();
+ 
+       // TODO(nicksantos): This might be a better check once we have
+       // back-inference of object/array constraints.  It will probably
+@@ -37,8 +36,11 @@
+ 
+ 
+       if (isVarTypeBetter) {
++        redeclareSimpleVar(scope, left, leftType);
++      } else {
+         redeclareSimpleVar(scope, left, resultType);
+       }
++
+       left.setJSType(isVarDeclaration || leftType == null ?
+           resultType : null);
+ 
+@@ -61,3 +63,4 @@
+       break;
+   }
+ }
++

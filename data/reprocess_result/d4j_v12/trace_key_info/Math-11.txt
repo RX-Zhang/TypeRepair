@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math3.distribution.MultivariateNormalDistributionTest.testUnivariateDistribution
+- Error: junit.framework.AssertionFailedError: expected:<0.3351449062248983> but was:<0.8400836980418852>
+- Location:             Assert.assertEquals(uni.density(v), multi.density(new double[] { v }), tol);

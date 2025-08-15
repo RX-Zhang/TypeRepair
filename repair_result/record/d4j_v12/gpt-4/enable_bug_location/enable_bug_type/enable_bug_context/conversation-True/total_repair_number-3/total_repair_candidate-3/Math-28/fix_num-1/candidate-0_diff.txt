@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -50,12 +50,13 @@
+             int minIndex = tableau.getWidth();
+             for (Integer row : minRatioPositions) {
+                 int i = tableau.getNumObjectiveFunctions();
+-                for (; i < tableau.getWidth() - 1 && minRow != row; i++) {
+-                    if (row == tableau.getBasicRow(i)) {
++                for (; i < tableau.getWidth() - 1; i++) {
++                    if (row.equals(tableau.getBasicRow(i))) {
+                         if (i < minIndex) {
+                             minIndex = i;
+                             minRow = row;
+                         }
++                        break;
+                     }
+                 }
+             }
+@@ -63,3 +64,4 @@
+     }
+     return minRatioPositions.get(0);
+ }
++

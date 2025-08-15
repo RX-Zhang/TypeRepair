@@ -1,0 +1,61 @@
+--- 
++++ 
+@@ -54,7 +54,7 @@
+                     // milliseconds can be optional in the format
+                     if (checkOffset(date, offset, '.')) {
+                         offset += 1;
+-                        int endOffset = indexOfNonDigit(date, offset + 1); // assume at least one digit
++                        int endOffset = indexOfNonDigit(date, offset); // assume at least one digit
+                         int parseEndOffset = Math.min(endOffset, offset + 3); // parse up to 3 digits
+                         int fraction = parseInt(date, offset, parseEndOffset);
+                         // compensate for "missing" digits
+@@ -86,9 +86,26 @@
+             timezone = TIMEZONE_UTC;
+             offset += 1;
+         } else if (timezoneIndicator == '+' || timezoneIndicator == '-') {
+-            String timezoneOffset = date.substring(offset);
++            int timezoneOffsetEnd = offset + 3; // consider "+01"
++            if (date.length() > offset + 3) {
++                char ch = date.charAt(offset + 3);
++                if (ch == ':') {
++                    timezoneOffsetEnd = offset + 6; // consider "+01:00"
++                } else if (Character.isDigit(ch)) {
++                    timezoneOffsetEnd = offset + 5; // consider "+0100"
++                } 
++            } else if (date.length() > offset + 2) {
++                timezoneOffsetEnd = Math.min(date.length(), offset + 3);
++            } else {
++                timezoneOffsetEnd = date.length();
++            }
++
++            String timezoneOffset = date.substring(offset, timezoneOffsetEnd);
+ 
+             // When timezone has no minutes, we should append it, valid timezones are, for example: +00:00, +0000 and +00
++            if (timezoneOffset.length() == 3) {
++                timezoneOffset += ":00";
++            }
+ 
+             offset += timezoneOffset.length();
+             // 18-Jun-2015, tatu: Minor simplification, skip offset of "+0000"/"+00:00"
+@@ -100,7 +117,6 @@
+                 //    `java.util.TimeZone` specifically instruct use of GMT as base for
+                 //    custom timezones... odd.
+                 String timezoneId = "GMT" + timezoneOffset;
+-                  String timezoneId = "UTC" + timezoneOffset;
+ 
+                 timezone = TimeZone.getTimeZone(timezoneId);
+ 
+@@ -143,7 +159,7 @@
+     } catch (IllegalArgumentException e) {
+         fail = e;
+     }
+-    String input = (date == null) ? null : ('"' + date + "'");
++    String input = (date == null) ? null : ('"' + date + '"');
+     String msg = fail.getMessage();
+     if (msg == null || msg.isEmpty()) {
+         msg = "("+fail.getClass().getName()+")";
+@@ -152,3 +168,4 @@
+     ex.initCause(fail);
+     throw ex;
+ }
++

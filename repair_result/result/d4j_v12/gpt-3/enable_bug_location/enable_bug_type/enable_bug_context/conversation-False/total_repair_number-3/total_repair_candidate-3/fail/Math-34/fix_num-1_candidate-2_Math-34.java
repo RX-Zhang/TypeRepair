@@ -1,0 +1,7 @@
+public Iterator<Chromosome> iterator() {
+    // Adding exception handling to prevent issues when the iterator is used.
+    if (chromosomes.isEmpty()) {
+        throw new RuntimeException("The chromosome list is empty.");
+    }
+    return chromosomes.iterator();
+}

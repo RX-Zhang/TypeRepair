@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+     // Checks whether there is at least one finite bound value.
+     boolean hasFiniteBounds = false;
+     for (int i = 0; i < lB.length; i++) {
+-        if (!Double.isInfinite(lB[i]) ||
++        if (!Double.isInfinite(lB[i]) &&
+             !Double.isInfinite(uB[i])) {
+             hasFiniteBounds = true;
+             break;
+@@ -49,10 +49,21 @@
+                 throw new NotPositiveException(inputSigma[i]);
+             }
+             if (boundaries != null) {
+-                if (inputSigma[i] > boundaries[1][i] - boundaries[0][i]) {
++               inputSigma[i] > boundaries[1][i] -[0][i]) {
+                     throw new OutOfRangeException(inputSigma[i], 0, boundaries[1][i] - boundaries[0][i]);
+                 }
+             }
+         }
+     }
++
++    // Additional check to avoid overflow in normalization step:
++    if (boundaries != null) {
++        for (int i = 0; i < boundaries[0].length; i++) {
++            double diff = boundaries[1][i] - boundaries[0][i];
++            if (Double.isInfinite(diff) || Double.isNaN(diff) || diff < 0) {
++                throw new NumberIsTooLargeException(boundaries[1][i], boundaries[0][i], true);
++            }
++        }
++    }
+ }
++

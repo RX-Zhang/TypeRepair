@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -9,7 +9,8 @@
+     }
+   }
+ 
+-  for (Node c = node.getFirstChild(); c != null; c = c.getNext()) {
++  for (Node c = node.getNext(); c != null; c = c.getNext()) {
+     findCalledFunctions(c, changed);
+   }
+ }
++

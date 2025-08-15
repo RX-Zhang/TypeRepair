@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -24,7 +24,7 @@
+             double scaleFactor = 1d;
+             double lastScaleFactor = 1d;
+             final int maxPower = 5;
+-            final double scale = FastMath.max(a,b);
++            final double scale = FastMath.max(a, b);
+             if (scale <= 0) {  // Can't scale
+                 throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE, x);
+             }
+@@ -48,12 +48,10 @@
+         hN = cPrev * deltaN;
+ 
+         if (Double.isInfinite(hN)) {
+-            throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,
+-                                           x);
++            throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE, x);
+         }
+         if (Double.isNaN(hN)) {
+-            throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_NAN_DIVERGENCE,
+-                                           x);
++            throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_NAN_DIVERGENCE, x);
+         }
+ 
+         if (FastMath.abs(deltaN - 1.0) < epsilon) {
+@@ -69,9 +67,9 @@
+     }
+ 
+     if (n >= maxIterations) {
+-        throw new MaxCountExceededException(LocalizedFormats.NON_CONVERGENT_CONTINUED_FRACTION,
+-                                            maxIterations, x);
++        throw new MaxCountExceededException(LocalizedFormats.NON_CONVERGENT_CONTINUED_FRACTION, maxIterations, x);
+     }
+ 
+     return hN;
+ }
++

@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -10,6 +10,9 @@
+     _inputBuffer = inputBuffer;
+     _inputPtr = start;
+     _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
++
++    // Adjust input pointers and counters to handle input offset
++    _currInputProcessed = -start; // To offset byte count so location tracking is accurate
+     _bufferRecyclable = bufferRecyclable;
+ }
++

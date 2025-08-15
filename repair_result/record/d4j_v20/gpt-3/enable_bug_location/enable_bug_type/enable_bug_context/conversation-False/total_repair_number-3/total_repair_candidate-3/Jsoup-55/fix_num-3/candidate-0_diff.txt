@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -11,7 +11,12 @@
+             t.transition(Data);
+             break;
+         default:
+-            t.error(this);
+-            t.transition(BeforeAttributeName);
++            if (Character.isWhitespace(c)) {
++                t.error(this); // Handle whitespace as an error
++            } else {
++                t.error(this);
++                t.transition(BeforeAttributeName);
++            }
+     }
+ }
++

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,5 +1,18 @@
+ public void writeEmbeddedObject(Object object) throws IOException {
+-    // 01-Sep-2016, tatu: As per [core#318], handle small number of cases
+-    throw new JsonGenerationException("No native support for writing embedded objects",
+-            this);
++    if (object == null) {
++        writeNull();
++        return;
++    }
++    if (object instanceof byte[]) {
++        writeBinary((byte[]) object);
++        return;
++    }
++    // For other types, try to handle simple objects
++    try {
++        _writeSimpleObject(object);
++        return;
++    } catch (IllegalStateException e) {
++        throw new JsonGenerationException("No native support for writing embedded objects", this, e);
++    }
+ }
++

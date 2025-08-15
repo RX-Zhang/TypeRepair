@@ -1,0 +1,14 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest.testStringJoinAdd
+- Error: junit.framework.AssertionFailedError: 
+Expected: x=["a",foo,"b,c"].join()
+Result: x=["a",foo,"b,c"].join(",")
+- Location:     fold("x = ['a', foo, 'b', 'c'].join(',')",
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.PeepholeReplaceKnownMethodsTest.testNoStringJoin
+- Error: junit.framework.AssertionFailedError: 
+Expected: x=[].join(",",2)
+Result: x=""
+- Location:     foldSame("x = [].join(',',2)");

@@ -1,0 +1,80 @@
+Map<String, String> parsePaxHeaders(final InputStream i)
+    throws IOException {
+    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+    // Format is "length keyword=value\n";
+    while(true){ // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+
+        // Read the length field
+        while((ch = i.read()) != -1) {
+            if (ch == ' ') {
+                read++;
+                break;
+            }
+            if (ch < '0' || ch > '9') {
+                // Invalid character in length field, skip this header line
+                while (ch != '\n' && ch != -1) {
+                    ch = i.read();
+                }
+                len = 0;
+                break;
+            }
+            len *= 10;
+            len += ch - '0';
+            read++;
+        }
+
+        if (ch == -1) { // EOF
+            break;
+        }
+
+        if (len <= 0) {
+            // No more headers or invalid length, exit loop
+            break;
+        }
+
+        final ByteArrayOutputStream coll = new ByteArrayOutputStream();
+        // Read the keyword up to '='
+        while((ch = i.read()) != -1) {
+            read++;
+            if (ch == '=') {
+                break;
+            }
+            coll.write((byte) ch);
+        }
+        if (ch == -1) {
+            throw new IOException("Unexpected EOF in PAX header parsing");
+        }
+        final String keyword = coll.toString(CharsetNames.UTF_8);
+
+        final int restLen = len - read;
+        if (restLen < 0) {
+            throw new IOException("Invalid PAX header length");
+        }
+
+        if (restLen == 1) { // only NL
+            // remove the header key if the length is 1 (only newline)
+            headers.remove(keyword);
+            if (i.read() != '\n') {
+                throw new IOException("Invalid trailing newline in PAX header");
+            }
+        } else {
+            final byte[] rest = new byte[restLen];
+            final int got = IOUtils.readFully(i, rest);
+            if (got != restLen) {
+                throw new IOException("Failed to read Paxheader. Expected "
+                        + restLen + " bytes, read " + got);
+            }
+            // Drop trailing NL
+            if (rest[restLen - 1] != '\n') {
+                throw new IOException("Invalid trailing newline in PAX header");
+            }
+            final String value = new String(rest, 0,
+                    restLen - 1, CharsetNames.UTF_8);
+            headers.put(keyword, value);
+        }
+    }
+    return headers;
+}

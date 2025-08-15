@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -7,17 +7,14 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
+-        return 0L;
++    // Skip leading NULs
++    while (start < end && buffer[start] == 0) {
++        start++;
+     }
+ 
+     // Skip leading spaces
+-    while (start < end){
+-        if (buffer[start] == ' '){
+-            start++;
+-        } else {
+-            break;
+-        }
++    while (start < end && buffer[start] == ' '){
++        start++;
+     }
+ 
+     // Trim all trailing NULs and spaces.
+@@ -47,3 +44,4 @@
+ 
+     return result;
+ }
++

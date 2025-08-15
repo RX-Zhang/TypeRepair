@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.DetectArchiverTestCase.testCOMPRESS335
+- Error: org.apache.commons.compress.archivers.ArchiveException: No Archiver found for the stream signature
+- Location:         final ArchiveInputStream tar = getStreamFor("COMPRESS-335.tar");

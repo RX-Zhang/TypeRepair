@@ -1,0 +1,9 @@
+public boolean isActual() {
+    if (!isActualProperty()) {
+        return false;
+    }
+
+    // Replace super.isActual() with own actual logic or true if superclass not appropriate.
+    // Assuming that if property is actual, then the pointer is actual.
+    return true;
+}

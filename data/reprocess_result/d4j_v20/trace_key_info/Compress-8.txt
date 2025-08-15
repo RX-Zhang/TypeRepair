@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.tar.TarUtilsTest.testParseOctalInvalid
+- Error: junit.framework.AssertionFailedError: Expected IllegalArgumentException - should be at least 2 bytes long
+- Location:             fail("Expected IllegalArgumentException - should be at least 2 bytes long");

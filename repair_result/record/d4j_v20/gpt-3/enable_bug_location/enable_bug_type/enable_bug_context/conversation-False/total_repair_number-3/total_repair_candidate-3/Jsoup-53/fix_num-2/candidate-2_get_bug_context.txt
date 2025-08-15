@@ -1,0 +1,1 @@
+['isEmpty', 'consume', 'consumeTo', 'consumeToAny', 'consumeTagName', 'remainder']

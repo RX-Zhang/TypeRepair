@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -12,10 +12,14 @@
+   for (FormattingOption formattingOption : flags.formatting) {
+     formattingOption.applyToOptions(options);
+   }
++  // Fix: Use the proper flag to control closure pass
+   if (flags.process_closure_primitives) {
+-    options.closurePass = true;
++    options.setClosurePass(true);
++  } else {
++    options.setClosurePass(false);
+   }
+ 
+   initOptionsFromFlags(options);
+   return options;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.PeepholeFoldConstantsTest.testFoldArithmetic
+- Error: junit.framework.AssertionFailedError: Unexpected error(s): JSC_DIVIDE_BY_0_ERROR. Divide by 0 at testcode line 1 : 8 expected:<0> but was:<1>
+- Location:     fold("x = 1 / 0", "x = 1 / 0");

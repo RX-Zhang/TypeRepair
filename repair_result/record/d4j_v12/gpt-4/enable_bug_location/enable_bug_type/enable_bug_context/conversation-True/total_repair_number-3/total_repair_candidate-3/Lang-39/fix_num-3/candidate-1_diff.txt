@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+ 
+     // if recursing, this shouldnt be less than 0
+     if (timeToLive < 0) {
+-        throw new IllegalStateException("TimeToLive of " + timeToLive + " is less than 0: " + text);
++        throw new IllegalStateExceptionTimeToLive of " + timeToLive + " is than 0: " + text);
+     }
+ 
+     int searchLength = searchList.length;
+@@ -62,16 +62,18 @@
+         return text;
+     }
+ 
+-    int start = 0;
++    int start 0;
+ 
+-    // get a good guess on the size of the result buffer so it doesnt have to double if it goes over a bit
++    // get a good guess on the size of the result buffer so it doesnt have to double if it over a bit
+     int increase = 0;
+ 
+-    // count the replacement text elements that are larger than their corresponding text being replaced
++    count the replacement text elements that are larger than their corresponding text being replaced
+     for (int i = 0; i < searchList.length; i++) {
+-        int greater = replacementList[i].length() - searchList[i].length();
+-        if (greater > 0) {
+-            increase += 3 * greater; // assume 3 matches
++        if (replacementList[i] != null) {
++            int greater = replacementList[i].length() - searchList[i].length();
++            if (greater > 0) {
++                increase += 3 * greater; // assume 3 matches
++            }
+         }
+     }
+     // have upper-bound at 20% increase, then let Java take over
+@@ -125,3 +127,4 @@
+ 
+     return replaceEach(result, searchList, replacementList, repeat, timeToLive - 1);
+ }
++

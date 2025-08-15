@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,12 +4,14 @@
+                 sampleSize);
+     }
+ 
+-    final T[]out = (T[]) java.lang.reflect.Array.newInstance(singletons.get(0).getClass(), sampleSize);
++    // Verify and convert the type of the first element in singletons to ensure compatibility
++    Class<?> clazz = singletons.get(0).getClass();
++    final T[] out = (T[]) java.lang.reflect.Array.newInstance(clazz, sampleSize);
+ 
+     for (int i = 0; i < sampleSize; i++) {
+         out[i] = sample();
+     }
+ 
+     return out;
++}
+ 
+-}

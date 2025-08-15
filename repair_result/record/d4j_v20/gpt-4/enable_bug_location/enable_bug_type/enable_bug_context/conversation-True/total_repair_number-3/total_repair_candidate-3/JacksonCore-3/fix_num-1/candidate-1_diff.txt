@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,8 +8,10 @@
+     _objectCodec = codec;
+     _symbols = sym;
+     _inputBuffer = inputBuffer;
+-    _inputPtr = start;
+-    _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
++    _inputPtr = 0;
++    _inputEnd = end - start;
++    _currInputProcessed = start;
++    _currInputRowStart = 0;
+     _bufferRecyclable = bufferRecyclable;
+ }
++

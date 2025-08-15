@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+             if (offsetInBuffer >= lengthOfLastRead) {
+                 offsetInBuffer = 0;
+                 if ((lengthOfLastRead = in.read(buf)) == -1) {
+-                    return -1;
++                    throw new IOException("Truncated ZIP file");
+                 }
+                 count(lengthOfLastRead);
+                 bytesReadFromStream += lengthOfLastRead;
+@@ -46,11 +46,20 @@
+         } catch (DataFormatException e) {
+             throw new ZipException(e.getMessage());
+         }
+-        if (read == 0 && inf.finished()) {
+-            return -1;
++        if (read == 0) {
++            if (inf.finished()) {
++                return -1;
++            }
++            if (inf.needsDictionary()) {
++                throw new IOException("ZIP entry requires a dictionary");
++            }
++            if (lengthOfLastRead == -1) {
++                throw new IOException("Truncated ZIP file");
++            }
+         }
+         crc.update(buffer, start, read);
+         return read;
+     }
+     throw new ArrayIndexOutOfBoundsException();
+ }
++

@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -21,10 +21,11 @@
+     // characters
+     final String padding = createPadding(nextLineTabStop);
+ 
++    int startPos = 0;
+     while (true)
+     {
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
++        pos = findWrapPos(text, width, startPos);
+ 
+         if (pos == -1)
+         {
+@@ -33,7 +34,8 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        // Fix condition: adjust position if wrap is at padding boundary
++        if ((text.length() > width) && (pos == nextLineTabStop))
+         {
+             pos = width;
+         }
+@@ -41,3 +43,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

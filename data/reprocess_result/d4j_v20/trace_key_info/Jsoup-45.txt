@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.testReinsertionModeForThCelss
+- Error: junit.framework.AssertionFailedError: expected:<1> but was:<5>
+- Location:         assertEquals(1, doc.body().children().size());

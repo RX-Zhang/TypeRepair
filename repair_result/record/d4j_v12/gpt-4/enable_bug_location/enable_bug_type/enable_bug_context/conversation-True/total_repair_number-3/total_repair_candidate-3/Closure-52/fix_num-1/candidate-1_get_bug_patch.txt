@@ -1,0 +1,17 @@
+static boolean isSimpleNumber(String s) {
+  int len = s.length();
+  int dotCount = 0;
+  for (int index = 0; index < len; index++) {
+    char c = s.charAt(index);
+    if ((c < '0' || c > '9') && c != '.') {
+      return false;
+    }
+    if (c == '.') {
+      dotCount++;
+      if (dotCount > 1) {
+        return false;
+      }
+    }
+  }
+  return len > 0 && dotCount <= 1;
+}

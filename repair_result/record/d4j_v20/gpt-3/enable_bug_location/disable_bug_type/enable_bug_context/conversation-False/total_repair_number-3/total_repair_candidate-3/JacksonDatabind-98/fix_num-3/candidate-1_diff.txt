@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -24,9 +24,13 @@
+             }
+         } else if (_tokens[i] == null) {
+             SettableBeanProperty prop = extProp.getProperty();
+-            ctxt.reportInputMismatch(_beanType,
+-                    "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++            if (prop.isRequired() ||
++                ctxt.isEnabled(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY)) {
++                ctxt.reportInputMismatch(_beanType,
++                        "Missing property '%s' for external type id '%s'",
++                        prop.getName(), extProp.getTypePropertyName());
++            }
++            return buffer.getParameters() != null ? creator.build(ctxt, buffer) : null;
+         }
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+@@ -55,3 +59,4 @@
+     }
+     return bean;
+ }
++

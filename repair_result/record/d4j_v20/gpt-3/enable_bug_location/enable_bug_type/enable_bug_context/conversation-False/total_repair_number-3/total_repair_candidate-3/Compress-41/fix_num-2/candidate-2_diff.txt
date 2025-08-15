@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -26,9 +26,10 @@
+     if (sig.equals(ZipLong.CFH_SIG) || sig.equals(ZipLong.AED_SIG)) {
+         hitCentralDirectory = true;
+         skipRemainderOfArchive();
++        return null;  // Added return here to prevent continuing with invalid header
+     }
+     if (!sig.equals(ZipLong.LFH_SIG)) {
+-        return null;
++        throw new ZipException("Unexpected record signature: " + sig);
+     }
+ 
+     int off = WORD;
+@@ -100,7 +101,8 @@
+             current.in = new BZip2CompressorInputStream(new BoundedInputStream(in, current.entry.getCompressedSize()));
+         }
+     }
+-    
++
+     entriesRead++;
+     return current.entry;
+ }
++

@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -27,6 +27,11 @@
+         }
+     }
+ 
++    if (start >= end) {
++        throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, (byte) -1));
++    }
++
+     // Must have trailing NUL or space
+     byte trailer;
+     trailer = buffer[end-1];
+@@ -37,9 +42,11 @@
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+     // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    if (end > start) {
++        trailer = buffer[end-1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -55,3 +62,4 @@
+ 
+     return result;
+ }
++

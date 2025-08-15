@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -60,6 +60,10 @@
+     // try to protect side-effect free statements as well.
+     if (!NodeUtil.isStatement(n)) {
+       problemNodes.add(n);
++      if (protectSideEffectFreeCode) {
++        protectSideEffects();
++      }
+     }
+   }
+ }
++

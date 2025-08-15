@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.zip.ZipArchiveInputStreamTest.winzipBackSlashWorkaround
+- Error: junit.framework.AssertionFailedError: expected:<ä[/]> but was:<ä[\]>
+- Location:             assertEquals("\u00e4/", zae.getName());
+
+
+Test failure 2:
+- Test: org.apache.commons.compress.archivers.zip.ZipFileTest.testWinzipBackSlashWorkaround
+- Error: junit.framework.AssertionFailedError: Expected: <null> but was: ä\ü.txt
+- Location:         assertNull(zf.getEntry("\u00e4\\\u00fc.txt"));

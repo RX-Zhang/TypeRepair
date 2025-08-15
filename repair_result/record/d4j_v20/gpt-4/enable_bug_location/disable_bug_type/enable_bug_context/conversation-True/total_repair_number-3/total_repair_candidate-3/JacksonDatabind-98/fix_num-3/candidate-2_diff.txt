@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -26,7 +26,7 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
+         }
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+@@ -41,7 +41,7 @@
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+                 // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+                 //    apply deserializer... fun fun.
+-                buffer.assignParameter(typeProp, typeId);
++                buffer.assignParameter(typeProp, _typeIds[i]);
+             }
+         }
+     }
+@@ -55,3 +55,4 @@
+     }
+     return bean;
+ }
++

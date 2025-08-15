@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZFileTest.testCompressedHeaderWithNonDefaultDictionarySize
+- Error: org.tukaani.xz.UnsupportedOptionsException: LZMA dictionary is too big for this implementation
+- Location:         SevenZFile sevenZFile = new SevenZFile(getFile("COMPRESS-256.7z"));

@@ -1,0 +1,60 @@
+--- 
++++ 
+@@ -1,11 +1,55 @@
+ public boolean equals(Object obj) {
+-
+     if (obj == this) {
+         return true;
+     }
+     if (!(obj instanceof ShapeList)) {
+         return false;
+     }
+-    return super.equals(obj);
++    ShapeList other = (ShapeList) obj;
++    int thisSize = 0;
++    int otherSize = 0;
+ 
++    // Determine the size by finding max index with a shape in this
++    try {
++        for (int i = 0; ; i++) {
++            Shape s = this.getShape(i);
++            if (s == null && !this.hasShape(i)) {
++                break;
++            }
++            thisSize = i + 1;
++        }
++    } catch (IndexOutOfBoundsException e) {
++        // reached end
++    }
++    try {
++        for (int i = 0; ; i++) {
++            Shape s = other.getShape(i);
++            if (s == null && !other.hasShape(i)) {
++                break;
++            }
++            otherSize = i + 1;
++        }
++    } catch (IndexOutOfBoundsException e) {
++        // reached end
++    }
++
++    if (thisSize != otherSize) {
++        return false;
++    }
++
++    for (int i = 0; i < thisSize; i++) {
++        Shape s1 = this.getShape(i);
++        Shape s2 = other.getShape(i);
++        if (s1 == null) {
++            if (s2 != null) {
++                return false;
++            }
++        } else {
++            if (!s1.equals(s2)) {
++                return false;
++            }
++        }
++    }
++    return true;
+ }
++

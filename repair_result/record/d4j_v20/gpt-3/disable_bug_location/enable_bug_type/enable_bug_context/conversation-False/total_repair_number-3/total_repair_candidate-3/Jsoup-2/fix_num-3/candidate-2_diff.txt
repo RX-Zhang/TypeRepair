@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -29,14 +29,17 @@
+     // pc data only tags (textarea, script): chomp to end tag, add content as text node
+     if (tag.isData()) {
+         String data = tq.chompTo("</" + tagName);
+-        tq.chompTo(">");
++        // do not consume ">" twice; chompTo already stops before the "</tagName"
++        if (tq.matchChomp(">") == false) {
++            // In case no ">" after end tag, don't consume it twice
++        }
+         
+         Node dataNode;
+         if (tag.equals(titleTag) || tag.equals(textareaTag)) // want to show as text, but not contain inside tags (so not a data tag?)
+             dataNode = TextNode.createFromEncoded(data, baseUri);
+         else
+             dataNode = new DataNode(data, baseUri); // data not encoded but raw (for " in script)
+-        child.appendChild(dataNode);   
++        child.appendChild(dataNode);
+     }
+ 
+     // <base href>: update the base uri
+@@ -48,3 +51,4 @@
+         }
+     }
+ }
++

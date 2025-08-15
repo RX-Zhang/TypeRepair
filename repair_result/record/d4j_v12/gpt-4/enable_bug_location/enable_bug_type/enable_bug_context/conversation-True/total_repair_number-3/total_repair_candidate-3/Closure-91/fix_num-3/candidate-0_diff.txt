@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -53,7 +53,7 @@
+           return false;
+         }
+         Node llhs = lhs.getFirstChild();
+-        if (llhs.getType() == Token.GETPROP &&
++        if (llhs != null && llhs.getType() == Token.GETPROP &&
+             llhs.getLastChild().getString().equals("prototype")) {
+           return false;
+         }
+@@ -61,5 +61,13 @@
+     }
+   }
+ 
++  // Use shouldReportThis to decide whether to traverse the node or not.
++  if (n.getType() == Token.THIS) {
++    if (!shouldReportThis(n, parent)) {
++      return false;
++    }
++  }
++
+   return true;
+ }
++

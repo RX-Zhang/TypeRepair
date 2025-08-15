@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -34,7 +34,9 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        // fix: correct the condition to check if pos == nextLineTabStop
++        // instead of nextLineTabStop -1, because pos is index, and padding occupies from 0 to nextLineTabStop-1
++        if ( (text.length() > width) && (pos == nextLineTabStop) ) 
+         {
+             pos = width;
+         }
+@@ -42,3 +44,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

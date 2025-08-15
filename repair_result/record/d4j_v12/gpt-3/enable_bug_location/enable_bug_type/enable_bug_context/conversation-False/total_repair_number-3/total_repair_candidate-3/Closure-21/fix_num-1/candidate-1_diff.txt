@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -3,8 +3,7 @@
+   // I've been unable to think of any cases where this indicates a bug,
+   // and apparently some people like keeping these semicolons around,
+   // so we'll allow it.
+-  if (n.isEmpty() ||
+-      n.isComma()) {
++  if (n.isEmpty() || n.isComma()) {
+     return;
+   }
+ 
+@@ -40,12 +39,11 @@
+       }
+     }
+   } else if (parent.getType() != Token.EXPR_RESULT && parent.getType() != Token.BLOCK) {
+-    if (! (parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext()))) {
++    if (!(parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext()))) {
+       return;
+     }
+   }
+-  if (
+-      (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler()))) {
++  if (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler())) {
+     String msg = "This code lacks side-effects. Is there a bug?";
+     if (n.isString()) {
+       msg = "Is there a missing '+' on the previous line?";
+@@ -63,3 +61,4 @@
+     }
+   }
+ }
++

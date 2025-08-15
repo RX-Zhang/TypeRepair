@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -2,6 +2,12 @@
+     // Get initial solution
+     double x0 = getMin();
+     double x1 = getMax();
++    
++    // Perform boundary checks
++    if (x0 >= x1) {
++        throw new IllegalArgumentException("Invalid interval: min must be less than max.");
++    }
++    
+     double f0 = computeObjectiveValue(x0);
+     double f1 = computeObjectiveValue(x1);
+ 
+@@ -67,6 +73,7 @@
+                 throw new MathInternalError();
+             }
+         }
++        
+         // Update from [x0, x1] to [x0, x].
+         x1 = x;
+         f1 = fx;
+@@ -124,3 +131,4 @@
+         }
+     }
+ }
++

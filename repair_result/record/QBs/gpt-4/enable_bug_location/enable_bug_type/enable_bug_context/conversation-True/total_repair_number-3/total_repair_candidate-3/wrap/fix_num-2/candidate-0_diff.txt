@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -4,7 +4,11 @@
+         end = text.rfind(' ', 0, cols + 1)
+         if end == -1:
+             end = cols
+-        line, text = text[:end], text[end:]
++            line, text = text[:end], text[end:]
++        else:
++            line, text = text[:end], text[end + 1:]
+         lines.append(line)
++    if text:
++        lines.append(text)
+     return lines
+ 

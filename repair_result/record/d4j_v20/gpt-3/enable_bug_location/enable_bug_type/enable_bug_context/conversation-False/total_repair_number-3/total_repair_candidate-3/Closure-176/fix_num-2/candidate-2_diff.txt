@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -39,8 +39,10 @@
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+       }
++      // Fix: Only set the JSType to resultType if this is a var declaration;
++      // otherwise, retain the existing leftType (do not set to null)
+       left.setJSType(isVarDeclaration || leftType == null ?
+-          resultType : null);
++          resultType : leftType);
+ 
+       if (var != null && var.isTypeInferred()) {
+         JSType oldType = var.getType();
+@@ -51,6 +53,7 @@
+     case Token.GETPROP:
+       String qualifiedName = left.getQualifiedName();
+       if (qualifiedName != null) {
++        // Fix: When leftType is null, use unknownType instead
+         scope.inferQualifiedSlot(left, qualifiedName,
+             leftType == null ? unknownType : leftType,
+             resultType);
+@@ -61,3 +64,4 @@
+       break;
+   }
+ }
++

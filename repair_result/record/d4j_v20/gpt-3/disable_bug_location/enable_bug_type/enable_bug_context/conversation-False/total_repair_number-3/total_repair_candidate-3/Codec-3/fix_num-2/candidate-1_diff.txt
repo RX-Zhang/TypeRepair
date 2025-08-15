@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -7,8 +7,8 @@
+     } else if (charAt(value, index + 1) == 'N') {
+         if (index == 1 && isVowel(charAt(value, 0)) && !slavoGermanic) {
+             result.append("KN", "N");
+-        } else if (!contains(value, index + 2, 2, "EY") && 
+-                   charAt(value, index + 1) != 'Y' && !slavoGermanic) {
++        } else if (!contains(value, index + 2, 2, "EY") &&
++                   charAt(value, index + 1) == 'N' && !slavoGermanic) {  // corrected logical check from != 'Y' to == 'N'
+             result.append("N", "KN");
+         } else {
+             result.append("KN");
+@@ -21,15 +21,15 @@
+         //-- -ges-, -gep-, -gel-, -gie- at beginning --//
+         result.append('K', 'J');
+         index += 2;
+-    } else if ((contains(value, index + 1, 2, "ER") || 
++    } else if ((contains(value, index + 1, 2, "ER") ||
+                 charAt(value, index + 1) == 'Y') &&
+                !contains(value, 0, 6, "DANGER", "RANGER", "MANGER") &&
+-               !contains(value, index - 1, 1, "E", "I") && 
+-               !contains(value, index - 1, 3, "RGY", "OGY")) {
++               (contains(value, index - 1, 1, "E", "I") ||    // corrected from !contains to contains
++                contains(value, index - 1, 3, "RGY", "OGY"))) {
+         //-- -ger-, -gy- --//
+-        result.append('K', 'J');
++        result.append('J');
+         index += 2;
+-    } else if (contains(value, index + 1, 1, "E", "I", "Y") || 
++    } else if (contains(value, index + 1, 1, "E", "I", "Y") ||
+                contains(value, index - 1, 4, "AGGI", "OGGI")) {
+         //-- Italian "biaggi" --//
+         if ((contains(value, 0 ,4, "VAN ", "VON ") || contains(value, 0, 3, "SCH")) || contains(value, index + 1, 2, "ET")) {
+@@ -50,3 +50,4 @@
+     }
+     return index;
+ }
++

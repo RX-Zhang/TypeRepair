@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ public TypePair getTypesUnderInequality(JSType that) {
+-  // unions types
+-  if (that instanceof UnionType) {
++  // union types
++  if (that.isUnionType()) {
+     TypePair p = that.getTypesUnderInequality(this);
+     return new TypePair(p.typeB, p.typeA);
+   }
+@@ -8,13 +8,18 @@
+   // other types
+   switch (this.testForEquality(that)) {
+     case TRUE:
++      // If the two types are equal, no types remain after inequality test
+       return new TypePair(null, null);
+ 
+     case FALSE:
+     case UNKNOWN:
+-      return new TypePair(this, that);
++      // For inequality, remove types that are 'no type' or 'void' from results
++      JSType resultThis = this.isNoType() || this.isVoidType() ? null : this;
++      JSType resultThat = that.isNoType() || that.isVoidType() ? null : that;
++      return new TypePair(resultThis, resultThat);
+   }
+ 
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

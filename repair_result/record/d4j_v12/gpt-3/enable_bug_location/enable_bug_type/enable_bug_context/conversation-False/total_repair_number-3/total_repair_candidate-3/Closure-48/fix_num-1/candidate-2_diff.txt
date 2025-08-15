@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+   Preconditions.checkArgument(qName != null && ownerName != null);
+ 
+   // Precedence of type information on GETPROPs:
+-  // 1) @type annnotation / @enum annotation
++  // 1) @type annotation / @enum annotation
+   // 2) ASSIGN to FUNCTION literal
+   // 3) @param/@return annotation (with no function literal)
+   // 4) ASSIGN to something marked @const
+@@ -144,3 +144,4 @@
+     }
+   }
+ }
++

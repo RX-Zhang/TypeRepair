@@ -1,0 +1,73 @@
+--- 
++++ 
+@@ -10,8 +10,8 @@
+     }
+ 
+     final int order = matrix.getRowDimension();
+-    lTData   = matrix.getData();
+-    cachedL  = null;
++    lTData = matrix.getData();
++    cachedL = null;
+     cachedLT = null;
+ 
+     // check the matrix before transformation
+@@ -19,10 +19,11 @@
+ 
+         final double[] lI = lTData[i];
+ 
+-        if (lTData[i][i] < absolutePositivityThreshold) {
++        // Check diagonal element for positivity threshold
++        if (lI[i] < absolutePositivityThreshold) {
+             throw new NotPositiveDefiniteMatrixException();
+         }
+-        // check off-diagonal elements (and reset them to 0)
++        // check off-diagonal elements (for symmetry)
+         for (int j = i + 1; j < order; ++j) {
+             final double[] lJ = lTData[j];
+             final double lIJ = lI[j];
+@@ -32,28 +33,36 @@
+             if (Math.abs(lIJ - lJI) > maxDelta) {
+                 throw new NotSymmetricMatrixException();
+             }
+-            lJ[i] = 0;
+-       }
++        }
+     }
+ 
+-    // transform the matrix
++    // Perform the Cholesky decomposition transform in-place in lTData
+     for (int i = 0; i < order; ++i) {
+ 
+         final double[] ltI = lTData[i];
+ 
+-        // check diagonal element
+-
++        // update diagonal element
++        if (ltI[i] <= 0) {
++            throw new NotPositiveDefiniteMatrixException();
++        }
+         ltI[i] = Math.sqrt(ltI[i]);
+         final double inverse = 1.0 / ltI[i];
+ 
+-        for (int q = order - 1; q > i; --q) {
++        for (int q = i + 1; q < order; ++q) {
+             ltI[q] *= inverse;
+             final double[] ltQ = lTData[q];
+             for (int p = q; p < order; ++p) {
+                 ltQ[p] -= ltI[q] * ltI[p];
+             }
+         }
++    }
++    
++    // Zero out the elements above the diagonal since we only store lower triangular matrix
++    for (int i = 0; i < order; ++i) {
++        final double[] ltI = lTData[i];
++        for (int j = i + 1; j < order; ++j) {
++            ltI[j] = 0.0;
++        }
++    }
++}
+ 
+-    }
+-
+-}

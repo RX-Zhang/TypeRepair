@@ -1,0 +1,1 @@
+['transition', 'state', 'getStack', 'getFromStack', 'popStackToClose', 'popStackToBefore', 'clearStackToTableContext', 'clearStackToTableBodyContext', 'clearStackToTableRowContext', 'inScope', 'inTableScope']

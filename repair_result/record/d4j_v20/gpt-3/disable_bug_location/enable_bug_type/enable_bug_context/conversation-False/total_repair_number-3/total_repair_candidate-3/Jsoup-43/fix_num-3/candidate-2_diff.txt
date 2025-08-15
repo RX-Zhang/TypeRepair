@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -4,8 +4,10 @@
+ 
+     for (int i = 0; i < elements.size(); i++) {
+         E element = elements.get(i);
+-        if (element.equals(search))
++        // Use identity comparison instead of equals to find the exact instance
++        if (element == search)
+             return i;
+     }
+     return null;
+ }
++

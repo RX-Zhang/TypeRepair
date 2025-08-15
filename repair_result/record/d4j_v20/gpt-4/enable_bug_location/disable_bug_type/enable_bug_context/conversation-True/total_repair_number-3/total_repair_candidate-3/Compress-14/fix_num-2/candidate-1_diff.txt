@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -18,40 +18,7 @@
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
+-    while (start < end){
+-        if (buffer[start] == ' '){
+-            start++;
+-        } else {
+-            break;
+-        }
+-    }
++    // Instead of the original logic, use parseOctalOrBinary to handle binary values
++    return parseOctalOrBinary(buffer, offset, length);
++}
+ 
+-    // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    }
+-
+-    for ( ;start < end; start++) {
+-        final byte currentByte = buffer[start];
+-        // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
+-            throw new IllegalArgumentException(
+-                    exceptionMessage(buffer, offset, length, start, currentByte));
+-        }
+-        result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+-    }
+-
+-    return result;
+-}

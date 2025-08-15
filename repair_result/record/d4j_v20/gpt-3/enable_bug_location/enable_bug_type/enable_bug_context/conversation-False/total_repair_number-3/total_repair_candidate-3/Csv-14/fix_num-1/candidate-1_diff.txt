@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    final char quoteChar = (quoteCharObj != null) ? quoteCharObj.charValue() : '"'; // Default to double quote if null
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +37,7 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a'))) ) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -63,12 +64,6 @@
+                     }
+                 }
+             }
+-        }
+-
+-        if (!quote) {
+-            // no encapsulation needed - write out the original value
+-            out.append(value, start, end);
+-            return;
+         }
+         break;
+     default:
+@@ -104,3 +99,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,50 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 6 items
+
+python_testcases/test_rpn_eval.py F.F..F                                 [100%]
+
+=================================== FAILURES ===================================
+________________________ test_rpn_eval[input_data0-4.0] ________________________
+
+input_data = [[3.0, 5.0, '+', 2.0, '/']], expected = 4.0
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_rpn_eval(input_data, expected):
+>       assert rpn_eval(*input_data) == expected
+E       AssertionError: assert 0.25 == 4.0
+E        +  where 0.25 = rpn_eval(*[[3.0, 5.0, '+', 2.0, '/']])
+
+python_testcases/test_rpn_eval.py:15: AssertionError
+________________________ test_rpn_eval[input_data2-8.0] ________________________
+
+input_data = [[7.0, 4.0, '+', 3.0, '-']], expected = 8.0
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_rpn_eval(input_data, expected):
+>       assert rpn_eval(*input_data) == expected
+E       AssertionError: assert -8.0 == 8.0
+E        +  where -8.0 = rpn_eval(*[[7.0, 4.0, '+', 3.0, '-']])
+
+python_testcases/test_rpn_eval.py:15: AssertionError
+_______________________ test_rpn_eval[input_data5-14.0] ________________________
+
+input_data = [[5.0, 1.0, 2.0, '+', 4.0, '*', ...]], expected = 14.0
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_rpn_eval(input_data, expected):
+>       assert rpn_eval(*input_data) == expected
+E       AssertionError: assert -14.0 == 14.0
+E        +  where -14.0 = rpn_eval(*[[5.0, 1.0, 2.0, '+', 4.0, '*', ...]])
+
+python_testcases/test_rpn_eval.py:15: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_rpn_eval.py::test_rpn_eval[input_data0-4.0] - As...
+FAILED python_testcases/test_rpn_eval.py::test_rpn_eval[input_data2-8.0] - As...
+FAILED python_testcases/test_rpn_eval.py::test_rpn_eval[input_data5-14.0] - A...
+========================= 3 failed, 3 passed in 0.03s ==========================

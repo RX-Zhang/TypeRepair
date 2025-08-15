@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.joda.time.format.TestPeriodFormatterBuilder.testBug2495455
+- Error: java.lang.IllegalArgumentException: Invalid format: "PT1003199059S" is malformed at "1003199059S"
+- Location:         pfmt2.parsePeriod("PT1003199059S");

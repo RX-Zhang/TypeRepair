@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.parsing.ParserTest.testUnnamedFunctionStatement
+- Error: junit.framework.AssertionFailedError
+- Location:     parseError("function() {};", "unnamed function statement");

@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -36,17 +36,22 @@
+         data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
+       }
+     }
+-  } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
+-      NodeUtil.isLValue(n)) {
+-    String name = NodeUtil.getRootOfQualifiedName(n).getString();
+-    Scope scope = t.getScope();
+-    Var var = scope.getVar(name);
+-    if (var != null) {
+-      Scope ownerScope = var.getScope();
+-      if (scope != ownerScope && ownerScope.isLocal()) {
+-        data.get(ownerScope.getRootNode())
+-            .recordEscapedQualifiedName(n.getQualifiedName());
++  } else if (n.isGetProp() && NodeUtil.isLValue(n) &&
++      n.getFirstChild() != null && NodeUtil.isQualifiedName(n)) {
++    // Added null check and isQualifiedName to avoid type issues
++    Node root = NodeUtil.getRootOfQualifiedName(n);
++    if (root != null) {
++      String name = root.getString();
++      Scope scope = t.getScope();
++      Var var = scope.getVar(name);
++      if (var != null) {
++        Scope ownerScope = var.getScope();
++        if (scope != ownerScope && ownerScope.isLocal()) {
++          data.get(ownerScope.getRootNode())
++              .recordEscapedQualifiedName(n.getQualifiedName());
++        }
+       }
+     }
+   }
+ }
++

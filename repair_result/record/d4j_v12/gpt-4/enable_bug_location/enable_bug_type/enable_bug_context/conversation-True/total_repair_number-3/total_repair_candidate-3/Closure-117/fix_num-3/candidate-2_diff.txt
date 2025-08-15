@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -6,7 +6,11 @@
+   // prototype chain. So climb the prototype chain and find out where
+   // the property was originally defined.
+   if (n.isGetProp()) {
+-    ObjectType objectType = getJSType(n.getFirstChild()).dereference();
++    JSType type = getJSType(n.getFirstChild());
++    ObjectType objectType = null;
++    if (type != null) {
++      objectType = type.dereference();
++    }
+     if (objectType != null) {
+       String propName = n.getLastChild().getString();
+       if (objectType.getConstructor() != null &&
+@@ -25,7 +29,9 @@
+       if (objectType != null &&
+           (objectType.getConstructor() != null ||
+            objectType.isFunctionPrototypeType())) {
+-        return objectType.toString() + "." + propName;
++        return objectType.getConstructor() != null
++            ? objectType.getConstructor().getName() + "." + propName
++            : objectType.toString() + "." + propName;
+       }
+     }
+   }
+@@ -52,3 +58,4 @@
+     return type.toString();
+   }
+ }
++

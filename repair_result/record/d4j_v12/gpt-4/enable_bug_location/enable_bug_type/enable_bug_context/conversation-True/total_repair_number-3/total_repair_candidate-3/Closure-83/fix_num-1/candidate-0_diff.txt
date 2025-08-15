@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public int parseArguments(Parameters params) throws CmdLineException {
+-  String param = params.getParameter(0);
++  String param = null;
++  if (params.getParameters().size() > 0) {
++    param = params.getParameter(0);
++  }
+ 
+   if (param == null) {
+     setter.addValue(true);
+@@ -17,3 +20,4 @@
+     return 1;
+   }
+ }
++

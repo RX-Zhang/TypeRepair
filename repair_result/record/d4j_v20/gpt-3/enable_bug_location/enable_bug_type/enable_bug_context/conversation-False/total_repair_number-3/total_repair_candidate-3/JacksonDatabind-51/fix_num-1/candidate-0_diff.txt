@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -42,7 +42,11 @@
+                 //   generic type with custom type resolvers. If so, should try to retain them.
+                 //  Whether this is sufficient to avoid problems remains to be seen, but for
+                 //  now it should improve things.
+-                    type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
++                type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
++            }
++            // Ensure type is compatible with the expected deserializer
++            if (!type.isTypeOrSubTypeOf(Object.class)) {
++                throw new IOException("Incompatible type for deserialization: " + type);
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
+         }
+@@ -50,3 +54,4 @@
+     }
+     return deser;
+ }
++

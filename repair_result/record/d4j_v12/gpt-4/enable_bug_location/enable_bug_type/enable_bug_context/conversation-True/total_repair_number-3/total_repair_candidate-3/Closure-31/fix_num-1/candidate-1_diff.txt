@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -81,6 +81,11 @@
+       }
+     }
+ 
++    if (staleInputs) {
++      fillEmptyModules(modules);
++      rebuildInputsFromModules();
++    }
++
+     for (CompilerInput input : inputs) {
+       Node n = input.getAstRoot(this);
+ 
+@@ -150,3 +155,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

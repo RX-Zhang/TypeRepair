@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -139,6 +139,7 @@
+         NodeTraversal.traverse(this, n, sia);
+       }
+ 
++      // Fix: Add AST into jsRoot after all dependency sorts and rebuilds
+       jsRoot.addChildToBack(n);
+     }
+ 
+@@ -150,3 +151,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

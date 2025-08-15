@@ -1,0 +1,14 @@
+def find_first_in_sorted(arr, x):
+    lo = 0
+    hi = len(arr) - 1  # Changed to len(arr) - 1 to prevent IndexError
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if mid < 0 or mid >= len(arr):  # Added boundary check
+            return -1  # Safeguard return for invalid mid
+        if x == arr[mid] and (mid == 0 or x != arr[mid - 1]):
+            return mid
+        elif x < arr[mid]:  # Changed from <= to < to avoid infinite loop
+            hi = mid - 1  # Adjusted to mid - 1
+        else:
+            lo = mid + 1
+    return -1

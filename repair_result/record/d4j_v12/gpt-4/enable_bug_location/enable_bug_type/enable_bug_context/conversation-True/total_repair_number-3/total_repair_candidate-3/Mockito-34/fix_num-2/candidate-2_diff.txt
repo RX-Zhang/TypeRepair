@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,9 +1,15 @@
+ public void captureArgumentsFrom(Invocation i) {
++    Object[] arguments = i.getArguments();
+     int k = 0;
+     for (Matcher m : matchers) {
+         if (m instanceof CapturesArguments) {
+-            ((CapturesArguments) m).captureFrom(i.getArguments()[k]);
++            if (k < arguments.length) {
++                ((CapturesArguments) m).captureFrom(arguments[k]);
++            } else {
++                ((CapturesArguments) m).captureFrom(null);
++            }
+         }
+         k++;
+     }
+ }
++

@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+   // Section 3.4.7: Subtyping Function Types.
+ 
+   // this.returnType <: that.returnType (covariant)
+-  if (!this.returnType.isSubtype(that.returnType)) {
++  if (!that.returnType.isSubtype(this.returnType)) {
+     return false;
+   }
+ 
+@@ -39,7 +39,7 @@
+     JSType thatParamType = thatParam.getJSType();
+     if (thisParamType != null) {
+       if (thatParamType == null ||
+-          !thatParamType.isSubtype(thisParamType)) {
++          !thisParamType.isSubtype(thatParamType)) {
+         return false;
+       }
+     }
+@@ -73,3 +73,4 @@
+ 
+   return true;
+ }
++

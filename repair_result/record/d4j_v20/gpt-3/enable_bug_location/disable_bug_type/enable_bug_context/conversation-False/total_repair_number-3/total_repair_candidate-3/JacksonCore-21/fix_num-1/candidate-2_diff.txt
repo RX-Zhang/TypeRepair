@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -36,10 +36,11 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    // this check must be exact (not guaranteed to have token)
++                    if (t != null && t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -176,9 +177,12 @@
+                     if (_includeImmediateParent && !_headContext.isStartHandled()) {
+                         t = _headContext.nextTokenToRead(); // returns START_OBJECT but also marks it handled
+                         _exposedContext = _headContext;
++                        return (_currToken = t);
+                     }
+-                }
+-                return (_currToken = t);
++                } else {
++                    // If includePath enabled, directly return FIELD_NAME token to propagate path
++                    return (_currToken = t);
++                }
+             }
+             if (f == null) {
+                 delegate.nextToken();
+@@ -226,3 +230,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

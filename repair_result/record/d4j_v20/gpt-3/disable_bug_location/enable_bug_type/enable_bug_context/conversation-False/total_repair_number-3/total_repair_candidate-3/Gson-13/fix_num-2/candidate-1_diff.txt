@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -72,8 +72,11 @@
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+-        if (value == 0) {
+-          return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++        // Allow leading zero if it is the only digit before decimal or exponent,
++        // i.e., allow "-0" as valid but disallow leading zeros like "012".
++        // So we should only reject if value == 0 and next digit is also a digit (i.e., leading zero).
++        if (value == 0 && (c == '0' || (c >= '1' && c <= '9'))) {
++          return PEEKED_NONE; // Leading '0' prefix is not allowed (for octal).
+         }
+         long newValue = value * 10 - (c - '0');
+         fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+@@ -100,3 +103,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

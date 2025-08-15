@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -31,7 +31,7 @@
+     // Parse externs sources.
+     for (CompilerInput input : externs) {
+       Node n = input.getAstRoot(this);
+-      if (hasErrors()) {
++      if (n == null || hasErrors()) {
+         return null;
+       }
+       externsRoot.addChildToBack(n);
+@@ -121,3 +121,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

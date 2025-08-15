@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -12,10 +12,11 @@
+     if (firstFound == null)
+         return; // not found, skip
+ 
+-    for (int pos = stack.size() -1; pos >= 0; pos--) {
+-        Element next = stack.get(pos);
+-        stack.remove(pos);
++    // Remove elements from the top of the stack until (and including) firstFound is removed
++    while (!stack.isEmpty()) {
++        Element next = stack.remove(stack.size() - 1);
+         if (next == firstFound)
+             break;
+     }
+ }
++

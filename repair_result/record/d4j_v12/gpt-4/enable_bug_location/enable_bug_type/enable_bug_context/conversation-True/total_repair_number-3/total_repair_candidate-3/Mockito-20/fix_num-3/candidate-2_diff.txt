@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+     );
+     T mockInstance = null;
+     try {
+-        mockInstance = classInstantiator.instantiate(mockedProxyType);
++        mockInstance = classInstantiator.instantiate(mockedProxyType, settings);
+         MockMethodInterceptor.MockAccess mockAccess = (MockMethodInterceptor.MockAccess) mockInstance;
+         mockAccess.setMockitoInterceptor(new MockMethodInterceptor(asInternalMockHandler(handler), settings));
+ 
+@@ -25,6 +25,7 @@
+                 ""
+         ),cce);
+     } catch (org.mockito.internal.creation.instance.InstantiationException e) {
+-        throw new MockitoException("Unable to create mock instance of type '" + mockedProxyType.getSuperclass().getSimpleName() + "'", e);
++        throw new MockitoException("Unable to create mock instance of type '" + settings.getTypeToMock().getSimpleName() + "'", e);
+     }
+ }
++

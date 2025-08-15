@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,10 +4,12 @@
+     }
+     weight_by_node[source] = 0
+     for i in range(len(weight_by_node) - 1):
++        updated = False
+         for (u, v), weight in weight_by_edge.items():
+-            weight_by_edge[u, v] = min(
+-                weight_by_node[u] + weight,
+-                weight_by_node[v]
+-            )
++            if weight_by_node[u] + weight < weight_by_node[v]:
++                weight_by_node[v] = weight_by_node[u] + weight
++                updated = True
++        if not updated:
++            break
+     return weight_by_node
+ 

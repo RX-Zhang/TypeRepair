@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -56,6 +56,14 @@
+         firstTime = false;
+       }
+ 
++      // Limit the first step size to not exceed the total integration interval
++      if (firstTime) {
++        final double maxStep = FastMath.abs(t - stepStart);
++        if (FastMath.abs(hNew) > maxStep) {
++          hNew = forward ? maxStep : -maxStep;
++        }
++      }
++
+       stepSize = hNew;
+ 
+       // next stages
+@@ -87,8 +95,8 @@
+       if (error >= 1.0) {
+         // reject the step and attempt to reduce error by stepsize control
+         final double factor =
+-            FastMath.min(maxGrowth,
+-                         FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
++            FastMath.min(getMaxGrowth(),
++                         FastMath.max(getMinReduction(), getSafety() * FastMath.pow(error, exp)));
+         hNew = filterStep(stepSize * factor, forward, false);
+       }
+ 
+@@ -113,7 +121,7 @@
+ 
+         // stepsize control for next step
+         final double factor =
+-            FastMath.min(maxGrowth, FastMath.max(minReduction, safety * FastMath.pow(error, exp)));
++            FastMath.min(getMaxGrowth(), FastMath.max(getMinReduction(), getSafety() * FastMath.pow(error, exp)));
+         final double  scaledH    = stepSize * factor;
+         final double  nextT      = stepStart + scaledH;
+         final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+@@ -136,3 +144,4 @@
+   resetInternalState();
+ 
+ }
++

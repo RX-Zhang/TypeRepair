@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.nodes.ElementTest.testChainedRemoveAttributes
+- Error: java.util.ConcurrentModificationException
+- Location:         a

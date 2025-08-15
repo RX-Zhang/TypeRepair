@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -25,7 +25,7 @@
+         Elements metaElements = doc.select("meta[http-equiv=content-type], meta[charset]");
+         String foundCharset = null; // if not found, will keep utf-8 as best attempt
+         for (Element meta : metaElements) {
+-            if (meta.hasAttr("http-equiv"))
++            if (meta.hasAttr("http-equiv") && meta.attr("http-equiv").equalsIgnoreCase("content-type"))
+                 foundCharset = getCharsetFromContentType(meta.attr("content"));
+             if (foundCharset == null && meta.hasAttr("charset"))
+                 foundCharset = meta.attr("charset");
+@@ -73,9 +73,39 @@
+             throw e.ioException();
+         }
+         Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        // Fix: check if charset is readable and encodable, fall back to UTF-8 if not
++        if (!charset.canEncode()) {
++            charset = Charset.forName("UTF-8");
++            charsetName = "UTF-8";
++            doc.outputSettings().charset(charset);
++            // Update the meta charset tag in the document to reflect fallback to UTF-8
++            Elements metaCharset = doc.select("meta[charset]");
++            if (!metaCharset.isEmpty()) {
++                for (Element meta : metaCharset) {
++                    meta.attr("charset", "UTF-8");
++                }
++            } else {
++                Elements metaContentType = doc.select("meta[http-equiv=content-type]");
++                if (!metaContentType.isEmpty()) {
++                    for (Element meta : metaContentType) {
++                        String content = meta.attr("content");
++                        content = content.replaceAll("(?i)charset=[^\\s;\"']+", "charset=UTF-8");
++                        meta.attr("content", content);
++                    }
++                } else {
++                    // Add new meta charset element in head
++                    Element head = doc.head();
++                    if (head == null) {
++                        head = doc.appendElement("head");
++                    }
++                    head.appendElement("meta").attr("charset", "UTF-8");
++                }
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

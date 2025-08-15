@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -26,8 +26,18 @@
+             return 0;
+         }
+ 
++        if (entityValue > 0xFFFF) {
++            // Write surrogate pair for supplementary characters
++            char high = (char) ((entityValue - 0x10000) / 0x400 + 0xD800);
++            char low = (char) ((entityValue - 0x10000) % 0x400 + 0xDC00);
++            out.write(high);
++            out.write(low);
++        } else {
+             out.write(entityValue);
++        }
++
+         return 2 + (end - start) + (isHex ? 1 : 0) + 1;
+     }
+     return 0;
+ }
++

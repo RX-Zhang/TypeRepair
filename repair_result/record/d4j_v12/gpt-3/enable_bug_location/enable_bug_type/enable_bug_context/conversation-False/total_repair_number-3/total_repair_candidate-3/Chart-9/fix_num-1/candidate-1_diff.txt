@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+     int startIndex = getIndex(start);
+     if (startIndex < 0) {
+         startIndex = -(startIndex + 1);
+-        if (startIndex == this.data.size()) {
++        if (startIndex >= this.data.size()) {
+             emptyRange = true;  // start is after last data item
+         }
+     }
+@@ -37,3 +37,4 @@
+     }
+ 
+ }
++

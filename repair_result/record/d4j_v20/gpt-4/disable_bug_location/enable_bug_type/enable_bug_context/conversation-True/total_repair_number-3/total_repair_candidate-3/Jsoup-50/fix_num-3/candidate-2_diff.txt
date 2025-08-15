@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -24,7 +24,7 @@
+                 }
+             }
+ 
+-            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
++            if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode
+                 foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+                 charsetName = foundCharset;
+                 byteData.rewind();
+@@ -38,14 +38,14 @@
+     }
+     if (docData.length() > 0 && docData.charAt(0) == UNICODE_BOM) {
+         byteData.rewind();
+-        docData = Charset.forName(defaultCharset).decode(byteData).toString();
++        docData = Charset.forName(charsetName != null ? charsetName : defaultCharset).decode(byteData).toString();
+         docData = docData.substring(1);
+-        charsetName = defaultCharset;
+         doc = null;
+     }
+     if (doc == null) {
+         doc = parser.parseInput(docData, baseUri);
+-        doc.outputSettings().charset(charsetName);
++        doc.outputSettings().charset(charsetName != null ? charsetName : defaultCharset);
+     }
+     return doc;
+ }
++

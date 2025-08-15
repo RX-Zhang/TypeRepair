@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -15,8 +15,10 @@
+             eof = true;
+             break;
+         } else {
+-            if (b >= 0 && b < DECODE_TABLE.length) {
+-                int result = DECODE_TABLE[b];
++            // Convert signed byte to an unsigned int index for DECODE_TABLE lookup.
++            int unsignedByte = b < 0 ? b + 256 : b;
++            if (unsignedByte < DECODE_TABLE.length) {
++                int result = DECODE_TABLE[unsignedByte];
+                 if (result >= 0) {
+                     modulus = (++modulus) % 4;
+                     x = (x << 6) + result;
+@@ -48,3 +50,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -14,8 +14,13 @@
+     if (nextLineTabStop >= width)
+     {
+         // stops infinite loop happening
+-        throw new IllegalStateException("Total width is less than the width of the argument and indent " + 
+-                                        "- no room for the description");
++        // Use getLeftPadding() and getDescPadding() to calculate the minimum required width
++        int minWidth = getLeftPadding() + getDescPadding();
++        if (width < minWidth)
++        {
++            throw new IllegalStateException("Total width is less than the width of the argument and indent " + 
++                                            "- no room for the description");
++        }
+     }
+ 
+     // all following lines must be padded with nextLineTabStop space 
+@@ -42,3 +47,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

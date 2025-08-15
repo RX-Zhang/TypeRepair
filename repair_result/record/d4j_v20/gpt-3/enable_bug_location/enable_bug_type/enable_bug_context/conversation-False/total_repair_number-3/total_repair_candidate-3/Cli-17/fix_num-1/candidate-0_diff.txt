@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -9,16 +9,17 @@
+             tokens.add("-" + ch);
+             currentOption = options.getOption(ch);
+ 
+-            if (currentOption.hasArg() && (token.length() != (i + 1)))
++            if (currentOption.hasArg() && (token.length() > (i + 1)))
+             {
+                 tokens.add(token.substring(i + 1));
+-
+                 break;
+             }
+         }
+         else if (stopAtNonOption)
+         {
+             process(token.substring(i));
++            eatTheRest = true; // Set eatTheRest to true when stopping at a non-option
++            break; // Exit the loop after processing the non-option
+         }
+         else
+         {
+@@ -27,3 +28,4 @@
+         }
+     }
+ }
++

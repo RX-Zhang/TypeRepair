@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -5,14 +5,22 @@
+     } else if (count < 0) {
+         throw new IllegalArgumentException("Requested random string length " + count + " is less than 0.");
+     }
++    
++    if (chars != null && chars.length == 0) {
++        throw new IllegalArgumentException("The character array must not be empty.");
++    }
+ 
+     if (start == 0 && end == 0) {
+-            if (!letters && !numbers) {
+-                end = Integer.MAX_VALUE;
+-            } else {
+-                end = 'z' + 1;
+-                start = ' ';                
+-            }
++        if (!letters && !numbers) {
++            end = Integer.MAX_VALUE;
++        } else {
++            end = 'z' + 1;
++            start = ' ';                
++        }
++    }
++
++    if (end <= start) {
++        throw new IllegalArgumentException("End value must be greater than start value.");
+     }
+ 
+     char[] buffer = new char[count];
+@@ -23,7 +31,7 @@
+         if (chars == null) {
+             ch = (char) (random.nextInt(gap) + start);
+         } else {
+-            ch = chars[random.nextInt(gap) + start];
++            ch = chars[random.nextInt(chars.length)]; // Ensure we are using the length of chars array
+         }
+         if (letters && Character.isLetter(ch)
+                 || numbers && Character.isDigit(ch)
+@@ -58,3 +66,4 @@
+     }
+     return new String(buffer);
+ }
++

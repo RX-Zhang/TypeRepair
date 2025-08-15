@@ -1,0 +1,22 @@
+private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+    for (Attribute attribute : source.attributes()) {
+        // According to XML specification, attribute names must match the Name production:
+        // Name ::= NameStartChar (NameChar)*
+        // where NameStartChar includes [:A-Z_a-z] and NameChar additionally includes [-.0-9\u00B7\u0300-\u036F\u203F-\u2040]
+        // Here, we sanitize keys by removing invalid characters only, but must not produce empty keys.
+        String key = attribute.getKey();
+        StringBuilder validKey = new StringBuilder();
+        for (int i = 0; i < key.length(); i++) {
+            char c = key.charAt(i);
+            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_' || c == ':' || (i > 0 && (
+                (c >= '0' && c <= '9') || c == '-' || c == '.' || c == '\u00B7' ||
+                (c >= '\u0300' && c <= '\u036F') || (c >= '\u203F' && c <= '\u2040')
+            ))) {
+                validKey.append(c);
+            }
+        }
+        if (validKey.length() > 0) {
+            el.setAttribute(validKey.toString(), attribute.getValue());
+        }
+    }
+}

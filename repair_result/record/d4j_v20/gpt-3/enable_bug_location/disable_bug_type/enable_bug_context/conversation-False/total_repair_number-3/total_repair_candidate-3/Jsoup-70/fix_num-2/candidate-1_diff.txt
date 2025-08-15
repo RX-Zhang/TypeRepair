@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -1,11 +1,13 @@
+ static boolean preserveWhitespace(Node node) {
+     // looks only at this element and five levels up, to prevent recursion & needless stack searches
+-    if (node != null && node instanceof Element) {
++    int depth = 0;
++    while (node != null && node instanceof Element && depth < 6) {
+         Element el = (Element) node;
+-            if (el.tag.preserveWhitespace())
+-                return true;
+-            else
+-                return el.parent() != null && el.parent().tag.preserveWhitespace();
++        if (el.tag.preserveWhitespace())
++            return true;
++        node = el.parent();
++        depth++;
+     }
+     return false;
+ }
++

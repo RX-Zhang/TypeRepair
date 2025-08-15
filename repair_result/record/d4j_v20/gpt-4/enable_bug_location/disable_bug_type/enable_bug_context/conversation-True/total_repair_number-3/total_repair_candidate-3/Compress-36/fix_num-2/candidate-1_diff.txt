@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -4,7 +4,7 @@
+     }
+     
+     while (deferredBlockStreams.size() > 1) {
+-        // In solid compression mode we need to decompress all leading folder'
++        // In solid compression mode we need to decompress all leading folder
+         // streams to get access to an entry. We defer this until really needed
+         // so that entire blocks can be skipped without wasting time for decompression.
+         final InputStream stream = deferredBlockStreams.remove(0);
+@@ -12,5 +12,11 @@
+         stream.close();
+     }
+ 
++    // Defensive check: if deferredBlockStreams becomes empty after removal, throw exception
++    if (deferredBlockStreams.isEmpty()) {
++        throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++    }
++
+     return deferredBlockStreams.get(0);
+ }
++

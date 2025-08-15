@@ -1,0 +1,1 @@
+['arrange', 'arrangeNN', 'arrangeFR', 'arrangeFN', 'arrangeRR']

@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+     if (index == -1) {
+         DateTimeFieldType[] newTypes = new DateTimeFieldType[iTypes.length + 1];
+         int[] newValues = new int[newTypes.length];
+-        
++
+         // find correct insertion point to keep largest-smallest order
+         int i = 0;
+         DurationField unitField = fieldType.getDurationType().getField(iChronology);
+@@ -16,12 +16,12 @@
+                 DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+                 if (loopUnitField.isSupported()) {
+                     int compare = unitField.compareTo(loopUnitField);
+-                    if (compare > 0) {
++                    if (compare < 0) {  // fixed: insertion when unitField is smaller
+                         break;
+                     } else if (compare == 0) {
+                         DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
+                         DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
+-                        if (rangeField.compareTo(loopRangeField) > 0) {
++                        if (rangeField.compareTo(loopRangeField) < 0) {  // fixed: break if rangeField is smaller
+                             break;
+                         }
+                     }
+@@ -47,3 +47,4 @@
+     newValues = getField(index).set(this, index, newValues, value);
+     return new Partial(this, newValues);
+ }
++

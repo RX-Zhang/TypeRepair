@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.joda.time.TestDateTimeZone.testForOffsetHoursMinutes_int_int
+- Error: java.lang.IllegalArgumentException: Minutes out of range: -15
+- Location:         assertEquals(DateTimeZone.forID("-00:15"), DateTimeZone.forOffsetHoursMinutes(0, -15));

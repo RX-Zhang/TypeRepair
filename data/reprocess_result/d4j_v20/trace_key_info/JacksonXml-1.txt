@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.dataformat.xml.lists.NestedUnwrappedLists180Test.testNestedUnwrappedLists180
+- Error: junit.framework.AssertionFailedError
+- Location:         assertNotNull(result.records.get(0));
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.dataformat.xml.lists.NestedUnwrappedListsTest.testNestedWithEmpty2
+- Error: junit.framework.AssertionFailedError: expected:<1> but was:<0>
+- Location:         assertEquals(1, del.vehicleActivity.size());
+
+
+Test failure 3:
+- Test: com.fasterxml.jackson.dataformat.xml.lists.NestedUnwrappedListsTest.testNestedWithEmpty
+- Error: junit.framework.AssertionFailedError: expected:<1> but was:<0>
+- Location:         assertEquals(1, svc.vehicleMonitoringDelivery.size());

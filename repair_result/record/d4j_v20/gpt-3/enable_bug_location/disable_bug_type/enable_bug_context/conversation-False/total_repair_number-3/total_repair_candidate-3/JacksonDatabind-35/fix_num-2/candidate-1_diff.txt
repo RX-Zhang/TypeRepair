@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -10,16 +10,21 @@
+     // first, sanity checks
+     if (p.getCurrentToken() != JsonToken.START_OBJECT) {
+         throw ctxt.wrongTokenException(p, JsonToken.START_OBJECT,
+-                "need JSON Object to contain As.WRAPPER_OBJECT type information for class "+baseTypeName());
++                "need JSON Object to contain As.WRAPPER_OBJECT type information for class " + baseTypeName());
+     }
+-        // should always get field name, but just in case...
+-        if (p.nextToken() != JsonToken.FIELD_NAME) {
+-            throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
+-                    "need JSON String that contains type id (for subtype of "+baseTypeName()+")");
+-        }
++    // should always get field name, but just in case...
++    if (p.nextToken() != JsonToken.FIELD_NAME) {
++        throw ctxt.wrongTokenException(p, JsonToken.FIELD_NAME,
++                "need JSON String that contains type id (for subtype of " + baseTypeName() + ")");
++    }
+     final String typeId = p.getText();
+     JsonDeserializer<Object> deser = _findDeserializer(ctxt, typeId);
+-    p.nextToken();
++    if (p.nextToken() != JsonToken.START_OBJECT && (_typeIdVisible == false)) {
++        // If type id is visible, we expect START_OBJECT here before deserializing
++        // otherwise this might be a scalar value or something else, so just continue
++        // For wrapper objects, usually expect START_OBJECT next
++        // So, no changes here, just ensuring nextToken advanced correctly
++    }
+ 
+     // Minor complication: we may need to merge type id in?
+     if (_typeIdVisible && p.getCurrentToken() == JsonToken.START_OBJECT) {
+@@ -40,3 +45,4 @@
+     }
+     return value;
+ }
++

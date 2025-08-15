@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.base64.Base64GenerationTest.testBinaryAsEmbeddedObject
+- Error: com.fasterxml.jackson.core.JsonGenerationException: No native support for writing embedded objects
+- Location:         g.writeEmbeddedObject(WIKIPEDIA_BASE64_AS_BYTES);
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.core.main.TestGeneratorMisc.testAsEmbedded
+- Error: com.fasterxml.jackson.core.JsonGenerationException: No native support for writing embedded objects
+- Location:         g.writeEmbeddedObject(null);

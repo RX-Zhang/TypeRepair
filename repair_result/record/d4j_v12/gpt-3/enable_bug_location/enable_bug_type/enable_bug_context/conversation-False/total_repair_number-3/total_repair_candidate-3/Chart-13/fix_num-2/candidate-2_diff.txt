@@ -1,0 +1,54 @@
+--- 
++++ 
+@@ -4,22 +4,33 @@
+     double[] h = new double[5];
+     w[0] = constraint.getWidth();
+     if (this.topBlock != null) {
++        double height = constraint.getHeight();
++        if (height < 0) {
++            throw new IllegalArgumentException("Height cannot be negative.");
++        }
+         RectangleConstraint c1 = new RectangleConstraint(w[0], null,
+                 LengthConstraintType.FIXED, 0.0,
+-                new Range(0.0, constraint.getHeight()),
++                new Range(0.0, height),
+                 LengthConstraintType.RANGE);
+         Size2D size = this.topBlock.arrange(g2, c1);
+         h[0] = size.height;
+     }
+     w[1] = w[0];
+     if (this.bottomBlock != null) {
++        double height = constraint.getHeight() - h[0];
++        if (height < 0) {
++            throw new IllegalArgumentException("Bottom height cannot be negative.");
++        }
+         RectangleConstraint c2 = new RectangleConstraint(w[0], null,
+-                LengthConstraintType.FIXED, 0.0, new Range(0.0,
+-                constraint.getHeight() - h[0]), LengthConstraintType.RANGE);
++                LengthConstraintType.FIXED, 0.0, new Range(0.0, height),
++                LengthConstraintType.RANGE);
+         Size2D size = this.bottomBlock.arrange(g2, c2);
+         h[1] = size.height;
+     }
+     h[2] = constraint.getHeight() - h[1] - h[0];
++    if (h[2] < 0) {
++        throw new IllegalArgumentException("Calculated height cannot be negative.");
++    }
+     if (this.leftBlock != null) {
+         RectangleConstraint c3 = new RectangleConstraint(0.0,
+                 new Range(0.0, constraint.getWidth()),
+@@ -39,6 +50,9 @@
+     }
+     h[4] = h[2];
+     w[4] = constraint.getWidth() - w[3] - w[2];
++    if (w[4] < 0) {
++        throw new IllegalArgumentException("Calculated width cannot be negative.");
++    }
+     RectangleConstraint c5 = new RectangleConstraint(w[4], h[4]);
+     if (this.centerBlock != null) {
+         this.centerBlock.arrange(g2, c5);
+@@ -66,3 +80,4 @@
+     }
+     return new Size2D(constraint.getWidth(), constraint.getHeight());
+ }
++

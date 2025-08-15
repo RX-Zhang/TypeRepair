@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -57,4 +57,9 @@
+             }
+         }
+     }
++    // Adding input validation to handle cases when input data is null or negative
++    if (in == null || inPos < 0 || inAvail < 0) {
++        throw new IllegalArgumentException("Input data is invalid.");
++    }
+ }
++

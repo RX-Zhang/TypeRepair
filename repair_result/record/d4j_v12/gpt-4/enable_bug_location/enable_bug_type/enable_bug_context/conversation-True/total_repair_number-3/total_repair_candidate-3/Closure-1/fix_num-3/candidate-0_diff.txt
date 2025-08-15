@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -22,10 +22,11 @@
+       && callSiteOptimizer.canModifyCallers(function);
+   if (!modifyCallers) {
+     // Strip unreferenced args off the end of the function declaration.
++    // But only remove arg when its corresponding var is definitely unreferenced
+     Node lastArg;
+     while ((lastArg = argList.getLastChild()) != null) {
+       Var var = fnScope.getVar(lastArg.getString());
+-      if (!referenced.contains(var)) {
++      if (var == null || !referenced.contains(var)) {
+         argList.removeChild(lastArg);
+         compiler.reportCodeChange();
+       } else {
+@@ -36,3 +37,4 @@
+     callSiteOptimizer.optimize(fnScope, referenced);
+   }
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -16,10 +16,12 @@
+       child != null; child = child.getNext()) {
+     if (!ControlFlowGraph.isEnteringNewCfgNode(child)) { // Not a FUNCTION
+       VariableLiveness state = isVariableReadBeforeKill(child, variable);
+-      if (state != VariableLiveness.MAYBE_LIVE) {
++      // Corrected the logical expression here to ensure the expected return values.
++      if (state == VariableLiveness.READ || state == VariableLiveness.KILL) {
+         return state;
+       }
+     }
+   }
+   return VariableLiveness.MAYBE_LIVE;
+ }
++

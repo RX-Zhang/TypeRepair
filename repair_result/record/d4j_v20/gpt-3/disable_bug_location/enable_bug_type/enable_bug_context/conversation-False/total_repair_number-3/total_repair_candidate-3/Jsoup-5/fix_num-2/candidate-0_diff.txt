@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -20,11 +20,11 @@
+         }
+         tq.consumeWhitespace();
+     }
+-    if (key.length() != 0)
++    if (key.length() != 0) {
+         return Attribute.createFromEncoded(key, value);
+-    else {
+-        tq.consume();
+-            
++    } else {
++        // When no key is present, do not consume blindly; just return null safely
+         return null;
+     }
+ }
++

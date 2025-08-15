@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -79,7 +79,7 @@
+       // will happen.
+       for (Reference t : refs) {
+         Node refNode = t.getParent();
+-        while (!NodeUtil.isStatementBlock(refNode)) {
++        while (refNode != null && !NodeUtil.isStatementBlock(refNode)) {
+           if (refNode == childVal) {
+             // There's a self-referential assignment
+             return false;
+@@ -89,7 +89,6 @@
+       }
+     }
+ 
+-
+     // We have found an acceptable object literal assignment. As
+     // long as there are no other assignments that mess things up,
+     // we can inline.
+@@ -97,3 +96,4 @@
+   }
+   return ret;
+ }
++

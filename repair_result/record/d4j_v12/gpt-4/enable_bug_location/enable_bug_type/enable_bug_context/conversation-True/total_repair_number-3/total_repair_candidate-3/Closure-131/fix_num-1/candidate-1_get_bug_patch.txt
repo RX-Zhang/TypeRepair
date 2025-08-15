@@ -1,0 +1,22 @@
+public static boolean isJSIdentifier(String s) {
+  int length = s.length();
+
+  if (length == 0) {
+    return false;
+  }
+
+  char firstChar = s.charAt(0);
+  // Use JS identifier rules: must be a valid Java identifier start and not a control char
+  if (!Character.isJavaIdentifierStart(firstChar) || (firstChar <= 31)) {
+    return false;
+  }
+
+  for (int i = 1; i < length; i++) {
+    char ch = s.charAt(i);
+    if (!Character.isJavaIdentifierPart(ch) || (ch <= 31)) {
+      return false;
+    }
+  }
+
+  return true;
+}

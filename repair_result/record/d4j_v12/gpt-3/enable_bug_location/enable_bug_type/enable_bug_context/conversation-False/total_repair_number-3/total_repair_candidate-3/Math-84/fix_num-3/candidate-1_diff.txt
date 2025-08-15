@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -1,9 +1,12 @@
+ protected void iterateSimplex(final Comparator<RealPointValuePair> comparator)
+     throws FunctionEvaluationException, OptimizationException, IllegalArgumentException {
+ 
+-    while (true) {
++    int iterations = 0; // Track iterations
++    int maxIterations = 100; // Set a maximum number of iterations
+ 
++    while (iterations < maxIterations) {
+         incrementIterationsCounter();
++        iterations++; // Increment the iteration count
+ 
+         // save the original vertex
+         final RealPointValuePair[] original = simplex;
+@@ -14,11 +17,12 @@
+         if (comparator.compare(reflected, best) < 0) {
+ 
+             // compute the expanded simplex
+-            final RealPointValuePair[] reflectedSimplex = simplex;
+             final RealPointValuePair expanded = evaluateNewSimplex(original, khi, comparator);
+             if (comparator.compare(reflected, expanded) <= 0) {
+                 // accept the reflected simplex
+-                simplex = reflectedSimplex;
++                simplex = original; // Update simplex with the reflected simplex
++            } else {
++                simplex = reflected; // Update simplex with the reflected simplex
+             }
+ 
+             return;
+@@ -29,11 +33,14 @@
+         final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
++            simplex = contracted; // Update simplex with the contracted simplex
+ 
+-        // check convergence
++            // check convergence
+             return;
+         }
+ 
+     }
+ 
++    throw new OptimizationException("Maximal number of iterations exceeded"); // Throw exception if max iterations reached
+ }
++

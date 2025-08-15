@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -16,7 +16,13 @@
+     // the only non-standard thing is this:
+     if (deser == null) {
+         if (type.isEnumType()) {
+-            return _createEnumKeyDeserializer(ctxt, type);
++            Class<?> rawClass = type.getRawClass();
++            AnnotatedMethod jsonValueMethod = null;
++            EnumResolver enumRes;
++            BeanDescription beanDesc = config.introspect(type);
++            jsonValueMethod = _findJsonValueFor(config, type);
++            enumRes = constructEnumResolver(rawClass, config, jsonValueMethod);
++            return _createEnumKeyDeserializer(ctxt, type, enumRes);
+         }
+         deser = StdKeyDeserializers.findStringBasedKeyDeserializer(config, type);
+     }
+@@ -30,3 +36,4 @@
+     }
+     return deser;
+ }
++

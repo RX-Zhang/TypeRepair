@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -4,10 +4,22 @@
+                                         boolean hasDiskStart)
+     throws ZipException {
+     if (rawCentralDirectoryData != null) {
+-        int expectedLength = (hasUncompressedSize ? DWORD : 0)
+-            + (hasCompressedSize ? DWORD : 0)
+-            + (hasRelativeHeaderOffset ? DWORD : 0)
+-            + (hasDiskStart ? WORD : 0);
++        int expectedLength = 0;
++        
++        if (hasUncompressedSize && hasCompressedSize) {
++            expectedLength += DWORD * 2;
++        } else if (hasUncompressedSize || hasCompressedSize) {
++            // According to LFH_MUST_HAVE_BOTH_SIZES_MSG, both sizes must be present together.
++            throw new ZipException("Local file header must have both uncompressed size and compressed size or neither.");
++        }
++        
++        if (hasRelativeHeaderOffset) {
++            expectedLength += DWORD;
++        }
++        if (hasDiskStart) {
++            expectedLength += WORD;
++        }
++
+         if (rawCentralDirectoryData.length != expectedLength) {
+             throw new ZipException("central directory zip64 extended"
+                                    + " information extra field's length"
+@@ -37,3 +49,4 @@
+         }
+     }
+ }
++

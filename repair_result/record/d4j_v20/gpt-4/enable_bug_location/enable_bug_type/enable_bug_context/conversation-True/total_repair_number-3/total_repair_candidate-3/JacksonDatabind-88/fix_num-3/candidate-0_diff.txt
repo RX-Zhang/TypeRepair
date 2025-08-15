@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -11,7 +11,10 @@
+         //    compatibility -- needed later anyway, and not doing so may open
+         //    security issues.
+         JavaType t = tf.constructFromCanonical(id);
+-            // Probably cleaner to have a method in `TypeFactory` but can't add in patch
++        // Verify that resulting type is assignable to _baseType; if not, throw exception to prevent unsafe deserialization
++        if (!_baseType.getRawClass().isAssignableFrom(t.getRawClass())) {
++            throw new IOException("Subtype "+t+" not subtype of base type "+_baseType);
++        }
+         return t;
+     }
+     Class<?> cls;
+@@ -30,5 +33,10 @@
+     } catch (Exception e) {
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
++    // Verify that found class is assignable to base type; if not, throw exception to prevent unsafe deserialization
++    if (!_baseType.getRawClass().isAssignableFrom(cls)) {
++        throw new IOException("Subtype "+cls.getName()+" not subtype of base type "+_baseType);
++    }
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

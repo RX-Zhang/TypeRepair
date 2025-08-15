@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -16,7 +16,7 @@
+     return false;
+   }
+ 
+-  // Be very conservative and do no cross control structures or
++  // Be very conservative and do not cross control structures or
+   // scope boundaries
+   if (declaration.getBasicBlock() != initialization.getBasicBlock()
+       || declaration.getBasicBlock() != reference.getBasicBlock()) {
+@@ -33,7 +33,10 @@
+   //   f(a)
+   // is ok.
+   Node value = initialization.getAssignedValue();
+-  Preconditions.checkState(value != null);
++  if (value == null) {
++    return false; // Added boundary check to prevent null pointer exception
++  }
++  
+   if (value.isGetProp()
+       && reference.getParent().isCall()
+       && reference.getParent().getFirstChild() == reference.getNode()) {
+@@ -42,7 +45,7 @@
+ 
+   if (value.isFunction()) {
+     Node callNode = reference.getParent();
+-    if (reference.getParent().isCall()) {
++    if (callNode.isCall()) { // Changed to use callNode for clarity
+       CodingConvention convention = compiler.getCodingConvention();
+       // Bug 2388531: Don't inline subclass definitions into class defining
+       // calls as this confused class removing logic.
+@@ -54,9 +57,11 @@
+ 
+       // issue 668: Don't inline singleton getter methods
+       // calls as this confused class removing logic.
++      return false; // Added return statement to prevent further processing
+     }
+   }
+ 
+   return canMoveAggressively(value) ||
+       canMoveModerately(initialization, reference);
+ }
++

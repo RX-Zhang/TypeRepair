@@ -1,0 +1,1 @@
+['trimCanidatesUsingOnCost', 'resolveInlineConflicts', 'findCalledFunctions', 'removeInlinedFunctions']

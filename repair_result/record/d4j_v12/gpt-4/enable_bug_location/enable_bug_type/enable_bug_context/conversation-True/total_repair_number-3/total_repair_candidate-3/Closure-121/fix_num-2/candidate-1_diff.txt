@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -36,8 +36,12 @@
+       // the variable declaration.
+       Node value = init.getAssignedValue();
+       Preconditions.checkNotNull(value);
+-      inlineWellDefinedVariable(v, value, referenceInfo.references);
+-      staleVars.add(v);
++      // Only inline if the declaration is before the initialization reference
++      // to preserve evaluation order and semantics in recursive calls.
++      if (referenceInfo.references.get(1).getNode().getParent().isBlock()) {
++        inlineWellDefinedVariable(v, value, referenceInfo.references);
++        staleVars.add(v);
++      }
+     }
+   }
+ 
+@@ -72,3 +76,4 @@
+     }
+   }
+ }
++

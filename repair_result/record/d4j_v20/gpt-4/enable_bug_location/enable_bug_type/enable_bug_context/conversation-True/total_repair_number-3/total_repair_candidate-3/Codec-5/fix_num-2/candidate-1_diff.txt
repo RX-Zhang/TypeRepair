@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -39,12 +39,19 @@
+         switch (modulus) {
+             case 2 :
+                 x = x << 6;
++                if (buffer == null || buffer.length - pos < 1) {
++                    resizeBuffer();
++                }
+                 buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                 break;
+             case 3 :
++                if (buffer == null || buffer.length - pos < 2) {
++                    resizeBuffer();
++                }
+                 buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                 buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                 break;
+         }
+     }
+ }
++

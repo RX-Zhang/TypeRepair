@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -14,16 +14,13 @@
+              * that will mask this mixIn)? If so, add if visible
+              * without masking (no such annotation)
+              */
+-            if (am != null) {
++            if (am == null) {
++                // Well, or, as per [Issue#515], multi-level merge within mixins...
++                mixIns.add(_constructMethod(m));
++            } else {
+                 _addMixUnders(m, am);
+-                /* Otherwise will have precedence, but must wait
+-                 * until we find the real method (mixIn methods are
+-                 * just placeholder, can't be called)
+-                 */
+-            } else {
+-                // Well, or, as per [Issue#515], multi-level merge within mixins...
+-                    mixIns.add(_constructMethod(m));
+             }
+         }
+     }
+ }
++

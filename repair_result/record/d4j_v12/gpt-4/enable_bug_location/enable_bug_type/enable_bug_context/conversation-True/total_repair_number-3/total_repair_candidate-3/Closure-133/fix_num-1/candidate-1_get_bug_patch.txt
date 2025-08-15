@@ -1,0 +1,22 @@
+private String getRemainingJSDocLine() {
+  JsDocToken token = next();
+  if (token == NO_UNREAD_TOKEN) {
+    return "";
+  }
+
+  StringBuilder sb = new StringBuilder();
+  while (token != NO_UNREAD_TOKEN && token.type != JsDocToken.Type.EOL) {
+    sb.append(token.value);
+    token = next();
+  }
+
+  // Restore the unreadToken so parsing can continue correctly
+  restoreLookAhead(token);
+
+  String result = sb.toString();
+  if (result.isEmpty()) {
+    return "";
+  }
+
+  return result;
+}

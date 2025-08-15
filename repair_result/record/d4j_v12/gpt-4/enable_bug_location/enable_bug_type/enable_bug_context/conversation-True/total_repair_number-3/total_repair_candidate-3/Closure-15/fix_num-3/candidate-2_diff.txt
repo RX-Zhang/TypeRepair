@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -16,11 +16,14 @@
+     return true;
+   }
+ 
+-
+   for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+-    if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
++    // Fix: Skip entering a new CFG node only if c is a new CFG node,
++    // but we should continue traversal on those children that enter new CFG nodes.
++    // So, changing condition to only skip those c which cause new CFG node.
++    if (ControlFlowGraph.isEnteringNewCfgNode(c) || apply(c)) {
+       return true;
+     }
+   }
+   return false;
+ }
++

@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -23,23 +23,28 @@
+                     try
+                     {
+                         opt.addValueForProcessing(value);
++                        cmd.addOption(opt);
+                     }
+                     catch (RuntimeException exp)
+                     {
+                         // if we cannot add the value don't worry about it
+                     }
+                 }
++                else
++                {
++                    // already has values, still add it
++                    cmd.addOption(opt);
++                }
+             }
+-            else if (!("yes".equalsIgnoreCase(value)
++            else if ("yes".equalsIgnoreCase(value)
+                     || "true".equalsIgnoreCase(value)
+-                    || "1".equalsIgnoreCase(value)))
++                    || "1".equalsIgnoreCase(value))
+             {
+-                // if the value is not yes, true or 1 then don't add the
+-                // option to the CommandLine
+-                break;
++                // add only if the value is yes, true or 1
++                cmd.addOption(opt);
+             }
+-
+-            cmd.addOption(opt);
++            // else do nothing: don't add option if value is not true/yes/1
+         }
+     }
+ }
++

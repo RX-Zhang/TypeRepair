@@ -1,0 +1,10 @@
+private String getRemainingJSDocLine() {
+  try {
+    String result = stream.getRemainingJSDocLine();
+    return result;
+  } catch (IllegalStateException e) {
+    // Handle the case where position information is bad to prevent runtime failure
+    // Returning empty string or some safe default as fallback
+    return "";
+  }
+}

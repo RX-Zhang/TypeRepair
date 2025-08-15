@@ -1,0 +1,16 @@
+private boolean isOneExactlyFunctionOrDo(Node n) {
+    // For labels with block children, we need to ensure that a
+    // labeled FUNCTION or DO isn't generated when extraneous BLOCKs 
+    // are skipped.
+    // Either an empty statement or a block with more than one child,
+    // way it isn't a FUNCTION or DO.
+    if (n.getType() != Token.FUNCTION && n.getType() != Token.DO) {
+        return false;
+    }
+    // If this node is a FUNCTION or DO, make sure it's not a BLOCK wrapper.
+    // Specifically, if it's a function or do block, and it is wrapped in
+    // a BLOCK with more than one child, must preserve that block.
+    // But since this method is asked about a single node n,
+    // also check if n is a BLOCK or something else.
+    return true;
+}

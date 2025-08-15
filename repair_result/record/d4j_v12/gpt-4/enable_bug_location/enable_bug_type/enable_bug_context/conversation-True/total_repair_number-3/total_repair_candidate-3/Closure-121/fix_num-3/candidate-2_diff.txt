@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -12,9 +12,9 @@
+     // inline it if it's immutable and never defined before referenced.
+     Node value;
+     if (init != null) {
+-      value = init.getAssignedValue();
++      value = init.getAssignedValue().cloneTree(); // Clone the node to avoid sharing mutable nodes
+     } else {
+-      // Create a new node for variable that is never initialized.
++      // Create a new node for variable is never initialized.
+       Node srcLocation = declaration.getNode();
+       value = NodeUtil.newUndefinedNode(srcLocation);
+     }
+@@ -34,7 +34,7 @@
+     if (isValidDeclaration(declaration) && isValidInitialization(init)) {
+       // The only reference is the initialization, remove the assignment and
+       // the variable declaration.
+-      Node value = init.getAssignedValue();
++      Node value = init.getAssignedValue().cloneTree(); // Clone to avoid mutation issues
+       Preconditions.checkNotNull(value);
+       inlineWellDefinedVariable(v, value, referenceInfo.references);
+       staleVars.add(v);
+@@ -61,7 +61,7 @@
+             !isVarInlineForbidden(candidate.alias)) {
+           Reference aliasInit;
+           aliasInit = candidate.refInfo.getInitializingReference();
+-          Node value = aliasInit.getAssignedValue();
++          Node value = aliasInit.getAssignedValue().cloneTree(); // Clone to avoid shared mutation bugs
+           Preconditions.checkNotNull(value);
+           inlineWellDefinedVariable(candidate.alias,
+               value,
+@@ -72,3 +72,4 @@
+     }
+   }
+ }
++

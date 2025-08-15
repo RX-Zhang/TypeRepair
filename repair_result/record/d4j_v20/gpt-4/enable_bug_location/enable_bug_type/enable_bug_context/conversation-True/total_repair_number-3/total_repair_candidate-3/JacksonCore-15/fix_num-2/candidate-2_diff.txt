@@ -1,0 +1,136 @@
+--- 
++++ 
+@@ -1,11 +1,11 @@
+ public JsonToken nextToken() throws IOException
+ {
+-	//Check for _allowMultipleMatches - false and atleast there is one token - which is _currToken
+-	// check for no buffered context _exposedContext - null
+-	//If all the conditions matches then check for scalar / non-scalar property
+-		//if not scalar and ended successfully, then return null
+-		//else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-		// then return null 
++    //Check for _allowMultipleMatches - false and atleast there is one token - which is _currToken
++    // check for no buffered context _exposedContext - null
++    //If all the conditions matches then check for scalar / non-scalar property
++        //if not scalar and ended successfully, then return null
++        //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++        // then return null 
+     // Anything buffered?
+     TokenFilterContext ctxt = _exposedContext;
+ 
+@@ -21,21 +21,26 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
+-                // Almost! Most likely still have the current token;
+-                // with the sole exception of 
+-                /*
+-                t = delegate.getCurrentToken();
+-                if (t != JsonToken.FIELD_NAME) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-                */
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++
++                    // Almost! Most likely still have the current token;
++                    // with the sole exception of 
++                    /*
++                    t = delegate.getCurrentToken();
++                    if (t != JsonToken.FIELD_NAME) {
++                        _currToken = t;
++                        return t;
++                    }
++                    */
++                }
++                // Check if multiple matches allowed
++                if (!_allowMultipleMatches && _matchCount > 0 && !_includePath) {
++                    // Need to skip remaining tokens and return null here
++                    return (_currToken = null);
++                }
+                 break;
+             }
+             // If not, traverse down the context chain
+@@ -61,6 +66,11 @@
+     case ID_START_ARRAY:
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            if (!_allowMultipleMatches && _matchCount > 0 && !_includePath) {
++                delegate.skipChildren();
++                return (_currToken = null);
++            }
++            _matchCount++;
+             _headContext = _headContext.createChildArrayContext(f, true);
+             return (_currToken = t);
+         }
+@@ -79,6 +89,11 @@
+         }
+         _itemFilter = f;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            if (!_allowMultipleMatches && _matchCount > 0 && !_includePath) {
++                delegate.skipChildren();
++                return (_currToken = null);
++            }
++            _matchCount++;
+             _headContext = _headContext.createChildArrayContext(f, true);
+             return (_currToken = t);
+         }
+@@ -97,6 +112,11 @@
+     case ID_START_OBJECT:
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            if (!_allowMultipleMatches && _matchCount > 0 && !_includePath) {
++                delegate.skipChildren();
++                return (_currToken = null);
++            }
++            _matchCount++;
+             _headContext = _headContext.createChildObjectContext(f, true);
+             return (_currToken = t);
+         }
+@@ -115,6 +135,11 @@
+         }
+         _itemFilter = f;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            if (!_allowMultipleMatches && _matchCount > 0 && !_includePath) {
++                delegate.skipChildren();
++                return (_currToken = null);
++            }
++            _matchCount++;
+             _headContext = _headContext.createChildObjectContext(f, true);
+             return (_currToken = t);
+         }
+@@ -194,12 +219,20 @@
+     default: // scalar value
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            if (!_allowMultipleMatches && _matchCount > 0 && !_includePath) {
++                return (_currToken = null);
++            }
++            _matchCount++;
+             return (_currToken = t);
+         }
+         if (f != null) {
+             f = _headContext.checkValue(f);
+             if ((f == TokenFilter.INCLUDE_ALL)
+                     || ((f != null) && f.includeValue(delegate))) {
++                if (!_allowMultipleMatches && _matchCount > 0 && !_includePath) {
++                    return (_currToken = null);
++                }
++                _matchCount++;
+                 return (_currToken = t);
+             }
+         }
+@@ -210,3 +243,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

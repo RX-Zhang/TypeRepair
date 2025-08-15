@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -17,9 +17,13 @@
+             typeToInfer =
+                 getNativeType(VOID_TYPE).getLeastSupertype(propType);
+           }
+-          objType.defineInferredProperty(prop, typeToInfer, null);
++          // Ensure type compatibility before defining inferred property
++          if (typeToInfer != null && !typeToInfer.isUnknownType()) {
++            objType.defineInferredProperty(prop, typeToInfer, null);
++          }
+         }
+       }
+     }
+   }
+ }
++

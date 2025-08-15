@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -5,8 +5,10 @@
+     if (value == null) { // nulls need specialized handling
+         if (_nullSerializer != null) {
+             _nullSerializer.serialize(null, jgen, prov);
++            return;
+         } else { // can NOT suppress entries in tabular output
+             jgen.writeNull();
++            return;
+         }
+     }
+     // otherwise find serializer to use
+@@ -21,7 +23,7 @@
+     }
+     // and then see if we must suppress certain values (default, empty)
+     if (_suppressableValue != null) {
+-        if (MARKER_FOR_EMPTY == _suppressableValue) {
++        if (_suppressableValue == MARKER_FOR_EMPTY) {
+             if (ser.isEmpty(value)) { // can NOT suppress entries in tabular output
+                 serializeAsPlaceholder(bean, jgen, prov);
+                 return;
+@@ -41,3 +43,4 @@
+         ser.serializeWithType(value, jgen, prov, _typeSerializer);
+     }
+ }
++

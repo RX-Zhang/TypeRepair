@@ -1,0 +1,1 @@
+['populateFromCentralDirectory', 'readCentralDirectoryEntry', 'setSizesAndOffsetFromZip64Extra', 'resolveLocalFileHeaderData']

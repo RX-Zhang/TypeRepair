@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.time.FastDateFormat_ParserTest.testLANG_832
+- Error: junit.framework.AssertionFailedError: Parsed dates should be equal expected:<null> but was:<Fri Jan 02 21:00:00 PST 1970>
+- Location:         testSdfAndFdp("'d'd'","d3", true); // should fail (unterminated quote)
+
+
+Test failure 2:
+- Test: org.apache.commons.lang3.time.FastDateParserTest.testLANG_832
+- Error: junit.framework.AssertionFailedError: Expected FDF failure, but got Fri Jan 02 21:00:00 PST 1970 for ['d'd',d3] using d(\p{IsNd}++)
+- Location:         testSdfAndFdp("'d'd'","d3", true); // should fail (unterminated quote)

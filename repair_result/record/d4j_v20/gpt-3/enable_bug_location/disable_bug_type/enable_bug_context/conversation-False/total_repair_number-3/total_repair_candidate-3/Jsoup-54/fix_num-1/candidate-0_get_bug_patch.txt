@@ -1,0 +1,13 @@
+private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+    for (Attribute attribute : source.attributes()) {
+        // valid xml attribute names are: ^[a-zA-Z_:][-a-zA-Z0-9_:.]*
+        // Clean key by removing invalid characters for XML attribute names
+        String key = attribute.getKey();
+        // Remove invalid starting chars
+        key = key.replaceAll("^[^a-zA-Z_:]+", "");
+        // Remove invalid chars in the rest of the name
+        key = key.replaceAll("[^-a-zA-Z0-9_:.]", "");
+        if (!key.isEmpty())
+            el.setAttribute(key, attribute.getValue());
+    }
+}

@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -3,7 +3,7 @@
+         throw new NullPointerException();
+     } else if (offset < 0 || len < 0) {
+         throw new IndexOutOfBoundsException();
+-    } else if (offset > b.length || offset + len > b.length) {
++    } else if (offset >= b.length || offset + len > b.length) { // Changed > to >=
+         throw new IndexOutOfBoundsException();
+     } else if (len == 0) {
+         return 0;
+@@ -29,7 +29,7 @@
+                 int c = in.read(buf);
+                 // A little optimization to avoid System.arraycopy()
+                 // when possible.
+-                if (c > 0 && b.length == len) {
++                if (c > 0 && b.length - offset >= len) { // Changed condition to ensure there's enough space
+                     base64.setInitialBuffer(b, offset, len);
+                 }
+                 if (doEncode) {
+@@ -41,3 +41,4 @@
+         return base64.readResults(b, offset, len);
+     }
+ }
++

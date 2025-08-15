@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.TestJsonPointer.testIZeroIndex
+- Error: junit.framework.AssertionFailedError: expected:<-1> but was:<0>
+- Location:         assertEquals(-1, ptr.getMatchingIndex());

@@ -1,0 +1,1 @@
+['deserializeFromObject', '_deserializeUsingPropertyBased', '_deserializeWithErrorWrapping']

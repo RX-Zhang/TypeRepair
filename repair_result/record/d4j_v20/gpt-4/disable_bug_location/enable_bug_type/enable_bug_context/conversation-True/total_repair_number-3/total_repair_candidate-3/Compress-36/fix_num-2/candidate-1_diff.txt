@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,6 +1,13 @@
+ private InputStream getCurrentStream() throws IOException {
+     if (deferredBlockStreams.isEmpty()) {
+-        throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++        if (currentEntryIndex < 0 || currentEntryIndex >= archive.files.length) {
++            throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++        } else {
++            buildDecodingStream();
++            if (deferredBlockStreams.isEmpty()) {
++                throw new IllegalStateException("No current 7z entry (call getNextEntry() first).");
++            }
++        }
+     }
+     
+     while (deferredBlockStreams.size() > 1) {
+@@ -14,3 +21,4 @@
+ 
+     return deferredBlockStreams.get(0);
+ }
++

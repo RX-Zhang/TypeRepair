@@ -1,0 +1,9 @@
+--- 
++++ 
+@@ -1,4 +1,5 @@
+ private Object readResolve() {
+-    calculateHashCode(keys);
++    calculateHashCode((Object[]) keys);
+     return this;
+ }
++

@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -22,19 +22,14 @@
+                 providedModule.getName(),
+                 module.getName()));
+       }
++
++      // Remove the require call only if the provide is known and valid.
++      parent.detachFromParent();
++      compiler.reportCodeChange();
+     }
+ 
+     maybeAddToSymbolTable(left);
+     maybeAddStringNodeToSymbolTable(arg);
+-
+-    // Requires should be removed before further processing.
+-    // Some clients run closure pass multiple times, first with
+-    // the checks for broken requires turned off. In these cases, we
+-    // allow broken requires to be preserved by the first run to
+-    // let them be caught in the subsequent run.
+-    if (provided != null) {
+-      parent.detachFromParent();
+-      compiler.reportCodeChange();
+-    }
+   }
+ }
++

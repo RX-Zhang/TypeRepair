@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character escapeChar = getEscapeCharacter();
++    final char quoteChar = getQuoteCharacter() != null ? getQuoteCharacter() : '"';
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +37,8 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            // Fix bug by properly applying operator precedence with parentheses
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z')) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -96,6 +98,12 @@
+             // put the next starting position on the encapsulator so we will
+             // write it out again with the next string (effectively doubling it)
+             start = pos;
++        } else if (escapeChar != null && c == escapeChar) {
++            // If escape character is set and found in the value, write out the chunk before escape
++            out.append(value, start, pos);
++            out.append(escapeChar);
++            // write escape character again to escape it
++            start = pos + 1;
+         }
+         pos++;
+     }
+@@ -104,3 +112,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

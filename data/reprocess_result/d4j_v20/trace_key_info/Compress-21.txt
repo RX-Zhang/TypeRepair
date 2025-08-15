@@ -1,0 +1,46 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testSevenEmptyFiles
+- Error: java.io.IOException: Unknown property 128
+- Location:         testCompress252(7, 0);
+
+
+Test failure 2:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testEightFilesSomeNotEmpty
+- Error: java.io.IOException: Badly terminated header
+- Location:         testCompress252(8, 2);
+
+
+Test failure 3:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testSixEmptyFiles
+- Error: java.io.IOException: Badly terminated header
+- Location:         testCompress252(6, 0);
+
+
+Test failure 4:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testEightEmptyFiles
+- Error: java.io.IOException: Unknown property 192
+- Location:         testCompress252(8, 0);
+
+
+Test failure 5:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testNineEmptyFiles
+- Error: java.lang.ArrayIndexOutOfBoundsException: 0
+- Location:         testCompress252(9, 0);
+
+
+Test failure 6:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testSixFilesSomeNotEmpty
+- Error: java.io.IOException: Badly terminated header
+- Location:         testCompress252(6, 2);
+
+
+Test failure 7:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testNineFilesSomeNotEmpty
+- Error: java.io.IOException: Unknown property 128
+- Location:         testCompress252(9, 2);
+
+
+Test failure 8:
+- Test: org.apache.commons.compress.archivers.sevenz.SevenZOutputFileTest.testSevenFilesSomeNotEmpty
+- Error: java.io.IOException: Unknown property 128
+- Location:         testCompress252(7, 2);

@@ -1,0 +1,5 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CheckGlobalNamesTest.testGlobalCatch
+- Error: junit.framework.AssertionFailedError: Unexpected warning(s): JSC_UNDEFINED_NAME. e is never defined at testcode line 1 : 48
+JSC_UNDEFINED_NAME. e is never defined at testcode line 1 : 48 expected:<0> but was:<2>
+- Location:     testSame(

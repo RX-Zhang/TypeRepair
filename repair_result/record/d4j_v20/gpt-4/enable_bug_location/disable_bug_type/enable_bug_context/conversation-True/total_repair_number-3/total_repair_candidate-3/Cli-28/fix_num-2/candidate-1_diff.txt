@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -30,16 +30,25 @@
+                     }
+                 }
+             }
+-            else if (!("yes".equalsIgnoreCase(value)
++            else if ("yes".equalsIgnoreCase(value)
+                     || "true".equalsIgnoreCase(value)
+-                    || "1".equalsIgnoreCase(value)))
++                    || "1".equalsIgnoreCase(value))
+             {
+-                // if the value is not yes, true or 1 then don't add the
+-                // option to the CommandLine
+-                break;
++                // add the option to the CommandLine only if value is yes, true or 1
++                cmd.addOption(opt);
++            }
++            // if the value is not yes, true or 1 then don't add the option, continue with next
++            else
++            {
++                continue;
+             }
+ 
+-            cmd.addOption(opt);
++            // for options with argument, add the option after processing value
++            if (opt.hasArg())
++            {
++                cmd.addOption(opt);
++            }
+         }
+     }
+ }
++

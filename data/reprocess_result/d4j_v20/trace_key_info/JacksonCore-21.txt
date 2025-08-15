@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.filter.TokenVerifyingParserFiltering330Test.testTokensSingleMatchWithPath
+- Error: junit.framework.AssertionFailedError: Expected token END_OBJECT, current token null
+- Location:         assertToken(JsonToken.END_OBJECT, p.nextToken());
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.core.filter.TokenVerifyingParserFiltering330Test.testBasicSingleMatchFilteringWithPath
+- Error: junit.framework.ComparisonFailure: expected:<{"ob":{"value":3}[}]> but was:<{"ob":{"value":3}[]>
+- Location:         assertEquals(aposToQuotes("{'ob':{'value':3}}"), result);
+
+
+Test failure 3:
+- Test: com.fasterxml.jackson.core.filter.TokenVerifyingParserFiltering330Test.testSkippingForSingleWithPath
+- Error: junit.framework.AssertionFailedError: expected:<END_OBJECT> but was:<null>
+- Location:         assertEquals(JsonToken.END_OBJECT, p.getCurrentToken());

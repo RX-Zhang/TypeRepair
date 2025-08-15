@@ -1,0 +1,56 @@
+--- 
++++ 
+@@ -2,7 +2,6 @@
+     if (val.get(Calendar.YEAR) > 280000000) {
+         throw new ArithmeticException("Calendar value too large for accurate calculations");
+     }
+-    
+ 
+     // ----------------- Fix for LANG-59 ---------------------- START ---------------
+     // see http://issues.apache.org/jira/browse/LANG-59
+@@ -10,13 +9,30 @@
+     // Manually truncate milliseconds, seconds and minutes, rather than using
+     // Calendar methods.
+ 
+-
+     // truncate milliseconds
+-
++    if (field > Calendar.MILLISECOND) {
++        int unroundedMillis = val.get(Calendar.MILLISECOND);
++        if (round && unroundedMillis >= 500) {
++            val.add(Calendar.SECOND, 1);
++        }
++        val.set(Calendar.MILLISECOND, 0);
++    }
+     // truncate seconds
+-
++    if (field > Calendar.SECOND) {
++        int unroundedSeconds = val.get(Calendar.SECOND);
++        if (round && unroundedSeconds >= 30) {
++            val.add(Calendar.MINUTE, 1);
++        }
++        val.set(Calendar.SECOND, 0);
++    }
+     // truncate minutes
+-
++    if (field > Calendar.MINUTE) {
++        int unroundedMinutes = val.get(Calendar.MINUTE);
++        if (round && unroundedMinutes >= 30) {
++            val.add(Calendar.HOUR_OF_DAY, 1);
++        }
++        val.set(Calendar.MINUTE, 0);
++    }
+     // reset time
+     // ----------------- Fix for LANG-59 ----------------------- END ----------------
+ 
+@@ -88,8 +104,8 @@
+             roundUp = offset > ((max - min) / 2);
+         }
+         //We need to remove this field
+-            val.set(fields[i][0], val.get(fields[i][0]) - offset);
++        val.set(fields[i][0], val.get(fields[i][0]) - offset);
+     }
+     throw new IllegalArgumentException("The field " + field + " is not supported");
++}
+ 
+-}

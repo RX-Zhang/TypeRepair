@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -2,8 +2,9 @@
+     if (_dateFormat == df) {
+         return this;
+     }
+-    TimeZone tz = (df == null) ? _timeZone : df.getTimeZone();
++    // Do not override the existing _timeZone with df.getTimeZone(); keep the original _timeZone intact
+     return new BaseSettings(_classIntrospector, _annotationIntrospector, _visibilityChecker, _propertyNamingStrategy, _typeFactory,
+             _typeResolverBuilder, df, _handlerInstantiator, _locale,
+-            tz, _defaultBase64);
++            _timeZone, _defaultBase64);
+ }
++

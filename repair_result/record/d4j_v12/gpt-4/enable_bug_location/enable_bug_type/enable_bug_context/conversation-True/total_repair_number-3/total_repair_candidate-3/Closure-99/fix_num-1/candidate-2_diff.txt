@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -28,7 +28,7 @@
+   if (parent != null && parent.getType() == Token.ASSIGN) {
+     Node lhs = parent.getFirstChild();
+     Node rhs = lhs.getNext();
+-    
++
+     if (n == lhs) {
+       // Always traverse the left side of the assignment. To handle
+       // nested assignments properly (e.g., (a = this).property = c;),
+@@ -39,15 +39,25 @@
+     } else {
+       // Only traverse the right side if it's not an assignment to a prototype
+       // property or subproperty.
+-        if (lhs.getType() == Token.GETPROP &&
+-            lhs.getLastChild().getString().equals("prototype")) {
+-          return false;
++      if (lhs.getType() == Token.GETPROP) {
++        // Fix: We want to block traversal for assignments to prototype
++        // properties, including "a.prototype = ..." and "a.prototype.b = ..."
++        Node obj = lhs.getFirstChild();
++        Node prop = lhs.getLastChild();
++
++        // Check if lhs is something.prototype or something.prototype.something
++        if (prop != null && obj != null) {
++          if ("prototype".equals(prop.getString()) ||
++              (obj.getType() == Token.GETPROP && "prototype".equals(obj.getLastChild().getString())) ||
++              (obj.getType() == Token.NAME && "prototype".equals(prop.getString()) ) ||
++              (lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype."))) {
++            return false;
++          }
+         }
+-        if (lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")) {
+-          return false;
+-        }
++      }
+     }
+   }
+ 
+   return true;
+ }
++

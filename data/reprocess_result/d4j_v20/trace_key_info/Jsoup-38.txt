@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.convertsImageToImg
+- Error: junit.framework.AssertionFailedError: expected:<<img />
+<svg>
+ <im[age] />
+- Location:         assertEquals("<img />\n<svg>\n <image />\n</svg>", doc.body().html());

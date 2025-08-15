@@ -1,0 +1,1 @@
+['reportTypeSyntaxWarning', 'restoreLookAhead', 'next', 'current', 'skipEOLs']

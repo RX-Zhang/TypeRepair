@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -2,9 +2,18 @@
+     Type generic = field.getGenericType();
+     if (generic != null && generic instanceof ParameterizedType) {
+         Type actual = ((ParameterizedType) generic).getActualTypeArguments()[0];
++        if (actual instanceof Class) {
+             return (Class) actual;
+-            //in case of nested generics we don't go deep
++        } else if (actual instanceof ParameterizedType) {
++            Type rawType = ((ParameterizedType) actual).getRawType();
++            if (rawType instanceof Class) {
++                return (Class) rawType;
++            }
++        }
++        // fallback in case actual is not a Class or ParameterizedType
++        return Object.class;
+     }
+     
+     return Object.class;
+ }
++

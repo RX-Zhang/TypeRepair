@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.tar.TarArchiveInputStreamTest.shouldReadBigGid
+- Error: java.lang.NumberFormatException: For input string: "4294967294"
+- Location:         t = tis.getNextTarEntry();

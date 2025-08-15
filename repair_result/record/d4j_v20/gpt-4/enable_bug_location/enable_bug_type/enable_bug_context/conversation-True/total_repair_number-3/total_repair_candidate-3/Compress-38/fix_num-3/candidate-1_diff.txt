@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -7,9 +7,14 @@
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
++    String name = getName();
++    // Use normalized name to avoid issues with trailing slashes causing errors
++    name = normalizeFileName(name, preserveLeadingSlashes);
++
++    if (name.endsWith("/")) {
+         return true;
+     }
+ 
+     return false;
+ }
++

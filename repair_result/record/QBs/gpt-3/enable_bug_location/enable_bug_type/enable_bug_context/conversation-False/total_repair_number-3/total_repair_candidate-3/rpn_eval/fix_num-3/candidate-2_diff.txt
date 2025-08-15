@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -2,19 +2,24 @@
+     def op(symbol, a, b):
+         return {
+             '+': lambda a, b: a + b,
+-            '-': lambda a, b: a - b,
++            '-': lambda a, b: b - a,  # Corrected the order for subtraction
+             '*': lambda a, b: a * b,
+-            '/': lambda a, b: a / b
++            '/': lambda a, b: b / a if a != 0 else float('inf')  # Added check for division by zero
+         }[symbol](a, b)
++    
+     stack = []
+     for token in tokens:
+         if isinstance(token, float):
+             stack.append(token)
+         else:
++            if len(stack) < 2:  # Added boundary check for stack
++                raise ValueError("Insufficient values in the stack for operation.")
+             a = stack.pop()
+             b = stack.pop()
+-            stack.append(
+-                op(token, a, b)
+-            )
++            stack.append(op(token, a, b))
++    
++    if len(stack) != 1:  # Added boundary check for final stack size
++        raise ValueError("The user input has too many numbers.")
++    
+     return stack.pop()
+ 

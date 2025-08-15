@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.codec.binary.StringUtilsTest.testNewStringNullInput_CODEC229
+- Error: java.lang.NullPointerException
+- Location:         Assert.assertNull(StringUtils.newStringIso8859_1(null));

@@ -1,0 +1,14 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.IntegrationTest.testIssue284
+- Error: java.lang.RuntimeException: java.lang.RuntimeException: INTERNAL COMPILER ERROR.
+Please report this problem.
+Unexpected variable goog
+- Location:     test(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.NameAnalyzerTest.testIssue284
+- Error: junit.framework.AssertionFailedError: 
+Expected: 
+Result: goog.inherits(ns.PageSelectionModel.ChangeEvent,ns.PageSelectionModel.FooEvent)
+- Location:     test(

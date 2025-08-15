@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -16,8 +16,7 @@
+             return true;
+         }
+         if (wildcard
+-            || testName.getName()
+-                    .equals(DOMNodePointer.getLocalName(node))) {
++            || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+             String nodeNS = DOMNodePointer.getNamespaceURI(node);
+             return equalStrings(namespaceURI, nodeNS);
+         }
+@@ -45,6 +44,8 @@
+             String nodePI = ((ProcessingInstruction) node).getTarget();
+             return testPI.equals(nodePI);
+         }
++        return false;  // added to explicitly handle else case
+     }
+     return false;
+ }
++

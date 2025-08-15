@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+     _currInputProcessed += _origBufferLen;
+ 
+     // Also need to adjust row start, to work as if it extended into the past wrt new buffer
+-    _currInputRowStart = start - (_inputEnd - _currInputRowStart);
++    _currInputRowStart = start; // Corrected this line to set the row start to current start position
+ 
+     // And then update buffer settings
+     _inputBuffer = buf;
+@@ -23,3 +23,4 @@
+     _inputEnd = end;
+     _origBufferLen = end - start;
+ }
++

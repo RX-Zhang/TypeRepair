@@ -1,0 +1,36 @@
+private boolean isFoldableExpressBlock(Node n) {
+  if (n.getType() == Token.BLOCK) {
+    if (n.hasOneChild()) {
+      Node maybeExpr = n.getFirstChild();
+      // IE has a bug where event handlers behave differently when
+      // their return value is used vs. when their return value is in
+      // an EXPR_RESULT. It's pretty freaking weird. See:
+      // http://code.google.com/p/closure-compiler/issues/detail?id=291
+      // We try to detect this case, and not fold EXPR_RESULTs
+      // into other expressions.
+
+      // We only have to worry about methods with an implicit 'this'
+      // param, or this doesn't happen.
+
+      // Prevent folding if the expression is a CALL node and is an event handler call
+      if (NodeUtil.isExpressionNode(maybeExpr)) {
+        if (maybeExpr.getType() == Token.EXPR_RESULT) {
+          Node expr = maybeExpr.getFirstChild();
+          if (expr != null && expr.getType() == Token.CALL) {
+            Node target = expr.getFirstChild();
+            if (target != null && target.isGetProp()) {
+              String name = target.getLastChild().getString();
+              // Do not fold known event handler method names because of IE bug
+              if ("onchange".equals(name) || "onclick".equals(name) || "onkeydown".equals(name) || "onkeyup".equals(name)) {
+                return false;
+              }
+            }
+          }
+        }
+        return true;
+      }
+    }
+  }
+
+  return false;
+}

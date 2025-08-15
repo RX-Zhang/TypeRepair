@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testBackwardsTypedefUse1
+- Error: java.lang.ClassCastException: com.google.javascript.rhino.jstype.StringType cannot be cast to com.google.javascript.rhino.jstype.ObjectType
+- Location:     testTypes(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testBackwardsTypedefUse2
+- Error: java.lang.ClassCastException: com.google.javascript.rhino.jstype.UnionType cannot be cast to com.google.javascript.rhino.jstype.ObjectType
+- Location:     testTypes(
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testBackwardsTypedefUse3
+- Error: java.lang.ClassCastException: com.google.javascript.rhino.jstype.UnionType cannot be cast to com.google.javascript.rhino.jstype.ObjectType
+- Location:     testTypes(

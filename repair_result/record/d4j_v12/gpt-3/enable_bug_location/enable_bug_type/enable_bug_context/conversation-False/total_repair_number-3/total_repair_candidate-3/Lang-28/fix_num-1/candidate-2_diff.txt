@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -26,8 +26,19 @@
+             return 0;
+         }
+ 
++        if (Character.isBmpCodePoint(entityValue)) {
+             out.write(entityValue);
+-        return 2 + (end - start) + (isHex ? 1 : 0) + 1;
++        } else if (Character.isValidCodePoint(entityValue)) {
++            char[] chars = Character.toChars(entityValue);
++            out.write(chars[0]);
++            out.write(chars[1]);
++        } else {
++            // Invalid code point; don't write anything
++            return 0;
++        }
++
++        return 2 + (end - index);
+     }
+     return 0;
+ }
++

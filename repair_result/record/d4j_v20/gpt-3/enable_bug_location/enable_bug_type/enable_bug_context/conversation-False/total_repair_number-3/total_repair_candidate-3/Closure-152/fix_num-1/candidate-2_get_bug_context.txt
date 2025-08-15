@@ -1,0 +1,1 @@
+['isInstanceType', 'isOrdinaryFunction', 'isFunctionType', 'hasInstanceType', 'getTypeOfThis']

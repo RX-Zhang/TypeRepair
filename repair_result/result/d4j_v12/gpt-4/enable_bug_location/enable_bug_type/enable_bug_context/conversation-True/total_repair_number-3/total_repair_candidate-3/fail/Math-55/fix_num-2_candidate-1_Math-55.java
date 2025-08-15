@@ -1,0 +1,28 @@
+public static Vector3D crossProduct(final Vector3D v1, final Vector3D v2) {
+
+    // rescale both vectors without losing precision,
+    // to ensure their norm are the same order of magnitude
+
+    // we reduce cancellation errors by preconditioning,
+    // we replace v1 by v3 = v1 - rho v2 with rho chosen in order to compute
+    // v3 without loss of precision. See Kahan lecture
+    // "Computing Cross-Products and Rotations in 2- and 3-Dimensional Euclidean Spaces"
+    // available at http://www.cs.berkeley.edu/~wkahan/MathH110/Cross.pdf
+
+    // compute rho as an 8 bits approximation of v1.v2 / v2.v2
+    double dotVV = Vector3D.dotProduct(v2, v2);
+    if (dotVV == 0.0) {
+        return new Vector3D(0.0, 0.0, 0.0);
+    }
+    double rho = Vector3D.dotProduct(v1, v2) / dotVV;
+    // approximate rho to 8 bits precision (for example cast to float then back to double)
+    float rhoRounded = (float) rho;
+    rho = (double) rhoRounded;
+    Vector3D v3 = v1.subtract(v2.scalarMultiply(rho));
+
+    // compute cross product from v3 and v2 instead of v1 and v2
+    return new Vector3D(
+            v3.y * v2.z - v3.z * v2.y,
+            v3.z * v2.x - v3.x * v2.z,
+            v3.x * v2.y - v3.y * v2.x);
+}

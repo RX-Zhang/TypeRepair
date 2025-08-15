@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -7,6 +7,10 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
++      if (valueType.isFunctionType()) {
++        // Prototype should be an Object, not a Function.
++        return false;
++      }
+       return false;
+   }
+ 
+@@ -47,3 +51,4 @@
+   }
+   return inferred;
+ }
++

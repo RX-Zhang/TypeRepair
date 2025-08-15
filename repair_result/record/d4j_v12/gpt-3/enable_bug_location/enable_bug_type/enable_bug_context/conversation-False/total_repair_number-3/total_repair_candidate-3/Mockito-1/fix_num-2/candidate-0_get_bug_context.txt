@@ -1,0 +1,1 @@
+['matches', 'captureArgumentsFrom', 'isVarargMatcher', 'isVariableArgument']

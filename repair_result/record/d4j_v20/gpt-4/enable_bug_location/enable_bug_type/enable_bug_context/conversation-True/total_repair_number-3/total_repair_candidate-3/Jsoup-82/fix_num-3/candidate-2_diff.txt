@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -64,8 +64,8 @@
+         if (charsetName == null)
+             charsetName = defaultCharset;
+         BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetName), bufferSize);
+-        if (bomCharset != null && bomCharset.offset) // creating the buffered reader ignores the input pos, so must skip here
+-            reader.skip(1);
++        if (bomCharset != null && bomCharset.offset > 0) // creating the buffered reader ignores the input pos, so must skip here
++            reader.skip(bomCharset.offset);
+         try {
+             doc = parser.parseInput(reader, baseUri);
+         } catch (UncheckedIOException e) {
+@@ -73,9 +73,29 @@
+             throw e.ioException();
+         }
+         Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        if (!charset.newEncoder().canEncode()) {
++            // fallback to UTF-8
++            charset = Charset.forName("UTF-8");
++            doc.outputSettings().charset(charset);
++            // Update or create the meta charset element in the document to UTF-8
++            Elements metaCharsetElements = doc.select("meta[charset]");
++            if (!metaCharsetElements.isEmpty()) {
++                // update existing meta charset
++                for (Element meta : metaCharsetElements) {
++                    meta.attr("charset", "UTF-8");
++                }
++            } else {
++                // Create a new meta charset element in the head
++                Element head = doc.head();
++                if (head == null) head = doc.prependElement("head");
++                head.appendElement("meta").attr("charset", "UTF-8");
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

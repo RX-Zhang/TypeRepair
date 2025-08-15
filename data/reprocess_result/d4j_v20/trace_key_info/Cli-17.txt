@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.cli.PosixParserTest.testStopBursting
+- Error: junit.framework.AssertionFailedError: Confirm  1 extra arg: 2
+- Location:         assertTrue( "Confirm  1 extra arg: " + cl.getArgList().size(), cl.getArgList().size() == 1);

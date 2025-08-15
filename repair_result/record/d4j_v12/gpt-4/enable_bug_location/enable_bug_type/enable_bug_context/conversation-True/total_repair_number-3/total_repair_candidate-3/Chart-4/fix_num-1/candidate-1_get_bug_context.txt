@@ -1,0 +1,1 @@
+['getRendererForDataset', 'getAnnotations', 'getDatasetsMappedToDomainAxis', 'getDatasetsMappedToRangeAxis', 'getDomainAxisIndex', 'getRangeAxisIndex']

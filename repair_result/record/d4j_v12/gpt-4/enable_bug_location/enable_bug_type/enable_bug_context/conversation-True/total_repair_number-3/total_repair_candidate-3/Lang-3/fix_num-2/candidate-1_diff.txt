@@ -1,0 +1,80 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+     int pfxLen = 0;
+     for(final String pfx : hex_prefixes) {
+         if (str.startsWith(pfx)) {
+-            pfxLen += pfx.length();
++            pfxLen = pfx.length();
+             break;
+         }
+     }
+@@ -29,7 +29,16 @@
+     String dec;
+     String exp;
+     final int decPos = str.indexOf('.');
+-    final int expPos = str.indexOf('e') + str.indexOf('E') + 1; // assumes both not present
++    final int indexOfE = str.indexOf('e');
++    final int indexOfEE = str.indexOf('E');
++    final int expPos;
++    if (indexOfE == -1) {
++        expPos = indexOfEE;
++    } else if (indexOfEE == -1) {
++        expPos = indexOfE;
++    } else {
++        expPos = indexOfE < indexOfEE ? indexOfE : indexOfEE;
++    }
+     // if both e and E are present, this is caught by the checks on expPos (which prevent IOOBE)
+     // and the parsing which will detect if e or E appear in a number due to using the wrong offset
+ 
+@@ -84,7 +93,7 @@
+             case 'f' :
+             case 'F' :
+                 try {
+-                    final Float f = NumberUtils.createFloat(numeric);
++                    final Float f = createFloat(numeric);
+                     if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                         //If it's too big for a float or the float value = 0 and the string
+                         //has non-zeros in it, then float does not have the precision we want
+@@ -98,8 +107,8 @@
+             case 'd' :
+             case 'D' :
+                 try {
+-                    final Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    final Double d = createDouble(numeric);
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (final NumberFormatException nfe) { // NOPMD
+@@ -141,21 +150,22 @@
+     //Must be a Float, Double, BigDecimal
+     final boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+     try {
+-            final Float f = createFloat(str);
+-            if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+-                return f;
+-            }
++        final Float f = createFloat(str);
++        if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
++            return f;
++        }
+     } catch (final NumberFormatException nfe) { // NOPMD
+         // ignore the bad number
+     }
+     try {
+-            final Double d = createDouble(str);
+-            if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+-                return d;
+-            }
++        final Double d = createDouble(str);
++        if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
++            return d;
++        }
+     } catch (final NumberFormatException nfe) { // NOPMD
+         // ignore the bad number
+     }
+ 
+     return createBigDecimal(str);
+ }
++

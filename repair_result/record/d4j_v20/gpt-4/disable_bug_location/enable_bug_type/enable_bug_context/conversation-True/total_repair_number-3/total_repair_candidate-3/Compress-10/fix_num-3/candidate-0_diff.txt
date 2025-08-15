@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -1,5 +1,4 @@
+-private void resolveLocalFileHeaderData(Map<ZipArchiveEntry, NameAndComment>
+-                                        entriesWithoutUTF8Flag)
++private void resolveLocalFileHeaderData(Map<ZipArchiveEntry, NameAndComment> entriesWithoutUTF8Flag)
+     throws IOException {
+     // changing the name of a ZipArchiveEntry is going to change
+     // the hashcode - see COMPRESS-164
+@@ -8,6 +7,11 @@
+     for (ZipArchiveEntry ze : entries.keySet()) {
+         OffsetEntry offsetEntry = entries.get(ze);
+         long offset = offsetEntry.headerOffset;
++        archive.seek(offset);
++        long signature = ZipLong.getValue(archive);
++        if (signature != ZipLong.LOCSIG) {
++            throw new IOException("Local file header signature is incorrect");
++        }
+         archive.seek(offset + LFH_OFFSET_FOR_FILENAME_LENGTH);
+         byte[] b = new byte[SHORT];
+         archive.readFully(b);
+@@ -32,8 +36,7 @@
+         if (entriesWithoutUTF8Flag.containsKey(ze)) {
+             String orig = ze.getName();
+             NameAndComment nc = entriesWithoutUTF8Flag.get(ze);
+-            ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name,
+-                                                     nc.comment);
++            ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name, nc.comment);
+             if (!orig.equals(ze.getName())) {
+                 nameMap.remove(orig);
+                 nameMap.put(ze.getName(), ze);
+@@ -41,3 +44,4 @@
+         }
+     }
+ }
++

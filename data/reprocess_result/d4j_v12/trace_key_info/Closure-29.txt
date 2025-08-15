@@ -1,0 +1,38 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.InlineObjectLiteralsTest.testObject10
+- Error: junit.framework.AssertionFailedError: 
+Expected: function local(){var x={};var b=f();x={a:a,b:b};if(x.a)g(x.b)+x.c}
+Result: function local(){var JSCompiler_object_inline_a_0;var JSCompiler_object_inline_b_1;var JSCompiler_object_inline_c_2;var b=f();JSCompiler_object_inline_a_0=a,JSCompiler_object_inline_b_1=b,JSCompiler_object_inline_c_2=void 0,true;if(JSCompiler_object_inline_a_0)g(JSCompiler_object_inline_b_1)+JSCompiler_object_inline_c_2}
+- Location:     testLocal("var x = {}; var b = f(); x = {a:a, b:b}; if(x.a) g(x.b) + x.c",
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.InlineObjectLiteralsTest.testObject12
+- Error: junit.framework.AssertionFailedError: 
+Expected: function local(){var a;a={x:1,y:2};f(a.x,a.y2)}
+Result: function local(){var JSCompiler_object_inline_x_0;var JSCompiler_object_inline_y_1;var JSCompiler_object_inline_y2_2;JSCompiler_object_inline_x_0=1,JSCompiler_object_inline_y_1=2,JSCompiler_object_inline_y2_2=void 0,true;f(JSCompiler_object_inline_x_0,JSCompiler_object_inline_y2_2)}
+- Location:     testLocal("var a; a = {x:1, y:2}; f(a.x, a.y2);",
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.InlineObjectLiteralsTest.testObject22
+- Error: junit.framework.AssertionFailedError: 
+Expected: function local(){var a;for(;1;){f(a.x,a.y);a={x:1,y:1}}}
+Result: function local(){var JSCompiler_object_inline_x_0;var JSCompiler_object_inline_y_1;for(;1;){f(JSCompiler_object_inline_x_0,JSCompiler_object_inline_y_1);JSCompiler_object_inline_x_0=1,JSCompiler_object_inline_y_1=1,true}}
+- Location:     testLocal("var a; while (1) { f(a.x, a.y); a = {x:1, y:1};}",
+
+
+Test failure 4:
+- Test: com.google.javascript.jscomp.InlineObjectLiteralsTest.testIssue724
+- Error: junit.framework.AssertionFailedError: 
+Expected: function local(){var getType;getType={};return functionToCheck&&getType.toString.apply(functionToCheck)==="[object Function]"}
+Result: function local(){var JSCompiler_object_inline_toString_0;JSCompiler_object_inline_toString_0=void 0,true;return functionToCheck&&JSCompiler_object_inline_toString_0.apply(functionToCheck)==="[object Function]"}
+- Location:     test(options, code, result);
+
+
+Test failure 5:
+- Test: com.google.javascript.jscomp.IntegrationTest.testIssue724
+- Error: junit.framework.AssertionFailedError: 
+Expected: isFunction=function(a){var b={};return a&&"[object Function]"===b.b.a(a)}
+Result: isFunction=function(a){return a&&"[object Function]"===(void 0).a(a)}
+- Location:     test(options, code, result);

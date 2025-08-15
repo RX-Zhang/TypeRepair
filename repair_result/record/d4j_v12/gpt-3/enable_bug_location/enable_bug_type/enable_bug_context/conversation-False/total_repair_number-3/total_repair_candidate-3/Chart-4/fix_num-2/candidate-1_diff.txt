@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -66,14 +66,19 @@
+                 }
+             }
+             
++            // Check for null before accessing annotations
++            if (r != null) {
+                 Collection c = r.getAnnotations();
+-                Iterator i = c.iterator();
+-                while (i.hasNext()) {
+-                    XYAnnotation a = (XYAnnotation) i.next();
+-                    if (a instanceof XYAnnotationBoundsInfo) {
+-                        includedAnnotations.add(a);
++                if (c != null) {
++                    Iterator i = c.iterator();
++                    while (i.hasNext()) {
++                        XYAnnotation a = (XYAnnotation) i.next();
++                        if (a instanceof XYAnnotationBoundsInfo) {
++                            includedAnnotations.add(a);
++                        }
+                     }
+                 }
++            }
+         }
+     }
+ 
+@@ -93,3 +98,4 @@
+     return result;
+ 
+ }
++

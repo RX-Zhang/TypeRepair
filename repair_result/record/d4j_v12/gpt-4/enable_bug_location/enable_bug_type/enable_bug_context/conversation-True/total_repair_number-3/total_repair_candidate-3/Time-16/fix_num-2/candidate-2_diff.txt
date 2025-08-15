@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -3,16 +3,23 @@
+     if (instant == null) {
+         throw new IllegalArgumentException("Instant must not be null");
+     }
+-    
++
+     long instantMillis = instant.getMillis();
+     Chronology chrono = instant.getChronology();
+     long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+     chrono = selectChronology(chrono);
+-    
++
++    Integer pivot = getPivotYear();
++    int defYear = getDefaultYear();
++
+     DateTimeParserBucket bucket = new DateTimeParserBucket(
+-        instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
++        instantLocal, chrono, iLocale, pivot, defYear);
+     int newPos = parser.parseInto(bucket, text, position);
+-    instant.setMillis(bucket.computeMillis(false, text));
++    long millis = bucket.computeMillis(false, text);
++
++    // Update instant with computed millis and correct chronology and zone
++    instant.setMillis(millis);
++
+     if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+         int parsedOffset = bucket.getOffsetInteger();
+         DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+@@ -20,9 +27,12 @@
+     } else if (bucket.getZone() != null) {
+         chrono = chrono.withZone(bucket.getZone());
+     }
++
+     instant.setChronology(chrono);
++
+     if (iZone != null) {
+         instant.setZone(iZone);
+     }
+     return newPos;
+ }
++

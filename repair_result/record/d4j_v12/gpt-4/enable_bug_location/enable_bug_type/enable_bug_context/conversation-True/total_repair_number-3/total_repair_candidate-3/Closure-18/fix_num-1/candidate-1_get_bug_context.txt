@@ -1,0 +1,1 @@
+['runSanityCheck', 'hoistExterns', 'hoistNoCompileFiles', 'repartitionInputs', 'processAMDAndCommonJSModules', 'report', 'hasErrors']

@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,5 +1,10 @@
+ public String html() {
+     StringBuilder accum = new StringBuilder();
+     html(accum);
+-    return accum.toString().trim();
++    if (!Element.preserveWhitespace(this)) {
++        return accum.toString().trim();
++    } else {
++        return accum.toString();
++    }
+ }
++

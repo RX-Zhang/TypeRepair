@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -49,7 +49,7 @@
+                 buf[pos++] = encodeTable[(x >> 6) & MASK_6BITS];
+                 buf[pos++] = encodeTable[x & MASK_6BITS];
+                 currentLinePos += 4;
+-                if (lineLength > 0 && lineLength <= currentLinePos) {
++                if (lineLength > 0 && currentLinePos >= lineLength) {
+                     System.arraycopy(lineSeparator, 0, buf, pos, lineSeparator.length);
+                     pos += lineSeparator.length;
+                     currentLinePos = 0;
+@@ -58,3 +58,4 @@
+         }
+     }
+ }
++

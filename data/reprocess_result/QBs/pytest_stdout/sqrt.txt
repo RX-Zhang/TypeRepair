@@ -1,0 +1,134 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 7 items
+
+python_testcases/test_sqrt.py F.FFFFF                                    [100%]
+
+=================================== FAILURES ===================================
+__________________ test_sqrt[input_data0-1.4166666666666665] ___________________
+
+input_data = [2, 0.01], expected = 1.4166666666666665
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_sqrt(input_data, expected):
+>       assert sqrt(*input_data) == pytest.approx(expected, abs=input_data[-1])
+
+python_testcases/test_sqrt.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = 2, epsilon = 0.01
+
+    def sqrt(x, epsilon):
+        approx = x / 2
+>       while abs(x - approx) > epsilon:
+E       Failed: Timeout (>5.0s) from pytest-timeout.
+
+python_programs/sqrt.py:4: Failed
+__________________________ test_sqrt[input_data2-1.5] __________________________
+
+input_data = [2, 0.3], expected = 1.5
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_sqrt(input_data, expected):
+>       assert sqrt(*input_data) == pytest.approx(expected, abs=input_data[-1])
+
+python_testcases/test_sqrt.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = 2, epsilon = 0.3
+
+    def sqrt(x, epsilon):
+        approx = x / 2
+>       while abs(x - approx) > epsilon:
+E       Failed: Timeout (>5.0s) from pytest-timeout.
+
+python_programs/sqrt.py:4: Failed
+___________________________ test_sqrt[input_data3-2] ___________________________
+
+input_data = [4, 0.2], expected = 2
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_sqrt(input_data, expected):
+>       assert sqrt(*input_data) == pytest.approx(expected, abs=input_data[-1])
+
+python_testcases/test_sqrt.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = 4, epsilon = 0.2
+
+    def sqrt(x, epsilon):
+        approx = x / 2
+>       while abs(x - approx) > epsilon:
+E       Failed: Timeout (>5.0s) from pytest-timeout.
+
+python_programs/sqrt.py:4: Failed
+___________________ test_sqrt[input_data4-5.196164639727311] ___________________
+
+input_data = [27, 0.01], expected = 5.196164639727311
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_sqrt(input_data, expected):
+>       assert sqrt(*input_data) == pytest.approx(expected, abs=input_data[-1])
+
+python_testcases/test_sqrt.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = 27, epsilon = 0.01
+
+    def sqrt(x, epsilon):
+        approx = x / 2
+>       while abs(x - approx) > epsilon:
+E       Failed: Timeout (>5.0s) from pytest-timeout.
+
+python_programs/sqrt.py:4: Failed
+___________________ test_sqrt[input_data5-5.744627526262464] ___________________
+
+input_data = [33, 0.05], expected = 5.744627526262464
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_sqrt(input_data, expected):
+>       assert sqrt(*input_data) == pytest.approx(expected, abs=input_data[-1])
+
+python_testcases/test_sqrt.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = 33, epsilon = 0.05
+
+    def sqrt(x, epsilon):
+        approx = x / 2
+>       while abs(x - approx) > epsilon:
+E       Failed: Timeout (>5.0s) from pytest-timeout.
+
+python_programs/sqrt.py:4: Failed
+__________________ test_sqrt[input_data6-13.038404876679632] ___________________
+
+input_data = [170, 0.03], expected = 13.038404876679632
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_sqrt(input_data, expected):
+>       assert sqrt(*input_data) == pytest.approx(expected, abs=input_data[-1])
+
+python_testcases/test_sqrt.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = 170, epsilon = 0.03
+
+    def sqrt(x, epsilon):
+        approx = x / 2
+>       while abs(x - approx) > epsilon:
+E       Failed: Timeout (>5.0s) from pytest-timeout.
+
+python_programs/sqrt.py:4: Failed
+=========================== short test summary info ============================
+FAILED python_testcases/test_sqrt.py::test_sqrt[input_data0-1.4166666666666665]
+FAILED python_testcases/test_sqrt.py::test_sqrt[input_data2-1.5] - Failed: Ti...
+FAILED python_testcases/test_sqrt.py::test_sqrt[input_data3-2] - Failed: Time...
+FAILED python_testcases/test_sqrt.py::test_sqrt[input_data4-5.196164639727311]
+FAILED python_testcases/test_sqrt.py::test_sqrt[input_data5-5.744627526262464]
+FAILED python_testcases/test_sqrt.py::test_sqrt[input_data6-13.038404876679632]
+========================= 6 failed, 1 passed in 30.04s =========================

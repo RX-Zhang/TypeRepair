@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -1,6 +1,5 @@
+ public MultiplePiePlot(CategoryDataset dataset) {
+     super();
+-    this.dataset = dataset;
+     PiePlot piePlot = new PiePlot(null);
+     this.pieChart = new JFreeChart(piePlot);
+     this.pieChart.removeLegend();
+@@ -13,4 +12,8 @@
+     this.aggregatedItemsKey = "Other";
+     this.aggregatedItemsPaint = Color.lightGray;
+     this.sectionPaints = new HashMap();
++
++    // correctly set the dataset using the setter to register listeners properly
++    setDataset(dataset);
+ }
++

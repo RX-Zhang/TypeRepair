@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,12 +1,19 @@
+ boolean anyOtherEndTag(Token t, HtmlTreeBuilder tb) {
+     String name = t.asEndTag().normalName();
+     ArrayList<Element> stack = tb.getStack();
+-    for (int pos = stack.size() -1; pos >= 0; pos--) {
++    if (stack == null || stack.isEmpty()) { // Boundary check
++        tb.error(this);
++        return false;
++    }
++    
++    for (int pos = stack.size() - 1; pos >= 0; pos--) {
+         Element node = stack.get(pos);
+         if (node.nodeName().equals(name)) {
+             tb.generateImpliedEndTags(name);
+-            if (!name.equals(tb.currentElement().nodeName()))
++            if (!name.equals(tb.currentElement().nodeName())) {
+                 tb.error(this);
++                return false; // Ensure logical flow is correct
++            }
+             tb.popStackToClose(name);
+             break;
+         } else {
+@@ -18,3 +25,4 @@
+     }
+     return true;
+ }
++

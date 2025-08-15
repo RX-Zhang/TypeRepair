@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -22,6 +22,7 @@
+         count(1);
+     }
+ 
+-    int c = (destOffs == offs) ? -1 : (destOffs - offs);
++    int c = (destOffs == offs) ? 0 : (destOffs - offs);
+     return c;
+ }
++

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -14,11 +14,15 @@
+       // {@code name} meets condition (b). Find all of its local aliases
+       // and try to inline them.
+       List<Ref> refs = Lists.newArrayList(name.getRefs());
+-      for (Ref ref : refs) {
++      // Iterate over refs using an iterator to allow safe removal while iterating
++      for (Iterator<Ref> iterator = refs.iterator(); iterator.hasNext();) {
++        Ref ref = iterator.next();
+         if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
+           // {@code name} meets condition (c). Try to inline it.
+           if (inlineAliasIfPossible(ref, namespace)) {
++            // Remove ref from name refs and also from the iteration list
+             name.removeRef(ref);
++            iterator.remove();
+           }
+         }
+       }
+@@ -35,3 +39,4 @@
+     }
+   }
+ }
++

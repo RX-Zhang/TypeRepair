@@ -1,0 +1,34 @@
+Test failure 1:
+- Test: org.apache.commons.math.stat.inference.ChiSquareFactoryTest.testChiSquareLargeTestStatistic
+- Error: junit.framework.AssertionFailedError: chi-square test statistic expected:<114875.90421929007> but was:<3624883.3429077636>
+- Location:         assertEquals( "chi-square test statistic", 
+
+
+Test failure 2:
+- Test: org.apache.commons.math.stat.inference.ChiSquareFactoryTest.testChiSquare
+- Error: junit.framework.AssertionFailedError: chi-square test statistic expected:<9.023307936427388> but was:<16.413107036160778>
+- Location:         assertEquals( "chi-square test statistic", 9.023307936427388, TestUtils.chiSquare(expected1, observed1), 1E-10);
+
+
+Test failure 3:
+- Test: org.apache.commons.math.stat.inference.ChiSquareTestTest.testChiSquareLargeTestStatistic
+- Error: junit.framework.AssertionFailedError: chi-square test statistic expected:<114875.90421929007> but was:<3624883.3429077636>
+- Location:         assertEquals( "chi-square test statistic", 
+
+
+Test failure 4:
+- Test: org.apache.commons.math.stat.inference.ChiSquareTestTest.testChiSquare
+- Error: junit.framework.AssertionFailedError: chi-square test statistic expected:<9.023307936427388> but was:<16.413107036160778>
+- Location:         assertEquals( "chi-square test statistic", 9.023307936427388, TestUtils.chiSquare(expected1, observed1), 1E-10);
+
+
+Test failure 5:
+- Test: org.apache.commons.math.stat.inference.TestUtilsTest.testChiSquareLargeTestStatistic
+- Error: junit.framework.AssertionFailedError: chi-square test statistic expected:<114875.90421929007> but was:<3624883.3429077636>
+- Location:         assertEquals( "chi-square test statistic", 
+
+
+Test failure 6:
+- Test: org.apache.commons.math.stat.inference.TestUtilsTest.testChiSquare
+- Error: junit.framework.AssertionFailedError: chi-square test statistic expected:<9.023307936427388> but was:<16.413107036160778>
+- Location:         assertEquals( "chi-square test statistic", 9.023307936427388, TestUtils.chiSquare(expected1, observed1), 1E-10);

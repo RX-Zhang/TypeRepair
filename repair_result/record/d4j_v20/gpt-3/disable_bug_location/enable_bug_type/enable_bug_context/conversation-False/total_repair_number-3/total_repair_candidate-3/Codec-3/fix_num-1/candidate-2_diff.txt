@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+         if (index == 1 && isVowel(charAt(value, 0)) && !slavoGermanic) {
+             result.append("KN", "N");
+         } else if (!contains(value, index + 2, 2, "EY") && 
+-                   charAt(value, index + 1) != 'Y' && !slavoGermanic) {
++                   charAt(value, index + 1) == 'N' && !slavoGermanic) { // Fixed condition here
+             result.append("N", "KN");
+         } else {
+             result.append("KN");
+@@ -50,3 +50,4 @@
+     }
+     return index;
+ }
++

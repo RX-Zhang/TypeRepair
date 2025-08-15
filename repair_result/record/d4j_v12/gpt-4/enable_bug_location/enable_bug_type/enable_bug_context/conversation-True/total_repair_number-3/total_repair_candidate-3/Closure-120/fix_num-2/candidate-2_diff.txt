@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -4,9 +4,11 @@
+     return false;
+   }
+ 
+-  // Make sure this assignment is not in a loop.
+-  for (BasicBlock block = ref.getBasicBlock();
+-       block != null; block = block.getParent()) {
++  BasicBlock assignedBlock = ref.getBasicBlock();
++  
++  // Traverse up the block stack from the innermost block to the function block,
++  // checking if the assignment is inside a loop.
++  for (BasicBlock block = assignedBlock; block != null; block = block.getParent()) {
+     if (block.isFunction) {
+       break;
+     } else if (block.isLoop) {
+@@ -16,3 +18,4 @@
+ 
+   return true;
+ }
++

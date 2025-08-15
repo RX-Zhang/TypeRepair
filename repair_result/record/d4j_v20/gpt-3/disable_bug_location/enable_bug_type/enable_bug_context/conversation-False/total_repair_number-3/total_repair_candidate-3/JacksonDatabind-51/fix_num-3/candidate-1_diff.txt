@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -32,7 +32,7 @@
+              *   type in process (getting SimpleType of Map.class which will not work as expected)
+              */
+             if ((_baseType != null)
+-                    && _baseType.getClass() == type.getClass()) {
++                    && _baseType.getRawClass() == type.getRawClass()) {
+                 /* 09-Aug-2015, tatu: Not sure if the second part of the check makes sense;
+                  *   but it appears to check that JavaType impl class is the same which is
+                  *   important for some reason?
+@@ -50,3 +50,4 @@
+     }
+     return deser;
+ }
++

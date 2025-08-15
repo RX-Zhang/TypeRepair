@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -12,18 +12,32 @@
+                 return;
+             }
+             // both explicit: verify
+-            // otherwise only verify if neither explicitly annotated.
+-        }
+-
+-        // one more thing: ok to override in sub-class
+-        if (oldOne.getClass() == newOne.getClass()) {
+-            // [databind#667]: avoid one particular class of bogus problems
+-
+-                throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
+-                        +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
+-            // otherwise, which one to choose?
+-                // new type more generic, use old
+-            // new type more specific, use it
++            if (explicit) {
++                // if both explicit, verify conflict
++                if (oldOne.getClass() == newOne.getClass()) {
++                    throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
++                            +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
++                } else {
++                    // For different creator types, either choose old or new depending on generic/specific
++                    // but since we can't tell here, leave old one.
++                    return;
++                }
++            }
++            // if old explicit but new explicit is false, we already returned above
++            // if neither explicit, fall through to verification below
++        } else {
++            // was not explicit before
++            if (explicit) {
++                // new one is explicit, override old one
++            } else {
++                // both not explicit: verify similar classes to avoid conflicts
++                if (oldOne.getClass() == newOne.getClass()) {
++                    throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
++                            +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
++                } else {
++                    return;
++                }
++            }
+         }
+     }
+     if (explicit) {
+@@ -31,3 +45,4 @@
+     }
+     _creators[typeIndex] = _fixAccess(newOne);
+ }
++

@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -4,6 +4,10 @@
+     throws NonSquareMatrixException,
+            NotSymmetricMatrixException, NotPositiveDefiniteMatrixException {
+ 
++    if (matrix == null) {
++        throw new IllegalArgumentException("Matrix cannot be null.");
++    }
++    
+     if (!matrix.isSquare()) {
+         throw new NonSquareMatrixException(matrix.getRowDimension(),
+                                            matrix.getColumnDimension());
+@@ -16,6 +20,9 @@
+ 
+     // check the matrix before transformation
+     for (int i = 0; i < order; ++i) {
++        if (lTData[i].length != order) {
++            throw new NotSymmetricMatrixException();
++        }
+ 
+         final double[] lI = lTData[i];
+ 
+@@ -38,11 +45,13 @@
+ 
+     // transform the matrix
+     for (int i = 0; i < order; ++i) {
+-
+         final double[] ltI = lTData[i];
+ 
+         // check diagonal element
+-
++        if (ltI[i] < 0) {
++            throw new NotPositiveDefiniteMatrixException();
++        }
++        
+         ltI[i] = Math.sqrt(ltI[i]);
+         final double inverse = 1.0 / ltI[i];
+ 
+@@ -53,7 +62,6 @@
+                 ltQ[p] -= ltI[q] * ltI[p];
+             }
+         }
++    }
++}
+ 
+-    }
+-
+-}

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -10,6 +10,12 @@
+   Map<TemplateType, JSType> inferred = 
+       inferTemplateTypesFromParameters(fnType, n);
+ 
++  // For template types not inferred, set to UNKNOWN
++  for (TemplateType key : keys) {
++    if (!inferred.containsKey(key)) {
++      inferred.put(key, registry.getNativeObjectType(JSTypeNative.UNKNOWN_TYPE));
++    }
++  }
+ 
+   // Replace all template types. If we couldn't find a replacement, we
+   // replace it with UNKNOWN.
+@@ -26,3 +32,4 @@
+ 
+   return replacer.madeChanges;
+ }
++

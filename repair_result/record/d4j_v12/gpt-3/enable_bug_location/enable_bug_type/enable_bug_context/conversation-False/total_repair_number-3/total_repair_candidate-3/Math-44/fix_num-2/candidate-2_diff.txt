@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+         resetOccurred = false;
+ 
+         // initialize the events states if needed
+-        if (! statesInitialized) {
++        if (!statesInitialized) {
+             for (EventState state : eventsStates) {
+                 state.reinitializeBegin(interpolator);
+             }
+@@ -89,7 +89,7 @@
+             state.stepAccepted(currentT, currentY);
+             isLastStep = isLastStep || state.stop();
+         }
+-        isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1);
++        isLastStep = isLastStep || (currentT >= tEnd); // Corrected logical check here
+ 
+         // handle the remaining part of the step, after all events if any
+         for (StepHandler handler : stepHandlers) {
+@@ -99,3 +99,4 @@
+         return currentT;
+ 
+ }
++

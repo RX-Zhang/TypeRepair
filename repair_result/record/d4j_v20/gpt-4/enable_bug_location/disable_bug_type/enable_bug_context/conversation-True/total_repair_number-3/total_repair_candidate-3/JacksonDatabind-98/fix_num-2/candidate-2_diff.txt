@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -41,7 +41,13 @@
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+                 // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+                 //    apply deserializer... fun fun.
+-                buffer.assignParameter(typeProp, typeId);
++                Object typeIdValue = typeId;
++                if (!typeProp.getType().hasRawClass(String.class)) {
++                    JsonParser jp = ctxt.getParser().getCodec().treeAsTokens(ctxt.getParser().getCodec().readTree(ctxt.getParser()));
++                    typeIdValue = ctxt.findRootValueDeserializer(typeProp.getType())
++                        .deserialize(jp, ctxt);
++                }
++                buffer.assignParameter(typeProp, typeIdValue);
+             }
+         }
+     }
+@@ -55,3 +61,4 @@
+     }
+     return bean;
+ }
++

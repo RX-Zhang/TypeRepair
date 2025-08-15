@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -32,7 +32,12 @@
+     }
+     byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+     pex.setSize(data.length);
++    // Explicitly mark this entry as a file (not directory),
++    // to allow data to be written.
++    pex.setLinkName(null);
++    pex.setMode(TarArchiveEntry.DEFAULT_FILE_MODE);
+     putArchiveEntry(pex);
+     write(data);
+     closeArchiveEntry();
+ }
++

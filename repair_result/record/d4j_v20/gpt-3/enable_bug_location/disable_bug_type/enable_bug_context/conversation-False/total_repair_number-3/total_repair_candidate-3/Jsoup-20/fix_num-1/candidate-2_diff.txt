@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -1,8 +1,9 @@
+ static Document parseByteData(ByteBuffer byteData, String charsetName, String baseUri, Parser parser) {
+     String docData;
+     Document doc = null;
++    
++    // Determine encoding based on the provided charset name or detect it from the HTML meta
+     if (charsetName == null) { // determine from meta. safe parse as UTF-8
+-        // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
+         docData = Charset.forName(defaultCharset).decode(byteData).toString();
+         doc = parser.parseInput(docData, baseUri);
+         Element meta = doc.select("meta[http-equiv=content-type], meta[charset]").first();
+@@ -12,20 +13,27 @@
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                doc = null;
++                
++                // Re-parse the document to handle new charset
++                doc = parser.parseInput(docData, baseUri);
++                doc.outputSettings().charset(charsetName);
+             }
+         }
+     } else { // specified by content type header (or by user on file load)
+         Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
+         docData = Charset.forName(charsetName).decode(byteData).toString();
++        doc = parser.parseInput(docData, baseUri);
+     }
+-    if (doc == null) {
+-        // there are times where there is a spurious byte-order-mark at the start of the text. Shouldn't be present
+-        // in utf-8. If after decoding, there is a BOM, strip it; otherwise will cause the parser to go straight
+-        // into head mode
++    
++    // Ensure we handle the possible BOM
++    if (doc != null && docData.startsWith("\uFEFF")) {
++        docData = docData.replaceFirst("\uFEFF", ""); // Remove BOM if exists
++    }
+ 
+-        doc = parser.parseInput(docData, baseUri);
++    if (doc != null) {
+         doc.outputSettings().charset(charsetName);
+     }
++    
+     return doc;
+ }
++

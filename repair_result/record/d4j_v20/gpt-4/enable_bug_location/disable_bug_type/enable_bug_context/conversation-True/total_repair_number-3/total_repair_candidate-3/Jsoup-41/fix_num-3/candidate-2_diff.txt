@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -5,5 +5,11 @@
+ 
+     Element element = (Element) o;
+ 
+-    return this == o;
++    // Elements are equal if their tag names, attributes, and text content are equal
++    if (!this.tagName().equals(element.tagName())) return false;
++    if (!this.className().equals(element.className())) return false;
++    if (!this.text().equals(element.text())) return false;
++
++    return true;
+ }
++

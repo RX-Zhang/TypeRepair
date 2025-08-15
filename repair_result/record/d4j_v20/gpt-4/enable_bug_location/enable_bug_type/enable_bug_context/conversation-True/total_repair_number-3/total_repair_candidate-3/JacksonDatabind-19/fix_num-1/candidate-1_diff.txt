@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,6 +1,12 @@
+ private JavaType _mapType(Class<?> rawClass)
+ {
+     // 28-May-2015, tatu: Properties are special, as per [databind#810]
++    if (Properties.class.isAssignableFrom(rawClass)) {
++        // Properties key and value types are always String
++        return MapType.construct(rawClass,
++                CORE_TYPE_STRING,
++                CORE_TYPE_STRING);
++    }
+     JavaType[] typeParams = findTypeParameters(rawClass, Map.class);
+     // ok to have no types ("raw")
+     if (typeParams == null) {
+@@ -12,3 +18,4 @@
+     }
+     return MapType.construct(rawClass, typeParams[0], typeParams[1]);
+ }
++

@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -25,15 +25,23 @@
+                NodeUtil.newUndefinedNode(null)));
+   }
+ 
+-  Node replacement;
++  // If no assignments created, just replace with TRUE node
++  if (nodes.isEmpty()) {
++    nodes.add(new Node(Token.TRUE));
++  } else {
+     // All assignments evaluate to true, so make sure that the
+     // expr statement evaluates to true in case it matters.
+     nodes.add(new Node(Token.TRUE));
++  }
+ 
+-    // Join these using COMMA.  A COMMA node must have 2 children, so we
+-    // create a tree. In the tree the first child be the COMMA to match
+-    // the parser, otherwise tree equality tests fail.
+-    nodes = Lists.reverse(nodes);
++  // Join these using COMMA.  A COMMA node must have 2 children, so we
++  // create a tree. In the tree the first child be the COMMA to match
++  // the parser, otherwise tree equality tests fail.
++  nodes = Lists.reverse(nodes);
++  Node replacement;
++  if (nodes.size() == 1) {
++    replacement = nodes.get(0);
++  } else {
+     replacement = new Node(Token.COMMA);
+     Node cur = replacement;
+     int i;
+@@ -45,6 +53,7 @@
+     }
+     cur.addChildToFront(nodes.get(i));
+     cur.addChildToFront(nodes.get(i + 1));
++  }
+ 
+   Node replace = ref.getParent();
+   replacement.copyInformationFromForTree(replace);
+@@ -56,3 +65,4 @@
+     replace.getParent().replaceChild(replace, replacement);
+   }
+ }
++

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -4,14 +4,22 @@
+     if (property != null) {
+         JsonFormat.Value format = serializers.getAnnotationIntrospector().findFormat((Annotated)property.getMember());
+         if (format != null) {
++            JsonFormat.Shape shape = format.getShape();
+ 
+-        	// Simple case first: serialize as numeric timestamp?
+-            JsonFormat.Shape shape = format.getShape();
++            if (shape == JsonFormat.Shape.ANY) {
++                // Shape.ANY means use timestamp or string depending on other properties
++                if (format.hasPattern() || format.hasLocale() || format.getTimeZone() != null) {
++                    // Use string shape if pattern, locale or timezone is specified
++                    shape = JsonFormat.Shape.STRING;
++                }
++            }
++
++            // Simple case first: serialize as numeric timestamp?
+             if (shape.isNumeric()) {
+                 return withFormat(Boolean.TRUE, null);
+             }
+ 
+-            if (format.getShape() == JsonFormat.Shape.STRING) {
++            if (shape == JsonFormat.Shape.STRING) {
+                 TimeZone tz = format.getTimeZone();
+                 final String pattern = format.hasPattern()
+                                 ? format.getPattern()
+@@ -30,3 +38,4 @@
+     }
+     return this;
+ }
++

@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -37,7 +37,11 @@
+             if (!orig.equals(ze.getName())) {
+                 nameMap.remove(orig);
+                 nameMap.put(ze.getName(), ze);
++                // Need to update key in entries map to reflect changed hashcode
++                OffsetEntry val = entries.remove(ze);
++                entries.put(ze, val);
+             }
+         }
+     }
+ }
++

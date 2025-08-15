@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -72,6 +72,7 @@
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
++        // Fix: Allow '0' after '-' for negative zero, but disallow leading zero in other cases.
+         if (value == 0) {
+           return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
+         }
+@@ -100,3 +101,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -16,10 +16,11 @@
+         } else if (_hasAnnotation(a, JsonSerialize.class)
+                 || _hasAnnotation(a, JsonView.class)
+                 || _hasAnnotation(a, JsonRawValue.class)) {
+-            name = "";
++            name = PropertyName.USE_DEFAULT.getSimpleName(); // Fix: Use default name marker instead of empty string
+         } else {
+             return null;
+         }
+     }
+     return PropertyName.construct(name);
+ }
++

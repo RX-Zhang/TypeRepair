@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+ 
+         final double[] lI = lTData[i];
+ 
+-        if (lTData[i][i] < absolutePositivityThreshold) {
++        if (lTData[i][i] <= absolutePositivityThreshold) { // Changed < to <= for better positivity check
+             throw new NotPositiveDefiniteMatrixException();
+         }
+         // check off-diagonal elements (and reset them to 0)
+@@ -42,7 +42,6 @@
+         final double[] ltI = lTData[i];
+ 
+         // check diagonal element
+-
+         ltI[i] = Math.sqrt(ltI[i]);
+         final double inverse = 1.0 / ltI[i];
+ 
+@@ -57,3 +56,4 @@
+     }
+ 
+ }
++

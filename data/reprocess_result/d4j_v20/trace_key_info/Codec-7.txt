@@ -1,0 +1,12 @@
+Test failure 1:
+- Test: org.apache.commons.codec.binary.Base64Test.testByteToStringVariations
+- Error: junit.framework.ComparisonFailure: byteToString static Hello World expected:<SGVsbG8gV29ybGQ=[]> but was:<SGVsbG8gV29ybGQ=[
+]>
+- Location:         assertEquals("byteToString static Hello World", "SGVsbG8gV29ybGQ=", Base64.encodeBase64String(b1));
+
+
+Test failure 2:
+- Test: org.apache.commons.codec.binary.Base64Test.testRfc4648Section10Encode
+- Error: junit.framework.ComparisonFailure: expected:<Zg==[]> but was:<Zg==[
+]>
+- Location:         assertEquals("Zg==", Base64.encodeBase64String(StringUtils.getBytesUtf8("f")));

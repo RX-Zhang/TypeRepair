@@ -1,0 +1,1 @@
+{"Gson-6": ["com.google.gson.regression.JsonAdapterNullSafeTest::testNullSafeBugDeserialize", "com.google.gson.regression.JsonAdapterNullSafeTest::testNullSafeBugSerialize"]}

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -5,14 +5,14 @@
+   }
+ 
+   // Make sure this assignment is not in a loop.
+-  for (BasicBlock block = ref.getBasicBlock();
+-       block != null; block = block.getParent()) {
+-    if (block.isFunction) {
+-      break;
+-    } else if (block.isLoop) {
++  BasicBlock block = ref.getBasicBlock();
++  while (block != null && !block.isFunction) {
++    if (block.isLoop) {
+       return false;
+     }
++    block = block.getParent();
+   }
+ 
+   return true;
+ }
++

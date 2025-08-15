@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -11,9 +11,13 @@
+ 
+         if (actualTypeArgument instanceof WildcardType) {
+             contextualActualTypeParameters.put(typeParameter, boundsOf((WildcardType) actualTypeArgument));
++        } else if (actualTypeArgument instanceof TypeVariable) {
++            // Avoid infinite recursion by registering the type variable if not present
++            registerTypeVariableIfNotPresent((TypeVariable) actualTypeArgument);
++            contextualActualTypeParameters.put(typeParameter, actualTypeArgument);
+         } else {
+             contextualActualTypeParameters.put(typeParameter, actualTypeArgument);
+         }
+-        // logger.log("For '" + parameterizedType + "' found type variable : { '" + typeParameter + "(" + System.identityHashCode(typeParameter) + ")" + "' : '" + actualTypeArgument + "(" + System.identityHashCode(typeParameter) + ")" + "' }");
+     }
+ }
++

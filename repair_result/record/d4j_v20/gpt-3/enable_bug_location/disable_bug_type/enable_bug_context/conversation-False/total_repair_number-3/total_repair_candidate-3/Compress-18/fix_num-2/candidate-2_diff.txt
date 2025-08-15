@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -33,6 +33,9 @@
+     byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+     pex.setSize(data.length);
+     putArchiveEntry(pex);
+-    write(data);
++    if (data.length > 0) {  // Boundary check to avoid writing zero-length data
++        write(data);
++    }
+     closeArchiveEntry();
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -4,8 +4,8 @@
+   // For each referenced function, add a new reference
+   if (node.getType() == Token.CALL) {
+     Node child = node.getFirstChild();
+-    if (child.getType() == Token.NAME) {
+-      changed.add(child.getString());
++    if (child.isQualifiedName() || child.getType() == Token.NAME) {
++      changed.add(child.getQualifiedName() != null ? child.getQualifiedName() : child.getString());
+     }
+   }
+ 
+@@ -13,3 +13,4 @@
+     findCalledFunctions(c, changed);
+   }
+ }
++

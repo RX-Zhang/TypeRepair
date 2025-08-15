@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+         }
+         char c = _inputBuffer[_inputPtr];
+         int i = (int) c;
+-        if (i <= maxCode) {
++        if (i < maxCode) { // changed from i <= maxCode to i < maxCode to avoid out-of-bounds
+             if (codes[i] != 0) {
+                 break;
+             }
+@@ -41,3 +41,4 @@
+         return _symbols.findSymbol(buf, start, len, hash);
+     }
+ }
++

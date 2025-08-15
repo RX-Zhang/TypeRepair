@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -1,8 +1,10 @@
+ Node processFunctionNode(FunctionNode functionNode) {
+   Name name = functionNode.getFunctionName();
+   Boolean isUnnamedFunction = false;
+-  if (name == null) {
+-    name = new Name();
++  if (name == null || "".equals(name.getIdentifier())) {
++    if (name == null) {
++      name = new Name();
++    }
+     name.setIdentifier("");
+     isUnnamedFunction = true;
+   }
+@@ -29,7 +31,7 @@
+   // function name, assume the paren was on the same line as the function.
+   // TODO(bowdidge): Mark line number of paren correctly.
+   Name fnName = functionNode.getFunctionName();
+-  if (fnName != null) {
++  if (fnName != null && !"".equals(fnName.getIdentifier())) {
+     lp.setLineno(fnName.getLineno());
+   } else {
+     lp.setLineno(functionNode.getLineno());
+@@ -46,5 +48,6 @@
+   Node bodyNode = transform(functionNode.getBody());
+   parseDirectives(bodyNode);
+   node.addChildToBack(bodyNode);
+- return node;
++  return node;
+ }
++

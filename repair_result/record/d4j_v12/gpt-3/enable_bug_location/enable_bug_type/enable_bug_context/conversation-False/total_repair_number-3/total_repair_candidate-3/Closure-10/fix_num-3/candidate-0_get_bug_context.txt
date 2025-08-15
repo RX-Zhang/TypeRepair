@@ -1,0 +1,1 @@
+['getPureBooleanValue', 'getStringValue', 'getNumberValue', 'allResultsMatch', 'mayBeString', 'mayBeStringHelper']

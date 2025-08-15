@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -30,9 +30,12 @@
+     }
+ 
+     // Functions in the "Math" namespace have no side effects.
+-
+     if (compiler != null && !compiler.hasRegExpGlobalReferences()) {
+-      if (nameNode.getFirstChild().getType() == Token.REGEXP
++      if (nameNode.getFirstChild().getType() == Token.NAME
++          && "Math".equals(nameNode.getFirstChild().getString())
++          && nameNode.getLastChild().getType() == Token.NAME) {
++        return false;
++      } else if (nameNode.getFirstChild().getType() == Token.REGEXP
+           && REGEXP_METHODS.contains(nameNode.getLastChild().getString())) {
+         return false;
+       } else if (nameNode.getFirstChild().getType() == Token.STRING
+@@ -42,10 +45,11 @@
+         if (param != null &&
+             (param.getType() == Token.STRING
+                 || param.getType() == Token.REGEXP))
+-        return false;
++          return false;
+       }
+     }
+   }
+ 
+   return true;
+ }
++

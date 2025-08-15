@@ -1,0 +1,28 @@
+private boolean isOneExactlyFunctionOrDo(Node n) {
+    // For labels with block children, we need to ensure that a
+    // labeled FUNCTION or DO isn't generated when extraneous BLOCKs 
+    // are skipped. 
+    // Either a empty statement or a block with more than one child,
+    // way it isn't a FUNCTION or DO.
+    if (n == null) {
+        return false;
+    }
+    int type = n.getType();
+
+    // We only return true if the node is exactly a FUNCTION or DO.
+    // Additionally, if the node is a labeled node, we need to check its child
+    // because sometimes labeled statements wrap FUNCTION or DO nodes.
+    if (type == Token.FUNCTION || type == Token.DO) {
+        return true;
+    }
+
+    if (type == Token.LABEL) {
+        Node child = n.getFirstChild();
+        if (child != null) {
+            int childType = child.getType();
+            return (childType == Token.FUNCTION || childType == Token.DO);
+        }
+    }
+
+    return false;
+}

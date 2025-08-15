@@ -1,0 +1,1 @@
+['addVirtualWrapping', 'overrideCurrentName', 'getParsingContext', '_isEmpty']

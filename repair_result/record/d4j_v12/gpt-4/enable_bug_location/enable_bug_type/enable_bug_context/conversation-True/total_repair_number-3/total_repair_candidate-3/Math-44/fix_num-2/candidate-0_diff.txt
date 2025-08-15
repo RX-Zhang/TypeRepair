@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -41,6 +41,12 @@
+ 
+             // restrict the interpolator to the first part of the step, up to the event
+             final double eventT = currentEvent.getEventTime();
++
++            if ((!interpolator.isForward() && eventT > previousT) ||
++                (interpolator.isForward() && eventT < previousT)) {
++                throw new MathIllegalStateException("going backward in time! ({0} < {1})", eventT, previousT);
++            }
++
+             interpolator.setSoftPreviousTime(previousT);
+             interpolator.setSoftCurrentTime(eventT);
+ 
+@@ -86,7 +92,7 @@
+         interpolator.setInterpolatedTime(currentT);
+         final double[] currentY = interpolator.getInterpolatedState();
+         for (final EventState state : eventsStates) {
+-            state.stepAccepted(currentT, currentY);
++            stateAccepted(currentT, currentY);
+             isLastStep = isLastStep || state.stop();
+         }
+         isLastStep = isLastStep || Precision.equals(currentT, tEnd, 1);
+@@ -99,3 +105,4 @@
+         return currentT;
+ 
+ }
++

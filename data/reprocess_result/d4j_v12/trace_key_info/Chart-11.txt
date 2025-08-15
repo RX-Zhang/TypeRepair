@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.chart.util.junit.ShapeUtilitiesTests.testEqualGeneralPaths
+- Error: junit.framework.AssertionFailedError
+- Location:         assertFalse(ShapeUtilities.equal(g1, g2));

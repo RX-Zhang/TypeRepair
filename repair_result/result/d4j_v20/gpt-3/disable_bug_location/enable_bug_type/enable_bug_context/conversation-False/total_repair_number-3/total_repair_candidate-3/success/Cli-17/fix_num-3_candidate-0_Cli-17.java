@@ -1,0 +1,35 @@
+protected void burstToken(String token, boolean stopAtNonOption)
+{
+    for (int i = 1; i < token.length(); i++)
+    {
+        String ch = String.valueOf(token.charAt(i));
+
+        if (options.hasOption(ch))
+        {
+            tokens.add("-" + ch);
+            currentOption = options.getOption(ch);
+
+            if (currentOption.hasArg() && (token.length() != (i + 1)))
+            {
+                tokens.add(token.substring(i + 1));
+                break;
+            }
+            else if (currentOption.hasArg())
+            {
+                // currentOption requires an argument but no more chars are left,
+                // processing continues normally to next char or break
+                break;
+            }
+        }
+        else if (stopAtNonOption)
+        {
+            process(token.substring(i));
+            break;  // Add break here to stop bursting after processing non-option part
+        }
+        else
+        {
+            tokens.add(token);
+            break;
+        }
+    }
+}

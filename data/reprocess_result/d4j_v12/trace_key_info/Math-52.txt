@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.geometry.euclidean.threed.RotationTest.testIssue639
+- Error: junit.framework.AssertionFailedError: expected:<0.6228370359608201> but was:<NaN>
+- Location:       Assert.assertEquals( 0.6228370359608200639829222, rot.getQ0(), 1.0e-15);

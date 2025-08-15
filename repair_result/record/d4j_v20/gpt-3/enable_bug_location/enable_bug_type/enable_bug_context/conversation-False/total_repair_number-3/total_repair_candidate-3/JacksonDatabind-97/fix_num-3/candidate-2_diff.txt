@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+         ((JsonSerializable) _value).serialize(gen, ctxt);
+     } else {
+         // 25-May-2018, tatu: [databind#1991] do not call via generator but through context;
+-        //    this to preserve contextual information
+-        gen.writeObject(_value);
++        //    this to preserve contextual information, so call ctxt.defaultSerializeValue
++        ctxt.defaultSerializeValue(_value, gen);
+     }
+ }
++

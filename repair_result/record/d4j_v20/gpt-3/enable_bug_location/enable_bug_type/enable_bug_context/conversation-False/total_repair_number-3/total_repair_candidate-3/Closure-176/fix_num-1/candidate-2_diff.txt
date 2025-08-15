@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -23,18 +23,8 @@
+       // sure we back-infer the <string> element constraint on
+       // the left hand side, so we use the left hand side.
+ 
+-      boolean isVarTypeBetter = !isVarDeclaration || var == null || var.isTypeInferred();
+-          // Makes it easier to check for NPEs.
+-
+-      // TODO(nicksantos): This might be a better check once we have
+-      // back-inference of object/array constraints.  It will probably
+-      // introduce more type warnings.  It uses the result type iff it's
+-      // strictly narrower than the declared var type.
+-      //
+-      //boolean isVarTypeBetter = isVarDeclaration &&
+-      //    (varType.restrictByNotNullOrUndefined().isSubtype(resultType)
+-      //     || !resultType.isSubtype(varType));
+-
++      // Corrected logic: use declared type when there is a var declaration AND var is non-null AND var type is NOT inferred.
++      boolean isVarTypeBetter = !isVarDeclaration || var == null || !var.isTypeInferred();
+ 
+       if (isVarTypeBetter) {
+         redeclareSimpleVar(scope, left, resultType);
+@@ -61,3 +51,4 @@
+       break;
+   }
+ }
++

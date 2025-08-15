@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -26,9 +26,10 @@
+     if (sig.equals(ZipLong.CFH_SIG) || sig.equals(ZipLong.AED_SIG)) {
+         hitCentralDirectory = true;
+         skipRemainderOfArchive();
++        return null; // Add return here to avoid continuing after central directory
+     }
+     if (!sig.equals(ZipLong.LFH_SIG)) {
+-        return null;
++        throw new ZipException("Unexpected record signature: " + Long.toHexString(sig.getValue())); // Throw ZipException on invalid signature
+     }
+ 
+     int off = WORD;
+@@ -104,3 +105,4 @@
+     entriesRead++;
+     return current.entry;
+ }
++

@@ -1,0 +1,1 @@
+{"ClassName": "StandardToolTipTagFragmentGenerator", "Fields": [], "Methods": ["public String generateToolTipFragment(String toolTipText) { ... }"]}

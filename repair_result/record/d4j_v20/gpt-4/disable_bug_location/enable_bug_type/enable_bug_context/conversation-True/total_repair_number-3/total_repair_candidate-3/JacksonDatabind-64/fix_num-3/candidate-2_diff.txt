@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -19,9 +19,9 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
++        serializationType = declaredType;
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+         if (ct == null) {
+@@ -99,7 +99,7 @@
+         break;
+     case NON_NULL:
+         suppressNulls = true;
+-        // fall through
++        break;
+     case ALWAYS: // default
+     default:
+         // we may still want to suppress empty collections, as per [JACKSON-254]:
+@@ -125,3 +125,4 @@
+     }
+     return bpw;
+ }
++

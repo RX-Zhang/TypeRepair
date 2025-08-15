@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final char quoteChar = getQuoteCharacter() == null ? '"' : getQuoteCharacter().charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,12 +36,8 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
+-                quote = true;
+-            } else if (c <= COMMENT) {
+-                // Some other chars at the start of a value caused the parser to fail, so for now
+-                // encapsulate if we start in anything less than '#'. We are being conservative
+-                // by including the default comment char too.
++            // Updated condition to correctly check characters that require quoting including Unicode chars
++            if (newRecord && (c < 0x20 || c == quoteChar || c == delimChar || c == LF || c == CR)) {
+                 quote = true;
+             } else {
+                 while (pos < end) {
+@@ -58,7 +54,7 @@
+                     c = value.charAt(pos);
+                     // Some other chars at the end caused the parser to fail, so for now
+                     // encapsulate if we end in anything less than ' '
+-                    if (c <= SP) {
++                    if (c <= ' ') {
+                         quote = true;
+                     }
+                 }
+@@ -104,3 +100,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

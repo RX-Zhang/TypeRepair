@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -14,15 +14,27 @@
+         return FF;
+     case CR:
+     case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
++    case FF:
++    case TAB:
++    case BACKSPACE:
+         return c;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // Return the original escape character followed by the current char,
++        // to preserve escaped sequences like \N or \a as literals
++        // This requires pushing back the character and returning the escape char itself
++        // Since in.read() is already consumed, we must handle accordingly
++
++        // If the lexer class has a pushback or unread method use it here,
++        // Otherwise, we should return the character itself as is,
++        // but this current code structure only returns one char,
++        // so returning c alone loses the escape char information.
++
++        // To fix the logical bug, we should return the character c as is,
++        // but the client code (e.g. nextToken) should handle escape sequences properly.
++
++        return c;
+     }
+ }
++

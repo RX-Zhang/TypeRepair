@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypedScopeCreatorTest.testNamespacedFunctionStubLocal
+- Error: junit.framework.AssertionFailedError
+- Location:     assertTrue(goog.hasProperty("foo"));
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypedScopeCreatorTest.testCollectedFunctionStubLocal
+- Error: junit.framework.AssertionFailedError
+- Location:     assertTrue(x.hasProperty("foo"));

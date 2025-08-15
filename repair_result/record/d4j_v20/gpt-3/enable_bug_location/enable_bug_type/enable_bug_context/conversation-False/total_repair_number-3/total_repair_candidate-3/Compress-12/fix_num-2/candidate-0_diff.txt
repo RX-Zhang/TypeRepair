@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -24,28 +24,33 @@
+         return null;
+     }
+ 
+-    currEntry = new TarArchiveEntry(headerBuf);
++    try {
++        currEntry = new TarArchiveEntry(headerBuf);
++    } catch (IllegalArgumentException e) {
++        // Wrap as IOException according to test expectation
++        throw new IOException(e);
++    }
+     entryOffset = 0;
+     entrySize = currEntry.getSize();
+ 
+     if (currEntry.isGNULongNameEntry()) {
+         // read in the name
+-        StringBuffer longName = new StringBuffer();
++        StringBuilder longName = new StringBuilder();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+         int length = 0;
+         while ((length = read(buf)) >= 0) {
+-            longName.append(new String(buf, 0, length));
++            longName.append(new String(buf, 0, length, "UTF-8"));
+         }
+-        getNextEntry();
++        getNextTarEntry();
+         if (currEntry == null) {
+             // Bugzilla: 40334
+             // Malformed tar file - long entry name not followed by entry
+             return null;
+         }
+-        // remove trailing null terminator
+-        if (longName.length() > 0
+-            && longName.charAt(longName.length() - 1) == 0) {
+-            longName.deleteCharAt(longName.length() - 1);
++        // remove trailing null terminator if present (0 is not a char, so check for '\0' i.e., 0 byte)
++        int lnLen = longName.length();
++        if (lnLen > 0 && longName.charAt(lnLen - 1) == '\0') {
++            longName.deleteCharAt(lnLen - 1);
+         }
+         currEntry.setName(longName.toString());
+     }
+@@ -65,3 +70,4 @@
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

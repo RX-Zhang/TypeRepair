@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -18,14 +18,15 @@
+       } else {
+         recordDepScope(nameNode, ns);
+       }
+-    } else {
++    } else if (parent.isAssign()) {
+       // The rhs of the assignment is the caller, so it's used by the
+       // context. Don't associate it w/ the lhs.
+       // FYI: this fixes only the specific case where the assignment is the
+       // caller expression, but it could be nested deeper in the caller and
+       // we would still get a bug.
+-      // See testAssignWithCall2 for an example of this.
++      // See testAssignWithCall for an example of this.
+       recordDepScope(recordNode, ns);
+     }
+   }
+ }
++

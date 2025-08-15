@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.compress.archivers.ArchiveStreamFactoryTest.shortTextFilesAreNoTARs
+- Error: junit.framework.AssertionFailedError: created an input stream for a non-archive
+- Location:             fail("created an input stream for a non-archive");

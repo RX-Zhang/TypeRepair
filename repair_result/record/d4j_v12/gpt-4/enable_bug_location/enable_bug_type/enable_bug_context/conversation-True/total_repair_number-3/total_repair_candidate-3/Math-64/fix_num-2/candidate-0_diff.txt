@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -109,7 +109,7 @@
+             double lmNorm = 0;
+             for (int j = 0; j < solvedCols; ++j) {
+                 int pj = permutation[j];
+-                lmDir[pj] = -lmDir[pj];
++                // Remove the negation here; direction is properly set in determineLMParameter
+                 point[pj] = oldX[pj] + lmDir[pj];
+                 double s = diag[pj] * lmDir[pj];
+                 lmNorm  += s * s;
+@@ -158,11 +158,11 @@
+             if (ratio <= 0.25) {
+                 double tmp =
+                     (actRed < 0) ? (0.5 * dirDer / (dirDer + 0.5 * actRed)) : 0.5;
+-                    if ((0.1 * cost >= previousCost) || (tmp < 0.1)) {
+-                        tmp = 0.1;
+-                    }
+-                    delta = tmp * Math.min(delta, 10.0 * lmNorm);
+-                    lmPar /= tmp;
++                if ((0.1 * cost >= previousCost) || (tmp < 0.1)) {
++                    tmp = 0.1;
++                }
++                delta = tmp * Math.min(delta, 10.0 * lmNorm);
++                lmPar /= tmp;
+             } else if ((lmPar == 0) || (ratio >= 0.75)) {
+                 delta = 2 * lmNorm;
+                 lmPar *= 0.5;
+@@ -193,7 +193,7 @@
+                 oldRes    = tmpVec;
+             }
+             if (checker==null) {
+-            	if (((Math.abs(actRed) <= costRelativeTolerance) &&
++                if (((Math.abs(actRed) <= costRelativeTolerance) &&
+                     (preRed <= costRelativeTolerance) &&
+                     (ratio <= 2.0)) ||
+                    (delta <= parRelativeTolerance * xNorm)) {
+@@ -222,3 +222,4 @@
+     }
+ 
+ }
++

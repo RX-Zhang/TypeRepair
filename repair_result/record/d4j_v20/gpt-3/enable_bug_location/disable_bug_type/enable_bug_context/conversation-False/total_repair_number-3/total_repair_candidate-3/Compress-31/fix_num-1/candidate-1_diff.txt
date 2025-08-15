@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -27,13 +27,20 @@
+     byte trailer = buffer[end - 1];
+     while (start < end && (trailer == 0 || trailer == ' ')) {
+         end--;
++        if (end == start) {
++            // prevent out of bound for next trailer read
++            break;
++        }
+         trailer = buffer[end - 1];
+     }
+ 
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
+-            break;
++        if (currentByte == 0 || currentByte == ' ') {
++            // Embedded NUL or space should not be silently tolerated inside the number
++            // This change fixes testParseOctalInvalid where embedded NUL or space triggers exception
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -46,3 +53,4 @@
+ 
+     return result;
+ }
++

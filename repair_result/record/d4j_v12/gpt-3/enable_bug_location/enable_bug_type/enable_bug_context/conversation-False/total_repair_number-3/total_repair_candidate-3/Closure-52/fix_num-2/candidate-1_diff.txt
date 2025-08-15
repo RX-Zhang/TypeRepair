@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,10 +1,21 @@
+ static boolean isSimpleNumber(String s) {
+   int len = s.length();
++  if (len == 0) {
++    return false; // Return false for empty strings
++  }
++  
++  // Check if the first character is a digit or a leading zero
++  char firstChar = s.charAt(0);
++  if (firstChar == '0' && len > 1) {
++    return false; // Leading zeros are not allowed except for "0" itself
++  }
++  
+   for (int index = 0; index < len; index++) {
+     char c = s.charAt(index);
+     if (c < '0' || c > '9') {
+-      return false;
++      return false; // Return false if any character is not a digit
+     }
+   }
+-  return len > 0;
++  return true; // Return true for valid simple numbers
+ }
++

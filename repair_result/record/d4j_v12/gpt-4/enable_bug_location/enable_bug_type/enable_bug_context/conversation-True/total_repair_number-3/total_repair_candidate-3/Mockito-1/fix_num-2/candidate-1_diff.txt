@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -1,8 +1,22 @@
+ public void captureArgumentsFrom(Invocation invocation) {
+     if (invocation.getMethod().isVarArgs()) {
+-        int indexOfVararg = invocation.getRawArguments().length - 1;
+-        throw new UnsupportedOperationException();
+-
++        // The previous code just threw an UnsupportedOperationException here.
++        // Instead, handle varargs more gracefully by capturing all vararg elements if matchers apply.
++        for (int position = 0; position < matchers.size(); position++) {
++            Matcher m = matchers.get(position);
++            if (m instanceof CapturesArguments && invocation.getRawArguments().length > position) {
++                if (isVariableArgument(invocation, position) && isVarargMatcher(m)) {
++                    Object array = invocation.getRawArguments()[position];
++                    for (int i = 0; i < Array.getLength(array); i++) {
++                        ((CapturesArguments) m).captureFrom(Array.get(array, i));
++                    }
++                    // Since varargs fully captured, no need to continue.
++                    return;
++                } else {
++                    ((CapturesArguments) m).captureFrom(invocation.getRawArguments()[position]);
++                }
++            }
++        }
+     } else {
+         for (int position = 0; position < matchers.size(); position++) {
+             Matcher m = matchers.get(position);
+@@ -11,21 +25,5 @@
+             }
+         }
+     }
++}
+ 
+-      for (int position = 0; position < matchers.size(); position++) {
+-          Matcher m = matchers.get(position);
+-          if (m instanceof CapturesArguments && invocation.getRawArguments().length > position) {
+-              //TODO SF - this whole lot can be moved captureFrom implementation
+-              if(isVariableArgument(invocation, position) && isVarargMatcher(m)) {
+-                  Object array = invocation.getRawArguments()[position];
+-                  for (int i = 0; i < Array.getLength(array); i++) {
+-                      ((CapturesArguments) m).captureFrom(Array.get(array, i));
+-                  }
+-                  //since we've captured all varargs already, it does not make sense to process other matchers.
+-                  return;
+-              } else {
+-                  ((CapturesArguments) m).captureFrom(invocation.getRawArguments()[position]);
+-              }
+-          }
+-      }
+-}

@@ -1,0 +1,10 @@
+public boolean hasAttr(String attributeKey) {
+    Validate.notNull(attributeKey);
+
+    // Check for the attribute key without the "abs:" prefix
+    if (attributeKey.toLowerCase().startsWith("abs:")) {
+        // Check if the attribute exists without the "abs:" prefix
+        return attributes.hasKey(attributeKey.substring("abs:".length()));
+    }
+    return attributes.hasKey(attributeKey);
+}

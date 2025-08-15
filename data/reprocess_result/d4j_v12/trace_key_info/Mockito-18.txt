@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockito.internal.stubbing.defaultanswers.ReturnsEmptyValuesTest.should_return_empty_iterable
+- Error: java.lang.NullPointerException
+- Location:         assertFalse(((Iterable) values.returnValueFor(Iterable.class)).iterator().hasNext());

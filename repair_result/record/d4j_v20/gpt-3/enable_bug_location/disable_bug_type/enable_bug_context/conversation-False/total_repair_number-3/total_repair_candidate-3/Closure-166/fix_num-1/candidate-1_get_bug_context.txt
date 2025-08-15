@@ -1,0 +1,1 @@
+['hasProperty', 'collectPropertyNames', 'getPropertyType', 'defineProperty']

@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -2,7 +2,6 @@
+   if (left.getType() == Token.NUMBER &&
+       right.getType() == Token.NUMBER) {
+ 
+-    double result;
+     double lval = left.getDouble();
+     double rval = right.getDouble();
+ 
+@@ -33,23 +32,27 @@
+       return n;
+     }
+ 
++    long resultLong;
++
+     switch (n.getType()) {
+       case Token.LSH:
+-        result = lvalInt << rvalInt;
++        resultLong = (long) lvalInt << rvalInt;
++        // Keep only lower 32 bits, allow JavaScript semantics
++        resultLong &= 0xFFFFFFFFL;
+         break;
+       case Token.RSH:
+-        result = lvalInt >> rvalInt;
++        resultLong = lvalInt >> rvalInt;
+         break;
+       case Token.URSH:
+-        // JavaScript handles zero shifts on signed numbers differently than
+-        // Java as an Java int can not represent the unsigned 32-bit number
+-        // where JavaScript can so use a long here.
+-        result = lvalInt >>> rvalInt;
++        // Use long to hold unsigned shift result properly
++        resultLong = ((long) lvalInt & 0xFFFFFFFFL) >>> rvalInt;
+         break;
+       default:
+         throw new AssertionError("Unknown shift operator: " +
+             Node.tokenToName(n.getType()));
+     }
++
++    double result = (double) (resultLong & 0xFFFFFFFFL);
+ 
+     Node newNumber = Node.newNumber(result);
+     n.getParent().replaceChild(n, newNumber);
+@@ -60,3 +63,4 @@
+ 
+   return n;
+ }
++

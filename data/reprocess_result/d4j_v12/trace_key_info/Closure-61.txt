@@ -1,0 +1,22 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest.testCall1
+- Error: junit.framework.AssertionFailedError: 
+Expected: 
+Result: Math.sin(0)
+- Location:     test("Math.sin(0);", "");
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest.testCall2
+- Error: junit.framework.AssertionFailedError: 
+Expected: 
+Result: Math.sin(0)
+- Location:     test("1 + Math.sin(0);", "");
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.PeepholeRemoveDeadCodeTest.testRemoveUselessOps
+- Error: junit.framework.AssertionFailedError: 
+Expected: 
+Result: Math.random()
+- Location:     fold("Math.random()", "");

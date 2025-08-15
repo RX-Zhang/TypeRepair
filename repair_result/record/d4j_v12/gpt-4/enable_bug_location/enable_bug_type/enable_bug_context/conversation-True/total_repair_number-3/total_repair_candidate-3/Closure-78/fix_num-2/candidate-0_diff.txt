@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -45,14 +45,16 @@
+       break;
+     case Token.MOD:
+       if (rval == 0) {
+-        error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
++        // For modulus by zero, do not fold and do not error here,
++        // preserve expression as is.
+         return null;
+       }
+       result = lval % rval;
+       break;
+     case Token.DIV:
+       if (rval == 0) {
+-        error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
++        // For division by zero, do not fold and do not error here,
++        // preserve expression as is.
+         return null;
+       }
+       result = lval / rval;
+@@ -81,3 +83,4 @@
+ 
+   return null;
+ }
++

@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -28,7 +28,8 @@
+                 anythingElse(t, r);
+                 break;
+         }
+-    } else {
++    } else if (!r.isEmpty()) { // Corrected logical flow to handle non-empty reader
+         anythingElse(t, r);
+     }
+ }
++

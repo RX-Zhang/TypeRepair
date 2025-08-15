@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -25,6 +25,10 @@
+     Node lastArg;
+     while ((lastArg = argList.getLastChild()) != null) {
+       Var var = fnScope.getVar(lastArg.getString());
++      // Use isRemovableVar to ensure certain vars (e.g., globals if removal is disabled) are protected
++      if (var == null || !isRemovableVar(var)) {
++        break;
++      }
+       if (!referenced.contains(var)) {
+         argList.removeChild(lastArg);
+         compiler.reportCodeChange();
+@@ -36,3 +40,4 @@
+     callSiteOptimizer.optimize(fnScope, referenced);
+   }
+ }
++

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -20,6 +20,12 @@
+         h[1] = size.height;
+     }
+     h[2] = constraint.getHeight() - h[1] - h[0];
++    
++    // Boundary check for height
++    if (h[2] < 0) {
++        h[2] = 0; // Prevent negative height
++    }
++    
+     if (this.leftBlock != null) {
+         RectangleConstraint c3 = new RectangleConstraint(0.0,
+                 new Range(0.0, constraint.getWidth()),
+@@ -39,6 +45,12 @@
+     }
+     h[4] = h[2];
+     w[4] = constraint.getWidth() - w[3] - w[2];
++    
++    // Boundary check for width
++    if (w[4] < 0) {
++        w[4] = 0; // Prevent negative width
++    }
++    
+     RectangleConstraint c5 = new RectangleConstraint(w[4], h[4]);
+     if (this.centerBlock != null) {
+         this.centerBlock.arrange(g2, c5);
+@@ -66,3 +78,4 @@
+     }
+     return new Size2D(constraint.getWidth(), constraint.getHeight());
+ }
++

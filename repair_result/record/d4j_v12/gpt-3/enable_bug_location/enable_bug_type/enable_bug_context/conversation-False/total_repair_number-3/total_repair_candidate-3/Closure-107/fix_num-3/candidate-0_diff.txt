@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -36,7 +36,7 @@
+ 
+   options.angularPass = flags.angularPass;
+ 
+-  if (!flags.translationsFile.isEmpty()) {
++  if (flags.translationsFile != null && !flags.translationsFile.isEmpty()) {
+     try {
+       options.messageBundle = new XtbMessageBundle(
+           new FileInputStream(flags.translationsFile),
+@@ -58,3 +58,4 @@
+ 
+   return options;
+ }
++

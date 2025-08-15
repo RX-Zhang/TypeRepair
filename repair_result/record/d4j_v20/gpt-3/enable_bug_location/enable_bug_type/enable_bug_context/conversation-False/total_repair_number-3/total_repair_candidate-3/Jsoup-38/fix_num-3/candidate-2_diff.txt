@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -40,7 +40,7 @@
+             } else if (name.equals("body")) {
+                 tb.error(this);
+                 LinkedList<Element> stack = tb.getStack();
+-                if (stack.size() == 1 || (stack.size() > 2 && !stack.get(1).nodeName().equals("body"))) {
++                if (stack.size() == 1 || (stack.size() > 1 && !stack.get(1).nodeName().equals("body"))) {
+                     // only in fragment case
+                     return false; // ignore
+                 } else {
+@@ -54,7 +54,7 @@
+             } else if (name.equals("frameset")) {
+                 tb.error(this);
+                 LinkedList<Element> stack = tb.getStack();
+-                if (stack.size() == 1 || (stack.size() > 2 && !stack.get(1).nodeName().equals("body"))) {
++                if (stack.size() == 1 || (stack.size() > 1 && !stack.get(1).nodeName().equals("body"))) {
+                     // only in fragment case
+                     return false; // ignore
+                 } else if (!tb.framesetOk()) {
+@@ -206,7 +206,7 @@
+                 tb.insertEmpty(startTag);
+                 tb.framesetOk(false);
+             } else if (name.equals("image")) {
+-                    return tb.process(startTag.name("img")); // change <image> to <img>, unless in svg
++                return tb.process(new Token.StartTag("img")); // change <image> to <img>, unless in svg
+             } else if (name.equals("isindex")) {
+                 // how much do we care about the early 90s?
+                 tb.error(this);
+@@ -505,3 +505,4 @@
+     }
+     return true;
+ }
++

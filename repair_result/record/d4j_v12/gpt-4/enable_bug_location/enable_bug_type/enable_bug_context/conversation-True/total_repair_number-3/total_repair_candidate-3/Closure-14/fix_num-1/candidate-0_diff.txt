@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -72,6 +72,8 @@
+       // If we are coming out of the FINALLY block...
+       } else if (parent.getLastChild() == node){
+         if (cfa != null) {
++          // Create edges from the current node to all finally blocks for which this try node
++          // is a handler. This ensures proper control flow across finally blocks that must be executed.
+           for (Node finallyNode : cfa.finallyMap.get(parent)) {
+             cfa.createEdge(fromNode, Branch.UNCOND, finallyNode);
+           }
+@@ -96,3 +98,4 @@
+     return computeFollowNode(fromNode, parent, cfa);
+   }
+ }
++

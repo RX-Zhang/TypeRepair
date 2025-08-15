@@ -1,0 +1,35 @@
+JSType resolveInternal(ErrorReporter t, StaticScope<JSType> enclosing) {
+  // TODO(user): Investigate whether it is really necessary to keep two
+  // different mechanisms for resolving named types, and if so, which order
+  // makes more sense. Now, resolution via registry is first in order to
+  // avoid triggering the warnings built into the resolution via properties.
+  boolean resolved = resolveViaRegistry(t, enclosing);
+
+  // If resolved via registry, still check for cycles and finish property continuations.
+  if (resolved) {
+    if (detectImplicitPrototypeCycle()) {
+      handleTypeCycle(t);
+    }
+    super.resolveInternal(t, enclosing);
+    finishPropertyContinuations();
+    return registry.isLastGeneration() ?
+        getReferencedType() : this;
+  }
+
+  // Attempt to resolve via properties if not resolved via registry.
+  resolveViaProperties(t, enclosing);
+
+  if (detectImplicitPrototypeCycle()) {
+    handleTypeCycle(t);
+  }
+
+  super.resolveInternal(t, enclosing);
+
+  // Only finish property continuations if the type is resolved.
+  if (isResolved()) {
+    finishPropertyContinuations();
+  }
+
+  return registry.isLastGeneration() ?
+      getReferencedType() : this;
+}

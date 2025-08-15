@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -27,22 +27,29 @@
+         }
+     }
+ 
++    if (start >= end) {
++        throw new IllegalArgumentException(
++            "No valid octal digits found in buffer at offset " + offset + " with length " + length);
++    }
++
+     // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
++    byte trailer = buffer[end - 1];
+     if (trailer == 0 || trailer == ' '){
+         end--;
+     } else {
+         throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++                exceptionMessage(buffer, offset, length, end - 1, trailer));
+     }
+ 
+-    for ( ;start < end; start++) {
++    // May have additional NUL or space
++    if (end > start) {
++        trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        }
++    }
++
++    for ( ; start < end; start++) {
+         final byte currentByte = buffer[start];
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -55,3 +62,4 @@
+ 
+     return result;
+ }
++

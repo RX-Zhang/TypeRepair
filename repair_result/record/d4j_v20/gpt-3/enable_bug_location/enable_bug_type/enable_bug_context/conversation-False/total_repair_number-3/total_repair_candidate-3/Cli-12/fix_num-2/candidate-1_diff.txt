@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ protected String[] flatten(Options options, String[] arguments, boolean stopAtNonOption)
+ {
+-    List tokens = new ArrayList();
++    List<String> tokens = new ArrayList<>();
+ 
+     boolean eatTheRest = false;
+ 
+@@ -27,12 +27,26 @@
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                if (arg.contains("="))
+                 {
+                     // the format is --foo=value or -foo=value
++                    String[] parts = arg.split("=", 2);
++                    if (options.hasOption(parts[0].substring(0, 2)))
++                    {
++                        tokens.add(parts[0].substring(0, 2)); // -D
++                        tokens.add(parts[1]); // property=value
++                    }
++                    else
++                    {
++                        eatTheRest = stopAtNonOption;
++                        tokens.add(arg);
++                    }
++                }
++                else if (options.hasOption(arg.substring(0, 2)))
++                {
+                     // the format is a special properties option (-Dproperty=value)
+                     tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(""); // no value provided
+                 }
+                 else
+                 {
+@@ -55,5 +69,6 @@
+         }
+     }
+ 
+-    return (String[]) tokens.toArray(new String[tokens.size()]);
++    return tokens.toArray(new String[0]);
+ }
++

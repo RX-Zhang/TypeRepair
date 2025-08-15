@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -31,7 +31,6 @@
+ 
+         // 25-May-2018, tatu: as per [databind#2051], looks like we have to get
+         //    not implicit name, but name with possible strategy-based-rename
+-          paramName = candidate.findImplicitParamName(0);
+         paramName = candidate.findImplicitParamName(0);
+         useProps = (paramName != null) && paramDef.couldSerialize();
+     }
+@@ -42,7 +41,16 @@
+         creators.addPropertyCreator(candidate.creator(), true, properties);
+         return;
+     }
+-    _handleSingleArgumentCreator(creators, candidate.creator(), true, true);
++    if (_handleSingleArgumentCreator(creators, candidate.creator(), true, true)) {
++        // one more thing: sever link to creator property, to avoid possible later
++        // problems with "unresolved" constructor property
++        if (paramDef != null) {
++            ((POJOPropertyBuilder) paramDef).removeConstructors();
++        }
++        return;
++    }
++    // if not handled, fallback to explicit property creator:
++    _addExplicitPropertyCreator(ctxt, beanDesc, creators, candidate);
+ 
+     // one more thing: sever link to creator property, to avoid possible later
+     // problems with "unresolved" constructor property
+@@ -50,3 +58,4 @@
+         ((POJOPropertyBuilder) paramDef).removeConstructors();
+     }
+ }
++

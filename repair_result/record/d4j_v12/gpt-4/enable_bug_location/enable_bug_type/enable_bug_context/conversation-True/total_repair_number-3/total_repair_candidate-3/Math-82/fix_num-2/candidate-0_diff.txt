@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -4,13 +4,14 @@
+     for (int i = tableau.getNumObjectiveFunctions(); i < tableau.getHeight(); i++) {
+         final double rhs = tableau.getEntry(i, tableau.getWidth() - 1);
+         final double entry = tableau.getEntry(i, col);
+-        if (MathUtils.compareTo(entry, 0, epsilon) >= 0) {
++        if (MathUtils.compareTo(entry, 0, epsilon) > 0) {  // Changed from >= 0 to > 0 to avoid division by zero and incorrect pivot selection
+             final double ratio = rhs / entry;
+             if (ratio < minRatio) {
+                 minRatio = ratio;
+-                minRatioPos = i; 
++                minRatioPos = i;
+             }
+         }
+     }
+     return minRatioPos;
+ }
++

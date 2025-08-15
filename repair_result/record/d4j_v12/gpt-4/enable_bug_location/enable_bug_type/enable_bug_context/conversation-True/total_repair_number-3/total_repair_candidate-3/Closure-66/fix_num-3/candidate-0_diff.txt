@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -26,6 +26,7 @@
+ 
+     case Token.TRUE:
+     case Token.FALSE:
++      // Fix: Use BOOLEAN_TYPE instead of unknown or partially typed
+       ensureTyped(t, n, BOOLEAN_TYPE);
+       break;
+ 
+@@ -325,6 +326,8 @@
+         if ((n.getType() == Token.OBJECTLIT)
+             && (parent.getJSType() instanceof EnumType)) {
+           ensureTyped(t, n, parent.getJSType());
++          // Fix: Check enum elements does not get missed
++          checkEnumInitializer(t, n, parent.getJSType().toMaybeEnumType().getPrimitiveType());
+         } else {
+           ensureTyped(t, n);
+         }
+@@ -351,3 +354,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

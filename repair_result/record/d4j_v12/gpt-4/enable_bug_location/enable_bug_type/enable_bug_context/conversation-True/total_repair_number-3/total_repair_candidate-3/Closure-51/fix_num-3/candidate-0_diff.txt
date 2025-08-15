@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+     long value = (long) x;
+     long mantissa = value;
+     int exp = 0;
+-    if (Math.abs(x) >= 100) {
++    if (Math.abs(value) >= 100) {
+       while (mantissa / 10 * Math.pow(10, exp + 1) == value) {
+         mantissa /= 10;
+         exp++;
+@@ -26,3 +26,4 @@
+   }
+ 
+ }
++

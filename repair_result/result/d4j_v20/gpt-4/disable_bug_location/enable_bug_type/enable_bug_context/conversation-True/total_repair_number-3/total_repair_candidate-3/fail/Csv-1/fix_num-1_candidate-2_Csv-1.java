@@ -1,0 +1,18 @@
+public int read() throws IOException {
+    int current = super.read();
+    if (current == '\r') {
+        lineCounter++;
+        // Handle possible Windows-style line endings \r\n by looking ahead and consuming \n
+        int next = super.read();
+        if (next != '\n' && next != -1) {
+            lastChar = next;
+            return lastChar;
+        }
+        current = next;
+    }
+    if (current == '\n') {
+        lineCounter++;
+    }
+    lastChar = current;
+    return lastChar;
+}

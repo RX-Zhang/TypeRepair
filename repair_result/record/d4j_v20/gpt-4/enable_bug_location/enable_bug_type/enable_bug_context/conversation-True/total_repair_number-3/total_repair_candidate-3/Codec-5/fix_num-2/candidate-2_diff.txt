@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -15,8 +15,9 @@
+             eof = true;
+             break;
+         } else {
+-            if (b >= 0 && b < DECODE_TABLE.length) {
+-                int result = DECODE_TABLE[b];
++            int unsignedByte = b & 0xFF;
++            if (unsignedByte < DECODE_TABLE.length) {
++                int result = DECODE_TABLE[unsignedByte];
+                 if (result >= 0) {
+                     modulus = (++modulus) % 4;
+                     x = (x << 6) + result;
+@@ -39,12 +40,19 @@
+         switch (modulus) {
+             case 2 :
+                 x = x << 6;
++                if (buffer == null || buffer.length - pos < 1) {
++                    resizeBuffer();
++                }
+                 buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                 break;
+             case 3 :
++                if (buffer == null || buffer.length - pos < 2) {
++                    resizeBuffer();
++                }
+                 buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+                 buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+                 break;
+         }
+     }
+ }
++

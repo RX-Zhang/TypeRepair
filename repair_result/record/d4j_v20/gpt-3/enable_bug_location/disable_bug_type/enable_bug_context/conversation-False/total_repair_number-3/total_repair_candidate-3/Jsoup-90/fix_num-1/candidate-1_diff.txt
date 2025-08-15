@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -2,13 +2,13 @@
+     int i = 0;
+     // BOM:
+     if (input.length >= 3 && (input[0] & 0xFF) == 0xEF
+-        && (input[1] & 0xFF) == 0xBB & (input[2] & 0xFF) == 0xBF) {
++        && (input[1] & 0xFF) == 0xBB && (input[2] & 0xFF) == 0xBF) {
+         i = 3;
+     }
+ 
+     int end;
+     for (int j = input.length; i < j; ++i) {
+-        int o = input[i];
++        int o = input[i] & 0xFF;
+         if ((o & 0x80) == 0) {
+             continue; // ASCII
+         }
+@@ -24,10 +24,13 @@
+             return false;
+         }
+ 
++        if (end >= input.length) {
++            return false; // Not enough bytes
++        }
+ 
+         while (i < end) {
+             i++;
+-            o = input[i];
++            o = input[i] & 0xFF;
+             if ((o & 0xC0) != 0x80) {
+                 return false;
+             }
+@@ -35,3 +38,4 @@
+     }
+     return true;
+ }
++

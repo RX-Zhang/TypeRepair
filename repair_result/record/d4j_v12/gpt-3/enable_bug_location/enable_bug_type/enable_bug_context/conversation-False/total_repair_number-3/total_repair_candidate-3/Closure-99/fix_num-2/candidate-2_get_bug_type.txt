@@ -1,0 +1,1 @@
+['SyntaxError', 'ExecutionError', 'LogicalError', 'APIUsageError']

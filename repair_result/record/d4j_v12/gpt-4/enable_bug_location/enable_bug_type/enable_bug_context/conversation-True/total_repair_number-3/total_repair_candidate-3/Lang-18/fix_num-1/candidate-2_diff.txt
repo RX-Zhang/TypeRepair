@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -42,7 +42,7 @@
+             } else if (tokenLen == 3) {
+                 rule = new TextField(Calendar.MONTH, shortMonths);
+             } else if (tokenLen == 2) {
+-                rule = TwoDigitMonthField.INSTANCE;
++                rule = selectNumberRule(Calendar.MONTH, tokenLen); // Fix applied here
+             } else {
+                 rule = UnpaddedMonthField.INSTANCE;
+             }
+@@ -120,3 +120,4 @@
+ 
+     return rules;
+ }
++

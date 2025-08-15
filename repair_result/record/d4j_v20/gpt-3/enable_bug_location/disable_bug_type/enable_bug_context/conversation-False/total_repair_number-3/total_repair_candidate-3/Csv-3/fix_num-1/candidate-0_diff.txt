@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -14,15 +14,17 @@
+         return FF;
+     case CR:
+     case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
++    case FF:
++    case TAB:
++    case BACKSPACE:
+         return c;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // Return the escape character itself plus the escaped char as is
++        // since cases like \N and \a should not be consumed as control characters
++        in.unread(c);
++        return escape;
+     }
+ }
++

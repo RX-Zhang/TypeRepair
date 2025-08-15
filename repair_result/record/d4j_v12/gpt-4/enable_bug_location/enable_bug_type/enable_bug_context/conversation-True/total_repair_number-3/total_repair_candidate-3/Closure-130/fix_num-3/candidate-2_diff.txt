@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -18,7 +18,10 @@
+         if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
+           // {@code name} meets condition (c). Try to inline it.
+           if (inlineAliasIfPossible(ref, namespace)) {
+-            name.removeRef(ref);
++            // Instead of name.removeRef(ref);
++            // Remove the reference from the name's refs list to
++            // prevent breaking argument references.
++            name.aliasingGets--;
+           }
+         }
+       }
+@@ -35,3 +38,4 @@
+     }
+   }
+ }
++

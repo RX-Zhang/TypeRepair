@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -11,23 +11,39 @@
+             if (!explicit) {
+                 return;
+             }
+-            // both explicit: verify
+-            // otherwise only verify if neither explicitly annotated.
++            // if both explicit: verify conflict
++            if (explicit) {
++                // one more thing: ok to override in sub-class only if classes differ
++                if (oldOne.getClass() == newOne.getClass()) {
++                    throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
++                            +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
++                }
++            }
++            // if neither explicit, verification below applies
++        } else {
++            // oldOne was NOT explicit but newOne is explicit: override oldOne with new one
++            if (explicit) {
++                _explicitCreators |= mask;
++                _creators[typeIndex] = _fixAccess(newOne);
++                return;
++            }
++            // else old one non-explicit, new one non-explicit: allow override
+         }
+ 
+-        // one more thing: ok to override in sub-class
++        // Here, oldOne exists, newOne exists, both non-explicit OR handled above
++        // Avoid clashes if classes are the same, and conflict exists
+         if (oldOne.getClass() == newOne.getClass()) {
+-            // [databind#667]: avoid one particular class of bogus problems
++            throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
++                    +" creators: already had "+oldOne+", encountered "+newOne);
++        }
++        // Prefer to keep oldOne if newOne less specific; else override
++        // but no automatic resolution here, so keep oldOne
++        return;
++    }
+ 
+-                throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
+-                        +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
+-            // otherwise, which one to choose?
+-                // new type more generic, use old
+-            // new type more specific, use it
+-        }
+-    }
+     if (explicit) {
+         _explicitCreators |= mask;
+     }
+     _creators[typeIndex] = _fixAccess(newOne);
+ }
++

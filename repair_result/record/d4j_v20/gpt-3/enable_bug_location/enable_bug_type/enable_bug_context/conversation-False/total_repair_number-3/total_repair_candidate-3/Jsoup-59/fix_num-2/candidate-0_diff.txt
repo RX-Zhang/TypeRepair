@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -3,17 +3,21 @@
+         attributes = new Attributes();
+ 
+     if (pendingAttributeName != null) {
+-        // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here
+-        pendingAttributeName = pendingAttributeName.trim();
++        // trim and sanitize the attribute name to avoid empty or control character names
++        String trimmedName = pendingAttributeName.trim();
++        if (!trimmedName.isEmpty() && !containsControlCharacters(trimmedName)) {
++            pendingAttributeName = trimmedName;
+             Attribute attribute;
+             if (hasPendingAttributeValue)
+                 attribute = new Attribute(pendingAttributeName,
+-                    pendingAttributeValue.length() > 0 ? pendingAttributeValue.toString() : pendingAttributeValueS);
++                    (pendingAttributeValue != null && pendingAttributeValue.length() > 0) ? pendingAttributeValue.toString() : pendingAttributeValueS);
+             else if (hasEmptyAttributeValue)
+                 attribute = new Attribute(pendingAttributeName, "");
+             else
+                 attribute = new BooleanAttribute(pendingAttributeName);
+             attributes.put(attribute);
++        }
++        // else ignore invalid attribute name input
+     }
+     pendingAttributeName = null;
+     hasEmptyAttributeValue = false;
+@@ -21,3 +25,14 @@
+     reset(pendingAttributeValue);
+     pendingAttributeValueS = null;
+ }
++
++private boolean containsControlCharacters(String s) {
++    for (int i = 0; i < s.length(); i++) {
++        char c = s.charAt(i);
++        if (c <= 0x1F || c == 0x7F) {
++            return true;
++        }
++    }
++    return false;
++}
++

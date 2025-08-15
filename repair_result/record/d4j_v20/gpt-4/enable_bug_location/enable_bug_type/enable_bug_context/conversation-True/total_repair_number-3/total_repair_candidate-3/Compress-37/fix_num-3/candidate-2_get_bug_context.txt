@@ -1,0 +1,1 @@
+['getNextTarEntry', 'getRecord', 'isEOFRecord', 'readRecord', 'readGlobalPaxHeaders', 'readOldGNUSparse']

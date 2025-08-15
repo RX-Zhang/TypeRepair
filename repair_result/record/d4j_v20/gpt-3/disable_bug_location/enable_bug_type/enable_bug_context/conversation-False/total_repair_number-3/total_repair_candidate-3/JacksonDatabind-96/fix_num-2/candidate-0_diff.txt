@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -21,7 +21,7 @@
+     AnnotatedParameter param = candidate.parameter(0);
+     JacksonInject.Value injectId = candidate.injection(0);
+     PropertyName paramName = candidate.explicitParamName(0);
+-    BeanPropertyDefinition paramDef = candidate.propertyDef(0);
++    BeanPropertyDefinition paramDef = candidate.propertyDef();
+ 
+     // If there's injection or explicit name, should be properties-based
+     boolean useProps = (paramName != null) || (injectId != null);
+@@ -31,7 +31,6 @@
+ 
+         // 25-May-2018, tatu: as per [databind#2051], looks like we have to get
+         //    not implicit name, but name with possible strategy-based-rename
+-          paramName = candidate.findImplicitParamName(0);
+         paramName = candidate.findImplicitParamName(0);
+         useProps = (paramName != null) && paramDef.couldSerialize();
+     }
+@@ -50,3 +49,4 @@
+         ((POJOPropertyBuilder) paramDef).removeConstructors();
+     }
+ }
++

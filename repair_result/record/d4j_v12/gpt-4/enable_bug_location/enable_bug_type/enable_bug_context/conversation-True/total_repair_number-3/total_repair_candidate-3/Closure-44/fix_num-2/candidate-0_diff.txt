@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -18,5 +18,11 @@
+     // / // / /
+   }
+ 
++  if (c == '/' && getLastChar() == '/') {
++    // Prevent collapsing multiple slashes in regexps or comments
++    append(" ");
++  }
++
+   append(newcode);
+ }
++

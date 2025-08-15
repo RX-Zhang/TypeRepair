@@ -1,0 +1,11 @@
+def next_permutation(perm):
+    for i in range(len(perm) - 2, -1, -1):
+        if perm[i] < perm[i + 1]:
+            for j in range(len(perm) - 1, i, -1):
+                if perm[j] > perm[i]:  # Corrected logical expression
+                    next_perm = list(perm)
+                    next_perm[i], next_perm[j] = next_perm[j], next_perm[i]  # Use next_perm for swapping
+                    next_perm[i + 1:] = reversed(next_perm[i + 1:])
+                    return next_perm
+    
+    return sorted(perm)  # Added return statement for case when no next permutation is found

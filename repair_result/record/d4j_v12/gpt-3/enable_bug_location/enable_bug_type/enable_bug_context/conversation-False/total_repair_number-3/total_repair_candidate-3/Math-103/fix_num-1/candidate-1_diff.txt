@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,4 +1,13 @@
+ public double cumulativeProbability(double x) throws MathException {
++    if (standardDeviation <= 0) {
++        throw new IllegalStateException("Standard deviation must be positive.");
++    }
++    try {
+         return 0.5 * (1.0 + Erf.erf((x - mean) /
+                 (standardDeviation * Math.sqrt(2.0))));
++    } catch (Exception e) {
++        // Handle or wrap any exception thrown by Erf.erf
++        throw new MathException("Error computing cumulative probability", e);
++    }
+ }
++

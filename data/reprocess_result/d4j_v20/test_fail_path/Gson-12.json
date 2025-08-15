@@ -1,0 +1,1 @@
+{"Gson-12": ["com.google.gson.internal.bind.JsonTreeReaderTest::testSkipValue_filledJsonObject", "com.google.gson.internal.bind.JsonTreeReaderTest::testSkipValue_emptyJsonObject"]}

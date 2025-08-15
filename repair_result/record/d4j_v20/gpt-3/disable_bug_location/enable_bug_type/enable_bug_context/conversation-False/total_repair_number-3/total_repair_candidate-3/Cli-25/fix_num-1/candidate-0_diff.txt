@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -23,7 +23,10 @@
+ 
+     while (true)
+     {
+-        text = padding + text.substring(pos).trim();
++        // Instead of trimming before substring, just trim the part to be wrapped
++        // This preserves leading spaces that are meaningful for indentation
++        text = padding + text.substring(pos);
++        text = text.trim();
+         pos = findWrapPos(text, width, 0);
+ 
+         if (pos == -1)
+@@ -41,3 +44,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

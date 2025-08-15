@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.optimization.linear.SimplexSolverTest.testSingleVariableAndConstraint
+- Error: junit.framework.AssertionFailedError: expected:<10.0> but was:<0.0>
+- Location:         assertEquals(10.0, solution.getPoint()[0], 0.0);

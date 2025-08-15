@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -18,16 +18,17 @@
+         // one more thing: ok to override in sub-class
+         if (oldOne.getClass() == newOne.getClass()) {
+             // [databind#667]: avoid one particular class of bogus problems
+-
+-                throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
+-                        +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
++            throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
++                    +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
+             // otherwise, which one to choose?
+-                // new type more generic, use old
++            // new type more generic, use old
+             // new type more specific, use it
+         }
+     }
+     if (explicit) {
+         _explicitCreators |= mask;
+     }
++    // Ensure the new creator is properly fixed before assigning
+     _creators[typeIndex] = _fixAccess(newOne);
+ }
++

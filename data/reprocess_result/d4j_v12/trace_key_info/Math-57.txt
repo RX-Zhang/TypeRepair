@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest.testSmallDistances
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(uniquePointIsCenter);

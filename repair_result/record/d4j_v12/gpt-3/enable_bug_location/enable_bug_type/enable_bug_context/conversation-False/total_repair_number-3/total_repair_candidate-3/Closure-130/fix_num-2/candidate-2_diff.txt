@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -17,8 +17,13 @@
+       for (Ref ref : refs) {
+         if (ref.type == Type.ALIASING_GET && ref.scope.isLocal()) {
+           // {@code name} meets condition (c). Try to inline it.
+-          if (inlineAliasIfPossible(ref, namespace)) {
+-            name.removeRef(ref);
++          try {
++            if (inlineAliasIfPossible(ref, namespace)) {
++              name.removeRef(ref);
++            }
++          } catch (Exception e) {
++            // Handle potential runtime exceptions while inlining aliases
++            System.err.println("Failed to inline alias: " + e.getMessage());
+           }
+         }
+       }
+@@ -35,3 +40,4 @@
+     }
+   }
+ }
++

@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -31,6 +31,10 @@
+     }
+ 
+     // Don't traverse functions that are getting lent to a prototype.
++    JSDocInfo parentJsDoc = getFunctionJsDocInfo(parent);
++    if (parentJsDoc != null && parentJsDoc.hasLends()) {
++      return false;
++    }
+   }
+ 
+   if (parent != null && parent.getType() == Token.ASSIGN) {
+@@ -63,3 +67,4 @@
+ 
+   return true;
+ }
++

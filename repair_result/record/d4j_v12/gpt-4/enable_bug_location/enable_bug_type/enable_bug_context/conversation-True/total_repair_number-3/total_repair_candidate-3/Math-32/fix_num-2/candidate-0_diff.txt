@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -4,7 +4,11 @@
+ 
+     if (v.length == 0) {
+         final BSPTree<Euclidean2D> tree = getTree(false);
+-        if ((Boolean) tree.getAttribute()) {
++        Boolean attribute = null;
++        if (tree.getAttribute() instanceof Boolean) {
++            attribute = (Boolean) tree.getAttribute();
++        }
++        if (Boolean.TRUE.equals(attribute)) {
+             // the instance covers the whole space
+             setSize(Double.POSITIVE_INFINITY);
+             setBarycenter(Vector2D.NaN);
+@@ -39,7 +43,7 @@
+         }
+ 
+         if (sum < 0) {
+-            // the polygon as a finite outside surrounded by an infinite inside
++            // the polygon has a finite outside surrounded by an infinite inside
+             setSize(Double.POSITIVE_INFINITY);
+             setBarycenter(Vector2D.NaN);
+         } else {
+@@ -50,3 +54,4 @@
+     }
+ 
+ }
++

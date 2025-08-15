@@ -1,0 +1,1 @@
+['getQuoteCharacter', 'getQuoteMode', 'withQuote', 'withQuoteMode']

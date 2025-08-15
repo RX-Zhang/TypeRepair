@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -26,6 +26,7 @@
+         TimeZone tz = format.hasTimeZone() ? format.getTimeZone()
+                 : serializers.getTimeZone();
+         df.setTimeZone(tz);
++        // FIX: use FALSE timestamp flag here to serialize as formatted String
+         return withFormat(Boolean.FALSE, df);
+     }
+ 
+@@ -57,11 +58,11 @@
+     if (!(df0 instanceof SimpleDateFormat)) {
+         serializers.reportBadDefinition(handledType(), String.format(
+ "Configured `DateFormat` (%s) not a `SimpleDateFormat`; cannot configure `Locale` or `TimeZone`",
+-getClass().getName()));
++df0.getClass().getName()));
+     }
+     SimpleDateFormat df = (SimpleDateFormat) df0;
+     if (hasLocale) {
+-        // Ugh. No way to change `Locale`, create copy; must re-crete completely:
++        // Ugh. No way to change `Locale`, create copy; must re-create completely:
+         df = new SimpleDateFormat(df.toPattern(), format.getLocale());
+     } else {
+         df = (SimpleDateFormat) df.clone();
+@@ -73,3 +74,4 @@
+     }
+     return withFormat(Boolean.FALSE, df);
+ }
++

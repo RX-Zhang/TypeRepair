@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -4,11 +4,29 @@
+         org.jsoup.nodes.Element sourceEl = (org.jsoup.nodes.Element) source;
+ 
+         String prefix = updateNamespaces(sourceEl);
+-        String namespace = namespacesStack.peek().get(prefix);
++
++        // Fix: If prefix is not bound (namespace == null), pass null as namespace URI and use tagName accordingly.
++        // Also, for unprefixed tags, we want to pass null as namespace
++        String namespace = null;
++        if (prefix != null) {
++            namespace = namespacesStack.peek().get(prefix);
++            if (namespace == null) {
++                // Treat as no namespace (null),
++                // so namespace remains null
++            }
++        }
++
+         String tagName = sourceEl.tagName();
+ 
+-        Element el = 
+-            doc.createElementNS(namespace, tagName);
++        Element el;
++        if (namespace == null) {
++            // Create element without namespace to avoid NAMESPACE_ERR
++            el = doc.createElement(tagName);
++        } else {
++            // Namespace declared - create with ns
++            el = doc.createElementNS(namespace, tagName);
++        }
++
+         copyAttributes(sourceEl, el);
+         if (dest == null) { // sets up the root
+             doc.appendChild(el);
+@@ -32,3 +50,4 @@
+         // unhandled
+     }
+ }
++

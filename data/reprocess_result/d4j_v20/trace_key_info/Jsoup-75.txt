@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.nodes.ElementTest.booleanAttributeOutput
+- Error: junit.framework.AssertionFailedError: expected:<...mg src="foo" noshade[] nohref async autofo...> but was:<...mg src="foo" noshade[=""] nohref async autofo...>
+- Location:         assertEquals("<img src=\"foo\" noshade nohref async autofocus=\"false\">", img.outerHtml());

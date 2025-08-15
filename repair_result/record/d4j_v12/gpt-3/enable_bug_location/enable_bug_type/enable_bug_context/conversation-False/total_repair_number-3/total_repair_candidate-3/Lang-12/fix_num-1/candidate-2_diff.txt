@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -7,12 +7,21 @@
+     }
+ 
+     if (start == 0 && end == 0) {
+-            if (!letters && !numbers) {
+-                end = Integer.MAX_VALUE;
+-            } else {
+-                end = 'z' + 1;
+-                start = ' ';                
+-            }
++        if (!letters && !numbers) {
++            end = Integer.MAX_VALUE;
++        } else {
++            end = 'z' + 1;
++            start = ' ';                
++        }
++    }
++
++    // Input validation
++    if (end <= start) {
++        throw new IllegalArgumentException("End value must be greater than start value.");
++    }
++
++    if (chars != null && chars.length == 0) {
++        throw new IllegalArgumentException("Character array must not be empty.");
+     }
+ 
+     char[] buffer = new char[count];
+@@ -23,8 +32,9 @@
+         if (chars == null) {
+             ch = (char) (random.nextInt(gap) + start);
+         } else {
+-            ch = chars[random.nextInt(gap) + start];
++            ch = chars[random.nextInt(chars.length)]; // Use chars.length instead of gap
+         }
++        
+         if (letters && Character.isLetter(ch)
+                 || numbers && Character.isDigit(ch)
+                 || !letters && !numbers) {
+@@ -58,3 +68,4 @@
+     }
+     return new String(buffer);
+ }
++

@@ -1,0 +1,1 @@
+['createTableau', 'getNumObjectiveFunctions', 'getSolution', 'divideRow', 'subtractRow', 'getEntry']

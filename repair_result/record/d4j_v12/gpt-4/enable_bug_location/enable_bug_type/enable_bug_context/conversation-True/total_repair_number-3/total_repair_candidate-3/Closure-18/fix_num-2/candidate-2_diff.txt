@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -110,6 +110,8 @@
+         NodeTraversal.traverse(this, n, sia);
+       }
+ 
++      // Fix: Add inputs in dependency order - add each input's AST after
++      // dependency management.
+       jsRoot.addChildToBack(n);
+     }
+ 
+@@ -121,3 +123,4 @@
+     stopTracer(tracer, "parseInputs");
+   }
+ }
++

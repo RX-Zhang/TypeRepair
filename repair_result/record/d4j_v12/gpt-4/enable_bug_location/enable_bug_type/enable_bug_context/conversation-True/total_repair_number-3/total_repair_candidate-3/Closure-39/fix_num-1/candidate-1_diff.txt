@@ -1,0 +1,63 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+     Set<String> propertyNames = Sets.newTreeSet();
+     for (ObjectType current = this;
+          current != null && !current.isNativeObjectType() &&
+-             propertyNames.size() <= MAX_PRETTY_PRINTED_PROPERTIES;
++             propertyNames.size() < MAX_PRETTY_PRINTED_PROPERTIES;
+          current = current.getImplicitPrototype()) {
+       propertyNames.addAll(current.getOwnPropertyNames());
+     }
+@@ -18,6 +18,7 @@
+     sb.append("{");
+ 
+     int i = 0;
++    int size = propertyNames.size();
+     for (String property : propertyNames) {
+       if (i > 0) {
+         sb.append(", ");
+@@ -28,7 +29,9 @@
+       sb.append(getPropertyType(property).toString());
+ 
+       ++i;
+-      if (i == MAX_PRETTY_PRINTED_PROPERTIES) {
++
++      // We only add the "..." abbreviation in toString, not in annotation string.
++      if (!forAnnotations && i == MAX_PRETTY_PRINTED_PROPERTIES && size > MAX_PRETTY_PRINTED_PROPERTIES) {
+         sb.append(", ...");
+         break;
+       }
+@@ -38,7 +41,32 @@
+ 
+     prettyPrint = true;
+     return sb.toString();
++  } else if (forAnnotations) {
++    // Here print all properties without abbreviation
++    StringBuilder sb = new StringBuilder();
++    sb.append("{");
++
++    Set<String> propertyNames = Sets.newTreeSet();
++    for (ObjectType current = this;
++         current != null && !current.isNativeObjectType();
++         current = current.getImplicitPrototype()) {
++      propertyNames.addAll(current.getOwnPropertyNames());
++    }
++
++    int i = 0;
++    for (String property : propertyNames) {
++      if (i > 0) {
++        sb.append(", ");
++      }
++      sb.append(property);
++      sb.append(": ");
++      sb.append(getPropertyType(property).toAnnotationString());
++      ++i;
++    }
++    sb.append("}");
++    return sb.toString();
+   } else {
+     return "{...}";
+   }
+ }
++

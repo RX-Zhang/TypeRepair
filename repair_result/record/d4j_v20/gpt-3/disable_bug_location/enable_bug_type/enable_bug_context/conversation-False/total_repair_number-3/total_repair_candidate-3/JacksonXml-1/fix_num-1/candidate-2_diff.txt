@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -40,9 +40,17 @@
+         if (_parsingContext.inArray()) {
+             // Yup: in array, so this element could be verified; but it won't be
+             // reported anyway, and we need to process following event.
+-            token = _xmlTokens.next();
+             _mayBeLeaf = true;
+-            continue;
++            // Instead of immediately calling _xmlTokens.next(), which would skip needed tokens,
++            // we return FIELD_NAME so caller can process current start element properly.
++            String name = _xmlTokens.getLocalName();
++            _parsingContext.setCurrentName(name);
++
++            if (_namesToWrap != null && _namesToWrap.contains(name)) {
++                _xmlTokens.repeatStartElement();
++            }
++            
++            return (_currToken = JsonToken.FIELD_NAME);
+         }
+         String name = _xmlTokens.getLocalName();
+         _parsingContext.setCurrentName(name);
+@@ -132,3 +140,4 @@
+     _throwInternal();
+     return null;
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public static Option create(String opt) throws IllegalArgumentException
+ {
++        if (opt == null || opt.length() == 0) {
++            throw new IllegalArgumentException("opt is required");
++        }
+         // create the option
+     Option option = new Option(opt, description);
+ 
+@@ -17,3 +20,4 @@
+     // return the Option instance
+     return option;
+ }
++

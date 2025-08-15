@@ -1,0 +1,65 @@
+public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+    if (length < 2) {
+        throw new IllegalArgumentException("Length must be at least 2");
+    }
+    long result = 0;
+    boolean stillPadding = true;
+    int end = offset + length;
+    int start = offset;
+
+    int numLeadingSpaces = 0;
+    int numTrailingSpacesOrNulls = 0;
+    boolean foundDigit = false;
+
+    for (int i = start; i < end; i++) {
+        final byte currentByte = buffer[i];
+
+        // If NUL, count trailing NULs. 
+        if (currentByte == 0) {
+            // Once NUL encountered, no digits allowed after
+            numTrailingSpacesOrNulls++;
+            continue;
+        }
+
+        // Skip leading spaces
+        if (currentByte == (byte) ' ') {
+            if (!foundDigit) {
+                numLeadingSpaces++;
+                continue;
+            } else {
+                // Embedded space inside digits not allowed
+                throw new IllegalArgumentException(
+                        exceptionMessage(buffer, offset, length, i, currentByte));
+            }
+        }
+
+        // Digit chars: '0' to '7'
+        if (currentByte >= '0' && currentByte <= '7') {
+            foundDigit = true;
+            stillPadding = false;
+            result = (result << 3) + (currentByte - '0');
+            // Reset trailing spaces/null count as digits continue
+            numTrailingSpacesOrNulls = 0;
+        } else {
+            // Invalid character found
+            throw new IllegalArgumentException(
+                    exceptionMessage(buffer, offset, length, i, currentByte));
+        }
+    }
+
+    // Buffer must have at least one digit
+    if (!foundDigit) {
+        throw new IllegalArgumentException("No octal digits found in buffer");
+    }
+
+    // Check that trailing characters (after last digit) are all NULs or spaces
+    for (int i = end - numTrailingSpacesOrNulls; i < end; i++) {
+        final byte b = buffer[i];
+        if (b != 0 && b != (byte) ' ') {
+            throw new IllegalArgumentException(
+                    exceptionMessage(buffer, offset, length, i, b));
+        }
+    }
+
+    return result;
+}

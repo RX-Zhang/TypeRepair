@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -1,8 +1,8 @@
+ void writePaxHeaders(String entryName,
+                      Map<String, String> headers) throws IOException {
+     String name = "./PaxHeaders.X/" + stripTo7Bits(entryName);
+-        // TarEntry's constructor would think this is a directory
+-        // and not allow any data to be written
++    // TarEntry's constructor would think this is a directory
++    // and not allow any data to be written
+     if (name.length() >= TarConstants.NAMELEN) {
+         name = name.substring(0, TarConstants.NAMELEN - 1);
+     }
+@@ -32,7 +32,20 @@
+     }
+     byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+     pex.setSize(data.length);
++    
++    // Adding boundary checks and exception handling
++    if (pex.getSize() > TarConstants.MAXSIZE) {
++        throw new IOException("Pax header size exceeds maximum allowed size");
++    }
++
+     putArchiveEntry(pex);
+-    write(data);
++    
++    if (data.length > 0) {
++        write(data);
++    } else {
++        throw new IOException("No data to write for Pax headers");
++    }
++
+     closeArchiveEntry();
+ }
++

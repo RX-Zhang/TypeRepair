@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.util.TestTextBuffer.testEmpty
+- Error: java.lang.NullPointerException
+- Location:         assertTrue(tb.getTextBuffer().length == 0);

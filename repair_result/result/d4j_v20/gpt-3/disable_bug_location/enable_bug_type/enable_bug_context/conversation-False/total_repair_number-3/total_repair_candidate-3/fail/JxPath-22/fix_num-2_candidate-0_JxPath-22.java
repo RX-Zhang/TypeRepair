@@ -1,0 +1,33 @@
+public static String getNamespaceURI(Node node) {
+    if (node instanceof Document) {
+        node = ((Document) node).getDocumentElement();
+    }
+
+    Element element = (Element) node;
+
+    String uri = element.getNamespaceURI();
+    if (uri == null) {
+        // If node is an attribute node with xmlns prefix, handle it properly
+        if (node.getNodeType() == Node.ATTRIBUTE_NODE) {
+            String name = node.getNodeName();
+            if ("xmlns".equals(name) || name.startsWith("xmlns:")) {
+                return node.getNodeValue();
+            }
+        }
+
+        // Try to resolve namespace by searching xmlns attributes up the ancestor chain
+        String prefix = getPrefix(node);
+        String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
+
+        Node aNode = node;
+        while (aNode != null && aNode.getNodeType() == Node.ELEMENT_NODE) {
+            Attr attr = ((Element) aNode).getAttributeNode(qname);
+            if (attr != null) {
+                return attr.getValue();
+            }
+            aNode = aNode.getParentNode();
+        }
+        return null;
+    }
+    return uri;
+}

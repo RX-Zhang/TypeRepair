@@ -1,0 +1,1 @@
+['parseTypeExpressionAnnotation', 'parseTypeName', 'parseFunctionType']

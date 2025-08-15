@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -17,8 +17,8 @@
+ 
+     while (true)
+     {
++        text = padding + text.substring(pos).trim();
+         int lastPos = pos;
+-        text = padding + text.substring(pos).trim();
+         pos = findWrapPos(text, width, 0);
+ 
+         if (pos == -1)
+@@ -26,8 +26,8 @@
+             sb.append(text);
+ 
+             return sb;
+-        } else
+-        if (pos == lastPos)
++        }
++        if (pos == 0)
+         {
+             throw new RuntimeException("Text too long for line - throwing exception to avoid infinite loop [CLI-162]: " + text);
+         }
+@@ -35,3 +35,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

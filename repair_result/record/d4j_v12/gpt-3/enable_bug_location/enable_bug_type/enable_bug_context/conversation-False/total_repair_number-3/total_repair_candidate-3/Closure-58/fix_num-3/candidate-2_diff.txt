@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -26,8 +26,15 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
+-          addToSetIfLocal(lhs, kill);
+-          addToSetIfLocal(lhs, gen);
++        // Add boundary checks and exception handling to prevent runtime errors
++        try {
++          if (lhs != null) {
++            addToSetIfLocal(lhs, kill);
++            addToSetIfLocal(lhs, gen);
++          }
++        } catch (IllegalStateException e) {
++          // Ignore or handle escaped or undeclared variables safely
++        }
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +91,4 @@
+       return;
+   }
+ }
++

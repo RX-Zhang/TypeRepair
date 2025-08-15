@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++    // System.err.println("COMPARING: " +
++    //     (l == null ? "null" : l.getClass().getName()) + " " +
++    //     (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -19,21 +19,35 @@
+     }
+ 
+     if (l instanceof Collection) {
+-        l = ((Collection) l).iterator();
++        l = ((Collection<?>) l).iterator();
+     }
+ 
+     if (r instanceof Collection) {
+-        r = ((Collection) r).iterator();
++        r = ((Collection<?>) r).iterator();
+     }
+ 
+     if ((l instanceof Iterator) && !(r instanceof Iterator)) {
+-        return contains((Iterator) l, r);
++        // When left is an iterator and right is a single value,
++        // check if right is contained in left
++        return contains((Iterator<?>) l, r);
+     }
+     if (!(l instanceof Iterator) && (r instanceof Iterator)) {
+-        return contains((Iterator) r, l);
++        // When right is an iterator and left is a single value,
++        // check if left is contained in right
++        return contains((Iterator<?>) r, l);
+     }
+     if (l instanceof Iterator && r instanceof Iterator) {
+-        return findMatch((Iterator) l, (Iterator) r);
++        // When both are iterators, check if they share any matching elements
++        return findMatch((Iterator<?>) l, (Iterator<?>) r);
+     }
+-    return equal(l, r);
++    // For scalar comparison - use deep equals to handle nulls and objects
++    if (l == r) {
++        return true;
++    }
++    if (l == null || r == null) {
++        return false;
++    }
++    // Use equals method for final comparison
++    return l.equals(r);
+ }
++

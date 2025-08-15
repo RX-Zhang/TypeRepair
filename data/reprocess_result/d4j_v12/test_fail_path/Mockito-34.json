@@ -1,0 +1,1 @@
+{"Mockito-34": ["org.mockito.internal.invocation.InvocationMatcherTest::shouldMatchCaptureArgumentsWhenArgsCountDoesNOTMatch", "org.mockitousage.basicapi.UsingVarargsTest::shouldMatchEasilyEmptyVararg"]}

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -2,12 +2,12 @@
+ {
+     if (option == null)
+     {
+-        // reset the option previously selected
++        // Reset the option previously selected
+         selected = null;
+         return;
+     }
+     
+-    // if no option has already been selected or the 
++    // If no option has already been selected or the 
+     // same option is being reselected then set the
+     // selected member variable
+     if (selected == null || selected.equals(option.getOpt()))
+@@ -19,3 +19,4 @@
+         throw new AlreadySelectedException(this, option);
+     }
+ }
++

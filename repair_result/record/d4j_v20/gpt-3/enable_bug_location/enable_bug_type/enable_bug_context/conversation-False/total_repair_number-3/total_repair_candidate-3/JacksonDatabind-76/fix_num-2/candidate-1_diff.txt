@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -31,7 +31,7 @@
+                 }
+                 tokens.writeEndObject();
+                 if (bean.getClass() != _beanType.getRawClass()) {
+-                    ctxt.reportMappingException("Can not create polymorphic instances with unwrapped values");
++                    ctxt.reportMappingException("Cannot create polymorphic instances with unwrapped values");
+                     return null;
+                 }
+                 return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+@@ -70,3 +70,4 @@
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

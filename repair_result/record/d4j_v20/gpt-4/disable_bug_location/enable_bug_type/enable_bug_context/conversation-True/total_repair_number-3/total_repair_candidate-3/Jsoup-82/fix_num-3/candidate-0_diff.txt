@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -54,7 +54,8 @@
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+             charsetName = foundCharset;
+             doc = null;
+-        } else if (!fullyRead) {
++        } else if (foundCharset == null && !fullyRead) {
++            // keep fullyRead check here to avoid incomplete parse
+             doc = null;
+         }
+     } else { // specified by content type header (or by user on file load)
+@@ -79,3 +80,4 @@
+     input.close();
+     return doc;
+ }
++

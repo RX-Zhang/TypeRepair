@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -5,7 +5,6 @@
+   }
+ 
+   Node block = fnNode.getLastChild();
+-
+ 
+   // CALL NODE: [ NAME, ARG1, ARG2, ... ]
+   Node cArg = callNode.getFirstChild().getNext();
+@@ -41,10 +40,15 @@
+                 block, fnParam.getString()) > 1) {
+           return CanInlineResult.NO;
+         }
++        // Move to the next call argument if it exists
++        cArg = cArg.getNext();
+       }
+ 
+       // Move to the next name.
+       fnParam = fnParam.getNext();
++    } else {
++      // If no parameters left, break out of the loop
++      break;
+     }
+ 
+     // For every call argument check for side-effects, even if there
+@@ -53,9 +57,9 @@
+       if (NodeUtil.mayHaveSideEffects(cArg, compiler)) {
+         return CanInlineResult.NO;
+       }
+-      cArg = cArg.getNext();
+     }
+   }
+ 
+   return CanInlineResult.YES;
+ }
++

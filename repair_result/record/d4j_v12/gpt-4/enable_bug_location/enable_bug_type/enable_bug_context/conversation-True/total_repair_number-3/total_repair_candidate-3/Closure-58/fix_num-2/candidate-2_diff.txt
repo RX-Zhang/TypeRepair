@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -24,10 +24,10 @@
+         Node rhs = lhs.getNext();
+         if (NodeUtil.isVar(lhs)) {
+           // for(var x in y) {...}
+-          lhs = lhs.getLastChild();
++          lhs = lhs.getFirstChild();
+         }
+-          addToSetIfLocal(lhs, kill);
+-          addToSetIfLocal(lhs, gen);
++        addToSetIfLocal(lhs, kill);
++        addToSetIfLocal(lhs, gen);
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +84,4 @@
+       return;
+   }
+ }
++

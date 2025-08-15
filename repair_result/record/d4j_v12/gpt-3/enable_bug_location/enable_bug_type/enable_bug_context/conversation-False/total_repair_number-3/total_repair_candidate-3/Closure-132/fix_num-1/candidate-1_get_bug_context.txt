@@ -1,0 +1,1 @@
+['tryReplaceIf', 'tryRemoveRedundantExit', 'tryMinimizeIf', 'isFoldableExpressBlock', 'getBlockExpression', 'isLowerPrecedenceInExpression', 'isPropertyAssignmentInExpression']

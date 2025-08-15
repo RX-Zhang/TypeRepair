@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -30,11 +30,14 @@
+ 
+     if (currEntry.isGNULongNameEntry()) {
+         // read in the name
+-        StringBuffer longName = new StringBuffer();
++        StringBuilder longName = new StringBuilder();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+         int length = 0;
+-        while ((length = read(buf)) >= 0) {
++        while ((length = this.read(buf, 0, buf.length)) >= 0) {
+             longName.append(new String(buf, 0, length));
++            if (length < SMALL_BUFFER_SIZE) {
++                break;
++            }
+         }
+         getNextEntry();
+         if (currEntry == null) {
+@@ -65,3 +68,4 @@
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

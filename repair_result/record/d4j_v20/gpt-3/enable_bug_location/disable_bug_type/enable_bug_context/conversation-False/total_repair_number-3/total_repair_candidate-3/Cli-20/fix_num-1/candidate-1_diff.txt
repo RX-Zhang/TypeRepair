@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -33,13 +33,18 @@
+         }
+         else if (token.startsWith("-"))
+         {
+-            if (token.length() == 2)
+-            {
+-                processOptionToken(token, stopAtNonOption);
+-            }
+-            else if (options.hasOption(token))
++            if (options.hasOption(token))
+             {
+                 tokens.add(token);
++                currentOption = options.getOption(token);
++                if (currentOption.hasArg())
++                {
++                    // If the option has an argument, we should not stop at non-option
++                    if (iter.hasNext())
++                    {
++                        tokens.add(iter.next());
++                    }
++                }
+             }
+             // requires bursting
+             else
+@@ -61,3 +66,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

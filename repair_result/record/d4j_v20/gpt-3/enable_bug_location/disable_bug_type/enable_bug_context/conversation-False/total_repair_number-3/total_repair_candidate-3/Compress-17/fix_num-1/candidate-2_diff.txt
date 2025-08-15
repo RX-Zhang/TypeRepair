@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -7,13 +7,14 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
++    // Treat a zero byte at start as zero value
+     if (buffer[start] == 0) {
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
++    // Skip leading spaces and NULs
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == ' ' || buffer[start] == 0){
+             start++;
+         } else {
+             break;
+@@ -29,10 +30,14 @@
+         throw new IllegalArgumentException(
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    // May have additional NULs or spaces at the end
++    while (end > start) {
++        trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        } else {
++            break;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -48,3 +53,4 @@
+ 
+     return result;
+ }
++

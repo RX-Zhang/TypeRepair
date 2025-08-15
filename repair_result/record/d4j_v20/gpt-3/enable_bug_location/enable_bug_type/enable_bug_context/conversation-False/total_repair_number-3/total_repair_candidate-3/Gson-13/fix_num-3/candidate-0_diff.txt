@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -72,8 +72,9 @@
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
++        // Allow leading zero only if it is the only digit before decimal or exponent
+         if (value == 0) {
+-          return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++          return PEEKED_NONE; // Leading '0' prefix is not allowed (could be octal)
+         }
+         long newValue = value * 10 - (c - '0');
+         fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+@@ -88,8 +89,9 @@
+   }
+ 
+   // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.
+-  if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
+-    peekedLong = negative ? value : -value;
++  if (last == NUMBER_CHAR_DIGIT && fitsInLong) {
++    // Correctly assign peekedLong preserving negative sign as parsed.
++    peekedLong = value;
+     pos += i;
+     return peeked = PEEKED_LONG;
+   } else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT
+@@ -100,3 +102,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

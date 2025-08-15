@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -56,7 +56,7 @@
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            _nextToken = JsonToken.FIELD_NAME;
++            _nextToken = JsonToken.VALUE_STRING;  // FIXED: was FIELD_NAME, must be VALUE_STRING to allow nextTextValue to return _currText
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
+@@ -68,7 +68,7 @@
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText;  // FIXED: must return text immediately so nextTextValue returns value
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -91,3 +91,4 @@
+     }
+     return null;
+ }
++

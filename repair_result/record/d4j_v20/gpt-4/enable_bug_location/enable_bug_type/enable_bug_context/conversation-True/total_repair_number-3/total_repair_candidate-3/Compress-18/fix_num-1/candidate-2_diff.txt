@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,13 +1,13 @@
+ void writePaxHeaders(String entryName,
+                      Map<String, String> headers) throws IOException {
+     String name = "./PaxHeaders.X/" + stripTo7Bits(entryName);
+-        // TarEntry's constructor would think this is a directory
+-        // and not allow any data to be written
++    // TarEntry's constructor would think this is a directory
++    // and not allow any data to be written, so force the type to LF_NORMAL
+     if (name.length() >= TarConstants.NAMELEN) {
+         name = name.substring(0, TarConstants.NAMELEN - 1);
+     }
+     TarArchiveEntry pex = new TarArchiveEntry(name,
+-                                              TarConstants.LF_PAX_EXTENDED_HEADER_LC);
++                                              TarConstants.LF_NORMAL);
+ 
+     StringWriter w = new StringWriter();
+     for (Map.Entry<String, String> h : headers.entrySet()) {
+@@ -36,3 +36,4 @@
+     write(data);
+     closeArchiveEntry();
+ }
++

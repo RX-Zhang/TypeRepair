@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+   }
+ 
+   // TODO(user): We only care about calls to functions that
+-  // passes one of the dependent variable to a non-side-effect free
++  // pass one of the dependent variables to a non-side-effect free
+   // function.
+   if (n.isCall() && NodeUtil.functionCallHasSideEffects(n)) {
+     return true;
+@@ -16,11 +16,14 @@
+     return true;
+   }
+ 
+-
+   for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+-    if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
++    if (ControlFlowGraph.isEnteringNewCfgNode(c)) {
++      continue;
++    }
++    if (apply(c)) {
+       return true;
+     }
+   }
+   return false;
+ }
++

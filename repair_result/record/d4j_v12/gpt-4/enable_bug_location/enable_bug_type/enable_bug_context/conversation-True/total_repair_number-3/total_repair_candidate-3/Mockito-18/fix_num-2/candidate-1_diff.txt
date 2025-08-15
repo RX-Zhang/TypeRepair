@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,8 +1,14 @@
+ Object returnValueFor(Class<?> type) {
++    if (type == null) {
++        return null;
++    }
+     if (Primitives.isPrimitiveOrWrapper(type)) {
+         return Primitives.defaultValueForPrimitiveOrWrapper(type);
+         //new instances are used instead of Collections.emptyList(), etc.
+         //to avoid UnsupportedOperationException if code under test modifies returned collection
++    } else if (Iterable.class.isAssignableFrom(type)) {
++        // Handle Iterable and its subtypes gracefully by returning an empty LinkedList
++        return new LinkedList<Object>();
+     } else if (type == Collection.class) {
+         return new LinkedList<Object>();
+     } else if (type == Set.class) {
+@@ -35,3 +41,4 @@
+     //Let's not care about the rest of collections.
+     return null;
+ }
++

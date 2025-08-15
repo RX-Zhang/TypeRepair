@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+         throw new DimensionMismatchException(len, b.length);
+     }
+ 
+-        // Revert to scalar multiplication.
++    // Revert to scalar multiplication.
+ 
+     final double[] prodHigh = new double[len];
+     double prodLowSum = 0;
+@@ -28,6 +28,16 @@
+         prodLowSum += prodLow;
+     }
+ 
++    if (len == 1) {
++        // When only one element, no pairwise summation necessary
++        double result = prodHigh[0] + prodLowSum;
++        if (Double.isNaN(result)) {
++            // either we have split infinite numbers or some coefficients were NaNs,
++            // just rely on the naive implementation and let IEEE754 handle this
++            result = a[0] * b[0];
++        }
++        return result;
++    }
+ 
+     final double prodHighCur = prodHigh[0];
+     double prodHighNext = prodHigh[1];
+@@ -57,3 +67,4 @@
+ 
+     return result;
+ }
++

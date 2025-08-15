@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,4 +1,15 @@
+ public double cumulativeProbability(double x) throws MathException {
+-        return 0.5 * (1.0 + Erf.erf((x - mean) /
+-                (standardDeviation * Math.sqrt(2.0))));
++    if (standardDeviation <= 0) {
++        throw new IllegalStateException("Standard deviation must be positive.");
++    }
++    double z = (x - mean) / (standardDeviation * Math.sqrt(2.0));
++    // For very large |z|, Erf.erf(z) may be slow or fail to converge.
++    // Use boundary checks to return exact values for extreme tails.
++    if (z < -10) {
++        return 0.0;
++    } else if (z > 10) {
++        return 1.0;
++    }
++    return 0.5 * (1.0 + Erf.erf(z));
+ }
++

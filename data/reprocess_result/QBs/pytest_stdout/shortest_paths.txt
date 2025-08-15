@@ -1,0 +1,111 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 3 items
+
+python_testcases/test_shortest_paths.py FFF                              [100%]
+
+=================================== FAILURES ===================================
+____________________________________ test1 _____________________________________
+
+    def test1():
+        """Case 1: Graph with multiple paths
+        Output: {'A': 0, 'C': 3, 'B': 1, 'E': 5, 'D': 10, 'F': 4}
+        """
+    
+        graph = {
+            ("A", "B"): 3,
+            ("A", "C"): 3,
+            ("A", "F"): 5,
+            ("C", "B"): -2,
+            ("C", "D"): 7,
+            ("C", "E"): 4,
+            ("D", "E"): -5,
+            ("E", "F"): -1,
+        }
+        result = shortest_paths("A", graph)
+    
+        expected = {"A": 0, "C": 3, "B": 1, "E": 5, "D": 10, "F": 4}
+>       assert result == expected
+E       AssertionError: assert {'A': 0, 'B':...'D': inf, ...} == {'A': 0, 'B':... 'D': 10, ...}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'E': inf} != {'E': 5}
+E         {'C': inf} != {'C': 3}
+E         {'F': inf} != {'F': 4}
+E         {'B': inf} != {'B': 1}
+E         {'D': inf} != {'D': 10}
+E         Use -v to get more diff
+
+python_testcases/test_shortest_paths.py:27: AssertionError
+____________________________________ test2 _____________________________________
+
+    def test2():
+        """Case 2: Graph with one path
+        Output: {'A': 0, 'C': 3, 'B': 1, 'E': 5, 'D': 6, 'F': 9}
+        """
+    
+        graph2 = {
+            ("A", "B"): 1,
+            ("B", "C"): 2,
+            ("C", "D"): 3,
+            ("D", "E"): -1,
+            ("E", "F"): 4,
+        }
+        result = shortest_paths("A", graph2)
+    
+        expected = {"A": 0, "C": 3, "B": 1, "E": 5, "D": 6, "F": 9}
+>       assert result == expected
+E       AssertionError: assert {'A': 0, 'B':...'D': inf, ...} == {'A': 0, 'B':..., 'D': 6, ...}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'E': inf} != {'E': 5}
+E         {'C': inf} != {'C': 3}
+E         {'F': inf} != {'F': 9}
+E         {'B': inf} != {'B': 1}
+E         {'D': inf} != {'D': 6}
+E         Use -v to get more diff
+
+python_testcases/test_shortest_paths.py:45: AssertionError
+____________________________________ test3 _____________________________________
+
+    def test3():
+        """Case 3: Graph with cycle
+        Output: {'A': 0, 'C': 3, 'B': 1, 'E': 5, 'D': 6, 'F': 9}
+        """
+    
+        graph3 = {
+            ("A", "B"): 1,
+            ("B", "C"): 2,
+            ("C", "D"): 3,
+            ("D", "E"): -1,
+            ("E", "D"): 1,
+            ("E", "F"): 4,
+        }
+        result = shortest_paths("A", graph3)
+    
+        expected = {"A": 0, "C": 3, "B": 1, "E": 5, "D": 6, "F": 9}
+>       assert result == expected
+E       AssertionError: assert {'A': 0, 'B':...'D': inf, ...} == {'A': 0, 'B':..., 'D': 6, ...}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'E': inf} != {'E': 5}
+E         {'C': inf} != {'C': 3}
+E         {'F': inf} != {'F': 9}
+E         {'B': inf} != {'B': 1}
+E         {'D': inf} != {'D': 6}
+E         Use -v to get more diff
+
+python_testcases/test_shortest_paths.py:64: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_shortest_paths.py::test1 - AssertionError: asser...
+FAILED python_testcases/test_shortest_paths.py::test2 - AssertionError: asser...
+FAILED python_testcases/test_shortest_paths.py::test3 - AssertionError: asser...
+============================== 3 failed in 0.03s ===============================

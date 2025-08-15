@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -25,7 +25,6 @@
+                 tokens.add(token);
+             }
+         }
+-
+         // single hyphen
+         else if ("-".equals(token))
+         {
+@@ -36,10 +35,6 @@
+             if (token.length() == 2)
+             {
+                 processOptionToken(token, stopAtNonOption);
+-            }
+-            else if (options.hasOption(token))
+-            {
+-                tokens.add(token);
+             }
+             // requires bursting
+             else
+@@ -61,3 +56,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

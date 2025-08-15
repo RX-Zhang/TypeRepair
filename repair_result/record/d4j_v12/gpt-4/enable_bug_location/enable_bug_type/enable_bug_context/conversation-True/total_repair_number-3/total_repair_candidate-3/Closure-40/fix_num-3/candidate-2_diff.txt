@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -10,7 +10,7 @@
+       Node nameNode = n.getFirstChild();
+       NameInformation ns = createNameInformation(t, nameNode, n);
+       if (ns != null) {
+-        JsName nameInfo = getName(nameNode.getString(), true);
++        JsName nameInfo = getName(ns.name, true);
+         recordSet(nameInfo.name, nameNode);
+       }
+     } else if (NodeUtil.isObjectLitKey(n, parent)) {
+@@ -37,11 +37,12 @@
+     Node nameNode = n.getFirstChild();
+     NameInformation ns = createNameInformation(t, nameNode, n);
+     if (ns != null && ns.onlyAffectsClassDef) {
+-      JsName name = getName(ns.name, false);
++      JsName name = getName(ns.name, true);
+       if (name != null) {
+-      refNodes.add(new ClassDefiningFunctionNode(
+-          name, n, parent, parent.getParent()));
++        refNodes.add(new ClassDefiningFunctionNode(
++            name, n, parent, parent.getParent()));
+       }
+     }
+   }
+ }
++

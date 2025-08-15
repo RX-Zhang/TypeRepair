@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -41,6 +41,8 @@
+                 && !secondClause.getJSType().isUnknownType()) {
+               return secondClause.getJSType();
+             }
++          } else if (info.hasType()) {
++            return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+           }
+         }
+       }
+@@ -49,3 +51,4 @@
+ 
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

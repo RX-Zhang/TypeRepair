@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -159,6 +159,7 @@
+                     tb.processEndTag("p");
+                 }
+                 tb.insert(startTag);
++                // Transition to PLAINTEXT state
+                 tb.tokeniser.transition(TokeniserState.PLAINTEXT); // once in, never gets out
+             } else if (name.equals("button")) {
+                 if (tb.inButtonScope("button")) {
+@@ -247,7 +248,7 @@
+                 tb.processEndTag("form");
+             } else if (name.equals("textarea")) {
+                 tb.insert(startTag);
+-                // todo: If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move on to the next one. (Newlines at the start of textarea elements are ignored as an authoring convenience.)
++                // If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move on to the next one.
+                 tb.tokeniser.transition(TokeniserState.Rcdata);
+                 tb.markInsertionMode();
+                 tb.framesetOk(false);
+@@ -511,3 +512,4 @@
+     }
+     return true;
+ }
++

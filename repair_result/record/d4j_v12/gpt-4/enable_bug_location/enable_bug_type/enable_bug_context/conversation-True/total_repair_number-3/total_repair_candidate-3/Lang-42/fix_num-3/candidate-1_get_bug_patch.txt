@@ -1,0 +1,23 @@
+public void escape(Writer writer, String str) throws IOException {
+    int len = str.length();
+    for (int i = 0; i < len; i++) {
+        int codepoint = str.codePointAt(i);
+        if (codepoint > 0xFFFF) {
+            i++; // skip the next char as it is part of this surrogate pair
+        }
+        String entityName = this.entityName(codepoint);
+        if (entityName == null) {
+            if (codepoint > 0x7F) {
+                writer.write("&#");
+                writer.write(Integer.toString(codepoint, 10));
+                writer.write(';');
+            } else {
+                writer.write(codepoint);
+            }
+        } else {
+            writer.write('&');
+            writer.write(entityName);
+            writer.write(';');
+        }
+    }
+}

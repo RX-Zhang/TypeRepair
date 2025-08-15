@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.mockitousage.bugs.ListenersLostOnResetMockTest.listener
+- Error: junit.framework.AssertionFailedError: 
+Wanted but not invoked:
+invocationListener.reportInvocation(<any>);
+- Location:         verify(invocationListener).reportInvocation(any(MethodInvocationReport.class));

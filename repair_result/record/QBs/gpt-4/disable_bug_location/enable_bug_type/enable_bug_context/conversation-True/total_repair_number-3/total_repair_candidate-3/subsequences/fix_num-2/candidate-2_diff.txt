@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,10 +1,10 @@
+ def subsequences(a, b, k):
+     if k == 0:
+-        return []
++        return [[]]
+     ret = []
+-    for i in range(a, b + 1 - k):
++    for i in range(a, b + 1 - k + 1):
+         ret.extend(
+-            [i] + rest for rest in subsequences(i + 1, b, k - 1)
++            [[i] + rest for rest in subsequences(i + 1, b, k - 1)]
+         )
+     return ret
+ 

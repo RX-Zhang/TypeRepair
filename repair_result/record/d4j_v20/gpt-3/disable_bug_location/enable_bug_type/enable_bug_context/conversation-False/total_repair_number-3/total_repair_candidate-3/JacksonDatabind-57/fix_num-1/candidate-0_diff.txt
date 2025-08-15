@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -4,6 +4,11 @@
+     if (_dataFormatReaders != null) {
+         return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
+     }
+-    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-            true));
++    try {
++        return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src, offset, length), 
++                true));
++    } catch (CharConversionException e) {
++        throw new JsonParseException(null, "Invalid UTF-32 character encountered in input", e);
++    }
+ }
++

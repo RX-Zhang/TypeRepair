@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+     if (charAt(value, index + 1) == 'H') {
+         index = handleGH(value, result, index);
+     } else if (charAt(value, index + 1) == 'N') {
+-        if (index == 1 && isVowel(charAt(value, 0)) && !slavoGermanic) {
++        if (index == 0 && isVowel(charAt(value, 0)) && !slavoGermanic) {  // Changed index check from 1 to 0
+             result.append("KN", "N");
+         } else if (!contains(value, index + 2, 2, "EY") && 
+                    charAt(value, index + 1) != 'Y' && !slavoGermanic) {
+@@ -50,3 +50,4 @@
+     }
+     return index;
+ }
++

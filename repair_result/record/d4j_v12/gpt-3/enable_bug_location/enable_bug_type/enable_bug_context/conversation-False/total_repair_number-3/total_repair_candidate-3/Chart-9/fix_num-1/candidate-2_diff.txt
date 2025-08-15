@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -33,7 +33,11 @@
+         return copy;
+     }
+     else {
++        // Ensure startIndex and endIndex are within bounds
++        if (startIndex < 0 || startIndex >= this.data.size() || endIndex < 0 || endIndex >= this.data.size()) {
++            throw new IndexOutOfBoundsException("Start or end index is out of bounds.");
++        }
+         return createCopy(startIndex, endIndex);
+     }
++}
+ 
+-}

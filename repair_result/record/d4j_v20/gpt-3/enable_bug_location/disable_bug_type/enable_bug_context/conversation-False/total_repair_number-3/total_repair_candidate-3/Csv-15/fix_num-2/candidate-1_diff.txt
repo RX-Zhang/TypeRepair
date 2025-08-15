@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character qc = getQuoteCharacter();
++    if (qc == null) {
++        // No quote character defined: fallback to printAndEscape
++        printAndEscape(value, offset, len, out);
++        return;
++    }
++    final char quoteChar = qc.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -104,3 +110,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

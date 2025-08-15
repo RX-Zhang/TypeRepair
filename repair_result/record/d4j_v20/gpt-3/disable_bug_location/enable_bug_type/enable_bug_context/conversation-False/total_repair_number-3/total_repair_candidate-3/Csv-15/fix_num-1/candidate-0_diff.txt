@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharObj = getQuoteCharacter();
++    if (quoteCharObj == null) {
++        // No quote character defined, fallback to printAndEscape
++        printAndEscape(value, offset, len, out);
++        return;
++    }
++    final char quoteChar = quoteCharObj.charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,7 +42,9 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // Correcting the logical expression from the original, which incorrectly quoted many characters
++            if (newRecord && (c < 0x20 || c == '"' || c == delimChar || c == COMMENT)) {
++                // quote if first char is control char, quote char, delimiter or comment marker
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -89,18 +97,20 @@
+     while (pos < end) {
+         final char c = value.charAt(pos);
+         if (c == quoteChar) {
+-            // write out the chunk up until this point
+-
+-            // add 1 to the length to write out the encapsulator also
+-            out.append(value, start, pos + 1);
+-            // put the next starting position on the encapsulator so we will
+-            // write it out again with the next string (effectively doubling it)
+-            start = pos;
++            // write out the chunk up until this point (excluding quoteChar)
++            out.append(value, start, pos);
++            // double the quote character
++            out.append(quoteChar);
++            // set new start to current position, so we don't write the quoteChar twice
++            start = pos + 1;
+         }
+         pos++;
+     }
+ 
+     // write the last segment
+-    out.append(value, start, pos);
++    if (start < end) {
++        out.append(value, start, end);
++    }
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,15 @@
+public double[] repairAndDecode(final double[] x) {
+    if (boundaries == null) {
+        return decode(x);
+    }
+    final double[] repaired = x.clone();
+    // Repair any value outside of the boundaries by clipping
+    for (int i = 0; i < repaired.length; i++) {
+        if (repaired[i] < boundaries[0][i]) {
+            repaired[i] = boundaries[0][i];
+        } else if (repaired[i] > boundaries[1][i]) {
+            repaired[i] = boundaries[1][i];
+        }
+    }
+    return decode(repaired);
+}

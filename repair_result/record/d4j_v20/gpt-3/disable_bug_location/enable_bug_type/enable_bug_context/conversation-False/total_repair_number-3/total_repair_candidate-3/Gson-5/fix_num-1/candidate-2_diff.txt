@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -54,7 +54,7 @@
+                     // milliseconds can be optional in the format
+                     if (checkOffset(date, offset, '.')) {
+                         offset += 1;
+-                        int endOffset = indexOfNonDigit(date, offset + 1); // assume at least one digit
++                        int endOffset = indexOfNonDigit(date, offset); // assume at least one digit
+                         int parseEndOffset = Math.min(endOffset, offset + 3); // parse up to 3 digits
+                         int fraction = parseInt(date, offset, parseEndOffset);
+                         // compensate for "missing" digits
+@@ -100,11 +100,18 @@
+                 //    `java.util.TimeZone` specifically instruct use of GMT as base for
+                 //    custom timezones... odd.
+                 String timezoneId = "GMT" + timezoneOffset;
+-                  String timezoneId = "UTC" + timezoneOffset;
+ 
+                 timezone = TimeZone.getTimeZone(timezoneId);
+ 
+                 String act = timezone.getID();
++                /*
++                 * Here is the logical fix:
++                 * The original code declared timezoneId twice, with the second declaration mistakenly using UTC instead of GMT:
++                 *    String timezoneId = "GMT" + timezoneOffset;
++                 *    String timezoneId = "UTC" + timezoneOffset;
++                 * This is illegal and causes compilation errors.
++                 * The fix is to keep only the first declaration using GMT.
++                 */
+                 if (!act.equals(timezoneId)) {
+                     /* 22-Jan-2015, tatu: Looks like canonical version has colons, but we may be given
+                      *    one without. If so, don't sweat.
+@@ -143,7 +150,7 @@
+     } catch (IllegalArgumentException e) {
+         fail = e;
+     }
+-    String input = (date == null) ? null : ('"' + date + "'");
++    String input = (date == null) ? null : ('"' + date + '"');
+     String msg = fail.getMessage();
+     if (msg == null || msg.isEmpty()) {
+         msg = "("+fail.getClass().getName()+")";
+@@ -152,3 +159,4 @@
+     ex.initCause(fail);
+     throw ex;
+ }
++

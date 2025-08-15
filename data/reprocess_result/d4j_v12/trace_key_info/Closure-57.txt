@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.ClosureCodingConventionTest.testRequire
+- Error: junit.framework.AssertionFailedError: Expected: <null> but was: foo
+- Location:     assertNotRequire("goog.require(foo)");

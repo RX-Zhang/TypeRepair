@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -1,6 +1,6 @@
+ private String format(JSError error, boolean warning) {
+   // extract source excerpt
+-  SourceExcerptProvider source = getSource();
++  SourceExcerpt source = getSource();
+   String sourceExcerpt = source == null ? null :
+       excerpt.get(
+           source, error.sourceName, error.lineNumber, excerptFormatter);
+@@ -27,10 +27,9 @@
+     int charno = error.getCharno();
+ 
+     // padding equal to the excerpt and arrow at the end
+-    // charno == sourceExpert.length() means something is missing
+-    // at the end of the line
++    // charno == sourceExcerpt.length() means pointing just after the last char
+     if (excerpt.equals(LINE)
+-        && 0 <= charno && charno < sourceExcerpt.length()) {
++        && 0 <= charno && charno <= sourceExcerpt.length()) {
+       for (int i = 0; i < charno; i++) {
+         char c = sourceExcerpt.charAt(i);
+         if (Character.isWhitespace(c)) {
+@@ -44,3 +43,4 @@
+   }
+   return b.toString();
+ }
++

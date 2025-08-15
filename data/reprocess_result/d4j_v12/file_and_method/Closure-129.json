@@ -1,0 +1,1 @@
+{"ClassName": "PrepareAst", "Fields": ["private final AbstractCompiler compiler;", "private final boolean checkOnly;"], "Methods": ["private void reportChange() { ... }", "public void process(Node externs, Node root) { ... }", "private void normalizeNodeTypes(Node n) { ... }", "private void normalizeBlocks(Node n) { ... }"]}

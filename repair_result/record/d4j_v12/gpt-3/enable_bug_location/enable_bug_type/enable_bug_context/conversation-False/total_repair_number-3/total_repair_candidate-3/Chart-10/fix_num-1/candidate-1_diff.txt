@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -1,4 +1,6 @@
+ public String generateToolTipFragment(String toolTipText) {
+-    return " title=\"" + toolTipText
+-        + "\" alt=\"\"";
++    // Escape double quotes for HTML attributes
++    String escapedText = toolTipText.replace("\"", "&quot;");
++    return " title=\"" + escapedText + "\" alt=\"\"";
+ }
++

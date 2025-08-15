@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,10 +1,8 @@
+ @Override public void visit(NodeTraversal t, Node n, Node parent) {
+-  if (t.inGlobalScope()) {
+-    return;
+-  }
+-
+-  if (n.isReturn() && n.getFirstChild() != null) {
+-    data.get(t.getScopeRoot()).recordNonEmptyReturn();
++  if (!t.inGlobalScope()) {
++    if (n.isReturn() && n.getFirstChild() != null) {
++      data.get(t.getScopeRoot()).recordNonEmptyReturn();
++    }
+   }
+ 
+   if (t.getScopeDepth() <= 2) {
+@@ -36,7 +34,7 @@
+         data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
+       }
+     }
+-  } else if (n.isGetProp() && n.isUnscopedQualifiedName() &&
++  } else if (n.isGetProp() && NodeUtil.isUnscopedQualifiedName(n) &&
+       NodeUtil.isLValue(n)) {
+     String name = NodeUtil.getRootOfQualifiedName(n).getString();
+     Scope scope = t.getScope();
+@@ -50,3 +48,4 @@
+     }
+   }
+ }
++

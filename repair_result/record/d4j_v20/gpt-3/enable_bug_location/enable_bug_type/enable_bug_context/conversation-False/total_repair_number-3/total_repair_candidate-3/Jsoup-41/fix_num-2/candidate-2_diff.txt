@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -5,5 +5,7 @@
+ 
+     Element element = (Element) o;
+ 
+-    return this == o;
++    // Compare the tags for equality
++    return tag != null ? tag.equals(element.tag) : element.tag == null;
+ }
++

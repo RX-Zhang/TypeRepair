@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -61,5 +61,14 @@
+     }
+   }
+ 
++  // Fix: Do not traverse into functions that are assignments lent to prototype
++  if (n.getType() == Token.FUNCTION && parent != null) {
++    JSDocInfo functionJsDoc = getFunctionJsDocInfo(n);
++    if (functionJsDoc != null && functionJsDoc.getLendsName() != null) {
++      return false;
++    }
++  }
++
+   return true;
+ }
++

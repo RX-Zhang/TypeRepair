@@ -1,0 +1,42 @@
+private boolean hasExceptionHandler(Node cfgNode) {
+  for (Node parent = cfgNode.getParent(); parent != null; parent = parent.getParent()) {
+    if (parent.isTry()) {
+      Node tryBlock = parent.getFirstChild();
+      Node catchBlock = tryBlock.getNext();
+      if (catchBlock != null && catchBlock.isCatch() && isNodeInBlock(cfgNode, tryBlock)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Helper method to determine if the node is within the try block.
+ */
+private boolean isNodeInBlock(Node node, Node block) {
+  for (Node child = block.getFirstChild(); child != null; child = child.getNext()) {
+    if (child == node || isDescendant(child, node)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Helper method to determine if 'descendant' is a descendant of 'node'.
+ */
+private boolean isDescendant(Node node, Node descendant) {
+  if (node == null) {
+    return false;
+  }
+  if (node == descendant) {
+    return true;
+  }
+  for (Node child = node.getFirstChild(); child != null; child = child.getNext()) {
+    if (isDescendant(child, descendant)) {
+      return true;
+    }
+  }
+  return false;
+}

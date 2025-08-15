@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -13,10 +13,15 @@
+       scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+       break;
+ 
+-      // "this" references aren't currently modeled in the CFG.
++    case Token.THIS:
++      // "this" references aren't currently modeled in the CFG,
++      // so we do not refine the scope for them.
++      // We can safely ignore or just return without error.
++      break;
+ 
+     default:
+       throw new IllegalArgumentException("Node cannot be refined. \n" +
+           node.toStringTree());
+   }
+ }
++

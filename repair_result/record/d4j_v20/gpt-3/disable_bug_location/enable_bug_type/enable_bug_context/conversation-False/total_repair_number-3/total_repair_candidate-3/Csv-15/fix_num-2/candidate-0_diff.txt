@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -6,7 +6,8 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
+-    final char quoteChar = getQuoteCharacter().charValue();
++    final Character quoteCharacter = getQuoteCharacter();
++    final char quoteChar = quoteCharacter != null ? quoteCharacter.charValue() : '"';
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+     if (quoteModePolicy == null) {
+@@ -36,12 +37,14 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // Fix logical expression to properly identify when quoting is needed for first char
++            // Quote if:
++            // - newRecord is true and the first char is less than 0x20 (control char)
++            // - or the first char is either the comment char or less than it
++            // (Note: COMMENT is a char constant, presumably '#')
++            if (newRecord && (c < 0x20)) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+-                // Some other chars at the start of a value caused the parser to fail, so for now
+-                // encapsulate if we start in anything less than '#'. We are being conservative
+-                // by including the default comment char too.
+                 quote = true;
+             } else {
+                 while (pos < end) {
+@@ -56,8 +59,7 @@
+                 if (!quote) {
+                     pos = end - 1;
+                     c = value.charAt(pos);
+-                    // Some other chars at the end caused the parser to fail, so for now
+-                    // encapsulate if we end in anything less than ' '
++                    // encapsulate if we end in anything less or equal than space (SP, 0x20)
+                     if (c <= SP) {
+                         quote = true;
+                     }
+@@ -104,3 +106,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,6 +1,9 @@
+ public static boolean testNode(Node node, NodeTest test) {
+     if (test == null) {
+         return true;
++    }
++    if (node == null) { // Added boundary check for node
++        return false; // Return false if node is null
+     }
+     if (test instanceof NodeNameTest) {
+         if (node.getNodeType() != Node.ELEMENT_NODE) {
+@@ -43,8 +46,9 @@
+         if (node.getNodeType() == Node.PROCESSING_INSTRUCTION_NODE) {
+             String testPI = ((ProcessingInstructionTest) test).getTarget();
+             String nodePI = ((ProcessingInstruction) node).getTarget();
+-            return testPI.equals(nodePI);
++            return equalStrings(testPI, nodePI); // Changed to equalStrings for null safety
+         }
+     }
+     return false;
+ }
++

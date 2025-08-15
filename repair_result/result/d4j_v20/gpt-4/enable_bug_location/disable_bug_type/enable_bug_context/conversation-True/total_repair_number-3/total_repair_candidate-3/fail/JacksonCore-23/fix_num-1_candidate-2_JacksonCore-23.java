@@ -1,0 +1,6 @@
+public DefaultPrettyPrinter createInstance() {
+    if (getClass() != DefaultPrettyPrinter.class) {
+        throw new IllegalStateException("Must override createInstance() in subclass " + getClass().getName());
+    }
+    return new DefaultPrettyPrinter(this);
+}

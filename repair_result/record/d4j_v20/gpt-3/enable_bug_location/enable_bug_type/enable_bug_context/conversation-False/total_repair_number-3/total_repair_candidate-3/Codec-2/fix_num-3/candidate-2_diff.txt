@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -30,7 +30,7 @@
+                 }
+                 break;
+         }
+-        if (lineLength > 0) {
++        if (lineLength > 0 && pos > 0) {  // Only add line separator if data was written
+             System.arraycopy(lineSeparator, 0, buf, pos, lineSeparator.length);
+             pos += lineSeparator.length;
+         }
+@@ -58,3 +58,4 @@
+         }
+     }
+ }
++

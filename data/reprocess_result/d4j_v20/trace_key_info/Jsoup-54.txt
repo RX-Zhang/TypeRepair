@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.helper.W3CDomTest.handlesInvalidAttributeNames
+- Error: org.w3c.dom.DOMException: INVALID_CHARACTER_ERR: An invalid or illegal XML character is specified.
+- Location:         Document w3Doc = new W3CDom().fromJsoup(jsoupDoc);

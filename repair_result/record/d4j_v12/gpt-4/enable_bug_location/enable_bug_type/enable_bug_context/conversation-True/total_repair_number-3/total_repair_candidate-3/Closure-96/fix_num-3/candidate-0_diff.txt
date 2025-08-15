@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -7,16 +7,22 @@
+   int ordinal = 0;
+   Node parameter = null;
+   Node argument = null;
+-  while (arguments.hasNext() &&
+-         parameters.hasNext()) {
+-    // If there are no parameters left in the list, then the while loop
+-    // above implies that this must be a var_args function.
++  while (arguments.hasNext()) {
++    if (!parameters.hasNext()) {
++      // If there are no parameters left in the list, then the while loop
++      // above implies that this must be a var_args function.
++      JSType varArgsType = functionType.getVarArgsType();
++      argument = arguments.next();
++      ordinal++;
++      validator.expectArgumentMatchesParameter(t, argument,
++          getJSType(argument), varArgsType, call, ordinal);
++    } else {
+       parameter = parameters.next();
+-    argument = arguments.next();
+-    ordinal++;
+-
+-    validator.expectArgumentMatchesParameter(t, argument,
+-        getJSType(argument), getJSType(parameter), call, ordinal);
++      argument = arguments.next();
++      ordinal++;
++      validator.expectArgumentMatchesParameter(t, argument,
++          getJSType(argument), getJSType(parameter), call, ordinal);
++    }
+   }
+ 
+   int numArgs = call.getChildCount() - 1;
+@@ -30,3 +36,4 @@
+             " and no more than " + maxArgs + " argument(s)" : "");
+   }
+ }
++

@@ -1,0 +1,43 @@
+--- 
++++ 
+@@ -5,6 +5,7 @@
+ 
+     Document doc = null;
+     boolean fullyRead = false;
++    String originalCharsetName = charsetName;
+ 
+     // read the start of the stream and look for a BOM or meta charset
+     input.mark(bufferSize);
+@@ -73,9 +74,30 @@
+             throw e.ioException();
+         }
+         Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // If the charset can't encode, fallback to UTF-8
++        if (!charset.newEncoder().canEncode()) {
++            charset = Charset.forName("UTF-8");
++            doc.outputSettings().charset(charset);
++            // update meta charset to UTF-8
++            Elements metaCharset = doc.select("meta[charset]");
++            if (!metaCharset.isEmpty()) {
++                metaCharset.first().attr("charset", "UTF-8");
++            } else {
++                Elements metaContentType = doc.select("meta[http-equiv=content-type]");
++                if (!metaContentType.isEmpty()) {
++                    metaContentType.first().attr("content", "text/html; charset=UTF-8");
++                } else {
++                    Element head = doc.head();
++                    if (head == null) head = doc.prependElement("head");
++                    head.appendElement("meta").attr("charset", "UTF-8");
++                }
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

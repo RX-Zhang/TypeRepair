@@ -1,0 +1,78 @@
+--- 
++++ 
+@@ -1,11 +1,11 @@
+ public JsonToken nextToken() throws IOException
+ {
+-	//Check for _allowMultipleMatches - false and atleast there is one token - which is _currToken
+-	// check for no buffered context _exposedContext - null
+-	//If all the conditions matches then check for scalar / non-scalar property
+-		//if not scalar and ended successfully, then return null
+-		//else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-		// then return null 
++    //Check for _allowMultipleMatches - false and atleast there is one token - which is _currToken
++    // check for no buffered context _exposedContext - null
++    //If all the conditions matches then check for scalar / non-scalar property
++        //if not scalar and ended successfully, then return null
++        //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++        // then return null 
+     // Anything buffered?
+     TokenFilterContext ctxt = _exposedContext;
+ 
+@@ -21,10 +21,17 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                } else if (ctxt.inObject()) {
++                    // Added this check for object context to fix multiple match bug
++                    t = delegate.getCurrentToken();
++                    if (t != JsonToken.START_OBJECT) {
++                        _currToken = t;
++                        return t;
++                    }
+                 }
+ 
+                 // Almost! Most likely still have the current token;
+@@ -54,9 +61,20 @@
+         return (_currToken = t);
+     }
+ 
++    // Handle case if multiple matches are not allowed
++    if (!_allowMultipleMatches) {
++        if (getMatchCount() > 0) {
++            // If already matched once and multiple matches not allowed, then skip/return null
++            // Clear current token so that no more matches are yielded
++            clearCurrentToken();
++            delegate.skipChildren();
++            return (_currToken = null);
++        }
++    }
++
+     // otherwise... to include or not?
+     TokenFilter f;
+-    
++
+     switch (t.id()) {
+     case ID_START_ARRAY:
+         f = _itemFilter;
+@@ -83,7 +101,7 @@
+             return (_currToken = t);
+         }
+         _headContext = _headContext.createChildArrayContext(f, false);
+-        
++
+         // Also: only need buffering if parent path to be included
+         if (_includePath) {
+             t = _nextTokenWithBuffering(_headContext);
+@@ -210,3 +228,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -60,15 +60,16 @@
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            return null; // Added return here to match behavior and avoid falling through.
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
++            return null; // Added return here to match behavior and avoid falling through.
+         }
+-        break;
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText;  // Return text here to allow nextTextValue() to return actual value.
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -88,6 +89,8 @@
+         break;
+     case XmlTokenStream.XML_END:
+         _currToken = null;
++        break;
+     }
+     return null;
+ }
++

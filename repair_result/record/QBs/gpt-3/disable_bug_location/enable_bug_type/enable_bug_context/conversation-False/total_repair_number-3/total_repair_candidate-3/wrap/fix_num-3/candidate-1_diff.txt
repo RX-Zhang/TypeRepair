@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -5,6 +5,10 @@
+         if end == -1:
+             end = cols
+         line, text = text[:end], text[end:]
++        # Remove leading spaces from the remaining text
++        text = text.lstrip()
+         lines.append(line)
++    if text:
++        lines.append(text)
+     return lines
+ 

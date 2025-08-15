@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -37,6 +37,8 @@
+      *   (T extends Comparable<T>). Need to add "placeholder"
+      *   for resolution to catch those.
+      */
++    // Use constructType with context to allow proper resolution of nested TypeVariables
+     context._addPlaceholder(name);
+     return _constructType(bounds[0], context);
+ }
++

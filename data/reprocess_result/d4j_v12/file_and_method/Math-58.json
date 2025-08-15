@@ -1,0 +1,1 @@
+{"ClassName": "GaussianFitter", "Fields": [], "Methods": ["public double[] fit(double[] initialGuess) { ... }", "public double[] fit() { ... }"]}

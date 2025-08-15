@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public EqualsBuilder append(Object lhs, Object rhs) {
+-    if (isEquals == false) {
++    if (!isEquals) {
+         return this;
+     }
+     if (lhs == rhs) {
+@@ -9,11 +9,11 @@
+         this.setEquals(false);
+         return this;
+     }
+-    Class lhsClass = lhs.getClass();
+-    if (!lhsClass.isArray()) {
+-            // The simple case, not an array, just test the element
+-            isEquals = lhs.equals(rhs);
+-    } else if (lhs.getClass() != rhs.getClass()) {
++    Class<?> lhsClass = lhs.getClass();
++    if (!lhsClass.isArray() && lhsClass == rhs.getClass()) {
++        // The simple case, not an array, just test the element
++        isEquals = lhs.equals(rhs);
++    } else if (lhsClass.isArray() && lhsClass != rhs.getClass()) {
+         // Here when we compare different dimensions, for example: a boolean[][] to a boolean[] 
+         this.setEquals(false);
+     }
+@@ -41,3 +41,4 @@
+     }
+     return this;
+ }
++

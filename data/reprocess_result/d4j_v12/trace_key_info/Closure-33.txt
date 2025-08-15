@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testIssue700
+- Error: junit.framework.AssertionFailedError: unexpected warnings(s):
+JSC_TYPE_MISMATCH. actual parameter 1 of temp3 does not match formal parameter
+found   : {b: boolean, n: number, text: (string|undefined)}
+- Location:     testTypes(

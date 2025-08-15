@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -18,4 +18,8 @@
+         if (next == firstFound)
+             break;
+     }
++    
++    // After popping, re-insert the firstFound element to preserve proper tag closure
++    stack.add(firstFound);
+ }
++

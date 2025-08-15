@@ -1,0 +1,64 @@
+--- 
++++ 
+@@ -6,20 +6,26 @@
+     if (this.topBlock != null) {
+         RectangleConstraint c1 = new RectangleConstraint(w[0], null,
+                 LengthConstraintType.FIXED, 0.0,
+-                new Range(0.0, constraint.getHeight()),
++                new Range(0.0, Math.max(0.0, constraint.getHeight())),
+                 LengthConstraintType.RANGE);
+         Size2D size = this.topBlock.arrange(g2, c1);
+         h[0] = size.height;
++    } else {
++        h[0] = 0.0;
+     }
+     w[1] = w[0];
+     if (this.bottomBlock != null) {
++        double bottomMaxHeight = Math.max(0.0, constraint.getHeight() - h[0]);
+         RectangleConstraint c2 = new RectangleConstraint(w[0], null,
+-                LengthConstraintType.FIXED, 0.0, new Range(0.0,
+-                constraint.getHeight() - h[0]), LengthConstraintType.RANGE);
++                LengthConstraintType.FIXED, 0.0,
++                new Range(0.0, bottomMaxHeight),
++                LengthConstraintType.RANGE);
+         Size2D size = this.bottomBlock.arrange(g2, c2);
+         h[1] = size.height;
++    } else {
++        h[1] = 0.0;
+     }
+-    h[2] = constraint.getHeight() - h[1] - h[0];
++    h[2] = Math.max(0.0, constraint.getHeight() - h[1] - h[0]);
+     if (this.leftBlock != null) {
+         RectangleConstraint c3 = new RectangleConstraint(0.0,
+                 new Range(0.0, constraint.getWidth()),
+@@ -27,18 +33,23 @@
+                 LengthConstraintType.FIXED);
+         Size2D size = this.leftBlock.arrange(g2, c3);
+         w[2] = size.width;
++    } else {
++        w[2] = 0.0;
+     }
+     h[3] = h[2];
+     if (this.rightBlock != null) {
++        double rightMaxWidth = Math.max(0.0, constraint.getWidth() - w[2]);
+         RectangleConstraint c4 = new RectangleConstraint(0.0,
+-                new Range(0.0, constraint.getWidth() - w[2]),
++                new Range(0.0, rightMaxWidth),
+                 LengthConstraintType.RANGE, h[2], null,
+                 LengthConstraintType.FIXED);
+         Size2D size = this.rightBlock.arrange(g2, c4);
+         w[3] = size.width;
++    } else {
++        w[3] = 0.0;
+     }
+     h[4] = h[2];
+-    w[4] = constraint.getWidth() - w[3] - w[2];
++    w[4] = Math.max(0.0, constraint.getWidth() - w[3] - w[2]);
+     RectangleConstraint c5 = new RectangleConstraint(w[4], h[4]);
+     if (this.centerBlock != null) {
+         this.centerBlock.arrange(g2, c5);
+@@ -66,3 +77,4 @@
+     }
+     return new Size2D(constraint.getWidth(), constraint.getHeight());
+ }
++

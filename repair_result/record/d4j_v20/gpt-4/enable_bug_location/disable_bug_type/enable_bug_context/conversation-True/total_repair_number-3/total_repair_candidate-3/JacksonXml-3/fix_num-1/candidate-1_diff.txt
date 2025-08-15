@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -46,7 +46,8 @@
+             // NOTE: this is different from nextToken() -- produce "", NOT null
+             _mayBeLeaf = false;
+             _currToken = JsonToken.VALUE_STRING;
+-            return (_currText = "");
++            _currText = "";
++            return _currText;
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+@@ -68,7 +69,7 @@
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText;
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -91,3 +92,4 @@
+     }
+     return null;
+ }
++

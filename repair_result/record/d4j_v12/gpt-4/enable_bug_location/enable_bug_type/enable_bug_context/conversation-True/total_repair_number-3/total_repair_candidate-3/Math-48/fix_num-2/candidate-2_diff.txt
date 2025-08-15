@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -26,6 +26,9 @@
+     // Keep track of inverted intervals, meaning that the left bound is
+     // larger than the right bound.
+     boolean inverted = false;
++
++    // Keep count of iterations to detect a stuck algorithm.
++    int iteration = 0;
+ 
+     // Keep finding better approximations.
+     while (true) {
+@@ -58,6 +61,12 @@
+             case REGULA_FALSI:
+                 // Detect early that algorithm is stuck, instead of waiting
+                 // for the maximum number of iterations to be exceeded.
++                iteration++;
++                if (iteration >= 2) {
++                    // Stuck case: break to avoid too many evaluations exception
++                    throw new org.apache.commons.math.exception.ConvergenceException(
++                        org.apache.commons.math.exception.util.LocalizedFormats.TOO_MANY_EVALUATIONS);
++                }
+                 break;
+             default:
+                 // Should never happen.
+@@ -121,3 +130,4 @@
+         }
+     }
+ }
++

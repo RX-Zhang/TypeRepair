@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -28,7 +28,7 @@
+ 
+     // pc data only tags (textarea, script): chomp to end tag, add content as text node
+     if (tag.isData()) {
+-        String data = tq.chompTo("</" + tagName);
++        String data = tq.chompTo("</" + tagName + ">");
+         tq.chompTo(">");
+         
+         Node dataNode;
+@@ -47,4 +47,12 @@
+             doc.setBaseUri(href); // set on the doc so doc.createElement(Tag) will get updated base
+         }
+     }
++
++    // Ensure that we properly handle the closing of the tag if it is a data tag
++    if (tag.isData()) {
++        // After handling the data node, we need to ensure that we are still in the correct context
++        // We do this by popping the stack to the suitable container
++        popStackToSuitableContainer(tag);
++    }
+ }
++

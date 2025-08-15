@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.analysis.solvers.BrentSolverTest.testRootEndpoints
+- Error: junit.framework.AssertionFailedError: expected:<3.141592653589793> but was:<1.2246467991473532E-16>
+- Location:         assertEquals(Math.PI, result, solver.getAbsoluteAccuracy());

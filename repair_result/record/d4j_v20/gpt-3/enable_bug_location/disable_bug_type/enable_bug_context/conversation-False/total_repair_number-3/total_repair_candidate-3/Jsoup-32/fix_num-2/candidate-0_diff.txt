@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public Element clone() {
+     Element clone = (Element) super.clone();
+-    clone.classNames();
++    if (clone.classNames != null) {
++        clone.classNames = new LinkedHashSet<>(clone.classNames);
++    }
+     return clone;
+ }
++

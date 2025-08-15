@@ -1,0 +1,13 @@
+protected BasePeriod(long duration) {
+    this(duration, null, null);
+    // bug [3264409]
+
+    // Fix: When constructing with only a duration, we should treat it as a time period (hours, minutes, etc.),
+    // not as calendar fields like weeks or days.
+    // So, initialize the fields as zero and then set the time fields correctly.
+    setPeriod(0, 0, 0, 0, 
+              (int) (duration / DateTimeConstants.MILLIS_PER_HOUR),
+              (int) ((duration % DateTimeConstants.MILLIS_PER_HOUR) / DateTimeConstants.MILLIS_PER_MINUTE),
+              (int) ((duration % DateTimeConstants.MILLIS_PER_MINUTE) / DateTimeConstants.MILLIS_PER_SECOND),
+              (int) (duration % DateTimeConstants.MILLIS_PER_SECOND));
+}

@@ -1,0 +1,1 @@
+['firstPreciserScopeKnowingConditionOutcome', 'nextPreciserScopeKnowingConditionOutcome', 'getTypeIfRefinable', 'declareNameInScope']

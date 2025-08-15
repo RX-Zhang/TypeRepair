@@ -1,0 +1,40 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 6 items
+
+python_testcases/test_detect_cycle.py ...F..                             [100%]
+
+=================================== FAILURES ===================================
+____________________________________ test4 _____________________________________
+
+    def test4():
+        """Case 4: 2-node list with no cycle
+        Expected Output: Cycle not detected!
+        """
+    
+        node6 = Node(6)
+        node7 = Node(7, node6)
+    
+>       detected = detect_cycle(node7)
+
+python_testcases/test_detect_cycle.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+node = <node.Node object at 0x7efc63882fb0>
+
+    def detect_cycle(node):
+        hare = tortoise = node
+    
+        while True:
+>           if hare.successor is None:
+E           AttributeError: 'NoneType' object has no attribute 'successor'
+
+python_programs/detect_cycle.py:5: AttributeError
+=========================== short test summary info ============================
+FAILED python_testcases/test_detect_cycle.py::test4 - AttributeError: 'NoneTy...
+========================= 1 failed, 5 passed in 0.03s ==========================

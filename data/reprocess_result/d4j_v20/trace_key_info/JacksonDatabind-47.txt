@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.ser.TestJsonSerialize.testBrokenAnnotation
+- Error: junit.framework.AssertionFailedError: Expected an exception with one of substrings ([types not related]): got one with message "Failed to widen type [simple type, class java.lang.Long] with annotation (value java.lang.String), from 'getValue': Class java.lang.String not a super-type of [simple type, class java.lang.Long]"
+- Location:             verifyException(e, "types not related");
+
+
+Test failure 2:
+- Test: com.fasterxml.jackson.databind.ser.TestJsonSerializeAs.testSpecializedAsIntermediate
+- Error: com.fasterxml.jackson.databind.JsonMappingException: Failed to widen type [simple type, class com.fasterxml.jackson.databind.ser.TestJsonSerializeAs$Bean1178Base] with annotation (value com.fasterxml.jackson.databind.ser.TestJsonSerializeAs$Bean1178Abstract), from 'value': Class com.fasterxml.jackson.databind.ser.TestJsonSerializeAs$Bean1178Abstract not a super-type of [simple type, class com.fasterxml.jackson.databind.ser.TestJsonSerializeAs$Bean1178Base]
+- Location:         assertEquals(aposToQuotes("{'value':{'a':1,'b':2}}"),

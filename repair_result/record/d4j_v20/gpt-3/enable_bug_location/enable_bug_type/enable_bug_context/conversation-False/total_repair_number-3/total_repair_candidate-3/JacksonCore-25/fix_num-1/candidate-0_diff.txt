@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -13,11 +13,13 @@
+         }
+         char c = _inputBuffer[_inputPtr];
+         int i = (int) c;
+-        if (i <= maxCode) {
+-            if (codes[i] != 0) {
+-                break;
+-            }
+-        } else if (!Character.isJavaIdentifierPart(c)) {
++        if (i < 0 || i >= maxCode) { // Boundary check added
++            break;
++        }
++        if (codes[i] != 0) {
++            break;
++        }
++        if (!Character.isJavaIdentifierPart(c)) {
+             break;
+         }
+         ++_inputPtr;
+@@ -41,3 +43,4 @@
+         return _symbols.findSymbol(buf, start, len, hash);
+     }
+ }
++

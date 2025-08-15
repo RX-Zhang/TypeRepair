@@ -1,0 +1,14 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.ConvertToDottedPropertiesTest.testQuotedProps
+- Error: junit.framework.AssertionFailedError: 
+Expected: ({"a\u0004b":0})
+Result: ({ab:0})
+- Location:     testSame("({'a\u0004b':0})");
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.ConvertToDottedPropertiesTest.testDoNotConvert
+- Error: junit.framework.AssertionFailedError: 
+Expected: a["A\u0004"]
+Result: a.A
+- Location:     testSame("a['A\u0004']");

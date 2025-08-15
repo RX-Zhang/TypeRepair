@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -3,7 +3,9 @@
+     int kind;
+ 
+     // first common types:
+-    if (raw == String.class || raw == Object.class) {
++    if (raw == CharSequence.class) {
++        return StringKD.forType(String.class);
++    } else if (raw == String.class || raw == Object.class) {
+         return StringKD.forType(raw);
+     } else if (raw == UUID.class) {
+         kind = TYPE_UUID;
+@@ -45,3 +47,4 @@
+     }
+     return new StdKeyDeserializer(kind, raw);
+ }
++

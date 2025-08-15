@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -35,9 +35,11 @@
+             ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name,
+                                                      nc.comment);
+             if (!orig.equals(ze.getName())) {
++                // Remove and re-insert to nameMap using the new name
+                 nameMap.remove(orig);
+                 nameMap.put(ze.getName(), ze);
+             }
+         }
+     }
+ }
++

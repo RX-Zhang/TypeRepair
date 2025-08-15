@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -22,6 +22,7 @@
+   for (int n = startLine; n < lineNumber; n++) {
+     int nextpos = js.indexOf('\n', pos);
+     if (nextpos == -1) {
++      // reached end of file before the requested line number
+       return null;
+     }
+     pos = nextpos + 1;
+@@ -31,12 +32,16 @@
+   lastOffset = pos;
+   lastLine = lineNumber;
+ 
+-  if (js.indexOf('\n', pos) == -1) {
+-    // If next new line cannot be found, there are two cases
+-    // 1. pos already reaches the end of file, then null should be returned
+-    // 2. otherwise, return the contents between pos and the end of file.
++  int nextNewLine = js.indexOf('\n', pos);
++  if (nextNewLine == -1) {
++    // end of file reached - if pos is at or beyond file length, return null
++    if (pos >= js.length()) {
+       return null;
++    } else {
++      return js.substring(pos);
++    }
+   } else {
+-    return js.substring(pos, js.indexOf('\n', pos));
++    return js.substring(pos, nextNewLine);
+   }
+ }
++

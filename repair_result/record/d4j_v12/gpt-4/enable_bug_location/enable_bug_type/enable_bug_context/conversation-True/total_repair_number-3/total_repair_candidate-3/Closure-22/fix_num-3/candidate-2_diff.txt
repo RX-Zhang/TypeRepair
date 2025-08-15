@@ -1,0 +1,38 @@
+--- 
++++ 
+@@ -17,14 +17,14 @@
+   // fix up the tree in more clever ways when these are removed.
+   if (parent.getType() == Token.COMMA) {
+     Node gramps = parent.getParent();
+-    if (gramps.isCall() && parent == gramps.getFirstChild()) {
++    if (gramps != null && gramps.isCall() && parent == gramps.getFirstChild()) {
+       if (n == parent.getFirstChild() && parent.getChildCount() == 2 && n.getNext().isName() && "eval".equals(n.getNext().getString())) {
+-    return;
++        return;
+       }
+-  }
++    }
+ 
+-  // This no-op statement was there so that JSDoc information could
+-  // be attached to the name. This check should not complain about it.
++    // This no-op statement was there so that JSDoc information could
++    // be attached to the name. This check should not complain about it.
+     if (n == parent.getLastChild()) {
+       for (Node an : parent.getAncestors()) {
+         int ancestorType = an.getType();
+@@ -39,8 +39,9 @@
+   } else if (parent.getType() != Token.EXPR_RESULT && parent.getType() != Token.BLOCK) {
+     if (parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() ||
+          n == parent.getFirstChild().getNext().getNext())) {
++      // valid; do nothing
+     } else {
+-    return;
++      return;
+     }
+   }
+ 
+@@ -70,3 +71,4 @@
+     }
+   }
+ }
++

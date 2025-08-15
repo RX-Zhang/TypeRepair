@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -153,9 +153,23 @@
+         if (n.getType() == Token.NE) {
+           result = result.not();
+         }
+-        report(t, n, DETERMINISTIC_TEST, leftType.toString(),
+-            rightType.toString(), result.toString());
+-      }
++
++        // Added special case for EnumType to ensure enum assignments are recognized as typed
++        if (leftType instanceof EnumType || rightType instanceof EnumType) {
++          // If either side is an enum, ensure the enum initializer check is done
++          if (n.getFirstChild().isObjectLit()) {
++            checkEnumInitializer(t, n.getFirstChild(), leftType.getPrimitiveType());
++          }
++          if (n.getLastChild().isObjectLit()) {
++            checkEnumInitializer(t, n.getLastChild(), rightType.getPrimitiveType());
++          }
++          // Assume 100% typed in presence of enums in equality checks
++        } else {
++          report(t, n, DETERMINISTIC_TEST, leftType.toString(),
++              rightType.toString(), result.toString());
++        }
++      }
++
+       ensureTyped(t, n, BOOLEAN_TYPE);
+       break;
+     }
+@@ -324,6 +338,7 @@
+         // If this is an enum, then give that type to the objectlit as well.
+         if ((n.getType() == Token.OBJECTLIT)
+             && (parent.getJSType() instanceof EnumType)) {
++          checkEnumInitializer(t, n, ((EnumType) parent.getJSType()).getElementsType());
+           ensureTyped(t, n, parent.getJSType());
+         } else {
+           ensureTyped(t, n);
+@@ -351,3 +366,4 @@
+ 
+   checkNoTypeCheckSection(n, false);
+ }
++

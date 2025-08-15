@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.stat.clustering.KMeansPlusPlusClustererTest.testPerformClusterAnalysisDegenerate
+- Error: java.lang.NullPointerException
+- Location:         List<Cluster<EuclideanIntegerPoint>> clusters = transformer.cluster(Arrays.asList(points), 1, 1);

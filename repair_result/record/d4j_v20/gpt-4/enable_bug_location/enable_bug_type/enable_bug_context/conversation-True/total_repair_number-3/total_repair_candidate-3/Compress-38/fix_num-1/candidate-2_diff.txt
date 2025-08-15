@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,9 +7,12 @@
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
++    // Normalize the name before checking for trailing slash
++    String normalized = normalizeFileName(getName(), preserveLeadingSlashes);
++    if (normalized.endsWith("/")) {
+         return true;
+     }
+ 
+     return false;
+ }
++

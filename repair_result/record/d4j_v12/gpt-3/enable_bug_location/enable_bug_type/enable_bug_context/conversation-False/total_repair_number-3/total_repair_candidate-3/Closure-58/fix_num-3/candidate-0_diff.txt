@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -26,9 +26,13 @@
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
+         }
++        if (lhs != null) {
+           addToSetIfLocal(lhs, kill);
+           addToSetIfLocal(lhs, gen);
+-        computeGenKill(rhs, gen, kill, conditional);
++        }
++        if (rhs != null) {
++          computeGenKill(rhs, gen, kill, conditional);
++        }
+       }
+       return;
+ 
+@@ -75,7 +79,10 @@
+           // assignments such as a += 1 reads a.
+           addToSetIfLocal(lhs, gen);
+         }
+-        computeGenKill(lhs.getNext(), gen, kill, conditional);
++        Node rhs = lhs.getNext();
++        if (rhs != null) {
++          computeGenKill(rhs, gen, kill, conditional);
++        }
+       } else {
+         for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+           computeGenKill(c, gen, kill, conditional);
+@@ -84,3 +91,4 @@
+       return;
+   }
+ }
++

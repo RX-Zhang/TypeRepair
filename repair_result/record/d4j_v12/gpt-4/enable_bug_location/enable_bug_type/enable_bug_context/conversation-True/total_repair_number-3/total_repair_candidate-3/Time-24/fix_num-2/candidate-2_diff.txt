@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -12,7 +12,7 @@
+         DurationField days = DurationFieldType.days().getField(iChrono);
+         DurationField first = savedFields[0].iField.getDurationField();
+         if (compareReverse(first, months) >= 0 && compareReverse(first, days) <= 0) {
+-            saveField(DateTimeFieldType.year(), iDefaultYear);
++            saveField(DateTimeFieldType.year(), iDefaultYear); // fixed: call saveField method
+             return computeMillis(resetFields, text);
+         }
+     }
+@@ -46,3 +46,4 @@
+     
+     return millis;
+ }
++

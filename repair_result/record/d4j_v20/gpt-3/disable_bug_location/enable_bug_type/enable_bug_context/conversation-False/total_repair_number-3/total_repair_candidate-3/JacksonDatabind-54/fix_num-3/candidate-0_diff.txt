@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -14,8 +14,8 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            // Fix: previously overridden by declaredType immediately after setting to TypeFactory.type
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -26,7 +26,7 @@
+         serializationType = serializationType.withContentTypeHandler(contentTypeSer);
+         ct = serializationType.getContentType();
+     }
+-    
++
+     Object valueToSuppress = null;
+     boolean suppressNulls = false;
+ 
+@@ -38,7 +38,7 @@
+ 
+     // 12-Jul-2016, tatu: [databind#1256] Need to make sure we consider type refinement
+     JavaType actualType = (serializationType == null) ? declaredType : serializationType;
+-    
++
+     switch (inclusion) {
+     case NON_DEFAULT:
+         // 11-Nov-2015, tatu: This is tricky because semantics differ between cases,
+@@ -102,3 +102,4 @@
+     }
+     return bpw;
+ }
++

@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -39,9 +39,17 @@
+             SettableBeanProperty typeProp = extProp.getTypeProperty();
+             // for now, should only be needed for creator properties, too
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+-                // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+-                //    apply deserializer... fun fun.
+-                buffer.assignParameter(typeProp, typeId);
++                Object idValue;
++                if (typeProp.getType().getRawClass() == String.class) {
++                    idValue = typeId;
++                } else {
++                    // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
++                    //    apply deserializer... fun fun.
++                    JsonParser p2 = _tokens[i].asParser(p);
++                    p2.nextToken();
++                    idValue = typeProp.getValueDeserializer().deserialize(p2, ctxt);
++                }
++                buffer.assignParameter(typeProp, idValue);
+             }
+         }
+     }
+@@ -55,3 +63,4 @@
+     }
+     return bean;
+ }
++

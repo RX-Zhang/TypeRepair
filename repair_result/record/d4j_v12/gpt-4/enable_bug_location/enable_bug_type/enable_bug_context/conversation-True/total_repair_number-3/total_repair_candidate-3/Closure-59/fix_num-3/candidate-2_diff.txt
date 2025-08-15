@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+     options.checkTypes = true;
+   } else if (options.disables(DiagnosticGroups.CHECK_TYPES)) {
+     options.checkTypes = false;
+-  } else if (!options.checkTypes) {
++  } else if (options.checkTypes) {
+     // If DiagnosticGroups did not override the plain checkTypes
+     // option, and checkTypes is enabled, then turn off the
+     // parser type warnings.
+@@ -29,13 +29,13 @@
+ 
+   if (options.checkGlobalThisLevel.isOn()) {
+     options.setWarningLevel(
+-        DiagnosticGroups.GLOBAL_THIS,
++        getDiagnosticGroups().GLOBAL_THIS,
+         options.checkGlobalThisLevel);
+   }
+ 
+   if (options.getLanguageIn() == LanguageMode.ECMASCRIPT5_STRICT) {
+     options.setWarningLevel(
+-        DiagnosticGroups.ES5_STRICT,
++        getDiagnosticGroups().ES5_STRICT,
+         CheckLevel.ERROR);
+   }
+ 
+@@ -61,3 +61,4 @@
+ 
+   this.warningsGuard = composedGuards;
+ }
++

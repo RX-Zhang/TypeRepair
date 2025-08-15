@@ -1,0 +1,9 @@
+Test failure 1:
+- Test: com.google.gson.internal.bind.RecursiveTypesResolveTest.testRecursiveTypeVariablesResolve12
+- Error: java.lang.StackOverflowError
+- Location: Unknown location
+
+Test failure 2:
+- Test: com.google.gson.internal.bind.RecursiveTypesResolveTest.testRecursiveTypeVariablesResolve1
+- Error: java.lang.StackOverflowError
+- Location: Unknown location

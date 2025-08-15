@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -34,8 +34,10 @@
+         case '$':
+         case '.':
+             regex.append('\\');
++            break;
+         }
+         regex.append(c);
+     }
+     return regex;
+ }
++

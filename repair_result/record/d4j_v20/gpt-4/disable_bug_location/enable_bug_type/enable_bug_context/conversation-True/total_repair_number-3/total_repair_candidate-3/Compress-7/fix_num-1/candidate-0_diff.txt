@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -6,8 +6,10 @@
+         if (buffer[i] == 0) {
+             break;
+         }
+-        result.append((char) buffer[i]);
++        // Mask with BYTE_MASK to correctly convert to unsigned byte before casting
++        result.append((char) (buffer[i] & 0xFF));
+     }
+ 
+     return result.toString();
+ }
++

@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -26,25 +26,34 @@
+   }
+ 
+   Node replacement;
+-    // All assignments evaluate to true, so make sure that the
+-    // expr statement evaluates to true in case it matters.
+-    nodes.add(new Node(Token.TRUE));
++  // All assignments evaluate to true, so make sure that the
++  // expr statement evaluates to true in case it matters.
++  nodes.add(new Node(Token.TRUE));
+ 
+-    // Join these using COMMA.  A COMMA node must have 2 children, so we
+-    // create a tree. In the tree the first child be the COMMA to match
+-    // the parser, otherwise tree equality tests fail.
+-    nodes = Lists.reverse(nodes);
++  // Join these using COMMA.  A COMMA node must have 2 children, so we
++  // create a tree. In the tree the first child be the COMMA to match
++  // the parser, otherwise tree equality tests fail.
++  nodes = Lists.reverse(nodes);
++  int n = nodes.size();
++  if (n == 1) {
++    // Only TRUE node is present
++    replacement = nodes.get(0);
++  } else if (n == 2) {
++    replacement = new Node(Token.COMMA, nodes.get(0), nodes.get(1));
++  } else {
+     replacement = new Node(Token.COMMA);
+     Node cur = replacement;
+-    int i;
+-    for (i = 0; i < nodes.size() - 2; i++) {
+-      cur.addChildToFront(nodes.get(i));
++    // Add first two nodes
++    cur.addChildToBack(nodes.get(0));
++    cur.addChildToBack(nodes.get(1));
++    for (int i = 2; i < n - 1; i++) {
+       Node t = new Node(Token.COMMA);
+-      cur.addChildToFront(t);
++      cur.addChildToBack(t);
+       cur = t;
++      cur.addChildToBack(nodes.get(i));
+     }
+-    cur.addChildToFront(nodes.get(i));
+-    cur.addChildToFront(nodes.get(i + 1));
++    cur.addChildToBack(nodes.get(n - 1));
++  }
+ 
+   Node replace = ref.getParent();
+   replacement.copyInformationFromForTree(replace);
+@@ -56,3 +65,4 @@
+     replace.getParent().replaceChild(replace, replacement);
+   }
+ }
++

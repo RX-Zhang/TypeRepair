@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.joda.time.field.TestFieldUtils.testSafeMultiplyLongInt
+- Error: junit.framework.AssertionFailedError
+- Location:             fail();

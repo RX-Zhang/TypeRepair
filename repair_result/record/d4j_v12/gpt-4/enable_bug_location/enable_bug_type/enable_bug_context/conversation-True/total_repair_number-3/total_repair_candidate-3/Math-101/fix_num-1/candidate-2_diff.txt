@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -52,12 +52,15 @@
+     }
+ 
+     // parse imaginary character
+-    int n = getImaginaryCharacter().length();
++    String imaginaryChar = getImaginaryCharacter();
++    if (imaginaryChar == null || imaginaryChar.isEmpty()) {
++        imaginaryChar = "i";
++    }
++    int n = imaginaryChar.length();
+     startIndex = pos.getIndex();
+     int endIndex = startIndex + n;
+-    if (
+-        source.substring(startIndex, endIndex).compareTo(
+-        getImaginaryCharacter()) != 0) {
++    if (endIndex > source.length() || 
++        source.substring(startIndex, endIndex).compareTo(imaginaryChar) != 0) {
+         // set index back to initial, error index should be the start index
+         // character examined.
+         pos.setIndex(initialIndex);
+@@ -68,3 +71,4 @@
+ 
+     return new Complex(re.doubleValue(), im.doubleValue() * sign);
+ }
++

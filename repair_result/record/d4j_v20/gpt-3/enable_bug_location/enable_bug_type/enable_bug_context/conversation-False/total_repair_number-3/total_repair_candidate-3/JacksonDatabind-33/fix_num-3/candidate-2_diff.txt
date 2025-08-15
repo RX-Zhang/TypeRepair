@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -15,7 +15,8 @@
+              */
+         } else if (_hasAnnotation(a, JsonSerialize.class)
+                 || _hasAnnotation(a, JsonView.class)
+-                || _hasAnnotation(a, JsonRawValue.class)) {
++                || _hasAnnotation(a, JsonRawValue.class)
++                || _hasAnnotation(a, JsonUnwrapped.class)) { // Added check for JsonUnwrapped
+             name = "";
+         } else {
+             return null;
+@@ -23,3 +24,4 @@
+     }
+     return PropertyName.construct(name);
+ }
++

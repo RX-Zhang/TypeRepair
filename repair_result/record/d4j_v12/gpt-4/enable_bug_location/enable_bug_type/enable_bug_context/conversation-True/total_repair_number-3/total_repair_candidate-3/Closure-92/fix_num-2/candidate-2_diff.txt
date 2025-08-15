@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -22,6 +22,7 @@
+         Node valueNode = nameNode.getNext();
+         assignNode.removeChild(nameNode);
+         assignNode.removeChild(valueNode);
++        valueNode.detach();  // Added to properly detach valueNode before adding.
+         nameNode.addChildToFront(valueNode);
+         Node varNode = new Node(Token.VAR, nameNode);
+         varNode.copyInformationFrom(candidateDefinition);
+@@ -61,3 +62,4 @@
+     compiler.reportCodeChange();
+   }
+ }
++

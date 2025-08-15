@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -10,6 +10,8 @@
+     _inputBuffer = inputBuffer;
+     _inputPtr = start;
+     _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
++    // Apply the input buffer start offset to the processed bytes so location tracking is relative to actual input start
++    _currInputProcessed = -start;
+     _bufferRecyclable = bufferRecyclable;
+ }
++

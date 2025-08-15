@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,5 +1,13 @@
+ public static int formatLongOctalOrBinaryBytes(
+     final long value, final byte[] buf, final int offset, final int length) {
++
++    // Input validation
++    if (buf == null) {
++        throw new IllegalArgumentException("Buffer cannot be null.");
++    }
++    if (offset < 0 || length < 0 || offset + length > buf.length) {
++        throw new IllegalArgumentException("Invalid offset or length.");
++    }
+ 
+     // Check whether we are dealing with UID/GID or SIZE field
+     final long maxAsOctalChar = length == TarConstants.UIDLEN ? TarConstants.MAXID : TarConstants.MAXSIZE;
+@@ -11,9 +19,11 @@
+ 
+     if (length < 9) {
+         formatLongBinary(value, buf, offset, length, negative);
++    } else {
++        formatBigIntegerBinary(value, buf, offset, length, negative);
+     }
+-    formatBigIntegerBinary(value, buf, offset, length, negative);
+ 
+     buf[offset] = (byte) (negative ? 0xff : 0x80);
+     return offset + length;
+ }
++

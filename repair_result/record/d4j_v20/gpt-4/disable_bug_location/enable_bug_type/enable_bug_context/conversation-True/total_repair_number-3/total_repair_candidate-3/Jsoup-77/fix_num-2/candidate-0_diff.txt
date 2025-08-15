@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -17,5 +17,8 @@
+         stack.remove(pos);
+         if (next == firstFound)
+             break;
++        if (pos == 0)
++            break;
+     }
+ }
++

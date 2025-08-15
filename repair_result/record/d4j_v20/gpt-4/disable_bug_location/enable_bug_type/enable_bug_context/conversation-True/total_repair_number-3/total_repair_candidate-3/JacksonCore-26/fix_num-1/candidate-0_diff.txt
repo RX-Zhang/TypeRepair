@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -4,8 +4,8 @@
+     if (_inputPtr < _inputEnd) {
+         _reportError("Still have %d undecoded bytes, should not call 'feedInput'", _inputEnd - _inputPtr);
+     }
+-    if (end < start) {
+-        _reportError("Input end (%d) may not be before start (%d)", end, start);
++    if (end <= start) {  // Changed from 'end < start' to 'end <= start' to ensure no zero-length or invalid range
++        _reportError("Input end (%d) may not be before or equal to start (%d)", end, start);
+     }
+     // and shouldn't have been marked as end-of-input
+     if (_endOfInput) {
+@@ -23,3 +23,4 @@
+     _inputEnd = end;
+     _origBufferLen = end - start;
+ }
++

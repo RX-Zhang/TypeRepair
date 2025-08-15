@@ -1,0 +1,30 @@
+private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
+    if (notPrinter && notParser) {
+        throw new IllegalStateException("Builder has created neither a printer nor a parser");
+    }
+    int size = elementPairs.size();
+    if (size >= 2 && elementPairs.get(0) instanceof Separator) {
+        Separator sep = (Separator) elementPairs.get(0);
+
+        // Add boundary checks and exception handling to prevent execution errors
+        try {
+            // Ensure subList indices are valid to avoid IndexOutOfBoundsException
+            if (size - 2 < 0) {
+                throw new IllegalStateException("Invalid elementPairs subList range");
+            }
+            PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+            sep = sep.finish(f.getPrinter(), f.getParser());
+            return new PeriodFormatter(sep, sep);
+        } catch (IndexOutOfBoundsException ex) {
+            throw new IllegalStateException("Invalid formatting structure in elementPairs", ex);
+        }
+    }
+    Object[] comp = createComposite(elementPairs);
+    if (notPrinter) {
+        return new PeriodFormatter(null, (PeriodParser) comp[1]);
+    } else if (notParser) {
+        return new PeriodFormatter((PeriodPrinter) comp[0], null);
+    } else {
+        return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+    }
+}

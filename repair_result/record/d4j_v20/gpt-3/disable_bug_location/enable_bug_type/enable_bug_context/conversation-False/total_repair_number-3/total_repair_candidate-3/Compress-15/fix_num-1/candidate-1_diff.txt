@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -18,10 +18,10 @@
+     String myComment = getComment();
+     String otherComment = other.getComment();
+     if (myComment == null) {
+-        if (otherComment != null) {
++        if (otherComment != null && otherComment.length() != 0) {
+             return false;
+         }
+-    } else if (!myComment.equals(otherComment)) {
++    } else if (!(myComment.equals(otherComment) || (myComment.length() == 0 && otherComment == null))) {
+         return false;
+     }
+     return getTime() == other.getTime()
+@@ -36,5 +36,6 @@
+                          other.getCentralDirectoryExtra())
+         && Arrays.equals(getLocalFileDataExtra(),
+                          other.getLocalFileDataExtra())
+-        && gpb.equals(other.gpb);
++        && (gpb == null ? other.gpb == null : gpb.equals(other.gpb));
+ }
++

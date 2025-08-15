@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -12,13 +12,19 @@
+     numToRead = Math.min(numToRead, available());
+     
+     totalRead = is.read(buf, offset, numToRead);
+-    count(totalRead);
+     
+     if (totalRead == -1) {
+         hasHitEOF = true;
++        // If entryOffset is less than entrySize when EOF is reached,
++        // it means the entry is truncated -> throw IOException
++        if (entryOffset < entrySize) {
++            throw new IOException("Truncated entry: expected " + entrySize + " bytes, but only read " + entryOffset);
++        }
+     } else {
+         entryOffset += totalRead;
+     }
+ 
++    count(totalRead);
+     return totalRead;
+ }
++

@@ -1,0 +1,39 @@
+public void captureArgumentsFrom(Invocation invocation) {
+    if (invocation.getRawArguments() == null || invocation.getRawArguments().length == 0) {
+        throw new IllegalArgumentException("Invocation arguments cannot be null or empty");
+    }
+
+    if (invocation.getMethod().isVarArgs()) {
+        int indexOfVararg = invocation.getRawArguments().length - 1;
+        if (indexOfVararg < 0 || invocation.getRawArguments()[indexOfVararg] == null) {
+            throw new UnsupportedOperationException("Varargs cannot be processed due to invalid arguments");
+        }
+        // Handle varargs capturing logic here if needed
+    } else {
+        for (int position = 0; position < matchers.size(); position++) {
+            Matcher m = matchers.get(position);
+            if (m instanceof CapturesArguments) {
+                if (position < invocation.getRawArguments().length) {
+                    ((CapturesArguments) m).captureFrom(invocation.getArgumentAt(position, Object.class));
+                }
+            }
+        }
+    }
+
+    for (int position = 0; position < matchers.size(); position++) {
+        Matcher m = matchers.get(position);
+        if (m instanceof CapturesArguments && invocation.getRawArguments().length > position) {
+            if (isVariableArgument(invocation, position) && isVarargMatcher(m)) {
+                Object array = invocation.getRawArguments()[position];
+                if (array != null && array.getClass().isArray()) {
+                    for (int i = 0; i < Array.getLength(array); i++) {
+                        ((CapturesArguments) m).captureFrom(Array.get(array, i));
+                    }
+                    return; // since we've captured all varargs already, it does not make sense to process other matchers.
+                }
+            } else {
+                ((CapturesArguments) m).captureFrom(invocation.getRawArguments()[position]);
+            }
+        }
+    }
+}

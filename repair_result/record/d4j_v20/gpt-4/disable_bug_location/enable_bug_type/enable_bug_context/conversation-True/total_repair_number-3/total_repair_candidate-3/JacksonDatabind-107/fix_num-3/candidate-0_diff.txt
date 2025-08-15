@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -32,7 +32,8 @@
+              *   type in process (getting SimpleType of Map.class which will not work as expected)
+              */
+             if ((_baseType != null)
+-                    && _baseType.getClass() == type.getClass()) {
++                    && (_baseType.getClass() == type.getClass())
++                    && type.getRawClass().isAssignableFrom(_baseType.getRawClass())) {
+                 /* 09-Aug-2015, tatu: Not sure if the second part of the check makes sense;
+                  *   but it appears to check that JavaType impl class is the same which is
+                  *   important for some reason?
+@@ -48,7 +49,12 @@
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
+         }
++        if (deser == null) {
++            // Defensive check to avoid null pointer issues
++            deser = _findDefaultImplDeserializer(ctxt);
++        }
+         _deserializers.put(typeId, deser);
+     }
+     return deser;
+ }
++

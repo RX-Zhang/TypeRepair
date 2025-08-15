@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -11,6 +11,13 @@
+             return _currText;
+         }
+         _updateState(t);
++
++        // Update parsing context current name properly when token is FIELD_NAME
++        if (t == JsonToken.FIELD_NAME) {
++            // Ensure the parsing context has the proper current name of this field
++            overrideCurrentName(_xmlTokens.getLocalName());
++        }
++
+         return null;
+     }
+ 
+@@ -91,3 +98,4 @@
+     }
+     return null;
+ }
++

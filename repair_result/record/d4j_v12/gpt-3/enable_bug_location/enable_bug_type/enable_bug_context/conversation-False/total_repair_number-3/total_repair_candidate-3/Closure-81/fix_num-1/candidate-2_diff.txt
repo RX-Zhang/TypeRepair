@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -46,5 +46,6 @@
+   Node bodyNode = transform(functionNode.getBody());
+   parseDirectives(bodyNode);
+   node.addChildToBack(bodyNode);
+- return node;
++  return node;
+ }
++

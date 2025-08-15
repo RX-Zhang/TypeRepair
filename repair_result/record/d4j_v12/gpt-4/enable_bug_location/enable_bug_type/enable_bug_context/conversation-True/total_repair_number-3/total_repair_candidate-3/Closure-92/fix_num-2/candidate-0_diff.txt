@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -51,7 +51,7 @@
+             providedNames.get(namespace.substring(0, indexOfDot));
+         Preconditions.checkNotNull(parentName);
+         Preconditions.checkNotNull(parentName.replacementNode);
+-        parentName.replacementNode.getParent().addChildAfter(
++        parentName.replacementNode.getParent().addChildBefore(
+             replacementNode, parentName.replacementNode);
+       }
+     }
+@@ -61,3 +61,4 @@
+     compiler.reportCodeChange();
+   }
+ }
++

@@ -1,0 +1,61 @@
+--- 
++++ 
+@@ -19,20 +19,45 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            int pos = arg.indexOf('=');
++            String opt = null;
++            String value = null;
+ 
+-            if (options.hasOption(opt))
++            if (pos != -1)
+             {
+-                tokens.add(arg);
++                String optString = arg.substring(0, pos);
++                opt = Util.stripLeadingHyphens(optString);
++                value = arg.substring(pos + 1);
++
++                if (options.hasOption(opt))
++                {
++                    tokens.add(optString);
++                    tokens.add(value);
++                }
++                else if (options.hasOption(arg.substring(0, 2)))
++                {
++                    // the format is a special properties option (-Dproperty=value)
++                    tokens.add(arg.substring(0, 2)); // -D
++                    tokens.add(arg.substring(2));
++                }
++                else
++                {
++                    eatTheRest = stopAtNonOption;
++                    tokens.add(arg);
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                opt = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg);
++                }
++                else if (options.hasOption(arg.substring(0, 2)))
++                {
++                    tokens.add(arg.substring(0, 2));
++                    tokens.add(arg.substring(2));
+                 }
+                 else
+                 {
+@@ -57,3 +82,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

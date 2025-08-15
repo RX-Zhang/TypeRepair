@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ private Fraction(double value, double epsilon, int maxDenominator, int maxIterations)
+     throws FractionConversionException
+ {
+-    long overflow = Integer.MAX_VALUE;
++    final long overflow = Integer.MAX_VALUE;
+     double r0 = value;
+     long a0 = (long)FastMath.floor(r0);
+     if (a0 > overflow) {
+@@ -11,6 +11,9 @@
+     // check for (almost) integer arguments, which should not go
+     // to iterations.
+     if (FastMath.abs(a0 - value) < epsilon) {
++        if (a0 > Integer.MAX_VALUE || a0 < Integer.MIN_VALUE) {
++            throw new FractionConversionException(value, a0, 1l);
++        }
+         this.numerator = (int) a0;
+         this.denominator = 1;
+         return;
+@@ -32,7 +35,7 @@
+         long a1 = (long)FastMath.floor(r1);
+         p2 = (a1 * p1) + p0;
+         q2 = (a1 * q1) + q0;
+-        if ((p2 > overflow) || (q2 > overflow)) {
++        if ((p2 > overflow) || (q2 > overflow) || (p2 < Integer.MIN_VALUE) || (q2 < Integer.MIN_VALUE)) {
+             throw new FractionConversionException(value, p2, q2);
+         }
+ 
+@@ -53,12 +56,14 @@
+         throw new FractionConversionException(value, maxIterations);
+     }
+ 
+-    if (q2 < maxDenominator) {
+-        this.numerator = (int) p2;
+-        this.denominator = (int) q2;
+-    } else {
+-        this.numerator = (int) p1;
+-        this.denominator = (int) q1;
++    try {
++        Fraction reduced = Fraction.getReducedFraction((int)p2, (int)q2);
++        this.numerator = reduced.getNumerator();
++        this.denominator = reduced.getDenominator();
++    } catch (MathArithmeticException e) {
++        Fraction reduced = Fraction.getReducedFraction((int)p1, (int)q1);
++        this.numerator = reduced.getNumerator();
++        this.denominator = reduced.getDenominator();
+     }
++}
+ 
+-}

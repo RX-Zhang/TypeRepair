@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -42,11 +42,13 @@
+ 
+         // Update the bounds with the new approximation.
+         if (f1 * fx < 0) {
+-            // The value of x1 has switched to the other bound, thus inverting
++            // The value of x0 has switched to the other bound, thus inverting
+             // the interval.
+             x0 = x1;
+             f0 = f1;
+             inverted = !inverted;
++            x1 = x;
++            f1 = fx;
+         } else {
+             switch (method) {
+             case ILLINOIS:
+@@ -60,10 +62,10 @@
+             default:
+                 // Should never happen.
+             }
++            // Update from [x0, x1] to [x0, x].
++            x1 = x;
++            f1 = fx;
+         }
+-        // Update from [x0, x1] to [x0, x].
+-        x1 = x;
+-        f1 = fx;
+ 
+         // If the function value of the last approximation is too small,
+         // given the function value accuracy, then we can't get closer to
+@@ -118,3 +120,4 @@
+         }
+     }
+ }
++

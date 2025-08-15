@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -29,17 +29,15 @@
+                         // if we cannot add the value don't worry about it
+                     }
+                 }
++                cmd.addOption(opt);
+             }
+-            else if (!("yes".equalsIgnoreCase(value)
++            else if ("yes".equalsIgnoreCase(value)
+                     || "true".equalsIgnoreCase(value)
+-                    || "1".equalsIgnoreCase(value)))
++                    || "1".equalsIgnoreCase(value))
+             {
+-                // if the value is not yes, true or 1 then don't add the
+-                // option to the CommandLine
+-                break;
++                cmd.addOption(opt);
+             }
+-
+-            cmd.addOption(opt);
+         }
+     }
+ }
++

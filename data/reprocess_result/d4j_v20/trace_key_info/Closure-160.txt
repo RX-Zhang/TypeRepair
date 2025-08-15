@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CommandLineRunnerTest.testCheckSymbolsOverrideForQuiet
+- Error: junit.framework.AssertionFailedError: Expected exactly one warning or error Errors: 
+Warnings: 
+ expected:<1> but was:<0>
+- Location:     test("x = 3;", VarCheck.UNDEFINED_VAR_ERROR);

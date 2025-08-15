@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -2,6 +2,7 @@
+                                          int nextLineTabStop, String text)
+ {
+     int pos = findWrapPos(text, width, 0);
++    int startPos = 0;
+ 
+     if (pos == -1)
+     {
+@@ -10,6 +11,7 @@
+         return sb;
+     }
+     sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++    startPos = pos;
+ 
+     // all following lines must be padded with nextLineTabStop space 
+     // characters
+@@ -18,20 +20,23 @@
+     while (true)
+     {
+         int lastPos = pos;
+-        text = padding + text.substring(pos).trim();
++        // Adjust startPos for next search after the trimmed substring
++        String trimmedSubstring = text.substring(startPos).trim();
++        text = padding + trimmedSubstring;
+         pos = findWrapPos(text, width, 0);
+-
+         if (pos == -1)
+         {
+             sb.append(text);
+ 
+             return sb;
+-        } else
+-        if (pos == lastPos)
++        }
++        else if (pos == lastPos)
+         {
+             throw new RuntimeException("Text too long for line - throwing exception to avoid infinite loop [CLI-162]: " + text);
+         }
+ 
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        startPos += lastPos;
+     }
+ }
++

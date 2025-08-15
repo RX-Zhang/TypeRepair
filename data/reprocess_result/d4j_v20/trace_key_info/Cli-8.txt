@@ -1,0 +1,5 @@
+Test failure 1:
+- Test: org.apache.commons.cli.HelpFormatterTest.testPrintWrapped
+- Error: junit.framework.ComparisonFailure: single line padded text 2 expected:<...TE[-DATE] where DATE[
+                       ] has form YYYY[MM[DD...> but was:<...TE[-DATE] where DATE[] has form YYYY[MM[DD...>
+- Location:       assertEquals("single line padded text 2", expected, sb.toString());

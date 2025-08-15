@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -143,13 +143,13 @@
+                 } else {
+                     b = u;
+                 }
+-                if (fu <= fw ||
++                if (fu < fw || // Changed from 'fu <= fw' to 'fu < fw'
+                     Precision.equals(w, x)) {
+                     v = w;
+                     fv = fw;
+                     w = u;
+                     fw = fu;
+-                } else if (fu <= fv ||
++                } else if (fu < fv || // Changed from 'fu <= fv' to 'fu < fv'
+                            Precision.equals(v, x) ||
+                            Precision.equals(v, w)) {
+                     v = u;
+@@ -165,3 +165,4 @@
+         ++iter;
+     }
+ }
++

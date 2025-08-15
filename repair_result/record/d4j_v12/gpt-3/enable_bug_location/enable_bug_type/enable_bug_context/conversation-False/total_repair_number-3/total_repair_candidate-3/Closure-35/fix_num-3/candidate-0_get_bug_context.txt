@@ -1,0 +1,1 @@
+['ensurePropertyDefined', 'ensurePropertyDeclared', 'ensurePropertyDeclaredHelper', 'traverseObjectLiteral', 'getPropertyType']

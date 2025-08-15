@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,5 +1,4 @@
+-private void resolveLocalFileHeaderData(Map<ZipArchiveEntry, NameAndComment>
+-                                        entriesWithoutUTF8Flag)
++private void resolveLocalFileHeaderData(Map<ZipArchiveEntry, NameAndComment> entriesWithoutUTF8Flag)
+     throws IOException {
+     // changing the name of a ZipArchiveEntry is going to change
+     // the hashcode - see COMPRESS-164
+@@ -32,8 +31,7 @@
+         if (entriesWithoutUTF8Flag.containsKey(ze)) {
+             String orig = ze.getName();
+             NameAndComment nc = entriesWithoutUTF8Flag.get(ze);
+-            ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name,
+-                                                     nc.comment);
++            ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name, nc.comment);
+             if (!orig.equals(ze.getName())) {
+                 nameMap.remove(orig);
+                 nameMap.put(ze.getName(), ze);
+@@ -41,3 +39,4 @@
+         }
+     }
+ }
++

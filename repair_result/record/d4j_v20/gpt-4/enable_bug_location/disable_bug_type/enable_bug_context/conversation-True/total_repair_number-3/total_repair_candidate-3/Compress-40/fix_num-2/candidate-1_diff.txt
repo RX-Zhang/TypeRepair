@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -5,7 +5,18 @@
+     while (bitsCachedSize < count) {
+         final long nextByte = in.read();
+         if (nextByte < 0) {
+-            return nextByte;
++            if (bitsCachedSize == 0) {
++                return -1;
++            }
++            // Return whatever bits are left in the cache even if less than count
++            final long bitsOut;
++            if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
++                bitsOut = bitsCached & MASKS[bitsCachedSize];
++            } else {
++                bitsOut = (bitsCached >> (bitsCachedSize - bitsCachedSize)) & MASKS[bitsCachedSize];
++            }
++            clearBitCache();
++            return bitsOut;
+         }
+         if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+             bitsCached |= (nextByte << bitsCachedSize);
+@@ -15,15 +26,15 @@
+         }
+         bitsCachedSize += 8;
+     }
+-        // bitsCachedSize >= 57 and left-shifting it 8 bits would cause an overflow
+-    
+     final long bitsOut;
+-        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+-            bitsOut = (bitsCached & MASKS[count]);
+-            bitsCached >>>= count;
+-        } else {
+-            bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
+-        }
+-        bitsCachedSize -= count;
++    if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
++        bitsOut = (bitsCached & MASKS[count]);
++        bitsCached >>>= count;
++    } else {
++        bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
++        bitsCached &= ~(MASKS[count] << (bitsCachedSize - count));
++    }
++    bitsCachedSize -= count;
+     return bitsOut;
+ }
++

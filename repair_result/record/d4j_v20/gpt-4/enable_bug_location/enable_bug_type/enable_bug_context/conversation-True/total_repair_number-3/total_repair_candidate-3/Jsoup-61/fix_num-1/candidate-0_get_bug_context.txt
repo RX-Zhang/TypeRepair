@@ -1,0 +1,1 @@
+['getElementsByClass', 'getElementsByAttributeValueContaining', 'classNames', 'hasClass']

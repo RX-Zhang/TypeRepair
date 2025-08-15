@@ -1,0 +1,56 @@
+--- 
++++ 
+@@ -12,8 +12,7 @@
+     if (parent.isGetProp()) {
+       Preconditions.checkState(parent.getFirstChild() == name);
+       // A call target may be using the object as a 'this' value.
+-      if (gramps.isCall()
+-          && gramps.getFirstChild() == parent) {
++      if (gramps.isCall() && gramps.getFirstChild() == parent) {
+         return false;
+       }
+ 
+@@ -41,7 +40,7 @@
+ 
+     // Only rewrite VAR declarations or simple assignment statements
+     if (!isVarOrAssignExprLhs(name)) {
+-       return false;
++      return false;
+     }
+ 
+     Node val = ref.getAssignedValue();
+@@ -63,10 +62,8 @@
+     // but x = {a: 1, b: x.a} is.
+     //
+     // Also, ES5 getters/setters aren't handled by this pass.
+-    for (Node child = val.getFirstChild(); child != null;
+-         child = child.getNext()) {
+-      if (child.isGetterDef() ||
+-          child.isSetterDef()) {
++    for (Node child = val.getFirstChild(); child != null; child = child.getNext()) {
++      if (child.isGetterDef() || child.isSetterDef()) {
+         // ES5 get/set not supported.
+         return false;
+       }
+@@ -79,7 +76,7 @@
+       // will happen.
+       for (Reference t : refs) {
+         Node refNode = t.getParent();
+-        while (!NodeUtil.isStatementBlock(refNode)) {
++        while (refNode != null && !NodeUtil.isStatementBlock(refNode)) {
+           if (refNode == childVal) {
+             // There's a self-referential assignment
+             return false;
+@@ -89,7 +86,6 @@
+       }
+     }
+ 
+-
+     // We have found an acceptable object literal assignment. As
+     // long as there are no other assignments that mess things up,
+     // we can inline.
+@@ -97,3 +93,4 @@
+   }
+   return ret;
+ }
++

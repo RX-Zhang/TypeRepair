@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.deser.creators.DelegatingArrayCreator2324Test.testDeserializeBagOfStrings
+- Error: com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot construct instance of `com.fasterxml.jackson.databind.deser.creators.DelegatingArrayCreator2324Test$ImmutableBag` (although at least one Creator exists): no default no-arguments constructor found
+- Location:         WithBagOfStrings result = MAPPER.readerFor(WithBagOfStrings.class)

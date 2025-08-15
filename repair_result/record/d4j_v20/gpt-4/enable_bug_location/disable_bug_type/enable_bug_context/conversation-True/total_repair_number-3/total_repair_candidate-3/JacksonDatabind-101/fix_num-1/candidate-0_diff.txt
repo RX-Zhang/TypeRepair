@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -4,7 +4,7 @@
+     // 01-Dec-2016, tatu: Note: This IS legal to call, but only when unwrapped
+     //    value itself is NOT passed via `CreatorProperty` (which isn't supported).
+     //    Ok however to pass via setter or field.
+-    
++
+     final PropertyBasedCreator creator = _propertyBasedCreator;
+     PropertyValueBuffer buffer = creator.startBuilding(p, ctxt, _objectIdReader);
+ 
+@@ -33,7 +33,9 @@
+                 // if so, need to copy all remaining tokens into buffer
+                 while (t == JsonToken.FIELD_NAME) {
+                     // NOTE: do NOT skip name as it needs to be copied; `copyCurrentStructure` does that
++                    String fieldName = p.getCurrentName();
+                     p.nextToken();
++                    tokens.writeFieldName(fieldName);
+                     tokens.copyCurrentStructure(p);
+                     t = p.nextToken();
+                 }
+@@ -76,7 +78,10 @@
+             tokens.copyCurrentStructure(p);
+         } else {
+             // Need to copy to a separate buffer first
+-            TokenBuffer b2 = TokenBuffer.asCopyOfValue(p);
++            TokenBuffer b2 = new TokenBuffer(p, ctxt);
++            b2.writeFieldName(propName);
++            b2.copyCurrentStructure(p);
++            b2.flush();
+             tokens.writeFieldName(propName);
+             tokens.append(b2);
+             try {
+@@ -97,5 +102,7 @@
+         wrapInstantiationProblem(e, ctxt);
+         return null; // never gets here
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

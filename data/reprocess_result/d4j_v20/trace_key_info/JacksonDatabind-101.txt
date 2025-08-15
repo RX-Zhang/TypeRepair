@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.struct.TestUnwrapped.testIssue2088UnwrappedFieldsAfterLastCreatorProp
+- Error: junit.framework.AssertionFailedError: expected:<4> but was:<0>
+- Location:         assertEquals(4, bean.w.b);

@@ -1,0 +1,72 @@
+--- 
++++ 
+@@ -38,8 +38,9 @@
+             return (_currToken = JsonToken.START_OBJECT);
+         }
+         if (_parsingContext.inArray()) {
+-            // Yup: in array, so this element could be verified; but it won't be
+-            // reported anyway, and we need to process following event.
++            // Check for empty element case: if the element is empty,
++            // we should add an empty object to array rather than skip.
++            // But this is handled later by the leaf logic.
+             token = _xmlTokens.next();
+             _mayBeLeaf = true;
+             continue;
+@@ -65,15 +66,17 @@
+         // Simple, except that if this is a leaf, need to suppress end:
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-                // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
++            // expose as empty Object, not null
++            _parsingContext = _parsingContext.getParent();
++            _namesToWrap = _parsingContext.getNamesToWrap();
++            return (_currToken = JsonToken.END_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         return _currToken;
+-        
++
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+@@ -92,7 +95,7 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            /* One more refinement (pronunced like "hack") is that if
++            /* One more refinement (pronounced like "hack") is that if
+              * we had an empty String (or all white space), and we are
+              * deserializing an array, we better hide the empty text.
+              */
+@@ -101,12 +104,11 @@
+             if (_parsingContext.inArray()) {
+                 if (_isEmpty(_currText)) {
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                    //    expose as empty Object, not null (or, worse, as used to
+-                    //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
++                    // expose as empty Object, not null (or, worse, as used to
++                    // be done, by swallowing the token)
+                     _parsingContext = _parsingContext.getParent();
+                     _namesToWrap = _parsingContext.getNamesToWrap();
+-                    return _currToken;
++                    return (_currToken = JsonToken.START_OBJECT);
+                 }
+             }
+             return (_currToken = JsonToken.VALUE_STRING);
+@@ -127,8 +129,9 @@
+     case XmlTokenStream.XML_END:
+         return (_currToken = null);
+     }
+-    
++
+     // should never get here
+     _throwInternal();
+     return null;
+ }
++

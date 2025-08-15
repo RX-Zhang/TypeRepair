@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -8,7 +8,14 @@
+         return el;
+     }
+     
+-    Element el = new Element(Tag.valueOf(startTag.name()), baseUri, startTag.attributes);
++    // Verify and convert variable types before creating the Element
++    String tagName = startTag.name();
++    if (tagName == null || tagName.isEmpty()) {
++        throw new IllegalArgumentException("Tag name cannot be null or empty");
++    }
++    
++    Element el = new Element(Tag.valueOf(tagName), baseUri, startTag.attributes);
+     insert(el);
+     return el;
+ }
++

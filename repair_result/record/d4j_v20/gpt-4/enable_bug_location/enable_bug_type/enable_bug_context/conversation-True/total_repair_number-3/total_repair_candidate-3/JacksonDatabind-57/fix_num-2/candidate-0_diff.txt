@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -2,8 +2,22 @@
+     throws IOException, JsonProcessingException
+ {
+     if (_dataFormatReaders != null) {
+-        return _detectBindAndReadValues(_dataFormatReaders.findFormat(src, offset, length), false);
++        DataFormatReaders.Match match = _dataFormatReaders.findFormat(src, offset, length);
++        if (!match.hasMatch()) {
++            _reportUnkownFormat(_dataFormatReaders, match);
++        }
++        return _detectBindAndReadValues(match, false);
+     }
+-    return _bindAndReadValues(_considerFilter(_parserFactory.createParser(src), 
+-            true));
++
++    if (src == null) {
++        throw new IllegalArgumentException("source byte array cannot be null");
++    }
++    if (offset < 0 || length < 0 || offset + length > src.length) {
++        throw new IllegalArgumentException("Invalid offset and length parameters");
++    }
++
++    JsonParser parser = _parserFactory.createParser(src, offset, length);
++    parser = _considerFilter(parser, true);
++    return _bindAndReadValues(parser);
+ }
++

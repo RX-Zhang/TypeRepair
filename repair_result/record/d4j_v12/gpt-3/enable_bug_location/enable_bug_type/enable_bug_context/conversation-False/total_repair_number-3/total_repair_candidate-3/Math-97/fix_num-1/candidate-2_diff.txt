@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -2,7 +2,12 @@
+     FunctionEvaluationException {
+     
+     clearResult();
+-    verifyInterval(min, max);
++    
++    // Input validation for the interval
++    if (min >= max) {
++        throw new IllegalArgumentException("Invalid interval. Min must be less than max." +
++                "  Interval: [" + min + "," + max + "]");
++    }
+     
+     double ret = Double.NaN;
+     
+@@ -12,12 +17,18 @@
+     // Verify bracketing
+     double sign = yMin * yMax;
+     if (sign >= 0) {
+-        // check if either value is close to a zero
+-            // neither value is close to zero and min and max do not bracket root.
+-            throw new IllegalArgumentException
+-            ("Function values at endpoints do not have different signs." +
+-                    "  Endpoints: [" + min + "," + max + "]" + 
+-                    "  Values: [" + yMin + "," + yMax + "]");
++        // check if either value is close to zero
++        if (Math.abs(yMin) <= functionValueAccuracy || Math.abs(yMax) <= functionValueAccuracy) {
++            // at least one endpoint is a root
++            ret = (Math.abs(yMin) <= functionValueAccuracy) ? min : max;
++            setResult(ret, 0);
++            return ret;
++        }
++        // neither value is close to zero and min and max do not bracket root.
++        throw new IllegalArgumentException
++        ("Function values at endpoints do not have different signs." +
++                "  Endpoints: [" + min + "," + max + "]" + 
++                "  Values: [" + yMin + "," + yMax + "]");
+     } else {
+         // solve using only the first endpoint as initial guess
+         ret = solve(min, yMin, max, yMax, min, yMin);
+@@ -26,3 +37,4 @@
+ 
+     return ret;
+ }
++

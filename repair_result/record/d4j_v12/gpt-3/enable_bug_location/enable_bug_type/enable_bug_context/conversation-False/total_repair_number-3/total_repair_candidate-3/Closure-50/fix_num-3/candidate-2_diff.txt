@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -20,7 +20,7 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
++  // "," is the default, it doesn't need to be explicit
+ 
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+@@ -61,7 +61,7 @@
+         Node.newString(sb.toString()).copyInformationFrom(prev));
+   }
+   // one for each comma.
+-  foldedSize += arrayFoldedChildren.size() - 1;
++  foldedSize += (arrayFoldedChildren.size() > 0) ? arrayFoldedChildren.size() - 1 : 0;
+ 
+   int originalSize = InlineCostEstimator.getCost(n);
+   switch (arrayFoldedChildren.size()) {
+@@ -108,3 +108,4 @@
+ 
+   return n;
+ }
++

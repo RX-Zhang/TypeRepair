@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,4 +1,8 @@
+ Object returnValueFor(Class<?> type) {
++    if (type == null) {
++        throw new IllegalArgumentException("Type cannot be null");
++    }
++    
+     if (Primitives.isPrimitiveOrWrapper(type)) {
+         return Primitives.defaultValueForPrimitiveOrWrapper(type);
+         //new instances are used instead of Collections.emptyList(), etc.
+@@ -35,3 +39,4 @@
+     //Let's not care about the rest of collections.
+     return null;
+ }
++

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -1,7 +1,7 @@
+ public void collect(JSModule module, Scope scope, Node n) {
+   Node parent = n.getParent();
+ 
+-  String name;
++  String name = null; // Initialize name to avoid potential NullPointerException
+   boolean isSet = false;
+   Name.Type type = Name.Type.OTHER;
+   boolean isPropAssign = false;
+@@ -11,7 +11,6 @@
+     case Token.SETTER_DEF:
+     case Token.STRING_KEY:
+       // This may be a key in an object literal declaration.
+-      name = null;
+       if (parent != null && parent.isObjectLit()) {
+         name = getNameForObjLitKey(n);
+       }
+@@ -123,3 +122,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

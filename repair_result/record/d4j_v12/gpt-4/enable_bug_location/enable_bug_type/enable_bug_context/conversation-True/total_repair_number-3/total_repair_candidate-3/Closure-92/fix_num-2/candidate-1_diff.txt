@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -51,8 +51,14 @@
+             providedNames.get(namespace.substring(0, indexOfDot));
+         Preconditions.checkNotNull(parentName);
+         Preconditions.checkNotNull(parentName.replacementNode);
+-        parentName.replacementNode.getParent().addChildAfter(
+-            replacementNode, parentName.replacementNode);
++        // Fix: to ensure order of namespaces correctly, move new replacementNode
++        // after parent's replacementNode. But parent's replacementNode might not be
++        // the last child, so to maintain order, insert before any following siblings as needed.
++        Node parentReplacementNode = parentName.replacementNode;
++        Node parentReplacementParent = parentReplacementNode.getParent();
++
++        // Insert replacementNode immediately after parent's replacementNode
++        parentReplacementParent.addChildAfter(replacementNode, parentReplacementNode);
+       }
+     }
+     if (explicitNode != null) {
+@@ -61,3 +67,4 @@
+     compiler.reportCodeChange();
+   }
+ }
++

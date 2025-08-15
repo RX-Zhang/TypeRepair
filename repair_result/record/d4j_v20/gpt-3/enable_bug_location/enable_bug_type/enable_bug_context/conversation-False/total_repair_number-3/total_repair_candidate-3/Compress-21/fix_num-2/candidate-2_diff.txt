@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -10,7 +10,8 @@
+             cache = 0;
+         }
+     }
+-    if (length > 0 && shift > 0) {
++    if (length > 0 && shift < 7) { // Changed condition to check if shift < 7 instead of shift > 0
+         header.write(cache);
+     }
+ }
++

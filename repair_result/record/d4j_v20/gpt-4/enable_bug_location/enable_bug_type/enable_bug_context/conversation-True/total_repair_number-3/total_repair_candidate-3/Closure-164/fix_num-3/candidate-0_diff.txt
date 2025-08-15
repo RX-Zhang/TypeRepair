@@ -1,0 +1,61 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+   // Section 3.4.7: Subtyping Function Types.
+ 
+   // this.returnType <: that.returnType (covariant)
+-  if (!this.returnType.isSubtype(that.returnType)) {
++  if (!that.returnType.isSubtype(this.returnType)) {
+     return false;
+   }
+ 
+@@ -37,9 +37,9 @@
+   while (thisParam != null && thatParam != null) {
+     JSType thisParamType = thisParam.getJSType();
+     JSType thatParamType = thatParam.getJSType();
+-    if (thisParamType != null) {
+-      if (thatParamType == null ||
+-          !thatParamType.isSubtype(thisParamType)) {
++    if (thatParamType != null) {
++      if (thisParamType == null ||
++          !thisParamType.isSubtype(thatParamType)) {
+         return false;
+       }
+     }
+@@ -50,7 +50,7 @@
+     // "that" can't be a supertype, because it's missing a required argument.
+       // NOTE(nicksantos): In our type system, we use {function(...?)} and
+       // {function(...NoType)} to to indicate that arity should not be
+-      // checked. Strictly speaking, this is not a correct formulation,
++      // checked. Strictly speaking, this is not a formulation,
+       // because now a sub-function can required arguments that are var_args
+       // in the super-function. So we special-case this.
+ 
+@@ -69,7 +69,26 @@
+     }
+   }
+ 
+-  // "that" can't be a supertype, because it's missing a required arguement.
++  // "that" can't be a supertype, because it's missing a required argument.
++  if (thisParam != null) {
++    // this has more required parameters that that does not have
++    // If this parameter is *not* varargs, that means that this function
++    // expects more parameters than that, and so is not a subtype.
++    // If the parameter is varargs, then that can still be a subtype.
++    while (thisParam != null) {
++      if (!thisParam.isVarArgs()) {
++        return false;
++      }
++      thisParam = thisParam.getNext();
++    }
++  }
++
++  if (thatParam != null) {
++    // that has more required parameters than this
++    // Therefore, this can't be a subtype of that
++    return false;
++  }
+ 
+   return true;
+ }
++

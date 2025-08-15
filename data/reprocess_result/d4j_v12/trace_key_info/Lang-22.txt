@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.math.FractionTest.testReducedFactory_int_int
+- Error: junit.framework.AssertionFailedError: expected:<-1073741824> but was:<-2147483648>
+- Location:         assertEquals(Integer.MIN_VALUE / 2, f.getNumerator());
+
+
+Test failure 2:
+- Test: org.apache.commons.lang3.math.FractionTest.testReduce
+- Error: junit.framework.AssertionFailedError: expected:<-1073741824> but was:<-2147483648>
+- Location:         assertEquals(Integer.MIN_VALUE / 2, result.getNumerator());

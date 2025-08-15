@@ -1,0 +1,1 @@
+['optimizeSubtree', 'isSafeReplacement', 'isNameAssignedTo']

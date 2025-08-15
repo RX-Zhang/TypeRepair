@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -20,8 +20,7 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+@@ -89,7 +88,8 @@
+       return foldedStringNode;
+     default:
+       // No folding could actually be performed.
+-      if (arrayFoldedChildren.size() == arrayNode.getChildCount()) {
++      if (arrayFoldedChildren.size() == arrayNode.getChildCount() &&
++          (right == null || joinString.equals(","))) {
+         return n;
+       }
+       int kJoinOverhead = "[].join()".length();
+@@ -97,6 +97,12 @@
+       foldedSize += (right != null) ? InlineCostEstimator.getCost(right) : 0;
+       if (foldedSize > originalSize) {
+         return n;
++      }
++      // Only set "," as the join argument if it was the default (no argument)
++      if (right != null && joinString.equals(",")) {
++        // remove explicit "," join argument to default join()
++        callTarget.removeChild(right);
++        right = null;
+       }
+       arrayNode.detachChildren();
+       for (Node node : arrayFoldedChildren) {
+@@ -108,3 +114,4 @@
+ 
+   return n;
+ }
++

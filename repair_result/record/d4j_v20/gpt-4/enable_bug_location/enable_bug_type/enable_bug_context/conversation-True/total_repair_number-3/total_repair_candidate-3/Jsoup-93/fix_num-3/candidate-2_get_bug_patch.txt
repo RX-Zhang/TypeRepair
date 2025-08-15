@@ -1,0 +1,37 @@
+public List<Connection.KeyVal> formData() {
+    ArrayList<Connection.KeyVal> data = new ArrayList<>();
+
+    // iterate the form control elements and accumulate their values
+    for (Element el: elements()) {
+        if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submitable
+        if (el.hasAttr("disabled")) continue; // skip disabled form inputs
+        String name = el.attr("name");
+        if (name.length() == 0) continue;
+        String type = el.attr("type");
+
+
+        if ("select".equals(el.normalName())) {
+            Elements options = el.select("option[selected]");
+            boolean set = false;
+            for (Element option: options) {
+                data.add(Connection.KeyVal.create(name, option.val()));
+                set = true;
+            }
+            if (!set) {
+                Element option = el.select("option").first();
+                if (option != null)
+                    data.add(Connection.KeyVal.create(name, option.val()));
+            }
+        } else if ("checkbox".equalsIgnoreCase(type) || "radio".equalsIgnoreCase(type)) {
+            // only add checkbox or radio if they have the checked attribute
+            if (el.hasAttr("checked")) {
+                final String val = el.hasAttr("value") && el.attr("value").length() > 0 ? el.attr("value") : "on";
+                data.add(Connection.KeyVal.create(name, val));
+            }
+        } else if (!"button".equalsIgnoreCase(type) && !"submit".equalsIgnoreCase(type) && !"reset".equalsIgnoreCase(type) && !"file".equalsIgnoreCase(type) && !"image".equalsIgnoreCase(type)) {
+            // exclude buttons, file inputs, images, which are not successful controls for form submission
+            data.add(Connection.KeyVal.create(name, el.val()));
+        }
+    }
+    return data;
+}

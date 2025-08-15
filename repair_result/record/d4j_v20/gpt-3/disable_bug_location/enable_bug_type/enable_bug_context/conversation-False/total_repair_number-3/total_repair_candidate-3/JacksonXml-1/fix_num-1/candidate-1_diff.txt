@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -41,7 +41,8 @@
+             // Yup: in array, so this element could be verified; but it won't be
+             // reported anyway, and we need to process following event.
+             token = _xmlTokens.next();
+-            _mayBeLeaf = true;
++            // Fix: Reset _mayBeLeaf to false before continuing to correctly detect empty elements
++            _mayBeLeaf = false;
+             continue;
+         }
+         String name = _xmlTokens.getLocalName();
+@@ -65,15 +66,15 @@
+         // Simple, except that if this is a leaf, need to suppress end:
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-                // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+-                //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
++            //    expose as empty Object, not null
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+         _namesToWrap = _parsingContext.getNamesToWrap();
+         return _currToken;
+-        
++
+     case XmlTokenStream.XML_ATTRIBUTE_NAME:
+         // If there was a chance of leaf node, no more...
+         if (_mayBeLeaf) {
+@@ -103,9 +104,8 @@
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                     //    expose as empty Object, not null (or, worse, as used to
+                     //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
+-                    _parsingContext = _parsingContext.getParent();
+-                    _namesToWrap = _parsingContext.getNamesToWrap();
++                    _currToken = JsonToken.START_OBJECT;
++                    _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+                     return _currToken;
+                 }
+             }
+@@ -127,8 +127,9 @@
+     case XmlTokenStream.XML_END:
+         return (_currToken = null);
+     }
+-    
++
+     // should never get here
+     _throwInternal();
+     return null;
+ }
++

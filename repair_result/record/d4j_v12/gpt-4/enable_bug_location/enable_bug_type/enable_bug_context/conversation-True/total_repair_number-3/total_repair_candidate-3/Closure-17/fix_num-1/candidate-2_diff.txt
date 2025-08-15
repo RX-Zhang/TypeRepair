@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -47,5 +47,17 @@
+     }
+   }
+ 
++  // Try to get function return type if no explicit type annotation present
++  if (rValue != null && rValue.isFunction()) {
++    AstFunctionContents analysis = getFunctionAnalysisResults(rValue);
++    if (analysis != null) {
++      JSType returnType = analysis.getReturnType();
++      if (returnType != null) {
++        return returnType;
++      }
++    }
++  }
++
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -23,6 +23,8 @@
+                 break;
+             }
+ 
++            // Ensure that option.validate handles any type conversions if necessary,
++            // or perform proper type checking here if needed.
+             option.validate(commandLine);
+         }
+     }
+@@ -33,7 +35,7 @@
+                                   unexpected.getPreferredName());
+     }
+ 
+-    // too few option
++    // too few options
+     if (present < minimum) {
+         throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+     }
+@@ -44,3 +46,4 @@
+         option.validate(commandLine);
+     }
+ }
++

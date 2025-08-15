@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -4,9 +4,12 @@
+     return false;
+   }
+ 
+-  // Make sure this assignment is not in a loop.
++  Scope scope = getScope(ref.getVariable());
++  BasicBlock lastBlock = null;
++
+   for (BasicBlock block = ref.getBasicBlock();
+-       block != null; block = block.getParent()) {
++       block != null && block != lastBlock; block = block.getParent()) {
++    lastBlock = block;
+     if (block.isFunction) {
+       break;
+     } else if (block.isLoop) {
+@@ -16,3 +19,4 @@
+ 
+   return true;
+ }
++

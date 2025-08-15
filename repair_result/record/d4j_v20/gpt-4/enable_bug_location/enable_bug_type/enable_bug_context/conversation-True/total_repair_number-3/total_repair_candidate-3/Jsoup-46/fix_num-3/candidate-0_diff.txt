@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -34,10 +34,10 @@
+                     accum.append("&amp;");
+                     break;
+                 case 0xA0:
+-                    if (escapeMode != EscapeMode.xhtml)
++                    if (escapeMode == EscapeMode.xhtml)
++                        accum.append("&#xa0;");
++                    else
+                         accum.append("&nbsp;");
+-                    else
+-                        accum.append(c);
+                     break;
+                 case '<':
+                     if (!inAttribute)
+@@ -69,8 +69,9 @@
+             final String c = new String(Character.toChars(codePoint));
+             if (encoder.canEncode(c)) // uses fallback encoder for simplicity
+                 accum.append(c);
+-            else
+-                accum.append("&#x").append(Integer.toHexString(codePoint)).append(';');
++ else
++                accum.append("&#x").append(Integer.toHexStringPoint)).append(';');
+         }
+     }
+ }
++

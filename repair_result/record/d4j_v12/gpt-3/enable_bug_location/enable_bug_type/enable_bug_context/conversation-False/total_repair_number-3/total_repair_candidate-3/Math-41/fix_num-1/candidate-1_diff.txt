@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -17,16 +17,19 @@
+             }
+ 
+             double sumWts = 0;
+-            for (int i = 0; i < weights.length; i++) {
++            for (int i = begin; i < begin + length; i++) { // Corrected loop to sum weights only in the specified range
+                 sumWts += weights[i];
+             }
+ 
+-            if (isBiasCorrected) {
+-                var = (accum - (accum2 * accum2 / sumWts)) / (sumWts - 1.0);
+-            } else {
+-                var = (accum - (accum2 * accum2 / sumWts)) / sumWts;
++            if (sumWts > 0) { // Added check to avoid division by zero
++                if (isBiasCorrected) {
++                    var = (accum - (accum2 * accum2 / sumWts)) / (sumWts - 1.0);
++                } else {
++                    var = (accum - (accum2 * accum2 / sumWts)) / sumWts;
++                }
+             }
+         }
+     }
+     return var;
+ }
++

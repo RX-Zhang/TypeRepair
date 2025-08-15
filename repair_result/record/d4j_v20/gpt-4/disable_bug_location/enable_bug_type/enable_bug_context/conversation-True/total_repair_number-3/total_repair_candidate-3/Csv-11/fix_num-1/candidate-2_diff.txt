@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -10,10 +10,14 @@
+             final CSVRecord nextRecord = this.nextRecord();
+             if (nextRecord != null) {
+                 headerRecord = nextRecord.values();
++            } else {
++                // Defensive check: no header line found
++                headerRecord = new String[0];
+             }
+         } else {
+             if (this.format.getSkipHeaderRecord()) {
+-                this.nextRecord();
++                CSVRecord skippedRecord = this.nextRecord();
++                // Defensive: skipRecord may be null, but okay to ignore
+             }
+             headerRecord = formatHeader;
+         }
+@@ -22,6 +26,13 @@
+         if (headerRecord != null) {
+             for (int i = 0; i < headerRecord.length; i++) {
+                 final String header = headerRecord[i];
++                if (header == null) {
++                    if (!this.format.getIgnoreEmptyHeaders()) {
++                        throw new IllegalArgumentException("The header contains a null name at index " + i +
++                            " in " + Arrays.toString(headerRecord));
++                    }
++                    continue;
++                }
+                 final boolean containsHeader = hdrMap.containsKey(header);
+                 final boolean emptyHeader = header.trim().isEmpty();
+                 if (containsHeader && (!emptyHeader || (emptyHeader && !this.format.getIgnoreEmptyHeaders()))) {
+@@ -34,3 +45,4 @@
+     }
+     return hdrMap;
+ }
++

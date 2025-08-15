@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -24,6 +24,11 @@
+       // We short-circuit this problem by bailing out if we see a reference
+       // to a property that isn't defined on the object literal. This
+       // isn't a perfect algorithm, but it should catch most cases.
++      // Bail out to prevent incorrect inlining for properties not on object literal
++      // but referenced indirectly.
++      if (!ret) {
++        return false;
++      }
+       continue;
+     }
+ 
+@@ -59,7 +64,6 @@
+         return false;
+       }
+ 
+-
+       Node childVal = child.getFirstChild();
+       // Check if childVal is the parent of any of the passed in
+       // references, as that is how self-referential assignments
+@@ -84,3 +88,4 @@
+   }
+   return ret;
+ }
++

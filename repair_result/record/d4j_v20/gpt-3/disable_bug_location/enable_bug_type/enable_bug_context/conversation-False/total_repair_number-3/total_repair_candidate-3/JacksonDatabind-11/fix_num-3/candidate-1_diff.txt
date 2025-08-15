@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -38,5 +38,11 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
++
++    if (bounds.length == 0 || (bounds.length == 1 && bounds[0] == Object.class)) {
++        // If bound is Object.class or no bounds, resolve to unknown type
++        return _unknownType();
++    }
+     return _constructType(bounds[0], context);
+ }
++

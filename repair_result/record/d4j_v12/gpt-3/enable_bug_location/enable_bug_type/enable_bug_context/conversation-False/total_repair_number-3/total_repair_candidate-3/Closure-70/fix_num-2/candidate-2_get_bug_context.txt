@@ -1,0 +1,1 @@
+['createScope', 'declareNativeFunctionType', 'declareNativeValueType', 'declareNativeType', 'getNativeType', 'getBestJSDocInfo']

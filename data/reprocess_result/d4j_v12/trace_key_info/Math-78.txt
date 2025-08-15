@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.ode.events.EventStateTest.closeEvents
+- Error: org.apache.commons.math.MathRuntimeException$4: function values at endpoints do not have different signs.  Endpoints: [89.999, 153.1], Values: [-0.066, -1,142.11]
+- Location:         Assert.assertTrue(es.evaluateStep(interpolator));

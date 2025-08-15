@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -26,6 +26,7 @@
+     // Keep track of inverted intervals, meaning that the left bound is
+     // larger than the right bound.
+     boolean inverted = false;
++    int maxEval = getMaxEvaluations();
+ 
+     // Keep finding better approximations.
+     while (true) {
+@@ -58,6 +59,10 @@
+             case REGULA_FALSI:
+                 // Detect early that algorithm is stuck, instead of waiting
+                 // for the maximum number of iterations to be exceeded.
++                if (FastMath.abs(x - x1) < atol ||
++                    FastMath.abs(fx) > FastMath.abs(f1)) {
++                    throw new TooManyEvaluationsException(maxEval);
++                }
+                 break;
+             default:
+                 // Should never happen.
+@@ -121,3 +126,4 @@
+         }
+     }
+ }
++

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public static <T> T createValue(final String str, final Class<T> clazz) throws ParseException
+ {
++    if (clazz == null) {
++        return null;
++    }
+     if (PatternOptionBuilder.STRING_VALUE == clazz)
+     {
+         return (T) str;
+@@ -38,6 +41,7 @@
+     }
+     else
+     {
+-        return null;
++        throw new ParseException("Cannot convert string to " + clazz.getName());
+     }
+ }
++

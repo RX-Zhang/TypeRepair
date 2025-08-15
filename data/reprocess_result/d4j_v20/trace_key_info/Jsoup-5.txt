@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.parser.ParserTest.parsesQuiteRoughAttributes
+- Error: java.lang.StringIndexOutOfBoundsException: String index out of range: 14
+- Location:         Document doc = Jsoup.parse(html);

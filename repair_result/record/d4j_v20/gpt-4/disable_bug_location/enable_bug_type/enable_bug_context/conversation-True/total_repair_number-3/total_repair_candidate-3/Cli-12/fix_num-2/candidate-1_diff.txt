@@ -1,0 +1,56 @@
+--- 
++++ 
+@@ -19,26 +19,35 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            // Separate the option part and the value part on '=' if any
++            String opt;
++            String value = null;
++            int equalsIndex = arg.indexOf('=');
++
++            if (equalsIndex != -1)
++            {
++                opt = Util.stripLeadingHyphens(arg.substring(0, equalsIndex));
++                value = arg.substring(equalsIndex + 1);
++            }
++            else
++            {
++                opt = Util.stripLeadingHyphens(arg);
++            }
+ 
+             if (options.hasOption(opt))
+             {
+                 tokens.add(arg);
+             }
++            else if (equalsIndex != -1 && options.hasOption(arg.substring(0, 2)))
++            {
++                // the option is the first two characters (like -D)
++                tokens.add(arg.substring(0, 2));
++                tokens.add(arg.substring(2));
++            }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
+-                {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
+-                }
+-                else
+-                {
+-                    eatTheRest = stopAtNonOption;
+-                    tokens.add(arg);
+-                }
++                eatTheRest = stopAtNonOption;
++                tokens.add(arg);
+             }
+         }
+         else
+@@ -57,3 +66,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

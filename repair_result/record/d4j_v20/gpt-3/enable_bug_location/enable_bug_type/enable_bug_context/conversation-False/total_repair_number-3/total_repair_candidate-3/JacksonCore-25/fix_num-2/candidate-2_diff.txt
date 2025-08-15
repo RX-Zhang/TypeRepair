@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -13,7 +13,9 @@
+         }
+         char c = _inputBuffer[_inputPtr];
+         int i = (int) c;
+-        if (i <= maxCode) {
++
++        // Boundary check for codes array to prevent ArrayIndexOutOfBoundsException
++        if (i < maxCode) {
+             if (codes[i] != 0) {
+                 break;
+             }
+@@ -41,3 +43,4 @@
+         return _symbols.findSymbol(buf, start, len, hash);
+     }
+ }
++

@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -15,15 +15,23 @@
+             }
+     }
+ 
++    if (chars != null && chars.length == 0) {
++        throw new IllegalArgumentException("Character array must not be empty.");
++    }
++
+     char[] buffer = new char[count];
+     int gap = end - start;
++
++    if (gap <= 0) {
++        throw new IllegalArgumentException("The range defined by start and end must be valid.");
++    }
+ 
+     while (count-- != 0) {
+         char ch;
+         if (chars == null) {
+             ch = (char) (random.nextInt(gap) + start);
+         } else {
+-            ch = chars[random.nextInt(gap) + start];
++            ch = chars[random.nextInt(chars.length)]; // use chars.length to avoid ArrayIndexOutOfBoundsException
+         }
+         if (letters && Character.isLetter(ch)
+                 || numbers && Character.isDigit(ch)
+@@ -58,3 +66,4 @@
+     }
+     return new String(buffer);
+ }
++

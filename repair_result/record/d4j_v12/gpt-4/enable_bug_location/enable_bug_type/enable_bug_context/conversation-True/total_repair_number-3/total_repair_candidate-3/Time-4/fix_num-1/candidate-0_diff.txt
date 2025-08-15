@@ -1,0 +1,54 @@
+--- 
++++ 
+@@ -6,22 +6,22 @@
+     if (index == -1) {
+         DateTimeFieldType[] newTypes = new DateTimeFieldType[iTypes.length + 1];
+         int[] newValues = new int[newTypes.length];
+-        
++
+         // find correct insertion point to keep largest-smallest order
+         int i = 0;
+-        DurationField unitField = fieldType.getDurationType().getField(iChronology);
+-        if (unitField.isSupported()) {
++        DurationField unitField = fieldType.getDurationType() != null ? fieldType.getDurationType().getField(iChronology) : null;
++        if (unitField != null && unitField.isSupported()) {
+             for (; i < iTypes.length; i++) {
+                 DateTimeFieldType loopType = iTypes[i];
+-                DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+-                if (loopUnitField.isSupported()) {
++                DurationField loopUnitField = loopType.getDurationType() != null ? loopType.getDurationType().getField(iChronology) : null;
++                if (loopUnitField != null && loopUnitField.isSupported()) {
+                     int compare = unitField.compareTo(loopUnitField);
+                     if (compare > 0) {
+                         break;
+                     } else if (compare == 0) {
+-                        DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
+-                        DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
+-                        if (rangeField.compareTo(loopRangeField) > 0) {
++                        DurationField rangeField = fieldType.getRangeDurationType() != null ? fieldType.getRangeDurationType().getField(iChronology) : null;
++                        DurationField loopRangeField = loopType.getRangeDurationType() != null ? loopType.getRangeDurationType().getField(iChronology) : null;
++                        if (rangeField != null && loopRangeField != null && rangeField.compareTo(loopRangeField) > 0) {
+                             break;
+                         }
+                     }
+@@ -32,8 +32,8 @@
+         System.arraycopy(iValues, 0, newValues, 0, i);
+         newTypes[i] = fieldType;
+         newValues[i] = value;
+-        System.arraycopy(iTypes, i, newTypes, i + 1, newTypes.length - i - 1);
+-        System.arraycopy(iValues, i, newValues, i + 1, newValues.length - i - 1);
++        System.arraycopy(iTypes, i, newTypes, i + 1, iTypes.length - i);
++        System.arraycopy(iValues, i, newValues, i + 1, iValues.length - i);
+         // use public constructor to ensure full validation
+         // this isn't overly efficient, but is safe
+         Partial newPartial = new Partial(iChronology, newTypes, newValues);
+@@ -44,6 +44,8 @@
+         return this;
+     }
+     int[] newValues = getValues();
+-    newValues = getField(index).set(this, index, newValues, value);
++    DateTimeField field = getField(index, iChronology);
++    newValues = field.set(this, index, newValues, value);
+     return new Partial(this, newValues);
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -21,7 +21,12 @@
+     if (p.getCurrentToken() == JsonToken.START_ARRAY) {
+         return super.deserializeTypedFromAny(p, ctxt);
+     }
++    // Adding exception handling and boundary check for missing properties
++    if (p.getCurrentName() == null || p.getCurrentName().isEmpty()) {
++        throw new JsonMappingException(p, "Unexpected token (VALUE_STRING), expected FIELD_NAME: missing property '" + _typePropertyName + "' that is to contain type id  (for class " + baseTypeName() + ")");
++    }
+     ctxt.reportWrongTokenException(p, JsonToken.FIELD_NAME,
+             "missing property '"+_typePropertyName+"' that is to contain type id  (for class "+baseTypeName()+")");
+     return null;
+ }
++

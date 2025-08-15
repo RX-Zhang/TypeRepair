@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.nodes.DocumentTest.testShiftJisRoundtrip
+- Error: junit.framework.AssertionFailedError: Should not have contained a '?'.
+- Location:         assertFalse("Should not have contained a '?'.", output.contains("?"));

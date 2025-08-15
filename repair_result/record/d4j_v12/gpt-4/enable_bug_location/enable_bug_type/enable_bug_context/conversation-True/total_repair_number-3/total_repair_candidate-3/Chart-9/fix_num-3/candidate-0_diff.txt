@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -27,7 +27,7 @@
+     if (endIndex < 0) {
+         emptyRange = true;
+     }
+-    if (emptyRange) {
++    if (emptyRange || startIndex > endIndex) {
+         TimeSeries copy = (TimeSeries) super.clone();
+         copy.data = new java.util.ArrayList();
+         return copy;
+@@ -37,3 +37,4 @@
+     }
+ 
+ }
++

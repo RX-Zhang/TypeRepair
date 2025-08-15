@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -4,7 +4,13 @@
+   while (true) {
+     if (toResolve instanceof TypeVariable) {
+       TypeVariable<?> typeVariable = (TypeVariable<?>) toResolve;
+-        // cannot reduce due to infinite recursion
++
++      if (visitedTypeVariables.contains(typeVariable)) {
++        // Prevent recursion by returning the TypeVariable if we've seen it before
++        return toResolve;
++      }
++      visitedTypeVariables.add(typeVariable);
++
+       toResolve = resolveTypeVariable(context, contextRawType, typeVariable);
+       if (toResolve == typeVariable) {
+         return toResolve;
+@@ -71,3 +77,4 @@
+     }
+   }
+ }
++

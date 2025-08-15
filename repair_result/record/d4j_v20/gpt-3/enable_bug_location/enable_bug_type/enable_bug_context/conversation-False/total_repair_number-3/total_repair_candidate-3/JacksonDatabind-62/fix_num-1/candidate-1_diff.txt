@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -35,5 +35,10 @@
+     if (valueTypeDeser != null) {
+         valueTypeDeser = valueTypeDeser.forProperty(property);
+     }
++    // Ensure that we handle potential null values safely
++    if (delegateDeser == null && valueDeser == null) {
++        throw new JsonMappingException("Both delegate and value deserializer are null for property: " + property.getName());
++    }
+     return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+ }
++

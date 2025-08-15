@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -3,7 +3,7 @@
+     if (_type == TYPE_OBJECT) {
+         _gotName = false;
+         ++_index;
+-        return STATUS_OK_AFTER_COLON;
++        return STATUS_OK_AFTER_VALUE;
+     }
+ 
+     // Ok, array?
+@@ -16,5 +16,6 @@
+     // Nope, root context
+     // No commas within root context, but need space
+     ++_index;
+-    return (_index == 0) ? STATUS_OK_AS_IS : STATUS_OK_AFTER_SPACE;
++    return (_index == 1) ? STATUS_OK_AS_IS : STATUS_OK_AFTER_SPACE;
+ }
++

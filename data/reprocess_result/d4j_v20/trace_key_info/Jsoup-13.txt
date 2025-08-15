@@ -1,0 +1,22 @@
+Test failure 1:
+- Test: org.jsoup.nodes.NodeTest.handlesAbsPrefixOnHasAttr
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(two.hasAttr("abs:href"));
+
+
+Test failure 2:
+- Test: org.jsoup.nodes.NodeTest.handlesAbsPrefix
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(a.hasAttr("abs:href"));
+
+
+Test failure 3:
+- Test: org.jsoup.select.ElementsTest.absAttr
+- Error: junit.framework.AssertionFailedError: expected:<[http://jsoup.org]> but was:<[]>
+- Location:         assertEquals("http://jsoup.org", two.attr("abs:href"));
+
+
+Test failure 4:
+- Test: org.jsoup.select.ElementsTest.hasAbsAttr
+- Error: junit.framework.AssertionFailedError
+- Location:         assertTrue(two.hasAttr("abs:href"));

@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -20,6 +20,8 @@
+                 e.printStackTrace();
+             }
+         }
++        copy.findBoundsByIteration();
+     }
+     return copy;
+ }
++

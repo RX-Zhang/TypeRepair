@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,7 +8,13 @@
+         return el;
+     }
+     
++    // Verify and convert variable types to avoid TypeError
++    if (startTag.name() == null || baseUri == null || startTag.attributes == null) {
++        throw new IllegalArgumentException("Invalid startTag parameters");
++    }
++    
+     Element el = new Element(Tag.valueOf(startTag.name()), baseUri, startTag.attributes);
+     insert(el);
+     return el;
+ }
++

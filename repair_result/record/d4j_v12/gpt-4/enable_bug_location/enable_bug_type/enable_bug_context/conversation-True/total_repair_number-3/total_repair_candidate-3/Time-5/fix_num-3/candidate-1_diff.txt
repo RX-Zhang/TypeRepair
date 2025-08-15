@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -19,5 +19,7 @@
+             result = result.withMonths(months);
+         }
+     }
+-    return result;
++    // Return a period with the specified PeriodType
++    return result.withPeriodType(type);
+ }
++

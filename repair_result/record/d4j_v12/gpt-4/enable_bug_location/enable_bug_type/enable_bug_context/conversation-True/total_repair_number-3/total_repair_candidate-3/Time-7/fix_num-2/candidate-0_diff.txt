@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -3,15 +3,19 @@
+     if (instant == null) {
+         throw new IllegalArgumentException("Instant must not be null");
+     }
+-    
+-    long instantMillis = instant.getMillis();
++
+     Chronology chrono = instant.getChronology();
+-    long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+     chrono = selectChronology(chrono);
+-    int defaultYear = chrono.year().get(instantLocal);
+-    
++    int defaultYear = getDefaultYear();
++    if (defaultYear == 0) {
++        // If no default year is set, fall back to the current year from chronology and instant
++        long instantMillis = instant.getMillis();
++        long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
++        defaultYear = chrono.year().get(instantLocal);
++    }
++
+     DateTimeParserBucket bucket = new DateTimeParserBucket(
+-        instantLocal, chrono, iLocale, iPivotYear, defaultYear);
++        instant.getMillis(), chrono, iLocale, iPivotYear, defaultYear);
+     int newPos = parser.parseInto(bucket, text, position);
+     instant.setMillis(bucket.computeMillis(false, text));
+     if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+@@ -27,3 +31,4 @@
+     }
+     return newPos;
+ }
++

@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -6,6 +6,7 @@
+     final int end = offset + len;
+ 
+     final char delimChar = getDelimiter();
++    final Character escapeCharObj = getEscapeCharacter();
+     final char quoteChar = getQuoteCharacter().charValue();
+ 
+     QuoteMode quoteModePolicy = getQuoteMode();
+@@ -36,7 +37,7 @@
+             char c = value.charAt(pos);
+ 
+             // RFC4180 (https://tools.ietf.org/html/rfc4180) TEXTDATA =  %x20-21 / %x23-2B / %x2D-7E
+-            if (newRecord && (c < '0' || c > '9' && c < 'A' || c > 'Z' && c < 'a' || c > 'z')) {
++            if (newRecord && (c < '0' || (c > '9' && c < 'A') || (c > 'Z' && c < 'a') || c > 'z')) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -47,6 +48,11 @@
+                 while (pos < end) {
+                     c = value.charAt(pos);
+                     if (c == LF || c == CR || c == quoteChar || c == delimChar) {
++                        quote = true;
++                        break;
++                    }
++                    // Escape character should cause quoting if present in value and no quote character or quote mode NONE
++                    if (escapeCharObj != null && c == escapeCharObj.charValue()) {
+                         quote = true;
+                         break;
+                     }
+@@ -96,6 +102,12 @@
+             // put the next starting position on the encapsulator so we will
+             // write it out again with the next string (effectively doubling it)
+             start = pos;
++        } else if (escapeCharObj != null && c == escapeCharObj.charValue()) {
++            // write out the chunk up until this point
++            out.append(value, start, pos);
++            // write the escape character itself
++            out.append(escapeCharObj);
++            start = pos;
+         }
+         pos++;
+     }
+@@ -104,3 +116,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

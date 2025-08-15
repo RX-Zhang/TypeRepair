@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -11,7 +11,7 @@
+     }
+     sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+ 
+-    if (nextLineTabStop >= width)
++    if (nextLineTabStop >= width || width <= 0) // Added boundary check for width
+     {
+         // stops infinite loop happening
+         throw new IllegalStateException("Total width is less than the width of the argument and indent " + 
+@@ -42,3 +42,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.joda.time.TestPartial_Basics.testWith3
+- Error: junit.framework.AssertionFailedError
+- Location:             fail();

@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -19,20 +19,38 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            // Extract the option part before '=' if present
++            String opt;
++            int equalsIndex = arg.indexOf('=');
++            if (equalsIndex != -1)
++            {
++                opt = Util.stripLeadingHyphens(arg.substring(0, equalsIndex));
++            }
++            else
++            {
++                opt = Util.stripLeadingHyphens(arg);
++            }
+ 
+             if (options.hasOption(opt))
+             {
+-                tokens.add(arg);
++                // If argument contains '=', split it into option and value tokens
++                if (equalsIndex != -1)
++                {
++                    tokens.add(arg.substring(0, equalsIndex)); // option with leading hyphens
++                    tokens.add(arg.substring(equalsIndex + 1)); // value part
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                // Check if the first two chars (hyphen + letter) form an option
++                if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg.substring(0, 2)); // e.g. -D
++                    tokens.add(arg.substring(2));    // rest of the string
+                 }
+                 else
+                 {
+@@ -52,8 +70,10 @@
+             {
+                 tokens.add(arguments[i]);
+             }
++            break;
+         }
+     }
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

@@ -1,0 +1,1 @@
+['isVowel', 'isSilentStart', 'contains']

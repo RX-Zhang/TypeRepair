@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -20,6 +20,8 @@
+ 
+         double cN = a * hPrev + b * p0;
+         double q2 = a * q1 + b * dPrev;
++        
++        // Check for infinite values and handle them
+         if (Double.isInfinite(cN) || Double.isInfinite(q2)) {
+             double scaleFactor = 1d;
+             double lastScaleFactor = 1d;
+@@ -47,13 +49,9 @@
+         final double deltaN = cN / q2 / cPrev;
+         hN = cPrev * deltaN;
+ 
+-        if (Double.isInfinite(hN)) {
+-            throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE,
+-                                           x);
+-        }
+-        if (Double.isNaN(hN)) {
+-            throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_NAN_DIVERGENCE,
+-                                           x);
++        // Added exception handling for NaN and infinite values
++        if (Double.isInfinite(hN) || Double.isNaN(hN)) {
++            throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_NAN_DIVERGENCE, x);
+         }
+ 
+         if (FastMath.abs(deltaN - 1.0) < epsilon) {
+@@ -75,3 +73,4 @@
+ 
+     return hN;
+ }
++

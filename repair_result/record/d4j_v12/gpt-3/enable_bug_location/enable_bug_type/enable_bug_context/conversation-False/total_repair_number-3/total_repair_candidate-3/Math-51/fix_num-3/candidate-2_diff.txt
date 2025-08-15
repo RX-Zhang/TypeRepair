@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -2,6 +2,12 @@
+     // Get initial solution
+     double x0 = getMin();
+     double x1 = getMax();
++
++    // Check for valid bounds
++    if (x0 >= x1) {
++        throw new IllegalArgumentException("Invalid bounds: min must be less than max.");
++    }
++
+     double f0 = computeObjectiveValue(x0);
+     double f1 = computeObjectiveValue(x1);
+ 
+@@ -26,9 +32,15 @@
+     // Keep track of inverted intervals, meaning that the left bound is
+     // larger than the right bound.
+     boolean inverted = false;
++    int evaluations = 0; // Track the number of evaluations
+ 
+     // Keep finding better approximations.
+     while (true) {
++        // Check maximum evaluations
++        if (evaluations++ >= 3624) {
++            throw new TooManyEvaluationsException(evaluations);
++        }
++
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
+@@ -118,3 +130,4 @@
+         }
+     }
+ }
++

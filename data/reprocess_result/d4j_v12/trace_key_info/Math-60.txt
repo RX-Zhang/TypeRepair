@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.distribution.NormalDistributionTest.testExtremeValues
+- Error: org.apache.commons.math.ConvergenceException: Continued fraction diverged to NaN for value ∞
+- Location:         assertEquals(distribution.cumulativeProbability(Double.MAX_VALUE), 1, 0);

@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -65,6 +65,7 @@
+                 // some event handler has triggered changes that
+                 // invalidate the derivatives, we need to recompute them
+                 System.arraycopy(eventY, 0, y, 0, y.length);
++                // fix: use class method to recompute derivatives
+                 computeDerivatives(eventT, y, yDot);
+                 resetOccurred = true;
+                 return eventT;
+@@ -74,6 +75,16 @@
+             previousT = eventT;
+             interpolator.setSoftPreviousTime(eventT);
+             interpolator.setSoftCurrentTime(currentT);
++
++            // fix: check that the step does not go backward in time
++            double stepStartCheck = getCurrentStepStart();
++            double stepSizeCheck = getCurrentSignedStepsize();
++            if (stepSizeCheck > 0 && eventT < stepStartCheck) {
++                throw new MathIllegalStateException("going backward in time! (" + eventT + " < " + stepStartCheck + ")");
++            }
++            if (stepSizeCheck < 0 && eventT > stepStartCheck) {
++                throw new MathIllegalStateException("going backward in time! (" + eventT + " > " + stepStartCheck + ")");
++            }
+ 
+             // check if the same event occurs again in the remaining part of the step
+             if (currentEvent.evaluateStep(interpolator)) {
+@@ -99,3 +110,4 @@
+         return currentT;
+ 
+ }
++

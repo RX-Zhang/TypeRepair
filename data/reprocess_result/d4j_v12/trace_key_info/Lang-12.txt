@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.RandomStringUtilsTest.testExceptions
+- Error: java.lang.ArrayIndexOutOfBoundsException: 443058308
+- Location:             RandomStringUtils.random(1, new char[0]); // must not provide empty array => IAE
+
+
+Test failure 2:
+- Test: org.apache.commons.lang3.RandomStringUtilsTest.testLANG805
+- Error: java.lang.ArrayIndexOutOfBoundsException: 989835431
+- Location:         assertEquals("aaa", RandomStringUtils.random(3,0,0,false,false,new char[]{'a'},new Random(seed)));

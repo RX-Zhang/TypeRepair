@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -113,9 +113,13 @@
+                 fu = -fu;
+             }
+ 
++            // Use best helper method to pick the best point between current and new point
++            UnivariatePointValuePair newPoint = new UnivariatePointValuePair(u, isMinim ? fu : -fu);
++            UnivariatePointValuePair bestPoint = best(current, newPoint, isMinim);
++
+             // User-defined convergence checker.
+             previous = current;
+-            current = new UnivariatePointValuePair(u, isMinim ? fu : -fu);
++            current = bestPoint;
+ 
+             if (checker != null) {
+                 if (checker.converged(iter, previous, current)) {
+@@ -161,3 +165,4 @@
+         ++iter;
+     }
+ }
++

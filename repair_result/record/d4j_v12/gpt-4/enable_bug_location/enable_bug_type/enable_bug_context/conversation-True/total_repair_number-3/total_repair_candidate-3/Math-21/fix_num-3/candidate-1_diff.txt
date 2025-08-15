@@ -1,0 +1,76 @@
+--- 
++++ 
+@@ -5,31 +5,30 @@
+     final double[][] c = matrix.getData();
+     final double[][] b = new double[order][order];
+ 
+-    int[] swap  = new int[order];
+     int[] index = new int[order];
+     for (int i = 0; i < order; ++i) {
+         index[i] = i;
+     }
+ 
+     int r = 0;
+-    for (boolean loop = true; loop;) {
++    boolean loop = true;
++    while (loop) {
+ 
+         // find maximal diagonal element
+-        swap[r] = r;
++        int swapIndex = r;
+         for (int i = r + 1; i < order; ++i) {
+-            int ii  = index[i];
+-            int isi = index[swap[i]];
+-            if (c[ii][ii] > c[isi][isi]) {
+-                swap[r] = i;
++            int ii = index[i];
++            int si = index[swapIndex];
++            if (c[ii][ii] > c[si][si]) {
++                swapIndex = i;
+             }
+         }
+ 
+-
+         // swap elements
+-        if (swap[r] != r) {
++        if (swapIndex != r) {
+             int tmp = index[r];
+-            index[r] = index[swap[r]];
+-            index[swap[r]] = tmp;
++            index[r] = index[swapIndex];
++            index[swapIndex] = tmp;
+         }
+ 
+         // check diagonal element
+@@ -51,7 +50,6 @@
+ 
+             // all remaining diagonal elements are close to zero, we consider we have
+             // found the rank of the symmetric positive semidefinite matrix
+-            ++r;
+             loop = false;
+ 
+         } else {
+@@ -59,7 +57,7 @@
+             // transform the matrix
+             final double sqrt = FastMath.sqrt(c[ir][ir]);
+             b[r][r] = sqrt;
+-            final double inverse  = 1 / sqrt;
++            final double inverse = 1 / sqrt;
+             for (int i = r + 1; i < order; ++i) {
+                 final int ii = index[i];
+                 final double e = inverse * c[ii][ir];
+@@ -74,7 +72,8 @@
+             }
+ 
+             // prepare next iteration
+-            loop = ++r < order;
++            ++r;
++            loop = r < order;
+         }
+     }
+ 
+@@ -88,3 +87,4 @@
+     }
+ 
+ }
++

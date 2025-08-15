@@ -1,0 +1,115 @@
+Test failure 1:
+- Test: org.jfree.chart.axis.junit.LogAxisTests.testXYAutoRange1
+- Error: java.lang.NullPointerException
+- Location:         JFreeChart chart = ChartFactory.createScatterPlot(
+
+
+Test failure 2:
+- Test: org.jfree.chart.axis.junit.LogAxisTests.testXYAutoRange2
+- Error: java.lang.NullPointerException
+- Location:         JFreeChart chart = ChartFactory.createScatterPlot(
+
+
+Test failure 3:
+- Test: org.jfree.chart.axis.junit.NumberAxisTests.testXYAutoRange1
+- Error: java.lang.NullPointerException
+- Location:         JFreeChart chart = ChartFactory.createScatterPlot(
+
+
+Test failure 4:
+- Test: org.jfree.chart.axis.junit.NumberAxisTests.testXYAutoRange2
+- Error: java.lang.NullPointerException
+- Location:         JFreeChart chart = ChartFactory.createScatterPlot(
+
+
+Test failure 5:
+- Test: org.jfree.chart.axis.junit.ValueAxisTests.testAxisMargins
+- Error: java.lang.NullPointerException
+- Location:         JFreeChart chart = ChartFactory.createScatterPlot(
+
+
+Test failure 6:
+- Test: org.jfree.chart.junit.JFreeChartTests.testSerialization4
+- Error: java.lang.NullPointerException
+- Location:         JFreeChart c1 = ChartFactory.createTimeSeriesChart("Test", "Date",
+
+
+Test failure 7:
+- Test: org.jfree.chart.junit.ScatterPlotTests.testDrawWithNullInfo
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 8:
+- Test: org.jfree.chart.junit.ScatterPlotTests.testSetSeriesToolTipGenerator
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 9:
+- Test: org.jfree.chart.junit.ScatterPlotTests.testReplaceDataset
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 10:
+- Test: org.jfree.chart.junit.TimeSeriesChartTests.testDrawWithNullInfo
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 11:
+- Test: org.jfree.chart.junit.TimeSeriesChartTests.testSetSeriesToolTipGenerator
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 12:
+- Test: org.jfree.chart.junit.TimeSeriesChartTests.testReplaceDataset
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 13:
+- Test: org.jfree.chart.junit.XYAreaChartTests.testDrawWithNullInfo
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 14:
+- Test: org.jfree.chart.junit.XYAreaChartTests.testSetSeriesToolTipGenerator
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 15:
+- Test: org.jfree.chart.junit.XYAreaChartTests.testReplaceDataset
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 16:
+- Test: org.jfree.chart.junit.XYStepAreaChartTests.testDrawWithNullInfo
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 17:
+- Test: org.jfree.chart.junit.XYStepAreaChartTests.testSetSeriesToolTipGenerator
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 18:
+- Test: org.jfree.chart.junit.XYStepAreaChartTests.testReplaceDataset
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 19:
+- Test: org.jfree.chart.junit.XYStepChartTests.testDrawWithNullInfo
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 20:
+- Test: org.jfree.chart.junit.XYStepChartTests.testSetSeriesToolTipGenerator
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 21:
+- Test: org.jfree.chart.junit.XYStepChartTests.testReplaceDataset
+- Error: java.lang.NullPointerException
+- Location: Unknown location
+
+Test failure 22:
+- Test: org.jfree.chart.plot.junit.XYPlotTests.testDrawRangeGridlines
+- Error: java.lang.NullPointerException
+- Location:         plot.setRenderer(null);

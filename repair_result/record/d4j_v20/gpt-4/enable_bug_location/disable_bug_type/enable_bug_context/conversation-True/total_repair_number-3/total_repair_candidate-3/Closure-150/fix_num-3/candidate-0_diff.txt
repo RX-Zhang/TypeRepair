@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -9,7 +9,9 @@
+   attachLiteralTypes(n);
+   switch (n.getType()) {
+     case Token.FUNCTION:
+-      if (parent.getType() == Token.NAME) {
++      // If the function is declared as a named function:
++      // function f() {...}
++      if (parent.getType() == Token.NAME || parent.getType() == Token.VAR) {
+         return;
+       }
+       defineDeclaredFunction(n, parent);
+@@ -22,3 +24,4 @@
+       break;
+   }
+ }
++

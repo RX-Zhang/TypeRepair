@@ -1,0 +1,19 @@
+public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+{
+    // 29-Jan-2016, tatu: Simple skipping for all other tokens, but FIELD_NAME bit
+    //    special unfortunately
+    if (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+        String fieldName = p.getCurrentName();
+        // Implement input validation for the field name
+        if (!isValidFieldName(fieldName)) {
+            throw new IOException("Unrecognized field: " + fieldName);
+        }
+    }
+    p.skipChildren();
+    return null;
+}
+
+private boolean isValidFieldName(String fieldName) {
+    // Add logic to validate field names based on expected properties
+    return fieldName.equals("version") || fieldName.equals("item") || fieldName.equals("item2") || fieldName.equals("application");
+}

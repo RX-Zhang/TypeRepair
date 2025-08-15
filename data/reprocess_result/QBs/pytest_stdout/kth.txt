@@ -1,0 +1,134 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 7 items
+
+python_testcases/test_kth.py FF...FF                                     [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_kth[input_data0-5] ____________________________
+
+input_data = [[1, 2, 3, 4, 5, 6, ...], 4], expected = 5
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_kth(input_data, expected):
+>       assert kth(*input_data) == expected
+
+python_testcases/test_kth.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+arr = [], k = 4
+
+    def kth(arr, k):
+>       pivot = arr[0]
+E       IndexError: list index out of range
+
+python_programs/kth.py:2: IndexError
+___________________________ test_kth[input_data1-7] ____________________________
+
+input_data = [[3, 6, 7, 1, 6, 3, ...], 5], expected = 7
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_kth(input_data, expected):
+>       assert kth(*input_data) == expected
+
+python_testcases/test_kth.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+arr = [], k = 5
+
+    def kth(arr, k):
+>       pivot = arr[0]
+E       IndexError: list index out of range
+
+python_programs/kth.py:2: IndexError
+___________________________ test_kth[input_data5-6] ____________________________
+
+input_data = [[45, 2, 6, 8, 42, 90, ...], 1], expected = 6
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_kth(input_data, expected):
+>       assert kth(*input_data) == expected
+
+python_testcases/test_kth.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python_programs/kth.py:10: in kth
+    return kth(below, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+arr = [], k = 1
+
+    def kth(arr, k):
+>       pivot = arr[0]
+E       IndexError: list index out of range
+
+python_programs/kth.py:2: IndexError
+__________________________ test_kth[input_data6-322] ___________________________
+
+input_data = [[45, 2, 6, 8, 42, 90, ...], 6], expected = 322
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_kth(input_data, expected):
+>       assert kth(*input_data) == expected
+
+python_testcases/test_kth.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+python_programs/kth.py:12: in kth
+    return kth(above, k)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+arr = [], k = 6
+
+    def kth(arr, k):
+>       pivot = arr[0]
+E       IndexError: list index out of range
+
+python_programs/kth.py:2: IndexError
+=========================== short test summary info ============================
+FAILED python_testcases/test_kth.py::test_kth[input_data0-5] - IndexError: li...
+FAILED python_testcases/test_kth.py::test_kth[input_data1-7] - IndexError: li...
+FAILED python_testcases/test_kth.py::test_kth[input_data5-6] - IndexError: li...
+FAILED python_testcases/test_kth.py::test_kth[input_data6-322] - IndexError: ...
+========================= 4 failed, 3 passed in 0.04s ==========================

@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -132,3 +132,4 @@
+     _throwInternal();
+     return null;
+ }
++

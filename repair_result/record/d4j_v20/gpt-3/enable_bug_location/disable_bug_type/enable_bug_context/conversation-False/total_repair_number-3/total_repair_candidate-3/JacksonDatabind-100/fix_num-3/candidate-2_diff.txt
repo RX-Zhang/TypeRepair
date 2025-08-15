@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -16,7 +16,16 @@
+                 return (byte[]) ob;
+             }
+         }
++        if (n.isTextual()) {
++            // decode base64-encoded content using provided variant
++            String text = n.textValue();
++            if (text == null) {
++                return null;
++            }
++            return b64variant.decode(text);
++        }
+     }
+     // otherwise return null to mark we have no binary content
+     return null;
+ }
++

@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -5,5 +5,8 @@
+ 
+     Element element = (Element) o;
+ 
+-    return this == o;
++    if (!tagName().equals(element.tagName())) return false;
++    if (!classNames().equals(element.classNames())) return false;
++    return text().equals(element.text());
+ }
++

@@ -1,0 +1,1 @@
+['getNumObjectiveFunctions', 'discardArtificialVariables', 'getHeight', 'getEntry', 'getRhsOffset']

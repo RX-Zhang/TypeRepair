@@ -1,0 +1,57 @@
+private Node tryFoldArrayAccess(Node n, Node left, Node right) {
+  Node parent = n.getParent();
+  // If GETPROP/GETELEM is used as assignment target the array literal is
+  // acting as a temporary we can't fold it here:
+  //    "[][0] += 1"
+  if (isAssignmentTarget(n)) {
+    return n;
+  }
+
+  // Input validation for right
+  if (right == null || !right.isNumber()) {
+    // Sometimes people like to use complex expressions to index into
+    // arrays, or strings to index into array methods.
+    return n;
+  }
+
+  double index = right.getDouble();
+  int intIndex = (int) index;
+
+  // Check if index is not an integer
+  if (intIndex != index) {
+    error(PeepholeFoldConstants.INVALID_GETELEM_INDEX_ERROR, right);
+    return n;
+  }
+
+  // Check for negative index
+  if (intIndex < 0) {
+    error(PeepholeFoldConstants.INDEX_OUT_OF_BOUNDS_ERROR, right);
+    return n;
+  }
+
+  Node current = left.getFirstChild();
+  Node elem = null;
+
+  // Check for index out of bounds
+  for (int i = 0; current != null && i < intIndex; i++) {
+      elem = current;
+      current = current.getNext();
+  }
+
+  // If elem is null, index is out of bounds
+  if (elem == null) {
+    error(PeepholeFoldConstants.INDEX_OUT_OF_BOUNDS_ERROR, right);
+    return n;
+  }
+
+  if (elem.isEmpty()) {
+    elem = NodeUtil.newUndefinedNode(elem);
+  } else {
+    left.removeChild(elem);
+  }
+
+  // Replace the entire GETELEM with the value
+  n.getParent().replaceChild(n, elem);
+  reportCodeChange();
+  return elem;
+}

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -24,6 +24,7 @@
+       // We short-circuit this problem by bailing out if we see a reference
+       // to a property that isn't defined on the object literal. This
+       // isn't a perfect algorithm, but it should catch most cases.
++      // Fix: actually continue to next reference, not fall through.
+       continue;
+     }
+ 
+@@ -84,3 +85,4 @@
+   }
+   return ret;
+ }
++

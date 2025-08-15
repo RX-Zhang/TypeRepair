@@ -1,0 +1,1 @@
+['transition', 'state', 'popStackToClose', 'clearStackToTableContext', 'resetInsertionMode', 'inScope', 'inTableScope']

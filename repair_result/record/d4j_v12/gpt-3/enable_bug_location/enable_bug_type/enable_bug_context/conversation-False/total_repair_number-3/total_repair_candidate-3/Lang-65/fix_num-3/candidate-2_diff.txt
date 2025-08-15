@@ -1,0 +1,72 @@
+--- 
++++ 
+@@ -3,22 +3,34 @@
+         throw new ArithmeticException("Calendar value too large for accurate calculations");
+     }
+     
+-
+-    // ----------------- Fix for LANG-59 ---------------------- START ---------------
+-    // see http://issues.apache.org/jira/browse/LANG-59
+-    //
+     // Manually truncate milliseconds, seconds and minutes, rather than using
+     // Calendar methods.
+ 
+-
+     // truncate milliseconds
++    if (field == Calendar.MILLISECOND) {
++        val.set(Calendar.MILLISECOND, 0);
++    }
+ 
+     // truncate seconds
++    if (field == Calendar.SECOND) {
++        val.set(Calendar.SECOND, 0);
++        val.set(Calendar.MILLISECOND, 0);
++    }
+ 
+     // truncate minutes
++    if (field == Calendar.MINUTE) {
++        val.set(Calendar.MINUTE, 0);
++        val.set(Calendar.SECOND, 0);
++        val.set(Calendar.MILLISECOND, 0);
++    }
+ 
+     // reset time
+-    // ----------------- Fix for LANG-59 ----------------------- END ----------------
++    if (field == Calendar.HOUR_OF_DAY || field == Calendar.HOUR) {
++        val.set(Calendar.HOUR_OF_DAY, 0);
++        val.set(Calendar.MINUTE, 0);
++        val.set(Calendar.SECOND, 0);
++        val.set(Calendar.MILLISECOND, 0);
++    }
+ 
+     boolean roundUp = false;
+     for (int i = 0; i < fields.length; i++) {
+@@ -37,7 +49,7 @@
+                             val.add(Calendar.MONTH, 1);
+                         }
+                     } else {
+-                        //We need at add one to this field since the
++                        //We need to add one to this field since the
+                         //  last number causes us to round up
+                         val.add(fields[i][0], 1);
+                     }
+@@ -54,7 +66,7 @@
+                 if (fields[i][0] == Calendar.DATE) {
+                     //If we're going to drop the DATE field's value,
+                     //  we want to do this our own way.
+-                    //We need to subtrace 1 since the date has a minimum of 1
++                    //We need to subtract 1 since the date has a minimum of 1
+                     offset = val.get(Calendar.DATE) - 1;
+                     //If we're above 15 days adjustment, that means we're in the
+                     //  bottom half of the month and should stay accordingly.
+@@ -88,8 +100,8 @@
+             roundUp = offset > ((max - min) / 2);
+         }
+         //We need to remove this field
+-            val.set(fields[i][0], val.get(fields[i][0]) - offset);
++        val.set(fields[i][0], val.get(fields[i][0]) - offset);
+     }
+     throw new IllegalArgumentException("The field " + field + " is not supported");
++}
+ 
+-}

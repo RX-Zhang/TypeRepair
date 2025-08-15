@@ -1,0 +1,17 @@
+public String generateToolTipFragment(String toolTipText) {
+    if (toolTipText == null) {
+        return " title=\"\" alt=\"\"";
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append(" title=\"");
+    for (int i = 0; i < toolTipText.length(); i++) {
+        char c = toolTipText.charAt(i);
+        if (c == '"') {
+            sb.append("&quot;");
+        } else {
+            sb.append(c);
+        }
+    }
+    sb.append("\" alt=\"\"");
+    return sb.toString();
+}

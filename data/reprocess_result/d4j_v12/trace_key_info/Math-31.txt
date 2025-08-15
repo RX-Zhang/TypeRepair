@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.math3.distribution.BinomialDistributionTest.testMath718
+- Error: org.apache.commons.math3.exception.ConvergenceException: illegal state: Continued fraction diverged to NaN for value 0.5
+- Location:             int p = dist.inverseCumulativeProbability(0.5);
+
+
+Test failure 2:
+- Test: org.apache.commons.math3.distribution.FDistributionTest.testMath785
+- Error: junit.framework.AssertionFailedError: Failing to calculate inverse cumulative probability
+- Location:             Assert.fail("Failing to calculate inverse cumulative probability");

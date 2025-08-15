@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -8,8 +8,11 @@
+     _objectCodec = codec;
+     _symbols = sym;
+     _inputBuffer = inputBuffer;
+-    _inputPtr = start;
+-    _inputEnd = end;
+-    // If we have offset, need to omit that from byte offset, so:
++    _inputPtr = 0; // reset pointer to 0 to adjust offset
++    _inputEnd = end - start; // adjust effective buffer length to exclude start offset
++    _currInputProcessed = start; // save the start offset to use in location calculations
++    _currInputRow = 1; // assuming input starts at line 1
++    _currInputRowStart = 0; // assuming first line starts at 0
+     _bufferRecyclable = bufferRecyclable;
+ }
++

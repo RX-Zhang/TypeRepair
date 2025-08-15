@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -10,6 +10,9 @@
+     _inputBuffer = inputBuffer;
+     _inputPtr = start;
+     _inputEnd = end;
++
+     // If we have offset, need to omit that from byte offset, so:
++    _currInputProcessed -= start; // Correcting the starting position for processed bytes
+     _bufferRecyclable = bufferRecyclable;
+ }
++

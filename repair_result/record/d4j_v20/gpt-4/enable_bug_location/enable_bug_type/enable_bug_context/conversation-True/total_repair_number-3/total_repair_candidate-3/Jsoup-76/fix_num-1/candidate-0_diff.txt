@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -129,6 +129,13 @@
+                 }
+                 tb.insert(startTag);
+                 tb.framesetOk(false);
++                // Fix: skip first newline after <pre> or <listing>
++                Token next = tb.tokeniser.consume();
++                if (next.isCharacter() && next.asCharacter().getData().equals("\n")) {
++                    // Ignore this newline token
++                } else {
++                    tb.tokeniser.unconsume(next);
++                }
+             } else if (name.equals("form")) {
+                 if (tb.getFormElement() != null) {
+                     tb.error(this);
+@@ -511,3 +518,4 @@
+     }
+     return true;
+ }
++

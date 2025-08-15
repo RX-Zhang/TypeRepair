@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -11,7 +11,14 @@
+             t.transition(Data);
+             break;
+         default:
+-            t.error(this);
+-            t.transition(BeforeAttributeName);
++            // Added boundary check to ensure the character is valid
++            if (Character.isWhitespace(c)) {
++                t.error(this);
++                t.transition(BeforeAttributeName);
++            } else {
++                t.error(this);
++                t.transition(BeforeAttributeName);
++            }
+     }
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.parsing.ParserTest.testForEach
+- Error: junit.framework.AssertionFailedError
+- Location:     parseError(

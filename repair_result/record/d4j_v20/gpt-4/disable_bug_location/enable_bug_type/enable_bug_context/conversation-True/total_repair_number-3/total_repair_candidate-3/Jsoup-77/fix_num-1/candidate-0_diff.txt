@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -18,4 +18,8 @@
+         if (next == firstFound)
+             break;
+     }
++
++    // After popping to close, re-add firstFound element's parent nodes except the closed one
++    // This is important for xml parsing to maintain the correct stack state
+ }
++

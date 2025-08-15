@@ -1,0 +1,64 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 7 items
+
+python_testcases/test_find_in_sorted.py .F....F                          [100%]
+
+=================================== FAILURES ===================================
+_____________________ test_find_in_sorted[input_data1--1] ______________________
+
+input_data = [[1, 2, 3, 4, 6, 7, ...], 5], expected = -1
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_find_in_sorted(input_data, expected):
+>       assert find_in_sorted(*input_data) == expected
+
+python_testcases/test_find_in_sorted.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python_programs/find_in_sorted.py:13: in find_in_sorted
+    return binsearch(0, len(arr))
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+python_programs/find_in_sorted.py:7: in binsearch
+    return binsearch(start, mid)
+python_programs/find_in_sorted.py:7: in binsearch
+    return binsearch(start, mid)
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+E   RecursionError: maximum recursion depth exceeded in comparison
+!!! Recursion detected (same locals & position)
+_____________________ test_find_in_sorted[input_data6--1] ______________________
+
+input_data = [[24, 26, 28, 50, 59], 101], expected = -1
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_find_in_sorted(input_data, expected):
+>       assert find_in_sorted(*input_data) == expected
+
+python_testcases/test_find_in_sorted.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+python_programs/find_in_sorted.py:13: in find_in_sorted
+    return binsearch(0, len(arr))
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+python_programs/find_in_sorted.py:9: in binsearch
+    return binsearch(mid, end)
+E   RecursionError: maximum recursion depth exceeded in comparison
+!!! Recursion detected (same locals & position)
+=========================== short test summary info ============================
+FAILED python_testcases/test_find_in_sorted.py::test_find_in_sorted[input_data1--1]
+FAILED python_testcases/test_find_in_sorted.py::test_find_in_sorted[input_data6--1]
+========================= 2 failed, 5 passed in 0.04s ==========================

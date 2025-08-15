@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,7 +7,12 @@
+     }
+     else if (stopAtNonOption)
+     {
+-        eatTheRest = true;
++        // If the token is unrecognized and stopAtNonOption is true, throw exception
++        throw new UnrecognizedOptionException(token);
++    }
++    else
++    {
+         tokens.add(token);
+     }
+ }
++

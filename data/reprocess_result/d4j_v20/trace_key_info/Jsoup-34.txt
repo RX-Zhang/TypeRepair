@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.jsoup.parser.CharacterReaderTest.nextIndexOfUnmatched
+- Error: java.lang.ArrayIndexOutOfBoundsException: 8
+- Location:         assertEquals(-1, r.nextIndexOf("]]>"));
+
+
+Test failure 2:
+- Test: org.jsoup.parser.HtmlParserTest.handlesUnclosedCdataAtEOF
+- Error: java.lang.ArrayIndexOutOfBoundsException: 11
+- Location:         Document doc = Jsoup.parse(h);

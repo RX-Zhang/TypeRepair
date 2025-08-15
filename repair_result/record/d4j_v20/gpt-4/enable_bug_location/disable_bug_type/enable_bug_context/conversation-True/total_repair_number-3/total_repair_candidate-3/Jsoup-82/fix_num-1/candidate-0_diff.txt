@@ -1,0 +1,73 @@
+--- 
++++ 
+@@ -8,12 +8,12 @@
+ 
+     // read the start of the stream and look for a BOM or meta charset
+     input.mark(bufferSize);
+-    ByteBuffer firstBytes = readToByteBuffer(input, firstReadBufferSize - 1); // -1 because we read one more to see if completed. First read is < buffer size, so can't be invalid.
++    ByteBuffer firstBytes = DataUtil.readToByteBuffer(input, firstReadBufferSize - 1); // -1 because we read one more to see if completed. First read is < buffer size, so can't be invalid.
+     fullyRead = input.read() == -1;
+     input.reset();
+ 
+     // look for BOM - overrides any other header or input
+-    BomCharset bomCharset = detectCharsetFromBom(firstBytes);
++    BomCharset bomCharset = DataUtil.detectCharsetFromBom(firstBytes);
+     if (bomCharset != null)
+         charsetName = bomCharset.charset;
+ 
+@@ -26,7 +26,7 @@
+         String foundCharset = null; // if not found, will keep utf-8 as best attempt
+         for (Element meta : metaElements) {
+             if (meta.hasAttr("http-equiv"))
+-                foundCharset = getCharsetFromContentType(meta.attr("content"));
++                foundCharset = DataUtil.getCharsetFromContentType(meta.attr("content"));
+             if (foundCharset == null && meta.hasAttr("charset"))
+                 foundCharset = meta.attr("charset");
+             if (foundCharset != null)
+@@ -49,7 +49,7 @@
+                     foundCharset = decl.attr("encoding");
+             }
+         }
+-        foundCharset = validateCharset(foundCharset);
++        foundCharset = DataUtil.validateCharset(foundCharset);
+         if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+             charsetName = foundCharset;
+@@ -72,10 +72,35 @@
+             // io exception when parsing (not seen before because reading the stream as we go)
+             throw e.ioException();
+         }
+-        Charset charset = Charset.forName(charsetName);
++        Charset charset = null;
++        try {
++            charset = Charset.forName(charsetName);
++        } catch (UnsupportedCharsetException | IllegalCharsetNameException e) {
++            // fallback to UTF-8 if charset can't encode
++            charset = Charset.forName("UTF-8");
++            charsetName = "UTF-8";
++        }
++        // check if charset can encode; if not, fallback to UTF-8
++        if (!charset.canEncode()) {
++            charset = Charset.forName("UTF-8");
++            charsetName = "UTF-8";
++        }
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        if (!charsetName.equalsIgnoreCase("UTF-8")) {
++            // update meta charset element to utf-8 if fallback happened
++            Element metaCharset = doc.selectFirst("meta[charset]");
++            if (metaCharset != null) {
++                metaCharset.attr("charset", charsetName);
++            } else {
++                // add <meta charset>
++                Element head = doc.head();
++                if (head == null) head = doc.appendElement("head");
++                head.prependElement("meta").attr("charset", charsetName);
++            }
++        }
+     }
+     input.close();
+     return doc;
+ }
++

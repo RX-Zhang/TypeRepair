@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     Validate.notEmpty(attributeKey);
+ 
+     String relUrl = attr(attributeKey);
+-    if (!hasAttr(attributeKey)) {
++    if (!hasAttr(attributeKey) || relUrl.isEmpty()) {
+         return ""; // nothing to make absolute with
+     } else {
+         URL base;
+@@ -22,3 +22,4 @@
+         }
+     }
+ }
++

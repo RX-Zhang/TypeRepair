@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -17,18 +17,35 @@
+         if (str.charAt(2) != '_') {
+             throw new IllegalArgumentException("Invalid locale format: " + str);
+         }
+-        char ch3 = str.charAt(3);
+-        char ch4 = str.charAt(4);
+-        if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
+-            throw new IllegalArgumentException("Invalid locale format: " + str);
+-        }
+         if (len == 5) {
++            char ch3 = str.charAt(3);
++            char ch4 = str.charAt(4);
++            if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
++                throw new IllegalArgumentException("Invalid locale format: " + str);
++            }
+             return new Locale(str.substring(0, 2), str.substring(3, 5));
+         } else {
+-            if (str.charAt(5) != '_') {
+-                throw new IllegalArgumentException("Invalid locale format: " + str);
++            if (str.charAt(3) == '_' && len > 4) {
++                // format: ll__variant (e.g. fr__POSIX)
++                String language = str.substring(0, 2);
++                String variant = str.substring(4);
++                return new Locale(language, "", variant);
++            } else {
++                // format: ll_CC_variant (e.g. en_US_POSIX)
++                char ch3 = str.charAt(3);
++                char ch4 = str.charAt(4);
++                if (ch3 < 'A' || ch3 > 'Z' || ch4 < 'A' || ch4 > 'Z') {
++                    throw new IllegalArgumentException("Invalid locale format: " + str);
++                }
++                if (str.charAt(5) != '_') {
++                    throw new IllegalArgumentException("Invalid locale format: " + str);
++                }
++                String language = str.substring(0, 2);
++                String country = str.substring(3, 5);
++                String variant = str.substring(6);
++                return new Locale(language, country, variant);
+             }
+-            return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+         }
+     }
+ }
++

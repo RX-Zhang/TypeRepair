@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -99,7 +99,7 @@
+             case 'D' :
+                 try {
+                     final Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (final NumberFormatException nfe) { // NOPMD
+@@ -159,3 +159,4 @@
+ 
+     return createBigDecimal(str);
+ }
++

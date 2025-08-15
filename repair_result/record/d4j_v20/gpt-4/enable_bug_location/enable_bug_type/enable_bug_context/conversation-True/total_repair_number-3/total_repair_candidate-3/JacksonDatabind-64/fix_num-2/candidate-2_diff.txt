@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -20,7 +20,8 @@
+          */
+         if (serializationType == null) {
+               serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++              // Fix: remove redundant assignment to declaredType
++              // serializationType = declaredType; (removed)
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -125,3 +126,4 @@
+     }
+     return bpw;
+ }
++

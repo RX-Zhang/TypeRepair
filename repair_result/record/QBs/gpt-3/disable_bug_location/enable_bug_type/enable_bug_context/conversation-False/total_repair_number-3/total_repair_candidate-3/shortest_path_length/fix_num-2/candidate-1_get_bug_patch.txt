@@ -1,0 +1,28 @@
+from heapq import *
+def shortest_path_length(length_by_edge, startnode, goalnode):
+    unvisited_nodes = [] # min heap containing (distance, node) pairs
+    heappush(unvisited_nodes, (0, startnode))
+    visited_nodes = set()
+    distances = {startnode: 0}
+
+    while unvisited_nodes:
+        distance, node = heappop(unvisited_nodes)
+        if node in visited_nodes:
+            continue
+        if node is goalnode:
+            return distance
+        visited_nodes.add(node)
+
+        for nextnode in node.successors:
+            if nextnode in visited_nodes:
+                continue
+            edge_distance = length_by_edge.get((node, nextnode))
+            if edge_distance is None:
+                continue
+            new_distance = distance + edge_distance
+            if new_distance < distances.get(nextnode, float('inf')):
+                distances[nextnode] = new_distance
+                heappush(unvisited_nodes, (new_distance, nextnode))
+
+    return float('inf')
+

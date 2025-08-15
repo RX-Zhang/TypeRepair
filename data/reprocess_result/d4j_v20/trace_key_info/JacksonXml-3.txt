@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.dataformat.xml.stream.XmlParserNextXxxTest.testXmlAttributesWithNextTextValue
+- Error: junit.framework.ComparisonFailure: expected:<7> but was:<null>
+- Location:         assertEquals("7", xp.nextTextValue());

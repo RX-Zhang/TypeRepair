@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -112,8 +112,7 @@
+             return (_currToken = JsonToken.VALUE_STRING);
+         } else {
+             // [dataformat-xml#177]: empty text may also need to be skipped
+-            if (_parsingContext.inObject()
+-                    && (_currToken != JsonToken.FIELD_NAME) && _isEmpty(_currText)) {
++            if (_parsingContext.inObject() && (_currToken != JsonToken.FIELD_NAME) && _isEmpty(_currText)) {
+                 _currToken = JsonToken.END_OBJECT;
+                 _parsingContext = _parsingContext.getParent();
+                 _namesToWrap = _parsingContext.getNamesToWrap();
+@@ -132,3 +131,4 @@
+     _throwInternal();
+     return null;
+ }
++

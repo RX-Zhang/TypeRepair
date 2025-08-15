@@ -1,0 +1,10 @@
+def next_permutation(perm):
+    perm = list(perm)
+    for i in range(len(perm) - 2, -1, -1):
+        if perm[i] < perm[i + 1]:
+            for j in range(len(perm) - 1, i, -1):
+                if perm[j] > perm[i]:
+                    perm[i], perm[j] = perm[j], perm[i]
+                    perm[i + 1:] = reversed(perm[i + 1:])
+                    return perm
+    return sorted(perm)

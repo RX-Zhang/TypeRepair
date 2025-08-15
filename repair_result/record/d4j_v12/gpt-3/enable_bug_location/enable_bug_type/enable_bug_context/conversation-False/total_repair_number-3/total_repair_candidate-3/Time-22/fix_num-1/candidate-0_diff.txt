@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -1,4 +1,6 @@
+ protected BasePeriod(long duration) {
+-    this(duration, null, null);
++    // Use standard period type and UTC chronology to avoid time zone effects
++    this(duration, null, ISOChronology.getInstanceUTC());
+     // bug [3264409]
+ }
++

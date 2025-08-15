@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -19,7 +19,11 @@
+             || testName.getName()
+                     .equals(DOMNodePointer.getLocalName(node))) {
+             String nodeNS = DOMNodePointer.getNamespaceURI(node);
+-            return equalStrings(namespaceURI, nodeNS);
++            if (namespaceURI == null || namespaceURI.isEmpty()) {
++                // When test namespaceURI is empty or null, match nodes with no namespace or with the default namespace
++                return DOMNodePointer.equalStrings(nodeNS, "");
++            }
++            return DOMNodePointer.equalStrings(namespaceURI, nodeNS);
+         }
+         return false;
+     }
+@@ -48,3 +52,4 @@
+     }
+     return false;
+ }
++

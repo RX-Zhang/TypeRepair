@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -33,13 +33,14 @@
+         }
+         else if (token.startsWith("-"))
+         {
+-            if (token.length() == 2)
++            if (options.hasOption(token))
++            {
++                tokens.add(token);
++                currentOption = options.getOption(token);
++            }
++            else if (token.length() == 2)
+             {
+                 processOptionToken(token, stopAtNonOption);
+-            }
+-            else if (options.hasOption(token))
+-            {
+-                tokens.add(token);
+             }
+             // requires bursting
+             else
+@@ -59,5 +60,6 @@
+         gobble(iter);
+     }
+ 
+-    return (String[]) tokens.toArray(new String[tokens.size()]);
++    return tokens.toArray(new String[0]);
+ }
++

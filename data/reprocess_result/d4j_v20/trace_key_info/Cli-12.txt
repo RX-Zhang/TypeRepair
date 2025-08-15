@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: org.apache.commons.cli.GnuParserTest.testShortWithEqual
+- Error: junit.framework.ComparisonFailure: expected:<[]bar> but was:<[=]bar>
+- Location:         assertEquals("bar", cl.getOptionValue("foo"));
+
+
+Test failure 2:
+- Test: org.apache.commons.cli.GnuParserTest.testLongWithEqualSingleDash
+- Error: junit.framework.ComparisonFailure: expected:<[]bar> but was:<[oo=]bar>
+- Location:         assertEquals("bar", cl.getOptionValue("foo"));
+
+
+Test failure 3:
+- Test: org.apache.commons.cli.GnuParserTest.testLongWithEqual
+- Error: org.apache.commons.cli.UnrecognizedOptionException: Unrecognized option: --foo=bar
+- Location:         CommandLine cl = parser.parse(options, args);

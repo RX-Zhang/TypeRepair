@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -19,6 +19,7 @@
+             || testName.getName()
+                     .equals(DOMNodePointer.getLocalName(node))) {
+             String nodeNS = DOMNodePointer.getNamespaceURI(node);
++            // Fix: use equalStrings for namespace comparison to handle nulls properly
+             return equalStrings(namespaceURI, nodeNS);
+         }
+         return false;
+@@ -48,3 +49,4 @@
+     }
+     return false;
+ }
++

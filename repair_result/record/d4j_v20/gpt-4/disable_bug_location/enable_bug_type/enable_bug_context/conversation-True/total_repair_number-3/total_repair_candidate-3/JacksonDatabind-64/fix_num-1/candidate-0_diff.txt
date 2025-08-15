@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -19,8 +19,7 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -73,14 +72,10 @@
+             valueToSuppress = getPropertyDefaultValue(propDef.getName(), am, actualType);
+         } else {
+             valueToSuppress = getDefaultValue(actualType);
+-            suppressNulls = true;
+         }
+-        if (valueToSuppress == null) {
+-            suppressNulls = true;
+-        } else {
+-            if (valueToSuppress.getClass().isArray()) {
+-                valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+-            }
++        suppressNulls = (valueToSuppress == null);
++        if (valueToSuppress != null && valueToSuppress.getClass().isArray()) {
++            valueToSuppress = ArrayBuilders.getArrayComparator(valueToSuppress);
+         }
+         break;
+     case NON_ABSENT: // new with 2.6, to support Guava/JDK8 Optionals
+@@ -125,3 +120,4 @@
+     }
+     return bpw;
+ }
++

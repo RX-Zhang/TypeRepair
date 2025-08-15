@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -2,24 +2,28 @@
+     Node n, String variable) {
+   if (NodeUtil.isName(n) && variable.equals(n.getString())) {
+     if (NodeUtil.isLhs(n, n.getParent())) {
+-      // The expression to which the assignment is made is evaluated before
+-      // the RHS is evaluated (normal left to right evaluation) but the KILL
+-      // occurs after the RHS is evaluated.
++      // The LHS of an assignment (variable = ...) kills the variable after the RHS.
+       return VariableLiveness.KILL;
+     } else {
+       return VariableLiveness.READ;
+     }
+   }
+ 
++  VariableLiveness result = VariableLiveness.MAYBE_LIVE;
+   // Expressions are evaluated left-right, depth first.
+   for (Node child = n.getFirstChild();
+       child != null; child = child.getNext()) {
+     if (!ControlFlowGraph.isEnteringNewCfgNode(child)) { // Not a FUNCTION
+       VariableLiveness state = isVariableReadBeforeKill(child, variable);
+-      if (state != VariableLiveness.MAYBE_LIVE) {
+-        return state;
++      if (state == VariableLiveness.READ) {
++        return VariableLiveness.READ;
++      }
++      if (state == VariableLiveness.KILL) {
++        // Keep track of kill, but keep searching for possible read
++        result = VariableLiveness.KILL;
+       }
+     }
+   }
+-  return VariableLiveness.MAYBE_LIVE;
++  return result;
+ }
++

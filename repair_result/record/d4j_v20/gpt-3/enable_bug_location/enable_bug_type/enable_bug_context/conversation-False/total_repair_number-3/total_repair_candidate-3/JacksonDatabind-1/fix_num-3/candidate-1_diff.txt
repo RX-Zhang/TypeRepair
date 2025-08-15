@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -8,6 +8,7 @@
+         } else { // can NOT suppress entries in tabular output
+             jgen.writeNull();
+         }
++        return; // <--- Added return here to prevent further processing on null value
+     }
+     // otherwise find serializer to use
+     JsonSerializer<Object> ser = _serializer;
+@@ -41,3 +42,4 @@
+         ser.serializeWithType(value, jgen, prov, _typeSerializer);
+     }
+ }
++

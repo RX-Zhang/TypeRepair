@@ -1,0 +1,16 @@
+Test failure 1:
+- Test: org.joda.time.TestPeriod_Basics.testNormalizedStandard_periodType_months1
+- Error: java.lang.UnsupportedOperationException: Field is not supported
+- Location:         Period result = test.normalizedStandard(PeriodType.months());
+
+
+Test failure 2:
+- Test: org.joda.time.TestPeriod_Basics.testNormalizedStandard_periodType_months2
+- Error: java.lang.UnsupportedOperationException: Field is not supported
+- Location:         Period result = test.normalizedStandard(PeriodType.months());
+
+
+Test failure 3:
+- Test: org.joda.time.TestPeriod_Basics.testNormalizedStandard_periodType_monthsWeeks
+- Error: java.lang.UnsupportedOperationException: Field is not supported
+- Location:         Period result = test.normalizedStandard(type);

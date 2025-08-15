@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -6,9 +6,20 @@
+         return false;
+     }
+ 
+-    // remove leading "-" and "=value"
+-    int pos = token.indexOf("=");
+-    String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
++    // remove leading "-"
++    String optName = token.substring(1);
++
++    // if token contains '=', only consider part before '=' as option name
++    int pos = optName.indexOf("=");
++    if (pos != -1) {
++        optName = optName.substring(0, pos);
++    }
++
++    // If the option is a single character or multiple concatenated short options
++    if (optName.length() > 1 && options.hasOption(String.valueOf(optName.charAt(0)))) {
++        return true;
++    }
++
+     return options.hasShortOption(optName);
+-    // check for several concatenated short options
+ }
++

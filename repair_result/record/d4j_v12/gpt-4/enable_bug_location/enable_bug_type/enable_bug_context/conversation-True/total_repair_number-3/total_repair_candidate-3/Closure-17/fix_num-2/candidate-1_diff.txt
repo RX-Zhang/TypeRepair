@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -20,13 +20,13 @@
+     } else {
+       // Check if this is constant, and if it has a known type.
+       if (info.isConstant()) {
+-        JSType knownType = null;
+         if (rValue != null) {
+-          if (rValue.getJSType() != null && !rValue.getJSType().isUnknownType()) {
++          JSType rValueType = rValue.getJSType();
++          if (rValueType != null && !rValueType.isUnknownType()) {
+             // If rValue has a type-cast, we use the type in the type-cast.
+             // If rValue's type was already computed during scope creation,
+             // then we can safely use that.
+-            return rValue.getJSType();
++            return rValueType;
+           } else if (rValue.isOr()) {
+             // Check for a very specific JS idiom:
+             // var x = x || TYPE;
+@@ -37,9 +37,11 @@
+             boolean namesMatch = firstClause.isName()
+                 && lValue.isName()
+                 && firstClause.getString().equals(lValue.getString());
+-            if (namesMatch && secondClause.getJSType() != null
+-                && !secondClause.getJSType().isUnknownType()) {
+-              return secondClause.getJSType();
++            if (namesMatch) {
++              JSType secondType = secondClause.getJSType();
++              if (secondType != null && !secondType.isUnknownType()) {
++                return secondType;
++              }
+             }
+           }
+         }
+@@ -47,5 +49,12 @@
+     }
+   }
+ 
+-  return getDeclaredTypeInAnnotation(sourceName, lValue, info);
++  // Fallback: if info exists, try to get declared type from annotation,
++  // otherwise return UNKNOWN type to prevent returning wrong types like function or object.
++  if (info != null) {
++    return getDeclaredTypeInAnnotation(sourceName, lValue, info);
++  } else {
++    return typeRegistry.getNativeType(JSTypeNative.UNKNOWN_TYPE);
++  }
+ }
++

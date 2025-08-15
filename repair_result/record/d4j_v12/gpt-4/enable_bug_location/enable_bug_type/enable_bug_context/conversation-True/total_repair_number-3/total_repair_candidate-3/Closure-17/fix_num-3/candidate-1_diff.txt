@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -43,9 +43,16 @@
+             }
+           }
+         }
++
++        if (knownType == null) {
++          // Use the native type for the constant if no specific type was found.
++          knownType = getNativeType(JSTypeNative.UNKNOWN_TYPE);
++        }
++        return knownType;
+       }
+     }
+   }
+ 
+   return getDeclaredTypeInAnnotation(sourceName, lValue, info);
+ }
++

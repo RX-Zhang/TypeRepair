@@ -1,0 +1,1 @@
+['bufferUp', 'isEmpty', 'consumeTo', 'matches', 'matchConsume']

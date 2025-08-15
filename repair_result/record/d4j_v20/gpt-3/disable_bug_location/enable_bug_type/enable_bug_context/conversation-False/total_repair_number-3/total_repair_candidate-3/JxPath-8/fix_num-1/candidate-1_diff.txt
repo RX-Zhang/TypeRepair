@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -19,5 +19,13 @@
+     }
+     double ld = InfoSetUtil.doubleValue(left);
+     double rd = InfoSetUtil.doubleValue(right);
++
++    if (Double.isNaN(ld) || Double.isNaN(rd)) {
++        // For NaN comparisons according to XPath semantics:
++        // any relational comparison with NaN returns false,
++        // equality comparison returns true only if both sides are NaN.
++        return evaluateCompare(0) && (Double.isNaN(ld) && Double.isNaN(rd));
++    }
+     return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+ }
++

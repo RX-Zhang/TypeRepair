@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -40,9 +40,15 @@
+         if (_parsingContext.inArray()) {
+             // Yup: in array, so this element could be verified; but it won't be
+             // reported anyway, and we need to process following event.
+-            token = _xmlTokens.next();
++
++            String name = _xmlTokens.getLocalName();
++            _parsingContext.setCurrentName(name);
++            if (_namesToWrap != null && _namesToWrap.contains(name)) {
++                _xmlTokens.repeatStartElement();
++            }
++
+             _mayBeLeaf = true;
+-            continue;
++            return (_currToken = JsonToken.FIELD_NAME);
+         }
+         String name = _xmlTokens.getLocalName();
+         _parsingContext.setCurrentName(name);
+@@ -67,7 +73,7 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+@@ -92,7 +98,7 @@
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+-            /* One more refinement (pronunced like "hack") is that if
++            /* One more refinement (pronounced like "hack") is that if
+              * we had an empty String (or all white space), and we are
+              * deserializing an array, we better hide the empty text.
+              */
+@@ -103,9 +109,8 @@
+                     // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                     //    expose as empty Object, not null (or, worse, as used to
+                     //    be done, by swallowing the token)
+-                    _currToken = JsonToken.END_ARRAY;
+-                    _parsingContext = _parsingContext.getParent();
+-                    _namesToWrap = _parsingContext.getNamesToWrap();
++                    _currToken = JsonToken.START_OBJECT;
++                    _mayBeLeaf = false;
+                     return _currToken;
+                 }
+             }
+@@ -132,3 +137,4 @@
+     _throwInternal();
+     return null;
+ }
++

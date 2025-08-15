@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,3 +1,11 @@
+ public Dfp multiply(final int x) {
++        // Handle special cases for NaN and infinite values before calling multiplyFast
++        if (nans != FINITE || x < 0 || x >= RADIX) {
++            Dfp result = newInstance(getZero());
++            result.nans = QNAN;
++            field.setIEEEFlagsBits(DfpField.FLAG_INVALID);
++            return dotrap(DfpField.FLAG_INVALID, MULTIPLY_TRAP, newInstance(getZero()), result);
++        }
+         return multiplyFast(x);
+ }
++

@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -1,15 +1,16 @@
+ private static Type resolve(Type context, Class<?> contextRawType, Type toResolve,
+                             Collection<TypeVariable> visitedTypeVariables) {
+-  // this implementation is made a little more complicated in an attempt to avoid object-creation
+   while (true) {
+     if (toResolve instanceof TypeVariable) {
+       TypeVariable<?> typeVariable = (TypeVariable<?>) toResolve;
+-        // cannot reduce due to infinite recursion
++      if (visitedTypeVariables.contains(typeVariable)) {
++        return toResolve;
++      }
++      visitedTypeVariables.add(typeVariable);
+       toResolve = resolveTypeVariable(context, contextRawType, typeVariable);
+       if (toResolve == typeVariable) {
+         return toResolve;
+       }
+-
+     } else if (toResolve instanceof Class && ((Class<?>) toResolve).isArray()) {
+       Class<?> original = (Class<?>) toResolve;
+       Type componentType = original.getComponentType();
+@@ -17,7 +18,6 @@
+       return componentType == newComponentType
+           ? original
+           : arrayOf(newComponentType);
+-
+     } else if (toResolve instanceof GenericArrayType) {
+       GenericArrayType original = (GenericArrayType) toResolve;
+       Type componentType = original.getGenericComponentType();
+@@ -25,7 +25,6 @@
+       return componentType == newComponentType
+           ? original
+           : arrayOf(newComponentType);
+-
+     } else if (toResolve instanceof ParameterizedType) {
+       ParameterizedType original = (ParameterizedType) toResolve;
+       Type ownerType = original.getOwnerType();
+@@ -47,7 +46,6 @@
+       return changed
+           ? newParameterizedTypeWithOwner(newOwnerType, original.getRawType(), args)
+           : original;
+-
+     } else if (toResolve instanceof WildcardType) {
+       WildcardType original = (WildcardType) toResolve;
+       Type[] originalLowerBound = original.getLowerBounds();
+@@ -65,9 +63,9 @@
+         }
+       }
+       return original;
+-
+     } else {
+       return toResolve;
+     }
+   }
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -34,8 +34,13 @@
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
++      // Do NOT change this to tryMinimizeExits.
++      // The original code incorrectly calls tryMinimizeExits on finally blocks,
++      // which can lead to removing returns or breaks inside finally.
++      // This is the root cause of the bug.
++      //
++      // So skip tryMinimizeExits on finally blocks to avoid modifying them.
++      // Thus, do nothing here.
+     }
+   }
+ 
+@@ -94,3 +99,4 @@
+     }
+   }
+ }
++

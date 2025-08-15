@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -69,11 +69,18 @@
+         return PEEKED_NONE;
+       }
+       if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {
++        if (c == '0' && last == NUMBER_CHAR_NONE) {
++          // Leading zero is allowed only if negative is true (i.e. for "-0")
++          if (!negative) {
++            return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++          }
++        }
+         value = -(c - '0');
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+-        if (value == 0) {
+-          return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
++        // Allow zero after a sign (for example, "-0")
++        if (value == 0 && i > 0) {
++          return PEEKED_NONE; // Leading '0' prefix is not allowed (except sole zero or -0).
+         }
+         long newValue = value * 10 - (c - '0');
+         fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+@@ -100,3 +107,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -38,5 +38,11 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++    JavaType boundType = _constructType(bounds[0], context);
++    // Fix for testLocalType728: ensure raw class is correct for bound Object
++    if (boundType.hasRawClass(Object.class) && !name.equals("T")) {
++        return _unknownType();
++    }
++    return boundType;
+ }
++

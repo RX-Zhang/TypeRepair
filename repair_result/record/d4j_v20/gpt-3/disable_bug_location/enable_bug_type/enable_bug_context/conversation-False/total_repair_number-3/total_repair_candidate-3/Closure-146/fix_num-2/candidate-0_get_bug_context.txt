@@ -1,0 +1,1 @@
+['testForEquality', 'forceResolve', 'resolve', 'safeResolve']

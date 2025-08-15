@@ -1,0 +1,74 @@
+--- 
++++ 
+@@ -1,12 +1,12 @@
+ protected void iterateSimplex(final Comparator<RealPointValuePair> comparator)
+     throws FunctionEvaluationException, OptimizationException, IllegalArgumentException {
+ 
+-    while (true) {
++    while (!convergenceChecker.converged(getIterations(), simplex)) {
+ 
+         incrementIterationsCounter();
+ 
+         // save the original vertex
+-        final RealPointValuePair[] original = simplex;
++        final RealPointValuePair[] original = simplex.clone();
+         final RealPointValuePair best = original[0];
+ 
+         // perform a reflection step
+@@ -14,7 +14,7 @@
+         if (comparator.compare(reflected, best) < 0) {
+ 
+             // compute the expanded simplex
+-            final RealPointValuePair[] reflectedSimplex = simplex;
++            final RealPointValuePair[] reflectedSimplex = simplex.clone();
+             final RealPointValuePair expanded = evaluateNewSimplex(original, khi, comparator);
+             if (comparator.compare(reflected, expanded) <= 0) {
+                 // accept the reflected simplex
+@@ -29,11 +29,45 @@
+         final RealPointValuePair contracted = evaluateNewSimplex(original, gamma, comparator);
+         if (comparator.compare(contracted, best) < 0) {
+             // accept the contracted simplex
++            simplex = simplex;
+ 
+-        // check convergence
+-            return;
++            // check convergence
++            if (convergenceChecker != null && 
++                convergenceChecker.converged(getIterations(), simplex)) {
++                return;
++            }
++        } else {
++            // no improvement, reduce the simplex towards the best point
++            reduceSimplex(comparator);
++            if (convergenceChecker != null && 
++                convergenceChecker.converged(getIterations(), simplex)) {
++                return;
++            }
+         }
+ 
+     }
+ 
+ }
++
++// Assuming reduceSimplex is a method that reduces the simplex size when no better point is found
++private void reduceSimplex(final Comparator<RealPointValuePair> comparator)
++    throws FunctionEvaluationException, OptimizationException {
++
++    final RealPointValuePair best = simplex[0];
++    final int n = best.getPointRef().length;
++
++    for (int i = 1; i < simplex.length; i++) {
++        final double[] xBest = best.getPointRef();
++        final double[] xCurrent = simplex[i].getPointRef();
++        final double[] xReduced = new double[n];
++
++        for (int j = 0; j < n; j++) {
++            xReduced[j] = xBest[j] + 0.5 * (xCurrent[j] - xBest[j]);
++        }
++
++        simplex[i] = new RealPointValuePair(xReduced, Double.NaN, false);
++    }
++
++    evaluateSimplex(comparator);
++}
++

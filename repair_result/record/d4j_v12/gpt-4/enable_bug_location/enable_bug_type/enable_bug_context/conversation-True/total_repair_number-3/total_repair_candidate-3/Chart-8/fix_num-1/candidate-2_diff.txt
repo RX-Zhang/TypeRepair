@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -1,4 +1,9 @@
+ public Week(Date time, TimeZone zone) {
+     // defer argument checking...
+-    this(time, RegularTimePeriod.DEFAULT_TIME_ZONE, Locale.getDefault());
++    Calendar calendar = Calendar.getInstance(zone, Locale.getDefault());
++    calendar.setTime(time);
++    this.week = (byte) calendar.get(Calendar.WEEK_OF_YEAR);
++    this.year = (short) calendar.get(Calendar.YEAR);
++    peg(calendar);
+ }
++

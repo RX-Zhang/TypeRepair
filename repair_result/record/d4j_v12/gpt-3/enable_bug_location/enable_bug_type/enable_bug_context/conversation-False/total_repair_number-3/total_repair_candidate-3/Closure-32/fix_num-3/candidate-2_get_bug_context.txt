@@ -1,0 +1,1 @@
+['parseSuppressTag', 'parseModifiesTag', 'parseTypeExpressionAnnotation', 'parseParamTypeExpressionAnnotation', 'parseTypeNameAnnotation', 'hasParsedJSDocInfo', 'getFileOverviewJSDocInfo']

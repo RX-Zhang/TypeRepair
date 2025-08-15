@@ -1,0 +1,39 @@
+public Base64() {
+    this(false);
+}
+
+public Base64(boolean urlSafe) {
+    this.encodeTable = urlSafe ? URL_SAFE_ENCODE_TABLE : STANDARD_ENCODE_TABLE;
+    this.lineLength = 0;
+    this.lineSeparator = null;
+    this.decodeSize = 3;
+    this.encodeSize = 4;
+    this.buffer = null;
+    this.pos = 0;
+    this.readPos = 0;
+    this.currentLinePos = 0;
+    this.modulus = 0;
+    this.eof = false;
+    this.x = 0;
+}
+
+public byte[] encode(byte[] pArray) {
+    if (pArray == null || pArray.length == 0) {
+        return new byte[0];
+    }
+    this.reset();
+    this.encode(pArray, 0, pArray.length);
+    this.encode(pArray, 0, -1);
+
+    byte[] result = new byte[pos];
+    System.arraycopy(buffer, 0, result, 0, pos);
+    return result;
+}
+
+@Override
+public Object encode(Object pObject) {
+    if (!(pObject instanceof byte[])) {
+        throw new IllegalArgumentException("Parameter supplied to Base64 encode is not a byte[]");
+    }
+    return encode((byte[]) pObject);
+}

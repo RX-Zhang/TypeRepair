@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -15,6 +15,11 @@
+     while (start < end){
+         if (buffer[start] == ' '){
+             start++;
++        } else if (buffer[start] == 0) {
++            // Unexpected NUL byte in the middle of the field
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, buffer[start])
++            );
+         } else {
+             break;
+         }
+@@ -24,16 +29,27 @@
+     // The ustar and POSIX tar specs require a trailing NUL or
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    while (start < end && (trailer == 0 || trailer == ' ')) {
+-        end--;
+-        trailer = buffer[end - 1];
++    if (end > offset) {
++        byte trailer = buffer[end - 1];
++        while (start < end && (trailer == 0 || trailer == ' ')) {
++            end--;
++            if (end > offset) {
++                trailer = buffer[end - 1];
++            } else {
++                break;
++            }
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+         if (currentByte == 0) {
+-            break;
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, currentByte));
++        }
++        if (currentByte == ' ') {
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -46,3 +62,4 @@
+ 
+     return result;
+ }
++

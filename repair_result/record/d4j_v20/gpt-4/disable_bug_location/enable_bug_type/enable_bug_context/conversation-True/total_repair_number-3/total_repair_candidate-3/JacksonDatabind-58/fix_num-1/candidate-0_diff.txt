@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -9,8 +9,11 @@
+     if (ctxt.canOverrideAccessModifiers()) {
+         // [databind#877]: explicitly prevent forced access to `cause` of `Throwable`;
+         // never needed and attempts may cause problems on some platforms.
+-        // !!! NOTE: should be handled better for 2.8 and later
++        // Added check to avoid forcing access for 'cause' property in Throwable subclasses.
++        if (!("cause".equals(propDef.getName()) 
++                && Throwable.class.isAssignableFrom(beanDesc.getBeanClass()))) {
+             mutator.fixAccess(ctxt.isEnabled(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS));
++        }
+     }
+     // note: this works since we know there's exactly one argument for methods
+     BeanProperty.Std property = new BeanProperty.Std(propDef.getFullName(),
+@@ -48,3 +51,4 @@
+     }
+     return prop;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.filter.ProblemHandlerTest.testWeirdStringHandling
+- Error: com.fasterxml.jackson.databind.exc.InvalidFormatException: Can not deserialize value of type java.util.UUID from String "not a uuid!": not a valid textual representation
+- Location:         UUID result2 = mapper.readValue(quote("not a uuid!"), UUID.class);

@@ -1,0 +1,1 @@
+['findIgnoreUnknownProperties', 'findSerializer', 'findSerializationType', 'findNameForSerialization']

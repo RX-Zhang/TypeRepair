@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -17,6 +17,12 @@
+     if (result != null) {
+         return result;
+     }
++    // Additional check: if current token is VALUE_STRING and empty string and ACCEPT_EMPTY_STRING_AS_NULL_OBJECT is enabled
++    if (p.hasToken(JsonToken.VALUE_STRING) && p.getText().isEmpty()) {
++        if (ctxt.isEnabled(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)) {
++            return null;
++        }
++    }
+     // or, something for which "as-property" won't work, changed into "wrapper-array" type:
+     if (p.getCurrentToken() == JsonToken.START_ARRAY) {
+         return super.deserializeTypedFromAny(p, ctxt);
+@@ -25,3 +31,4 @@
+             "missing property '"+_typePropertyName+"' that is to contain type id  (for class "+baseTypeName()+")");
+     return null;
+ }
++

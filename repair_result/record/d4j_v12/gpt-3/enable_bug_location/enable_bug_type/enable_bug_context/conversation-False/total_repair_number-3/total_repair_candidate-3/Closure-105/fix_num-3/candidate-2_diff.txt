@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -76,7 +76,7 @@
+       int kJoinOverhead = "[].join()".length();
+       foldedSize += kJoinOverhead;
+       foldedSize += InlineCostEstimator.getCost(right);
+-      if (foldedSize > originalSize) {
++      if (foldedSize >= originalSize) {
+         return;
+       }
+       arrayNode.detachChildren();
+@@ -87,3 +87,4 @@
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

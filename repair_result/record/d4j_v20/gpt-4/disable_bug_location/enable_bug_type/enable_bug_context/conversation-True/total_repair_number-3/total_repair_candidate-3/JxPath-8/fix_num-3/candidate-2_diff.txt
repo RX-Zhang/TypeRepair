@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -19,5 +19,19 @@
+     }
+     double ld = InfoSetUtil.doubleValue(left);
+     double rd = InfoSetUtil.doubleValue(right);
++
++    // Correct handling for NaN values to match expected behavior:
++    if (Double.isNaN(ld) || Double.isNaN(rd)) {
++        // NaN comparisons: only equals to itself (based on test cases)
++        if (Double.isNaN(ld) && Double.isNaN(rd)) {
++            // According to test: $nan = $nan should be true, other comparisons false
++            return evaluateCompare(0);
++        } else {
++            // Any comparison involving NaN and non-NaN should be false
++            return evaluateCompare(Integer.MIN_VALUE); // indicate no match, depends on implement
++        }
++    }
++
+     return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.chart.plot.junit.MultiplePiePlotTests.testConstructor
+- Error: junit.framework.AssertionFailedError
+- Location:     	assertTrue(dataset.hasListener(plot));

@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -1,6 +1,10 @@
+ protected StringBuffer renderWrappedText(StringBuffer sb, int width, 
+                                          int nextLineTabStop, String text)
+ {
++    if (width <= 0) {
++        width = getWidth();
++    }
++    
+     int pos = findWrapPos(text, width, 0);
+ 
+     if (pos == -1)
+@@ -25,7 +29,7 @@
+     while (true)
+     {
+         text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, 0);
++        pos = findWrapPos(text, width, nextLineTabStop);
+ 
+         if (pos == -1)
+         {
+@@ -42,3 +46,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

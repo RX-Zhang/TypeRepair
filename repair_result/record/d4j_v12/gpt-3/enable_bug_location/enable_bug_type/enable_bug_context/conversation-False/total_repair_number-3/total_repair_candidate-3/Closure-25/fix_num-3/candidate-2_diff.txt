@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -21,9 +21,16 @@
+       }
+     }
+   }
++  
++  if (type == null) {
++    // If type is still null, we set it to UNKNOWN_TYPE to avoid null type issues.
++    type = getNativeType(UNKNOWN_TYPE);
++  }
++
+   n.setJSType(type);
+   for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
+     scope = traverse(arg, scope);
+   }
+   return scope;
+ }
++

@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -5,10 +5,26 @@
+ 
+         String prefix = updateNamespaces(sourceEl);
+         String namespace = namespacesStack.peek().get(prefix);
+-        String tagName = sourceEl.tagName();
++        String localName = sourceEl.tagName();
+ 
+-        Element el = 
+-            doc.createElementNS(namespace, tagName);
++        // If namespace is null or empty and tagName contains ':', split it for localName and prefix
++        if ((namespace == null || namespace.isEmpty()) && localName.contains(":")) {
++            int colonIndex = localName.indexOf(':');
++            String prefixPart = localName.substring(0, colonIndex);
++            String localPart = localName.substring(colonIndex + 1);
++            localName = localPart;
++            // namespace remains null, which is allowed for local names without namespace
++        }
++
++        Element el;
++        if (namespace == null || namespace.isEmpty()) {
++            // Create element without namespace if namespace is not defined
++            el = doc.createElement(localName);
++        } else {
++            // Create element with namespace if present
++            el = doc.createElementNS(namespace, localName);
++        }
++
+         copyAttributes(sourceEl, el);
+         if (dest == null) { // sets up the root
+             doc.appendChild(el);
+@@ -32,3 +48,4 @@
+         // unhandled
+     }
+ }
++

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -19,7 +19,7 @@
+                     // 17-Jan-2019, tatu: As per [databind#2221], better NOT return `null` but...
+                     return null;
+                 }
+-                // ... would this actually work?
++                // ... should try to find deserializer for actual type
+                 deser = ctxt.findContextualValueDeserializer(actual, _property);
+             }
+         } else {
+@@ -52,3 +52,4 @@
+     }
+     return deser;
+ }
++

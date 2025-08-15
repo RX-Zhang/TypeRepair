@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -19,18 +19,33 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            int pos = arg.indexOf('=');
++            if (pos != -1)
++            {
++                String opt = arg.substring(0, pos);
++                String optName = Util.stripLeadingHyphens(opt);
+ 
+-            if (options.hasOption(opt))
+-            {
+-                tokens.add(arg);
++                if (options.hasOption(optName))
++                {
++                    tokens.add(opt);
++                    tokens.add(arg.substring(pos + 1));
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
++                    tokens.add(arg);
++                }
++                else if (arg.length() > 1 && options.hasOption(arg.substring(0, 2)))
++                {
++                    // the format is -Dproperty=value (special properties option)
+                     tokens.add(arg.substring(0, 2)); // -D
+                     tokens.add(arg.substring(2)); // property=value
+                 }
+@@ -57,3 +72,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

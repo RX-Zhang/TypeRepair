@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -3,18 +3,26 @@
+     // initialize the return list
+     List valueList = (List) values.get(option);
+ 
+-    // grab the correct default values
+-    if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = defaultValues;
++    // if valueList is null or empty, start with a new list to collect values
++    if (valueList == null || valueList.isEmpty()) {
++        valueList = new ArrayList<>();
++    } else {
++        // make a copy to avoid modifying original stored list
++        valueList = new ArrayList<>(valueList);
+     }
+ 
+-    // augment the list with the default values
+-    if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = (List) this.defaultValues.get(option);
++    // add values from the provided defaultValues if not null
++    if (defaultValues != null) {
++        valueList.addAll(defaultValues);
+     }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+-    
+-    return valueList == null ? Collections.EMPTY_LIST : valueList;
++
++    // add values from the option's defaultValues if not null
++    List defVals = (List) this.defaultValues.get(option);
++    if (defVals != null) {
++        valueList.addAll(defVals);
++    }
++
++    // if no values at all, return empty list
++    return valueList.isEmpty() ? Collections.EMPTY_LIST : valueList;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.lang.StringUtilsEqualsIndexOfTest.testContainsIgnoreCase_LocaleIndependence
+- Error: junit.framework.AssertionFailedError: en: 0 ß SS
+- Location:                     assertFalse(Locale.getDefault() + ": " + j + " " + fdata[j][0] + " " + fdata[j][1], StringUtils

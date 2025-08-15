@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -1,10 +1,10 @@
+ public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+-    long    result = 0;
+-    int     end = offset + length;
+-    int     start = offset;
++    long result = 0;
++    int end = offset + length;
++    int start = offset;
+ 
+-    if (length < 2){
+-        throw new IllegalArgumentException("Length "+length+" must be at least 2");
++    if (length < 2) {
++        throw new IllegalArgumentException("Length " + length + " must be at least 2");
+     }
+ 
+     if (buffer[start] == 0) {
+@@ -12,8 +12,8 @@
+     }
+ 
+     // Skip leading spaces
+-    while (start < end){
+-        if (buffer[start] == ' '){
++    while (start < end) {
++        if (buffer[start] == ' ') {
+             start++;
+         } else {
+             break;
+@@ -34,10 +34,11 @@
+                 exceptionMessage(buffer, offset, length, start, trailer));
+     }
+ 
+-    for ( ;start < end; start++) {
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+         // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++        // Validate that the byte is between '0' and '7'
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+@@ -47,3 +48,4 @@
+ 
+     return result;
+ }
++

@@ -1,0 +1,1 @@
+['declareNativeFunctionType', 'declareNativeValueType', 'declareNativeType', 'getNativeType', 'getFunctionAnalysisResults']

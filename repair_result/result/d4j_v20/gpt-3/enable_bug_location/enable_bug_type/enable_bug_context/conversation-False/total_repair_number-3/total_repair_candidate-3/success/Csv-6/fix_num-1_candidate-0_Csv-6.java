@@ -1,0 +1,13 @@
+<M extends Map<String, String>> M putIn(final M map) {
+    for (final Entry<String, Integer> entry : mapping.entrySet()) {
+        final int col = entry.getValue().intValue();
+        // Check if the column index is within the bounds of the values array
+        if (col >= 0 && col < values.length) {
+            map.put(entry.getKey(), values[col]);
+        } else {
+            // Handle the case where the index is out of bounds
+            map.put(entry.getKey(), null); // or handle it in a way that fits your application logic
+        }
+    }
+    return map;
+}

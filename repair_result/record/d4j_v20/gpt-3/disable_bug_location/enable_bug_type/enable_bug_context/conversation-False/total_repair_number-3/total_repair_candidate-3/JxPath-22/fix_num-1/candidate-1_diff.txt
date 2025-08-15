@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -1,6 +1,11 @@
+ public static String getNamespaceURI(Node node) {
+     if (node instanceof Document) {
+         node = ((Document) node).getDocumentElement();
++    }
++
++    if (node.getNodeType() != Node.ELEMENT_NODE) {
++        // For nodes other than elements, namespace URI can be retrieved directly
++        return node.getNamespaceURI();
+     }
+ 
+     Element element = (Element) node;
+@@ -8,14 +13,15 @@
+     String uri = element.getNamespaceURI();
+     if (uri == null) {
+         String prefix = getPrefix(node);
+-        String qname = prefix == null ? "xmlns" : "xmlns:" + prefix;
++        String qname = prefix == null || prefix.isEmpty() ? "xmlns" : "xmlns:" + prefix;
+ 
+         Node aNode = node;
+-        while (aNode != null) {
+-            if (aNode.getNodeType() == Node.ELEMENT_NODE) {
+-                Attr attr = ((Element) aNode).getAttributeNode(qname);
+-                if (attr != null) {
+-                    return attr.getValue();
++        while (aNode != null && aNode.getNodeType() == Node.ELEMENT_NODE) {
++            Attr attr = ((Element) aNode).getAttributeNode(qname);
++            if (attr != null) {
++                String value = attr.getValue();
++                if (value != null && !value.isEmpty()) {
++                    return value;
+                 }
+             }
+             aNode = aNode.getParentNode();
+@@ -24,3 +30,4 @@
+     }
+     return uri;
+ }
++

@@ -1,0 +1,1 @@
+['remove', 'removeIgnoreCase', 'hasKey', 'hasKeyIgnoreCase']

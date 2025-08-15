@@ -1,0 +1,1 @@
+{"Jsoup-40": ["org.jsoup.nodes.DocumentTypeTest::constructorValidationOkWithBlankName", "org.jsoup.parser.HtmlParserTest::handlesInvalidDoctypes"]}

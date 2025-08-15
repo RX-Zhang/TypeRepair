@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -35,4 +35,9 @@
+     putArchiveEntry(pex);
+     write(data);
+     closeArchiveEntry();
++
++    // Reset currSize and currBytes so no exception will be thrown in closeArchiveEntry()
++    currSize = 0;
++    currBytes = data.length;
+ }
++

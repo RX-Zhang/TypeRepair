@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -16,7 +16,12 @@
+                 return (byte[]) ob;
+             }
+         }
++        // If node is textual, decode base64 using specified variant
++        if (n.isTextual()) {
++            return b64variant.decode(n.textValue());
++        }
+     }
+     // otherwise return null to mark we have no binary content
+     return null;
+ }
++

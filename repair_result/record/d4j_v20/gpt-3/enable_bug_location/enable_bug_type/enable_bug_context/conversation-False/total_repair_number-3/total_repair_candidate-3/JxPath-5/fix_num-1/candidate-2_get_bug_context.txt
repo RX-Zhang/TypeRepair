@@ -1,0 +1,1 @@
+['getParent', 'isNode', 'isCollection', 'getRootNode', 'compareChildNodePointers']

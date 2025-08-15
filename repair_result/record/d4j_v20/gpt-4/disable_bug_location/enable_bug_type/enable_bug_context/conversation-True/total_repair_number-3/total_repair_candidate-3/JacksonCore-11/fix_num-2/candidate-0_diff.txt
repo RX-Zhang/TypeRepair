@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,6 +8,12 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (ArrayIndexOutOfBoundsException e) {
++            // Defensive: in rare case of concurrency or corruption, nuke symbols to avoid infinite failure
++            nukeSymbols(true);
++        }
+     }
+ }
++

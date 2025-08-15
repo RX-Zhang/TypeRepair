@@ -1,0 +1,15 @@
+def kheapsort(arr, k):
+    import heapq
+    if not arr:
+        return
+    heap = arr[:k]
+    heapq.heapify(heap)
+    for x in arr[k:]:
+        if x > heap[0]:
+            heapq.heapreplace(heap, x)
+    result = []
+    while heap:
+        result.append(heapq.heappop(heap))
+    result.sort()
+    for v in result:
+        yield v

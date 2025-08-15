@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -25,7 +25,9 @@
+                     continue;
+                 }
+                 while (t == JsonToken.FIELD_NAME) {
++                    String unwrappedPropName = p.getCurrentName();
+                     p.nextToken();
++                    tokens.writeFieldName(unwrappedPropName);
+                     tokens.copyCurrentStructure(p);
+                     t = p.nextToken();
+                 }
+@@ -68,5 +70,7 @@
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -19,5 +19,18 @@
+     }
+     double ld = InfoSetUtil.doubleValue(left);
+     double rd = InfoSetUtil.doubleValue(right);
++
++    // Fix the NaN comparison behavior:
++    // If either ld or rd is NaN, comparisons (>, <) should be false,
++    // equality should be false except in the specific case where the 
++    // operation is '=' and both are NaN (which should return true).
++    boolean ldNaN = Double.isNaN(ld);
++    boolean rdNaN = Double.isNaN(rd);
++    if (ldNaN || rdNaN) {
++        // Only equal if both are NaN
++        return evaluateCompare((ldNaN && rdNaN) ? 0 : Integer.MIN_VALUE);
++    }
++
+     return evaluateCompare(ld == rd ? 0 : ld < rd ? -1 : 1);
+ }
++

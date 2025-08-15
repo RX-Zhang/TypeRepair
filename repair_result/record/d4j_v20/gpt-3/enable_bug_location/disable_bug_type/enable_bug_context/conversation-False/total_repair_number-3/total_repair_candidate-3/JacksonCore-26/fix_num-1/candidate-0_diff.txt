@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -11,8 +11,8 @@
+     if (_endOfInput) {
+         _reportError("Already closed, can not feed more input");
+     }
+-    // Time to update pointers first
+-    _currInputProcessed += _origBufferLen;
++    // Time to update pointers first: Add only remaining undecoded bytes, not full buffer length
++    _currInputProcessed += (_inputEnd - _inputPtr);
+ 
+     // Also need to adjust row start, to work as if it extended into the past wrt new buffer
+     _currInputRowStart = start - (_inputEnd - _currInputRowStart);
+@@ -23,3 +23,4 @@
+     _inputEnd = end;
+     _origBufferLen = end - start;
+ }
++

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
+-      return false;
++    return false;
+   }
+ 
+   boolean inferred = true;
+@@ -21,6 +21,7 @@
+ 
+   if (inferred && rhsValue != null && rhsValue.isFunction()) {
+     if (info != null) {
++      // If JSDocInfo exists but has no type, consider it declared (no inference).
+       return false;
+     } else if (!scope.isDeclared(qName, false) &&
+         n.isUnscopedQualifiedName()) {
+@@ -28,7 +29,7 @@
+       // Check if this is in a conditional block.
+       // Functions assigned in conditional blocks are inferred.
+       for (Node current = n.getParent();
+-           !(current.isScript() || current.isFunction());
++           current != null && !(current.isScript() || current.isFunction());
+            current = current.getParent()) {
+         if (NodeUtil.isControlStructure(current)) {
+           return true;
+@@ -47,3 +48,4 @@
+   }
+   return inferred;
+ }
++

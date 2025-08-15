@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -10,6 +10,11 @@
+         if (data != null) {
+             return data;
+         }
++        if (n.isTextual()) {
++            // decode text content using the given Base64 variant
++            String base64 = n.textValue();
++            return b64variant.decode(base64);
++        }
+         if (n.isPojo()) {
+             Object ob = ((POJONode) n).getPojo();
+             if (ob instanceof byte[]) {
+@@ -20,3 +25,4 @@
+     // otherwise return null to mark we have no binary content
+     return null;
+ }
++

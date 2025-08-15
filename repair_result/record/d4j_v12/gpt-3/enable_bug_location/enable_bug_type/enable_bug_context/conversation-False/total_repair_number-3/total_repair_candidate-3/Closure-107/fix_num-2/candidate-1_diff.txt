@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -36,7 +36,7 @@
+ 
+   options.angularPass = flags.angularPass;
+ 
+-  if (!flags.translationsFile.isEmpty()) {
++  if (flags.translationsFile != null && !flags.translationsFile.isEmpty()) {
+     try {
+       options.messageBundle = new XtbMessageBundle(
+           new FileInputStream(flags.translationsFile),
+@@ -56,5 +56,11 @@
+     options.messageBundle = new EmptyMessageBundle();
+   }
+ 
++  // Ensure that the options are valid and complete
++  if (options.messageBundle == null) {
++    throw new RuntimeException("Message bundle must be initialized.");
++  }
++
+   return options;
+ }
++

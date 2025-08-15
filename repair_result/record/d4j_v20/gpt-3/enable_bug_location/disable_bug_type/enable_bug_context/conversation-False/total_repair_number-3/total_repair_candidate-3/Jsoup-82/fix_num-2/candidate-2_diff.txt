@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -52,13 +52,22 @@
+         foundCharset = validateCharset(foundCharset);
+         if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+-            charsetName = foundCharset;
++            // If charset can't be encoded, fallback to UTF-8
++            if (!Charset.forName(foundCharset).newEncoder().canEncode()) {
++                charsetName = "UTF-8";
++            } else {
++                charsetName = foundCharset;
++            }
+             doc = null;
+         } else if (!fullyRead) {
+             doc = null;
+         }
+     } else { // specified by content type header (or by user on file load)
+         Validate.notEmpty(charsetName, "Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML");
++        // If charset can't be encoded, fallback to UTF-8
++        if (!Charset.forName(charsetName).newEncoder().canEncode()) {
++            charsetName = "UTF-8";
++        }
+     }
+     if (doc == null) {
+         if (charsetName == null)
+@@ -79,3 +88,4 @@
+     input.close();
+     return doc;
+ }
++

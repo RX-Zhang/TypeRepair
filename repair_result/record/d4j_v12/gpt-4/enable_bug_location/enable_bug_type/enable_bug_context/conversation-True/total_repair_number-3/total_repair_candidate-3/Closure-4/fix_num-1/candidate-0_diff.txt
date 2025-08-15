@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -4,13 +4,12 @@
+   // makes more sense. Now, resolution via registry is first in order to
+   // avoid triggering the warnings built into the resolution via properties.
+   boolean resolved = resolveViaRegistry(t, enclosing);
+-  if (detectImplicitPrototypeCycle()) {
+-    handleTypeCycle(t);
+-  }
+-
+   if (resolved) {
+     super.resolveInternal(t, enclosing);
+     finishPropertyContinuations();
++    if (detectImplicitPrototypeCycle()) {
++      handleTypeCycle(t);
++    }
+     return registry.isLastGeneration() ?
+         getReferencedType() : this;
+   }
+@@ -27,3 +26,4 @@
+   return registry.isLastGeneration() ?
+       getReferencedType() : this;
+ }
++

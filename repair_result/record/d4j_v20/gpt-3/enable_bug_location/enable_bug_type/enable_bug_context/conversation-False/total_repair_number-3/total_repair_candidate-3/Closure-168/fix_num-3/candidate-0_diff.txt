@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+     data.get(t.getScopeRoot()).recordNonEmptyReturn();
+   }
+ 
+-  if (t.getScopeDepth() <= 2) {
++  if (t.getScopeDepth() < 2) {
+     // The first-order function analyzer looks at two types of variables:
+     //
+     // 1) Local variables that are assigned in inner scopes ("escaped vars")
+@@ -32,7 +32,9 @@
+         data.get(ownerScope.getRootNode()).recordAssignedName(name);
+       }
+ 
+-      if (scope != ownerScope && ownerScope.isLocal()) {
++      if (scope.isLocal() && scope != ownerScope && ownerScope.isLocal()) {
++        // Only record escaped variables if the current scope is also local
++        // Otherwise this can cause incorrect escapes for global scopes.
+         data.get(ownerScope.getRootNode()).recordEscapedVarName(name);
+       }
+     }
+@@ -43,10 +45,11 @@
+     Var var = scope.getVar(name);
+     if (var != null) {
+       Scope ownerScope = var.getScope();
+-      if (scope != ownerScope && ownerScope.isLocal()) {
++      if (scope.isLocal() && scope != ownerScope && ownerScope.isLocal()) {
+         data.get(ownerScope.getRootNode())
+             .recordEscapedQualifiedName(n.getQualifiedName());
+       }
+     }
+   }
+ }
++

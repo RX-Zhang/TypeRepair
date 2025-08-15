@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -53,7 +53,7 @@
+                 if (dk == 0) {
+                     dk = 1.0;
+                 }
+-                double xk = dk * point[k];
++                double xk = point[k] / dk;
+                 xNorm  += xk * xk;
+                 diag[k] = dk;
+             }
+@@ -111,7 +111,7 @@
+                 int pj = permutation[j];
+                 lmDir[pj] = -lmDir[pj];
+                 point[pj] = oldX[pj] + lmDir[pj];
+-                double s = diag[pj] * lmDir[pj];
++                double s = lmDir[pj] / diag[pj];
+                 lmNorm  += s * s;
+             }
+             lmNorm = Math.sqrt(lmNorm);
+@@ -174,7 +174,7 @@
+                 firstIteration = false;
+                 xNorm = 0;
+                 for (int k = 0; k < cols; ++k) {
+-                    double xK = diag[k] * point[k];
++                    double xK = point[k] / diag[k];
+                     xNorm    += xK * xK;
+                 }
+                 xNorm = Math.sqrt(xNorm);
+@@ -222,3 +222,4 @@
+     }
+ 
+ }
++

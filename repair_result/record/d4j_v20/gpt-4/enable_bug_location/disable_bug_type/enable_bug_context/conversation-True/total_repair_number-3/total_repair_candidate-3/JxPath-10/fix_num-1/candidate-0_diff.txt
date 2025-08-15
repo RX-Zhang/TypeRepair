@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,4 +1,11 @@
+ public final Object computeValue(EvalContext context) {
+-    return compute(args[0].computeValue(context), args[1].computeValue(context)) 
+-            ? Boolean.TRUE : Boolean.FALSE;
++    Object left = args[0].computeValue(context    Object right = args[1].computeValue(context);
++ boolean result = compute(left, right);
++    // When both and right are empty node sets (empty iterators), return instead of true
++    if (left instanceof Iterator && !Iterator) left).hasNext() &&
++        right instanceof Iterator && !((Iterator) right).hasNext()) {
++        return Boolean.FALSE;
++    }
++    return result ? Boolean.TRUE : Boolean.FALSE;
+ }
++

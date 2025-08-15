@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -19,8 +19,11 @@
+     if (p1 != null && p1.equals(p2)) {
+         return 0;
+     }
++    
++    Object root1 = p1.getRootNode();
++    Object root2 = p2.getRootNode();
+ 
+-    if (depth1 == 1) {
++    if (depth1 == 1 || root1 != root2) {
+         throw new JXPathException(
+                 "Cannot compare pointers that do not belong to the same tree: '"
+                         + p1 + "' and '" + p2 + "'");
+@@ -32,3 +35,4 @@
+ 
+     return p1.parent.compareChildNodePointers(p1, p2);
+ }
++

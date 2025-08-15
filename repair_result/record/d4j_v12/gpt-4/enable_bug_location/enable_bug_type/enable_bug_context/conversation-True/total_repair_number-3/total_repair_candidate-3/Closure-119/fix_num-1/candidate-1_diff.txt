@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -63,6 +63,15 @@
+             isSet = true;
+             type = Name.Type.OTHER;
+             break;
++          case Token.CATCH:
++            // The original bug was that catch block parameters (like 'e' in 'catch (e)') are reported as undefined.
++            // Treat catch block variable declarations as global only if in global scope.
++            if (parent.hasChild(n) && parent.isCatch()) {
++              isSet = true;
++              type = Name.Type.OTHER;
++              break;
++            }
++            // fall through default if not catch param
+           default:
+             if (NodeUtil.isAssignmentOp(parent) &&
+                 parent.getFirstChild() == n) {
+@@ -123,3 +132,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

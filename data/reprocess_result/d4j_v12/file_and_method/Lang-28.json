@@ -1,0 +1,1 @@
+{"ClassName": "NumericEntityUnescaper", "Fields": [], "Methods": ["public int translate(CharSequence input, int index, Writer out) { ... }"]}

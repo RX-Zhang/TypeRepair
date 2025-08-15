@@ -1,0 +1,50 @@
+protected StringBuffer renderWrappedText(StringBuffer sb, int width, 
+                                         int nextLineTabStop, String text)
+{
+    if (width <= 0) {
+        width = getWidth(); // Use default width if invalid width is given
+    }
+
+    if (nextLineTabStop < 0) {
+        nextLineTabStop = 0; // Ensure nextLineTabStop is non-negative
+    }
+
+    if (width <= nextLineTabStop) {
+        // stops infinite loop happening
+        throw new IllegalStateException("Total width is less than or equal to the indent - no room for the description");
+    }
+
+    int pos = findWrapPos(text, width, 0);
+
+    if (pos == -1)
+    {
+        sb.append(rtrim(text));
+
+        return sb;
+    }
+    sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+
+    // all following lines must be padded with nextLineTabStop space 
+    // characters
+    final String padding = createPadding(nextLineTabStop);
+
+    while (true)
+    {
+        text = padding + text.substring(pos).trim();
+        pos = findWrapPos(text, width, 0);
+
+        if (pos == -1)
+        {
+            sb.append(text);
+
+            return sb;
+        }
+        
+        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
+        {
+            pos = width;
+        }
+
+        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+    }
+}

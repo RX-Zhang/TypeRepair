@@ -1,0 +1,47 @@
+--- 
++++ 
+@@ -34,9 +34,9 @@
+      * block. See ECMA 262 Sections 8.9 & 12.14
+      */
+     if (NodeUtil.hasFinally(n)) {
+-      Node finallyBlock = n.getLastChild();
+-      tryMinimizeExits(finallyBlock, exitType, labelName);
+-    }
++      // Do NOT try to minimize exits inside finally blocks.
++      // So, skip calling tryMinimizeExits on the finally block.
++    } 
+   }
+ 
+   // Just a 'label'.
+@@ -87,10 +87,27 @@
+   // Now try to minimize the exits of the last child, if it is removed
+   // look at what has become the last child.
+   for (Node c = n.getLastChild(); c != null; c = n.getLastChild()) {
+-    tryMinimizeExits(c, exitType, labelName);
+-    // If the node is still the last child, we are done.
+-    if (c == n.getLastChild()) {
+-      break;
++    // Skip minimizing exits inside finally blocks.
++    if (c.isTry() && NodeUtil.hasFinally(c)) {
++      // Skip finally block minimization to avoid changing break inside finally.
++      // So only minimize try block and catch block.
++      Node tryBlock = c.getFirstChild();
++      tryMinimizeExits(tryBlock, exitType, labelName);
++      Node allCatchNodes = NodeUtil.getCatchBlock(c);
++      if (NodeUtil.hasCatchHandler(allCatchNodes)) {
++        Preconditions.checkState(allCatchNodes.hasOneChild());
++        Node catchNode = allCatchNodes.getFirstChild();
++        Node catchCodeBlock = catchNode.getLastChild();
++        tryMinimizeExits(catchCodeBlock, exitType, labelName);
++      }
++      break; // Don't recurse further into finally.
++    } else {
++      tryMinimizeExits(c, exitType, labelName);
++      // If the node is still the last child, we are done.
++      if (c == n.getLastChild()) {
++        break;
++      }
+     }
+   }
+ }
++

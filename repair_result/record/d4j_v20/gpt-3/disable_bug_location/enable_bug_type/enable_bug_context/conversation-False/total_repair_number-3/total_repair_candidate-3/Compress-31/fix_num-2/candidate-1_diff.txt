@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -32,8 +32,10 @@
+ 
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
+-            break;
++        if (currentByte == 0 || currentByte == ' ') {
++            // Embedded NULs or spaces in the middle are invalid
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -46,3 +48,4 @@
+ 
+     return result;
+ }
++

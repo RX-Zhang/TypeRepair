@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -9,7 +9,7 @@
+ 
+         return sb;
+     }
+-    sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++    sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
+ 
+     // all following lines must be padded with nextLineTabStop space 
+     // characters
+@@ -27,6 +27,7 @@
+             return sb;
+         }
+ 
+-        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        sb.append(rtrim(text.substring(0, pos))).append(getNewLine());
+     }
+ }
++

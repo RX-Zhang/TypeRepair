@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -16,11 +16,14 @@
+     return true;
+   }
+ 
+-
+   for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
++    // Fix: only recurse if the CFG node is NOT new AND if not entering new CFG node
++    // We should check if 'c' is entering a new CFG node, and if so, skip recursion,
++    // but also the original condition was inverted.
+     if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {
+       return true;
+     }
+   }
+   return false;
+ }
++

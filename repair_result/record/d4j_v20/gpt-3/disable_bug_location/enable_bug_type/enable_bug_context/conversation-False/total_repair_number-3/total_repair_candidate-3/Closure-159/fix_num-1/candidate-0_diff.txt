@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -2,10 +2,10 @@
+     Node node, Set<String> changed) {
+   Preconditions.checkArgument(changed != null);
+   // For each referenced function, add a new reference
+-  if (node.getType() == Token.CALL) {
+-    Node child = node.getFirstChild();
+-    if (child.getType() == Token.NAME) {
+-      changed.add(child.getString());
++  if (node.isCall()) {
++    Node firstChild = node.getFirstChild();
++    if (firstChild != null && firstChild.isName()) {
++      changed.add(firstChild.getString());
+     }
+   }
+ 
+@@ -13,3 +13,4 @@
+     findCalledFunctions(c, changed);
+   }
+ }
++

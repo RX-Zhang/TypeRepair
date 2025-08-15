@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -52,7 +52,7 @@
+                 stepa = initialTrustRegionRadius;
+                 if (upperDifference.getEntry(nfmm) == ZERO) {
+                     stepa = -stepa;
+-                    throw new PathIsExploredException(); // XXX
++                    // Removed PathIsExploredException
+                 }
+                 interpolationPoints.setEntry(nfm, nfmm, stepa);
+             } else if (nfm > n) {
+@@ -60,11 +60,11 @@
+                 stepb = -initialTrustRegionRadius;
+                 if (lowerDifference.getEntry(nfxm) == ZERO) {
+                     stepb = Math.min(TWO * initialTrustRegionRadius, upperDifference.getEntry(nfxm));
+-                    throw new PathIsExploredException(); // XXX
++                    // Removed PathIsExploredException
+                 }
+                 if (upperDifference.getEntry(nfxm) == ZERO) {
+                     stepb = Math.max(-TWO * initialTrustRegionRadius, lowerDifference.getEntry(nfxm));
+-                    throw new PathIsExploredException(); // XXX
++                    // Removed PathIsExploredException
+                 }
+                 interpolationPoints.setEntry(nfm, nfxm, stepb);
+             }
+@@ -76,7 +76,7 @@
+                 final int tmp2 = jpt;
+                 jpt = ipt - n;
+                 ipt = tmp2;
+-                throw new PathIsExploredException(); // XXX
++                // Removed PathIsExploredException
+             }
+             final int iptMinus1 = ipt;
+             final int jptMinus1 = jpt;
+@@ -126,7 +126,7 @@
+                     bMatrix.setEntry(0, nfmm, -oneOverStepA);
+                     bMatrix.setEntry(nfm, nfmm, oneOverStepA);
+                     bMatrix.setEntry(npt + nfmm, nfmm, -HALF * rhosq);
+-                    throw new PathIsExploredException(); // XXX
++                    // Removed PathIsExploredException
+                 }
+             } else if (numEval >= n + 2) {
+                 final int ih = nfx * (nfx + 1) / 2 - 1;
+@@ -168,7 +168,8 @@
+             final int ih = ipt * (ipt - 1) / 2 + jpt - 1;
+             final double tmp = interpolationPoints.getEntry(nfm, ipt - 1) * interpolationPoints.getEntry(nfm, jpt - 1);
+             modelSecondDerivativesValues.setEntry(ih, (fbeg - fAtInterpolationPoints.getEntry(ipt) - fAtInterpolationPoints.getEntry(jpt) + f) / tmp);
+-            throw new PathIsExploredException(); // XXX
++            // Removed PathIsExploredException
+         }
+     } while (getEvaluations() < npt);
+ } // prelim
++

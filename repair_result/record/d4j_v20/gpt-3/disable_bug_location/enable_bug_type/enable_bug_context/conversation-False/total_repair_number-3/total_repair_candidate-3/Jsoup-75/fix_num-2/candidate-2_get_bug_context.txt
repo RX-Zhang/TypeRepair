@@ -1,0 +1,1 @@
+['checkCapacity', 'copyOf', 'get', 'getIgnoreCase', 'add', 'put', 'remove', 'removeIgnoreCase', 'hasKey', 'hasKeyIgnoreCase', 'size']

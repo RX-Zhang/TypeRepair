@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -139,8 +139,9 @@
+           null : typeRegistry.getType(delegateName);
+       if (delegateType != null &&
+           ownerTypeOfThis.isSubtype(delegateType)) {
+-        defineSlot(n, parent, getNativeType(BOOLEAN_TYPE), true);
++        defineSlot(n, parent, getNativeType(JSTypeNative.BOOLEAN_TYPE), true);
+       }
+     }
+   }
+ }
++

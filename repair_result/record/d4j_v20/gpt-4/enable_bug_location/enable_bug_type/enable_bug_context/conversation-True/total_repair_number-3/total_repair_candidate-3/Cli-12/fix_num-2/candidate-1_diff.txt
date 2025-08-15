@@ -1,0 +1,77 @@
+--- 
++++ 
+@@ -17,26 +17,60 @@
+         {
+             tokens.add("-");
+         }
+-        else if (arg.startsWith("-"))
++        else if (arg.startsWith("--"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
+-
+-            if (options.hasOption(opt))
++            int equalsIndex = arg.indexOf("=");
++            if (equalsIndex != -1)
++            {
++                String opt = arg.substring(2, equalsIndex);
++                String value = arg.substring(equalsIndex + 1);
++                if (options.hasOption(opt))
++                {
++                    tokens.add("--" + opt);
++                    tokens.add(value);
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
++            }
++            else
+             {
+                 tokens.add(arg);
+             }
+-            else
++        }
++        else if (arg.startsWith("-"))
++        {
++            int equalsIndex = arg.indexOf("=");
++            if (equalsIndex != -1)
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = arg.substring(1, equalsIndex);
++                String value = arg.substring(equalsIndex + 1);
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
++                    tokens.add("-" + opt);
++                    tokens.add(value);
++                }
++                else if (options.hasOption(arg.substring(0, 2)))
++                {
+                     // the format is a special properties option (-Dproperty=value)
+                     tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg.substring(2));
+                 }
+                 else
+                 {
+-                    eatTheRest = stopAtNonOption;
++                    tokens.add(arg);
++                }
++            }
++            else
++            {
++                String opt = arg.substring(1);
++                if (options.hasOption(opt))
++                {
++                    tokens.add(arg);
++                }
++                else
++                {
+                     tokens.add(arg);
+                 }
+             }
+@@ -57,3 +91,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

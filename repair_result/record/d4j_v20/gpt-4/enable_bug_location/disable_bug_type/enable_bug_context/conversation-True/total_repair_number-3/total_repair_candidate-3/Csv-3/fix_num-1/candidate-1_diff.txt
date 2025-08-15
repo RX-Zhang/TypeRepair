@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -12,17 +12,17 @@
+         return BACKSPACE;
+     case 'f':
+         return FF;
+-    case CR:
+-    case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
+-        return c;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // Do not consume the escape, return the escaped char including those 
++        // like \N (MySQL null) or any other escaped char, so keep the escape char
++        // along with the next character
++        // Return the character as is but indicate it was escaped by returning both chars
++        // since this method returns int, we need to handle this at a higher level,
++        // but here just return c and let the caller handle possible escaped sequences.
++        // So return c as read.
++        return c;
+     }
+ }
++

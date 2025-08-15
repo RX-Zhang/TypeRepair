@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,9 +1,10 @@
+ Node processForInLoop(ForInLoop loopNode) {
+ 
+-    // Return the bare minimum to put the AST in a valid state.
+-  return newNode(
+-      Token.FOR,
+-      transform(loopNode.getIterator()),
+-      transform(loopNode.getIteratedObject()),
+-      transformBlock(loopNode.getBody()));
++    // Use the helper methods to transform the iterator, iterated object, and the body block
++    return newNode(
++        Token.FOR,
++        transform(loopNode.getIterator()),
++        transform(loopNode.getIteratedObject()),
++        transformBlock(loopNode.getBody()));
+ }
++

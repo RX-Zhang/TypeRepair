@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -30,9 +30,11 @@
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+     // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    if (end > offset) {
++        trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -48,3 +50,4 @@
+ 
+     return result;
+ }
++

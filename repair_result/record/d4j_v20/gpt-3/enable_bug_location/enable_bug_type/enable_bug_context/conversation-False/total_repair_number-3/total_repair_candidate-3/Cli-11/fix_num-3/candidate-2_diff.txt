@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+     }
+ 
+     // if the Option has a value
+-    if (option.hasArg() && (option.getArgName() != null))
++    if (option.hasArg() && option.getArgName() != null && !option.getArgName().isEmpty())
+     {
+         buff.append(" <").append(option.getArgName()).append(">");
+     }
+@@ -28,3 +28,4 @@
+         buff.append("]");
+     }
+ }
++

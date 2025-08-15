@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -5,11 +5,12 @@
+   }
+   Preconditions.checkArgument(node.isGetProp());
+ 
+-    node = node.getFirstChild();
+-  if (node.isName()
+-      && isNameAssignedTo(node.getString(), replacement)) {
++  Node firstChild = node.getFirstChild();
++  if (firstChild.isName()
++      && isNameAssignedTo(firstChild.getString(), replacement)) {
+     return false;
+   }
+ 
+   return true;
+ }
++

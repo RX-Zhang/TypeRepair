@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -2,6 +2,12 @@
+     TypeToken<?> fieldType, JsonAdapter annotation) {
+   Class<?> value = annotation.value();
+   TypeAdapter<?> typeAdapter;
++  
++  // Validate the annotation value type
++  if (value == null) {
++    throw new IllegalArgumentException("Annotation value cannot be null.");
++  }
++
+   if (TypeAdapter.class.isAssignableFrom(value)) {
+     Class<TypeAdapter<?>> typeAdapterClass = (Class<TypeAdapter<?>>) value;
+     typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterClass)).construct();
+@@ -14,6 +20,13 @@
+     throw new IllegalArgumentException(
+         "@JsonAdapter value must be TypeAdapter or TypeAdapterFactory reference.");
+   }
+-    typeAdapter = typeAdapter.nullSafe();
++  
++  // Ensure typeAdapter is not null before calling nullSafe()
++  if (typeAdapter == null) {
++    throw new IllegalStateException("TypeAdapter cannot be null.");
++  }
++  
++  typeAdapter = typeAdapter.nullSafe();
+   return typeAdapter;
+ }
++

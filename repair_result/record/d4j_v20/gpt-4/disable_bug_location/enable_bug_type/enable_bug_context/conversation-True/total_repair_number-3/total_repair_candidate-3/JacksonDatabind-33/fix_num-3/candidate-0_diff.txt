@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -13,13 +13,17 @@
+              *   it's actually bit tricky to do it more efficiently (meta-annotations
+              *   add more lookups; AnnotationMap costs etc)
+              */
+-        } else if (_hasAnnotation(a, JsonSerialize.class)
+-                || _hasAnnotation(a, JsonView.class)
+-                || _hasAnnotation(a, JsonRawValue.class)) {
+-            name = "";
+         } else {
+-            return null;
++            Object serializer = findSerializer(a);
++            JsonView view = _findAnnotation(a, JsonView.class);
++            JsonRawValue raw = _findAnnotation(a, JsonRawValue.class);
++            if (serializer != null || view != null || (raw != null && raw.value())) {
++                name = "";
++            } else {
++                return null;
++            }
+         }
+     }
+     return PropertyName.construct(name);
+ }
++

@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -27,16 +27,26 @@
+     byte trailer = buffer[end - 1];
+     while (start < end && (trailer == 0 || trailer == ' ')) {
+         end--;
+-        trailer = buffer[end - 1];
++        if (end > offset) {
++            trailer = buffer[end - 1];
++        } else {
++            break;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+         if (currentByte == 0) {
+-            break;
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
++        }
++        if (currentByte == ' ') {
++            // Embedded spaces are not allowed
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+@@ -46,3 +56,4 @@
+ 
+     return result;
+ }
++

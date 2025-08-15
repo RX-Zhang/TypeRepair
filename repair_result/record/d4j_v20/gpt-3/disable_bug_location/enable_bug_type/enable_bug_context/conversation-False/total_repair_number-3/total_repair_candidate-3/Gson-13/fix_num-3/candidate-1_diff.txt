@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -73,6 +73,8 @@
+         last = NUMBER_CHAR_DIGIT;
+       } else if (last == NUMBER_CHAR_DIGIT) {
+         if (value == 0) {
++          // Allow "0" if it's the first digit, but disallow leading zeros like "01"
++          // So if previous value is 0 and this is a digit, it's invalid
+           return PEEKED_NONE; // Leading '0' prefix is not allowed (since it could be octal).
+         }
+         long newValue = value * 10 - (c - '0');
+@@ -89,6 +91,9 @@
+ 
+   // We've read a complete number. Decide if it's a PEEKED_LONG or a PEEKED_NUMBER.
+   if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
++    // The bugfix: correctly assign peekedLong to the negative value if negative == true,
++    // otherwise assign the positive value. In prior code, negative ? value : -value would
++    // incorrectly negate the value when negative is false.
+     peekedLong = negative ? value : -value;
+     pos += i;
+     return peeked = PEEKED_LONG;
+@@ -100,3 +105,4 @@
+     return PEEKED_NONE;
+   }
+ }
++

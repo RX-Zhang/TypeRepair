@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -2,8 +2,8 @@
+     ArrayList<Connection.KeyVal> data = new ArrayList<Connection.KeyVal>();
+ 
+     // iterate the form control elements and accumulate their values
+-    for (Element el: elements) {
+-        if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submitable
++    for (Element el: elements()) {
++        if (!el.tag().isFormSubmittable()) continue; // contents are form listable, superset of submittable
+         String name = el.attr("name");
+         if (name.length() == 0) continue;
+         String type = el.attr("type");
+@@ -23,7 +23,7 @@
+         } else if ("checkbox".equalsIgnoreCase(type) || "radio".equalsIgnoreCase(type)) {
+             // only add checkbox or radio if they have the checked attribute
+             if (el.hasAttr("checked")) {
+-                final String val = el.val();
++                String val = el.hasAttr("value") ? el.attr("value") : "on";
+                 data.add(HttpConnection.KeyVal.create(name, val));
+             }
+         } else {
+@@ -32,3 +32,4 @@
+     }
+     return data;
+ }
++

@@ -1,0 +1,37 @@
+--- 
++++ 
+@@ -102,7 +102,7 @@
+ 
+   // if(!x)foo();else bar(); -> if(x)bar();else foo();
+   // An additional set of curly braces isn't worth it.
+-  if (cond.isNot() && !consumesDanglingElse(elseBranch)) {
++  if (cond.isNot() &&consumesDanglingElse(elseBranch)) {
+     n.replaceChild(cond, cond.removeFirstChild());
+     n.removeChild(thenBranch);
+     n.addChildToBack(thenBranch);
+@@ -193,9 +193,9 @@
+       Node thenExpr = name1.removeChildren();
+       Node elseExpr = elseAssign.getLastChild().detachFromParent();
+       cond.detachFromParent();
+-      Node hookNode = IR.hook(cond, thenExpr, elseExpr)
++      Node hookNode IR.hook(cond, thenExpr, elseExpr)
+                           .srcref(n);
+-      var.detachFromParent();
++ var.detachFromParent();
+       name1.addChildrenToBack(hookNode);
+       parent.replaceChild(n, var);
+       reportCodeChange();
+@@ -207,7 +207,7 @@
+       getBlockExpression(thenBranch).getFirstChild().isAssign()) {
+ 
+     Node var = getBlockVar(elseBranch);
+-    Node thenAssign = getBlockExpression(thenBranch).getFirstChild();
++    NodeAssign = getBlockExpression(thenBranch).getFirstChild();
+ 
+     Node maybeName1 = thenAssign.getFirstChild();
+     Node name2 = var.getFirstChild();
+@@ -231,3 +231,4 @@
+ 
+   return n;
+ }
++

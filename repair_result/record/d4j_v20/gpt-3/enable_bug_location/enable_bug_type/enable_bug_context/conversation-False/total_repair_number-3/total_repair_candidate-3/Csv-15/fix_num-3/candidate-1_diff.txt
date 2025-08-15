@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -36,7 +36,10 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
++            // Corrected condition logic to properly identify characters that require quoting:
++            // Quote if the first char is less than 0x20 (control chars except tab, line feed, carriage return)
++            // or if it is DEL (0x7F) or non-ASCII (> 0x7E)
++            if (newRecord && (c < 0x20 || c == 0x7F || c > 0x7E)) {
+                 quote = true;
+             } else if (c <= COMMENT) {
+                 // Some other chars at the start of a value caused the parser to fail, so for now
+@@ -53,11 +56,10 @@
+                     pos++;
+                 }
+ 
+-                if (!quote) {
+-                    pos = end - 1;
+-                    c = value.charAt(pos);
++                if (!quote && len > 0) {
++                    c = value.charAt(end - 1);
+                     // Some other chars at the end caused the parser to fail, so for now
+-                    // encapsulate if we end in anything less than ' '
++                    // encapsulate if we end in anything less than or equal to ' ' (space)
+                     if (c <= SP) {
+                         quote = true;
+                     }
+@@ -86,6 +88,7 @@
+ 
+     // Pick up where we left off: pos should be positioned on the first character that caused
+     // the need for encapsulation.
++    pos = offset;
+     while (pos < end) {
+         final char c = value.charAt(pos);
+         if (c == quoteChar) {
+@@ -104,3 +107,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

@@ -1,0 +1,1 @@
+['backwardsInferenceFromCallSite', 'updateTypeOfParameters', 'inferTemplateTypesFromParameters', 'maybeResolveTemplatedType', 'maybeResolveTemplateTypeFromNodes', 'inferTemplatedTypesForCall']

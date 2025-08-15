@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -4,8 +4,7 @@
+ 
+     Matcher m = unescapePattern.matcher(string); // &(#(x|X)?([0-9a-fA-F]+)|[a-zA-Z]+);?
+     StringBuffer accum = new StringBuffer(string.length()); // pity matcher can't use stringbuilder, avoid syncs
+-    // todo: replace m.appendReplacement with own impl, so StringBuilder and quoteReplacement not required
+-
++    
+     while (m.find()) {
+         int charval = -1;
+         String num = m.group(3);
+@@ -14,14 +13,18 @@
+                 int base = m.group(2) != null ? 16 : 10; // 2 is hex indicator
+                 charval = Integer.valueOf(num, base);
+             } catch (NumberFormatException e) {
+-            } // skip
++                // Handle invalid number format
++                charval = -1; // Reset charval in case of failure
++            }
+         } else {
+             String name = m.group(1);
+-            if (full.containsKey(name))
+-                charval = full.get(name);
++            if (full.containsKey(name)) {
++                charval = (int) full.get(name); // Ensure charval is an integer
++            }
+         }
+ 
+-        if (charval != -1 || charval > 0xFFFF) { // out of range
++        // Corrected logical check: charval should not be -1 or should be a valid char
++        if (charval != -1 && charval <= 0xFFFF) { 
+             String c = Character.toString((char) charval);
+             m.appendReplacement(accum, c);
+         } else {
+@@ -31,3 +34,4 @@
+     m.appendTail(accum);
+     return accum.toString();
+ }
++

@@ -1,0 +1,9 @@
+--- 
++++ 
+@@ -4,5 +4,5 @@
+             for y in flatten(x):
+                 yield y
+         else:
+-            yield flatten(x)
++            yield x  # Corrected from yield flatten(x) to yield x
+ 

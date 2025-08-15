@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -45,14 +45,14 @@
+       break;
+     case Token.MOD:
+       if (rval == 0) {
+-        error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
++        // Do not error, just return null to avoid folding.
+         return null;
+       }
+       result = lval % rval;
+       break;
+     case Token.DIV:
+       if (rval == 0) {
+-        error(DiagnosticType.error("JSC_DIVIDE_BY_0_ERROR", "Divide by 0"), right);
++        // Do not error, just return null to avoid folding.
+         return null;
+       }
+       result = lval / rval;
+@@ -61,7 +61,6 @@
+       throw new Error("Unexpected arithmetic operator");
+   }
+ 
+-  // TODO(johnlenz): consider removing the result length check.
+   // length of the left and right value plus 1 byte for the operator.
+   if (String.valueOf(result).length() <=
+       String.valueOf(lval).length() + String.valueOf(rval).length() + 1 &&
+@@ -81,3 +80,4 @@
+ 
+   return null;
+ }
++

@@ -1,0 +1,9 @@
+Test failure 1:
+- Test: org.apache.commons.math.linear.CholeskyDecompositionImplTest.testMath274
+- Error: junit.framework.AssertionFailedError: Expected exception: org.apache.commons.math.linear.NotPositiveDefiniteMatrixException
+- Location: Unknown location
+
+Test failure 2:
+- Test: org.apache.commons.math.linear.CholeskyDecompositionImplTest.testNotPositiveDefinite
+- Error: junit.framework.AssertionFailedError: Expected exception: org.apache.commons.math.linear.NotPositiveDefiniteMatrixException
+- Location: Unknown location

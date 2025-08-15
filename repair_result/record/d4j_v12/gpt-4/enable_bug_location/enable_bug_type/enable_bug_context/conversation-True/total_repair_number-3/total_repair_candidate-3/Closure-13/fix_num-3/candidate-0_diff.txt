@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -19,8 +19,9 @@
+     visit(node);
+     visits++;
+ 
+-    Preconditions.checkState(visits < 10000, "too many interations");
++    Preconditions.checkState(visits < 10000, "too many iterations");
+   } while (shouldRetraverse(node));
+ 
+   exitNode(node);
+ }
++

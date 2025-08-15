@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.apache.commons.cli.bug.BugCLI162Test.testLongLineChunkingIndentIgnored
+- Error: junit.framework.ComparisonFailure: Long arguments did not split as expected expected:<...
+-x,--extralongarg
+ [This description is
+- Location:         assertEquals( "Long arguments did not split as expected", expected, sw.toString() );

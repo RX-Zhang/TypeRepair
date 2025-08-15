@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -7,7 +7,8 @@
+ 
+   Node right = callTarget.getNext();
+   if (right != null) {
+-    if (!NodeUtil.isImmutableValue(right)) {
++    // Added input validation to ensure right is a valid node
++    if (!NodeUtil.isImmutableValue(right) && right.getType() != Token.STRING) {
+       return n;
+     }
+   }
+@@ -20,8 +21,7 @@
+     return n;
+   }
+ 
+-    // "," is the default, it doesn't need to be explicit
+-
++  // "," is the default, it doesn't need to be explicit
+   String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+   List<Node> arrayFoldedChildren = Lists.newLinkedList();
+   StringBuilder sb = null;
+@@ -108,3 +108,4 @@
+ 
+   return n;
+ }
++

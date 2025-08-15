@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -10,5 +10,10 @@
+     if (typeParams.length != 2) {
+         throw new IllegalArgumentException("Strange Map type "+rawClass.getName()+": can not determine type parameters");
+     }
++    // Ensure proper type conversion for key and value types
++    if (!(typeParams[0] instanceof SimpleType) || !(typeParams[1] instanceof SimpleType)) {
++        throw new IllegalArgumentException("Map type parameters must be of SimpleType");
++    }
+     return MapType.construct(rawClass, typeParams[0], typeParams[1]);
+ }
++

@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -32,7 +32,8 @@
+     while (token == XmlTokenStream.XML_START_ELEMENT) {
+         // If we thought we might get leaf, no such luck
+         if (_mayBeLeaf) {
+-            // leave _mayBeLeaf set, as we start a new context
++            // leave _mayBeLeaf cleared as we start a new context
++            _mayBeLeaf = false;
+             _nextToken = JsonToken.FIELD_NAME;
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             return (_currToken = JsonToken.START_OBJECT);
+@@ -67,7 +68,7 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
+-            return (_currToken = JsonToken.VALUE_NULL);
++            return (_currToken = JsonToken.START_OBJECT);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+         _parsingContext = _parsingContext.getParent();
+@@ -132,3 +133,4 @@
+     _throwInternal();
+     return null;
+ }
++

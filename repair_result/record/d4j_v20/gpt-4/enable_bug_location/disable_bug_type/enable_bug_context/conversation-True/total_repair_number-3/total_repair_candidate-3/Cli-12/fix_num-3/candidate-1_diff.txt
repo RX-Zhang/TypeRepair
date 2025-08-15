@@ -1,0 +1,62 @@
+--- 
++++ 
+@@ -20,25 +20,42 @@
+         else if (arg.startsWith("-"))
+         {
+             String opt = Util.stripLeadingHyphens(arg);
++            String optName;
++            String optValue = null;
+ 
+-            if (options.hasOption(opt))
++            // Check for '=' and split option and value
++            int pos = arg.indexOf('=');
++            if (pos != -1)
+             {
+-                tokens.add(arg);
++                // Separate option and value part
++                optName = arg.substring(0, pos);
++                optValue = arg.substring(pos + 1);
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                optName = arg;
++            }
++
++            String strippedOptName = Util.stripLeadingHyphens(optName);
++
++            if (options.hasOption(strippedOptName))
++            {
++                tokens.add(optName);
++                if (optValue != null)
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(optValue);
+                 }
+-                else
+-                {
+-                    eatTheRest = stopAtNonOption;
+-                    tokens.add(arg);
+-                }
++            }
++            else if (optName.length() > 2 && options.hasOption(optName.substring(0, 2)))
++            {
++                // the format is a special properties option (-Dproperty=value)
++                tokens.add(optName.substring(0, 2)); // e.g. -D
++                tokens.add(optName.substring(2) + (optValue != null ? "=" + optValue : ""));
++            }
++            else
++            {
++                eatTheRest = stopAtNonOption;
++                tokens.add(arg);
+             }
+         }
+         else
+@@ -57,3 +74,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

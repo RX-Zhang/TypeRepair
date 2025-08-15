@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -1,4 +1,15 @@
+ public final Object computeValue(EvalContext context) {
+-    return compute(args[0].computeValue(context), args[1].computeValue(context)) 
+-            ? Boolean.TRUE : Boolean.FALSE;
++    Object left = args[0].computeValue(context);
++    Object right = args[1].computeValue(context);
++    
++    // Treat empty node sets as NaN (not a number) to prevent unintended true results
++    if (left instanceof NodeSet && ((NodeSet) left).isEmpty()) {
++        left = Double.NaN;
++    }
++    if (right instanceof NodeSet && ((NodeSet) right).isEmpty()) {
++        right = Double.NaN;
++    }
++    
++    return compute(left, right) ? Boolean.TRUE : Boolean.FALSE;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math3.optimization.direct.CMAESOptimizerTest.testBoundaryRangeTooLarge
+- Error: java.lang.Exception: Unexpected exception, expected<org.apache.commons.math3.exception.NumberIsTooLargeException> but was<org.apache.commons.math3.exception.MathIllegalStateException>
+- Location:         final double[] result = optimizer.optimize(10000, fitnessFunction, GoalType.MINIMIZE,

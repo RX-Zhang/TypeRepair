@@ -1,0 +1,1 @@
+['getStack', 'popStackToClose', 'popStackToBefore', 'resetInsertionMode', 'inScope']

@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -20,11 +20,17 @@
+ 
+         double cN = a * hPrev + b * p0;
+         double q2 = a * q1 + b * dPrev;
++
++        // Fix: handle case where q2 == 0 to avoid division by zero and NaN propagation
++        if (q2 == 0.0) {
++            q2 = small;
++        }
++
+         if (Double.isInfinite(cN) || Double.isInfinite(q2)) {
+             double scaleFactor = 1d;
+             double lastScaleFactor = 1d;
+             final int maxPower = 5;
+-            final double scale = FastMath.max(a,b);
++            final double scale = FastMath.max(a, b);
+             if (scale <= 0) {  // Can't scale
+                 throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE, x);
+             }
+@@ -41,6 +47,9 @@
+                 if (!(Double.isInfinite(cN) || Double.isInfinite(q2))) {
+                     break;
+                 }
++            }
++            if (Double.isInfinite(cN) || Double.isInfinite(q2)) {
++                throw new ConvergenceException(LocalizedFormats.CONTINUED_FRACTION_INFINITY_DIVERGENCE, x);
+             }
+         }
+ 
+@@ -75,3 +84,4 @@
+ 
+     return hN;
+ }
++

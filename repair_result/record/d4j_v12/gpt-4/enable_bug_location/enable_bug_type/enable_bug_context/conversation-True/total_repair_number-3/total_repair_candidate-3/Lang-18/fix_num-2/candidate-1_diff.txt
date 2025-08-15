@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -32,12 +32,14 @@
+         case 'y': // year (number)
+             if (tokenLen >= 4) {
+                 rule = selectNumberRule(Calendar.YEAR, tokenLen);
++            } else if (tokenLen == 2) {
++                rule = TwoDigitYearField.INSTANCE;
+             } else {
+-                rule = TwoDigitYearField.INSTANCE;
++                rule = selectNumberRule(Calendar.YEAR, tokenLen);
+             }
+             break;
+-        case 'M': // month in year (text and number)
+-            if (tokenLen >= 4) {
++        case 'M': // month in (text and number)
++            if (tokenLen >= ) {
+                 rule = new TextField(Calendar.MONTH, months);
+             } else if (tokenLen == 3) {
+                 rule = new TextField(Calendar.MONTH, shortMonths);
+@@ -120,3 +122,4 @@
+ 
+     return rules;
+ }
++

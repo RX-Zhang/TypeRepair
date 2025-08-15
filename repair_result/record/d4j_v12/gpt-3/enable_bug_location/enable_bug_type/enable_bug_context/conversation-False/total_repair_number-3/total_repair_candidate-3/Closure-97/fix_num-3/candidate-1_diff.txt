@@ -1,0 +1,51 @@
+--- 
++++ 
+@@ -2,11 +2,10 @@
+   if (left.getType() == Token.NUMBER &&
+       right.getType() == Token.NUMBER) {
+ 
+-    double result;
+     double lval = left.getDouble();
+     double rval = right.getDouble();
+ 
+-    // check ranges.  We do not do anything that would clip the double to
++    // check ranges. We do not do anything that would clip the double to
+     // a 32-bit range, since the user likely does not intend that.
+     if (!(lval >= Integer.MIN_VALUE && lval <= Integer.MAX_VALUE)) {
+       error(BITWISE_OPERAND_OUT_OF_RANGE, left);
+@@ -33,18 +32,26 @@
+       return n;
+     }
+ 
++    long resultLong;
++    double result;
++
+     switch (n.getType()) {
+       case Token.LSH:
+-        result = lvalInt << rvalInt;
++        resultLong = ((long) lvalInt) << rvalInt;
++        // Mask to 32 bits
++        result = (double) (resultLong & 0xFFFFFFFFL);
+         break;
+       case Token.RSH:
+-        result = lvalInt >> rvalInt;
++        resultLong = lvalInt >> rvalInt;
++        result = (double) resultLong;
+         break;
+       case Token.URSH:
+         // JavaScript handles zero shifts on signed numbers differently than
+-        // Java as an Java int can not represent the unsigned 32-bit number
++        // Java as Java int can not represent the unsigned 32-bit number
+         // where JavaScript can so use a long here.
+-        result = lvalInt >>> rvalInt;
++        resultLong = ((long) lvalInt) & 0xFFFFFFFFL;
++        resultLong >>>= rvalInt;
++        result = (double) resultLong;
+         break;
+       default:
+         throw new AssertionError("Unknown shift operator: " +
+@@ -60,3 +67,4 @@
+ 
+   return n;
+ }
++

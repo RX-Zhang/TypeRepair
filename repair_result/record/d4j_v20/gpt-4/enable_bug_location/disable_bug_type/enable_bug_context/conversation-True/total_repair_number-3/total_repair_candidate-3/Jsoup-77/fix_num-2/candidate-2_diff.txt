@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -2,20 +2,37 @@
+     String elName = endTag.name();
+     Element firstFound = null;
+ 
+-    for (int pos = stack.size() -1; pos >= 0; pos--) {
++    // Find the first element in the stack that matches the end tag name
++    for (int pos = stack.size() - 1; pos >= 0; pos--) {
+         Element next = stack.get(pos);
+         if (next.nodeName().equals(elName)) {
+             firstFound = next;
+             break;
+         }
++        // If an element that cannot be implicitly closed is found before finding firstFound, abort
++        // This handles cases where some tags cannot be closed by mismatched end tags
++        if (!XmlTreeBuilder.isSpecial(next.nodeName()))
++            continue;
++        else
++            return;
+     }
+     if (firstFound == null)
+         return; // not found, skip
+ 
+-    for (int pos = stack.size() -1; pos >= 0; pos--) {
++    // Pop elements from the stack until the matched element is popped
++    for (int pos = stack.size() - 1; pos >= 0; pos--) {
+         Element next = stack.get(pos);
+         stack.remove(pos);
+         if (next == firstFound)
+             break;
+     }
+ }
++
++// Helper method needed (assumed to exist somewhere; if not, should be added to class)
++private static boolean isSpecial(String nodeName) {
++    // List of elements that can be closed implicitly or have special parsing rules,
++    // e.g., html, head, body, table, tr, tbody, etc. Adjust according to parser spec.
++    return nodeName.equals("html") || nodeName.equals("head") || nodeName.equals("body") ||
++           nodeName.equals("table") || nodeName.equals("tr") || nodeName.equals("tbody");
++}
++

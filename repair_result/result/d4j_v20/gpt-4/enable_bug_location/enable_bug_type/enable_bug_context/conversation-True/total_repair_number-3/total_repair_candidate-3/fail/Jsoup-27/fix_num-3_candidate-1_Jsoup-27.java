@@ -1,0 +1,18 @@
+static String getCharsetFromContentType(String contentType) {
+    if (contentType == null) return null;
+    Matcher m = charsetPattern.matcher(contentType);
+    if (m.find()) {
+        String charset = m.group(1).trim();
+        // Remove quotes if charset is quoted
+        if (charset.startsWith("\"") && charset.endsWith("\"") && charset.length() > 1) {
+            charset = charset.substring(1, charset.length() - 1).trim();
+        }
+        // Return charset as is (case sensitive), except we normalize to lowercase UTF-8 for consistency
+        if ("utf-8".equalsIgnoreCase(charset)) {
+            return "utf-8";
+        }
+        // Return the charset as found
+        return charset;
+    }
+    return null;
+}

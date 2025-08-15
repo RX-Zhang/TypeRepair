@@ -1,0 +1,15 @@
+PyYAML>=6.0
+openai>=1.0.0
+dashscope>=1.13.2
+rich>=13.7.0
+tqdm>=4.65.0
+pydantic>=2.0.0
+argparse_dataclass>=2.0.0
+overrides>=7.7.0
+tenacity>=9.1.2
+chardet>=5.2.0
+javalang>=0.13.0
+pytest~=8.3.5
+pytest-timeout~=2.4.0
+requests~=2.32.3
+tiktoken~=0.9.0

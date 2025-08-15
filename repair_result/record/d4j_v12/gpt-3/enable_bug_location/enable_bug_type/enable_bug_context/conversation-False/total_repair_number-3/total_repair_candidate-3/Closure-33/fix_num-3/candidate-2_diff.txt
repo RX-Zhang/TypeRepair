@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public void matchConstraint(ObjectType constraintObj) {
+-  // We only want to match contraints on anonymous types.
++  // We only want to match constraints on anonymous types.
+ 
+   // Handle the case where the constraint object is a record type.
+   //
+@@ -24,3 +24,4 @@
+     }
+   }
+ }
++

@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -8,8 +8,10 @@
+ 
+         if (tq.matchChomp(SQ)) {
+             value = tq.chompTo(SQ);
++            tq.matchChomp(SQ); // consume the closing quote
+         } else if (tq.matchChomp(DQ)) {
+             value = tq.chompTo(DQ);
++            tq.matchChomp(DQ); // consume the closing quote
+         } else {
+             StringBuilder valueAccum = new StringBuilder();
+             // no ' or " to look for, so scan to end tag or space (or end of stream)
+@@ -24,7 +26,8 @@
+         return Attribute.createFromEncoded(key, value);
+     else {
+         tq.consume();
+-            
++
+         return null;
+     }
+ }
++

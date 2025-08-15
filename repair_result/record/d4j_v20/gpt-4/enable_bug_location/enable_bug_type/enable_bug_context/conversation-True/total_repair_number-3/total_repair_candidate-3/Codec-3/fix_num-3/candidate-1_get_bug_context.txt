@@ -1,0 +1,1 @@
+['isSlavoGermanic', 'isVowel', 'charAt', 'contains']

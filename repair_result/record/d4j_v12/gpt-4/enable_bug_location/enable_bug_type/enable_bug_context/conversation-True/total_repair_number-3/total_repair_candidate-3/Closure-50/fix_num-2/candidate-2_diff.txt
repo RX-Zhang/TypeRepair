@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+   }
+ 
+   Node right = callTarget.getNext();
++  // Only fold if no second parameter is provided to join().
++  // join() only accepts one optional argument.
+   if (right != null) {
++    Node nextArg = right.getNext();
++    if (nextArg != null) {
++      return n;
++    }
+     if (!NodeUtil.isImmutableValue(right)) {
+       return n;
+     }
+@@ -102,9 +108,17 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      // If the join string was the original join argument,
++      // use join() with no argument.
++      if (right != null && joinString.equals(",")) {
++        // Remove explicit join argument ',' - use default join.
++        // So remove the join argument node.
++        callTarget.removeChild(right);
++      }
+       reportCodeChange();
+       break;
+   }
+ 
+   return n;
+ }
++

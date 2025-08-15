@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -1,5 +1,12 @@
+ public ObjectNode deserialize(JsonParser p, DeserializationContext ctxt) throws IOException
+ {
++    if (p.getCurrentToken() == null) {
++        // No current token, try to get next token or throw exception
++        if (p.nextToken() == null) {
++            throw ctxt.mappingException(ObjectNode.class, "No content to map due to end-of-input");
++        }
++    }
++
+     if (p.getCurrentToken() == JsonToken.START_OBJECT) {
+         p.nextToken();
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+@@ -9,5 +16,11 @@
+     if (p.getCurrentToken() == JsonToken.FIELD_NAME) {
+         return deserializeObject(p, ctxt, ctxt.getNodeFactory());
+     }
++    // In case of empty Object or unexpected token, handle gracefully
++    if (p.getCurrentToken() == JsonToken.END_OBJECT) {
++        // Return an empty ObjectNode instead of failing
++        return ctxt.getNodeFactory().objectNode();
++    }
+     throw ctxt.mappingException(ObjectNode.class);
+- }
++}
++

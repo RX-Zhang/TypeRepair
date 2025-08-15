@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -1,10 +1,9 @@
+ public MultiplePiePlot(CategoryDataset dataset) {
+     super();
+-    this.dataset = dataset;
++    this.dataExtractOrder = TableOrder.BY_COLUMN;
+     PiePlot piePlot = new PiePlot(null);
+     this.pieChart = new JFreeChart(piePlot);
+     this.pieChart.removeLegend();
+-    this.dataExtractOrder = TableOrder.BY_COLUMN;
+     this.pieChart.setBackgroundPaint(null);
+     TextTitle seriesTitle = new TextTitle("Series Title",
+             new Font("SansSerif", Font.BOLD, 12));
+@@ -13,4 +12,7 @@
+     this.aggregatedItemsKey = "Other";
+     this.aggregatedItemsPaint = Color.lightGray;
+     this.sectionPaints = new HashMap();
++
++    setDataset(dataset);
+ }
++

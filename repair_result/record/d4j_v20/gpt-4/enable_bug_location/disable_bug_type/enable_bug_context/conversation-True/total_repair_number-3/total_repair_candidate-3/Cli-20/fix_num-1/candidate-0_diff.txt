@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -47,6 +47,10 @@
+                 burstToken(token, stopAtNonOption);
+             }
+         }
++        else if (eatTheRest)
++        {
++            tokens.add(token);
++        }
+         else if (stopAtNonOption)
+         {
+             process(token);
+@@ -61,3 +65,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

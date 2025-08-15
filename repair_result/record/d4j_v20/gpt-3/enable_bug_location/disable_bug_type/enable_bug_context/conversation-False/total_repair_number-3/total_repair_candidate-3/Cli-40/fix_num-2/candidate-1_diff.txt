@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -38,6 +38,8 @@
+     }
+     else
+     {
+-        return null;
++        // Instead of returning null, throw ParseException to indicate unsupported class type
++        throw new ParseException("Cannot convert to class: " + clazz.getName());
+     }
+ }
++

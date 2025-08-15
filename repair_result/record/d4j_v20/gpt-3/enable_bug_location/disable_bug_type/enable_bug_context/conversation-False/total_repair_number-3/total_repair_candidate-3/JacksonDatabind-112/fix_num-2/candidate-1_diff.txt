@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+         // [databind#125]: May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+@@ -31,5 +31,12 @@
+     if (isDefaultDeserializer(valueDeser)) {
+         valueDeser = null;
+     }
++    
++    // Adding exception handling to prevent runtime errors
++    if (delegate == null || valueDeser == null) {
++        throw new JsonMappingException(ctxt.getParser(), "Delegate or Value Deserializer cannot be null");
++    }
++    
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

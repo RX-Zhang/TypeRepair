@@ -1,0 +1,1 @@
+['getAllowDuplicateXValues', 'getItemCount', 'getMaximumItemCount', 'remove', 'indexOf']

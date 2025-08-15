@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -8,15 +8,19 @@
+   Node parameter = null;
+   Node argument = null;
+   while (arguments.hasNext() &&
+-         parameters.hasNext()) {
+-    // If there are no parameters left in the list, then the while loop
+-    // above implies that this must be a var_args function.
++         (parameters.hasNext() || functionType.isConstructor() && functionType.isVarArgs())) {
++    if (parameters.hasNext()) {
+       parameter = parameters.next();
++    } else {
++      // For var_args functions, repeat the last parameter type.
++      parameter = null;
++    }
+     argument = arguments.next();
+     ordinal++;
+ 
++    JSType paramType = parameter == null ? functionType.getVarArgsType() : getJSType(parameter);
+     validator.expectArgumentMatchesParameter(t, argument,
+-        getJSType(argument), getJSType(parameter), call, ordinal);
++        getJSType(argument), paramType, call, ordinal);
+   }
+ 
+   int numArgs = call.getChildCount() - 1;
+@@ -30,3 +34,4 @@
+             " and no more than " + maxArgs + " argument(s)" : "");
+   }
+ }
++

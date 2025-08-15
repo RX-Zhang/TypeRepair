@@ -1,0 +1,7 @@
+protected JSType caseTopType(JSType topType) {
+  // Ensure that the function returns the appropriate type for arrays
+  if (topType != null && topType.isArrayType()) {
+    return ARRAY_TYPE;
+  }
+  return topType;
+}

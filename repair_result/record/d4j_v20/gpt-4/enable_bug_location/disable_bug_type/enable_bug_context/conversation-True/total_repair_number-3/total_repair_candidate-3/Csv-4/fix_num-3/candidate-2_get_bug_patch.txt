@@ -1,0 +1,10 @@
+public Map<String, Integer> getHeaderMap() {
+    if (this.headerMap == null) {
+        try {
+            return initializeHeader();
+        } catch (IOException e) {
+            throw new IllegalStateException("Error initializing header map", e);
+        }
+    }
+    return new LinkedHashMap<String, Integer>(this.headerMap);
+}

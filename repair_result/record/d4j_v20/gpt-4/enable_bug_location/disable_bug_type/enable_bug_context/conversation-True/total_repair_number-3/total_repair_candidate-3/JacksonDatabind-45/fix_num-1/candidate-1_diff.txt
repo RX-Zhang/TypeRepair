@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -11,7 +11,11 @@
+                 return withFormat(Boolean.TRUE, null);
+             }
+ 
+-            if (format.getShape() == JsonFormat.Shape.STRING) {
++            // Handle string shape or ANY with pattern/locale/timezone
++            if (shape == JsonFormat.Shape.STRING 
++                    || (shape == JsonFormat.Shape.ANY && 
++                        (format.hasPattern() || format.hasLocale() || format.hasTimeZone()))
++                ) {
+                 TimeZone tz = format.getTimeZone();
+                 final String pattern = format.hasPattern()
+                                 ? format.getPattern()
+@@ -28,5 +32,7 @@
+             }
+         }
+     }
+-    return this;
++    // fall back to default handling of timestamps or custom formats
++    return withFormat(_asTimestamp(serializers), _customFormat);
+ }
++

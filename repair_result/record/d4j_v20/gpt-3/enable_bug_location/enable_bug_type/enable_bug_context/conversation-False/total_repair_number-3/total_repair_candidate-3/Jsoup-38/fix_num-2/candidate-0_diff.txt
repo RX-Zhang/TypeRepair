@@ -1,0 +1,88 @@
+--- 
++++ 
+@@ -40,7 +40,7 @@
+             } else if (name.equals("body")) {
+                 tb.error(this);
+                 LinkedList<Element> stack = tb.getStack();
+-                if (stack.size() == 1 || (stack.size() > 2 && !stack.get(1).nodeName().equals("body"))) {
++                if (stack.size() == 1 || (stack.size() > 1 && !stack.get(1).nodeName().equals("body"))) {
+                     // only in fragment case
+                     return false; // ignore
+                 } else {
+@@ -54,7 +54,7 @@
+             } else if (name.equals("frameset")) {
+                 tb.error(this);
+                 LinkedList<Element> stack = tb.getStack();
+-                if (stack.size() == 1 || (stack.size() > 2 && !stack.get(1).nodeName().equals("body"))) {
++                if (stack.size() == 1 || (stack.size() > 1 && !stack.get(1).nodeName().equals("body"))) {
+                     // only in fragment case
+                     return false; // ignore
+                 } else if (!tb.framesetOk()) {
+@@ -206,7 +206,7 @@
+                 tb.insertEmpty(startTag);
+                 tb.framesetOk(false);
+             } else if (name.equals("image")) {
+-                    return tb.process(startTag.name("img")); // change <image> to <img>, unless in svg
++                return tb.process(new Token.StartTag("img")); // change <image> to <img>, unless in svg
+             } else if (name.equals("isindex")) {
+                 // how much do we care about the early 90s?
+                 tb.error(this);
+@@ -335,7 +335,7 @@
+                     tb.error(this);
+                     return false;
+                 } else {
+-                    tb.generateImpliedEndTags();
++                    tb.generateImpliedEndGroups();
+                     if (!tb.currentElement().nodeName().equals(name))
+                         tb.error(this);
+                     // remove currentForm from stack. will shift anything under up.
+@@ -347,7 +347,7 @@
+                     tb.process(new Token.StartTag(name)); // if no p to close, creates an empty <p></p>
+                     return tb.process(endTag);
+                 } else {
+-                    tb.generateImpliedEndTags(name);
++                    tb.generateImpliedEndGroups(name);
+                     if (!tb.currentElement().nodeName().equals(name))
+                         tb.error(this);
+                     tb.popStackToClose(name);
+@@ -357,7 +357,7 @@
+                     tb.error(this);
+                     return false;
+                 } else {
+-                    tb.generateImpliedEndTags(name);
++                    tb.generateImpliedEndGroups(name);
+                     if (!tb.currentElement().nodeName().equals(name))
+                         tb.error(this);
+                     tb.popStackToClose(name);
+@@ -367,7 +367,7 @@
+                     tb.error(this);
+                     return false;
+                 } else {
+-                    tb.generateImpliedEndTags(name);
++                    tb.generateImpliedEndGroups(name);
+                     if (!tb.currentElement().nodeName().equals(name))
+                         tb.error(this);
+                     tb.popStackToClose(name);
+@@ -377,7 +377,7 @@
+                     tb.error(this);
+                     return false;
+                 } else {
+-                    tb.generateImpliedEndTags(name);
++                    tb.generateImpliedEndGroups(name);
+                     if (!tb.currentElement().nodeName().equals(name))
+                         tb.error(this);
+                     tb.popStackToClose(Constants.Headings);
+@@ -483,7 +483,7 @@
+                         tb.error(this);
+                         return false;
+                     }
+-                    tb.generateImpliedEndTags();
++                    tb.generateImpliedEndGroups();
+                     if (!tb.currentElement().nodeName().equals(name))
+                         tb.error(this);
+                     tb.popStackToClose(name);
+@@ -505,3 +505,4 @@
+     }
+     return true;
+ }
++

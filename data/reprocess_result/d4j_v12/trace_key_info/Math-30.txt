@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math3.stat.inference.MannWhitneyUTestTest.testBigDataSet
+- Error: junit.framework.AssertionFailedError
+- Location:         Assert.assertTrue(result > 0.1);

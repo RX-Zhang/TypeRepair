@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+             if (!name.equals(tb.currentElement().nodeName()))
+                 tb.error(this);
+             tb.popStackToClose(name);
+-            break;
++            return true;  // return immediately after successful pop
+         } else {
+             if (tb.isSpecial(node)) {
+                 tb.error(this);
+@@ -16,5 +16,7 @@
+             }
+         }
+     }
+-    return true;
++    // if no matching element found, return false
++    return false;
+ }
++

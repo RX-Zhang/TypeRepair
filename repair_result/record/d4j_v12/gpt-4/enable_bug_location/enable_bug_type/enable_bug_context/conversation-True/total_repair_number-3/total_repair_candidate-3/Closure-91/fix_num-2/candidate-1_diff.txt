@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -48,14 +48,15 @@
+       // Only traverse the right side if it's not an assignment to a prototype
+       // property or subproperty.
+       if (NodeUtil.isGet(lhs)) {
+-        if (lhs.getType() == Token.GETPROP &&
+-            lhs.getLastChild().getString().equals("prototype")) {
+-          return false;
+-        }
+-        Node llhs = lhs.getFirstChild();
+-        if (llhs.getType() == Token.GETPROP &&
+-            llhs.getLastChild().getString().equals("prototype")) {
+-          return false;
++        if (lhs.getType() == Token.GETPROP) {
++          if (lhs.getLastChild().getString().equals("prototype")) {
++            return false;
++          }
++          Node llhs = lhs.getFirstChild();
++          if (llhs.getType() == Token.GETPROP &&
++              llhs.getLastChild().getString().equals("prototype")) {
++            return false;
++          }
+         }
+       }
+     }
+@@ -63,3 +64,4 @@
+ 
+   return true;
+ }
++

@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -17,7 +17,10 @@
+                         final String keyword = coll.toString(CharsetNames.UTF_8);
+                         // Get rest of entry
+                         final int restLen = len - read;
+-                        if (restLen == 1) { // only NL
++                        if (restLen < 0) {
++                            throw new IOException("Invalid PAX header length: " + len);
++                        }
++                        if (restLen == 0) { // only NL
+                             headers.remove(keyword);
+                         } else {
+                             final byte[] rest = new byte[restLen];
+@@ -40,6 +43,9 @@
+                 }
+                 break; // Processed single header
+             }
++            if (ch < '0' || ch > '9') {
++                throw new IOException("Unexpected character in length: " + (char)ch);
++            }
+             len *= 10;
+             len += ch - '0';
+         }
+@@ -49,3 +55,4 @@
+     }
+     return headers;
+ }
++

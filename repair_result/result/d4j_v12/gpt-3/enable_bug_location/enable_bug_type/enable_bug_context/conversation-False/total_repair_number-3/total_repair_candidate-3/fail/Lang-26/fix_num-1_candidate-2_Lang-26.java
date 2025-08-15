@@ -1,0 +1,6 @@
+public String format(Date date) {
+    Calendar c = new GregorianCalendar(mTimeZone);
+    c.setTime(date);
+    c.set(Calendar.WEEK_OF_YEAR, c.get(Calendar.WEEK_OF_YEAR));
+    return applyRules(c, new StringBuffer(mMaxLengthEstimate)).toString();
+}

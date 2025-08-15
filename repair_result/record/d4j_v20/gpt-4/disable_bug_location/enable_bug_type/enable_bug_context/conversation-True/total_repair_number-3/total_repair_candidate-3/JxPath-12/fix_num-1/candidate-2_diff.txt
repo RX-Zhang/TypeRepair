@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -16,8 +16,7 @@
+             return true;
+         }
+         if (wildcard
+-            || testName.getName()
+-                    .equals(DOMNodePointer.getLocalName(node))) {
++            || testName.getName().equals(DOMNodePointer.getLocalName(node))) {
+             String nodeNS = DOMNodePointer.getNamespaceURI(node);
+             return equalStrings(namespaceURI, nodeNS);
+         }
+@@ -30,8 +29,8 @@
+                 return nodeType == Node.ELEMENT_NODE
+                         || nodeType == Node.DOCUMENT_NODE;
+             case Compiler.NODE_TYPE_TEXT :
+-                return nodeType == Node.CDATA_SECTION_NODE
+-                    || nodeType == Node.TEXT_NODE;
++                return nodeType == Node.TEXT_NODE
++                        || nodeType == Node.CDATA_SECTION_NODE;
+             case Compiler.NODE_TYPE_COMMENT :
+                 return nodeType == Node.COMMENT_NODE;
+             case Compiler.NODE_TYPE_PI :
+@@ -48,3 +47,4 @@
+     }
+     return false;
+ }
++

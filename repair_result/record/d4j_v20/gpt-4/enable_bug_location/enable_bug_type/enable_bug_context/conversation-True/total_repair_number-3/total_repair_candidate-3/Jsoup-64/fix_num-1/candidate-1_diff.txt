@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -2,5 +2,6 @@
+     tb.insert(startTag);
+     tb.tokeniser.transition(TokeniserState.Rawtext);
+     tb.markInsertionMode();
+-    tb.transition(Text);
++    tb.transition(HtmlTreeBuilderState.Text);
+ }
++

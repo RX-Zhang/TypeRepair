@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -58,6 +58,8 @@
+         return;
+       }
+       arrayNode.detachChildren();
++      // Fix: Only coerce to string add when the node is not a string literal
++      // but do NOT coerce string nodes again.
+       if (foldedStringNode.getType() != Token.STRING) {
+         // If the Node is not a string literal, ensure that
+         // it is coerced to a string.
+@@ -73,6 +75,8 @@
+       if (arrayFoldedChildren.size() == arrayNode.getChildCount()) {
+         return;
+       }
++      // Fix: Update the arrayNode children with folded children to avoid
++      // incorrect fold to string add for partially folded arrays.
+       int kJoinOverhead = "[].join()".length();
+       foldedSize += kJoinOverhead;
+       foldedSize += InlineCostEstimator.getCost(right);
+@@ -83,7 +87,9 @@
+       for (Node node : arrayFoldedChildren) {
+         arrayNode.addChildToBack(node);
+       }
++      parent.replaceChild(n, left);
+       break;
+   }
+   t.getCompiler().reportCodeChange();
+ }
++

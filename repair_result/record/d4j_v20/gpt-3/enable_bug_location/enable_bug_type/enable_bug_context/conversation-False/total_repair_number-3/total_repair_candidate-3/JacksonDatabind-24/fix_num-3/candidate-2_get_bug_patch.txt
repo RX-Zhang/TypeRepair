@@ -1,0 +1,11 @@
+public BaseSettings withDateFormat(DateFormat df) {
+    if (_dateFormat == df) {
+        return this;
+    }
+    // Keep current _timeZone if df is non-null, because setting dateFormat with a timezone
+    // should NOT change the stored _timeZone.
+    TimeZone tz = (df == null) ? _timeZone : _timeZone;
+    return new BaseSettings(_classIntrospector, _annotationIntrospector, _visibilityChecker, _propertyNamingStrategy, _typeFactory,
+            _typeResolverBuilder, df, _handlerInstantiator, _locale,
+            tz, _defaultBase64);
+}

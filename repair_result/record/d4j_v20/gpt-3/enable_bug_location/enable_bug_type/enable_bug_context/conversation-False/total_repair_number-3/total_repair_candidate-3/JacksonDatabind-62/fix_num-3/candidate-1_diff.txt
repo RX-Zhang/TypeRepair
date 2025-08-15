@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -35,5 +35,12 @@
+     if (valueTypeDeser != null) {
+         valueTypeDeser = valueTypeDeser.forProperty(property);
+     }
++
++    // Adding boundary checks to prevent runtime errors
++    if (vt == null) {
++        throw new JsonMappingException("Content type for collection cannot be null");
++    }
++
+     return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+ }
++

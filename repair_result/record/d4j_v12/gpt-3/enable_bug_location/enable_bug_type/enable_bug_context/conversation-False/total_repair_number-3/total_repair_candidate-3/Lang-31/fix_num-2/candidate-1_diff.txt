@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -8,11 +8,10 @@
+ 		char ch = cs.charAt(i);
+ 		for (int j = 0; j < searchLength; j++) {
+ 			if (searchChars[j] == ch) {
+-					// ch is a supplementary character
+-					// ch is in the Basic Multilingual Plane
+-					return true;
++				return true;
+ 			}
+ 		}
+ 	}
+ 	return false;
+ }
++

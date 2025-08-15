@@ -1,0 +1,73 @@
+--- 
++++ 
+@@ -8,30 +8,48 @@
+     // Need to deal with all possible hex prefixes here
+     final String[] hex_prefixes = {"0x", "0X", "-0x", "-0X", "#", "-#"};
+     int pfxLen = 0;
++    String prefix = null;
+     for(final String pfx : hex_prefixes) {
+         if (str.startsWith(pfx)) {
+-            pfxLen += pfx.length();
++            prefix = pfx;
++            pfxLen = pfx.length();
+             break;
+         }
+     }
+     if (pfxLen > 0) { // we have a hex number
+-        final int hexDigits = str.length() - pfxLen;
++        String numberPart = str.substring(pfxLen);
++        // Remove leading zeros from number part to avoid NumberFormatException due to large hex numbers with leading zeros
++        numberPart = numberPart.replaceFirst("^0+(?!$)", "");
++        String normalized = (prefix.startsWith("-") ? "-" : "") +
++                            (prefix.endsWith("#") ? "" : "") +
++                            (prefix.endsWith("#") ? "" : "") +
++                            (prefix.toLowerCase().startsWith("-0x") || prefix.toLowerCase().startsWith("0x") ? "0x" : (prefix.endsWith("#") ? "#" : ""));
++        normalized += numberPart;
++
++        final int hexDigits = numberPart.length();
+         if (hexDigits > 16) { // too many for Long
+-            return createBigInteger(str);
++            return createBigInteger(normalized);
+         }
+         if (hexDigits > 8) { // too many for an int
+-            return createLong(str);
++            return createLong(normalized);
+         }
+-        return createInteger(str);
++        return createInteger(normalized);
+     }
+     final char lastChar = str.charAt(str.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+     final int decPos = str.indexOf('.');
+-    final int expPos = str.indexOf('e') + str.indexOf('E') + 1; // assumes both not present
+-    // if both e and E are present, this is caught by the checks on expPos (which prevent IOOBE)
+-    // and the parsing which will detect if e or E appear in a number due to using the wrong offset
++    // fix expPos calculation:
++    int ePosLower = str.indexOf('e');
++    int ePosUpper = str.indexOf('E');
++    int expPos = -1;
++    if (ePosLower >= 0 && ePosUpper >= 0) {
++        expPos = Math.min(ePosLower, ePosUpper);
++    } else {
++        expPos = Math.max(ePosLower, ePosUpper);
++    }
++    // if both e and E are present, above chooses the first occurrence correctly.
+ 
+     int numDecimals = 0; // Check required precision (LANG-693)
+     if (decPos > -1) { // there is a decimal point
+@@ -99,7 +117,7 @@
+             case 'D' :
+                 try {
+                     final Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (final NumberFormatException nfe) { // NOPMD
+@@ -163,3 +181,4 @@
+ 
+     return createBigDecimal(str);
+ }
++

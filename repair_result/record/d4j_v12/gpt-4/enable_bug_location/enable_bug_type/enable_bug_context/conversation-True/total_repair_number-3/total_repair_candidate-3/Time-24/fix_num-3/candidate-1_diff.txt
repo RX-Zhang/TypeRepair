@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     SavedField[] savedFields = iSavedFields;
+     int count = iSavedFieldsCount;
+     if (iSavedFieldsShared) {
+-        iSavedFields = savedFields = (SavedField[])iSavedFields.clone();
++        iSavedFields = savedFields = (SavedField[]) iSavedFields.clone();
+         iSavedFieldsShared = false;
+     }
+     sort(savedFields, count);
+@@ -28,7 +28,7 @@
+         }
+         throw e;
+     }
+-    
++
+     if (iZone == null) {
+         millis -= iOffset;
+     } else {
+@@ -43,6 +43,7 @@
+             throw new IllegalArgumentException(message);
+         }
+     }
+-    
++
+     return millis;
+ }
++

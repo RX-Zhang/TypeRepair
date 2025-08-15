@@ -1,0 +1,53 @@
+--- 
++++ 
+@@ -1,21 +1,20 @@
+ void writePaxHeaders(String entryName,
+                      Map<String, String> headers) throws IOException {
+     String name = "./PaxHeaders.X/" + stripTo7Bits(entryName);
+-        // TarEntry's constructor would think this is a directory
+-        // and not allow any data to be written
++    // TarEntry's constructor would think this is a directory
++    // and not allow any data to be written
+     if (name.length() >= TarConstants.NAMELEN) {
+         name = name.substring(0, TarConstants.NAMELEN - 1);
+     }
+-    TarArchiveEntry pex = new TarArchiveEntry(name,
+-                                              TarConstants.LF_PAX_EXTENDED_HEADER_LC);
++    TarArchiveEntry pex = new TarArchiveEntry(name, TarConstants.LF_PAX_EXTENDED_HEADER_LC);
+ 
+     StringWriter w = new StringWriter();
+     for (Map.Entry<String, String> h : headers.entrySet()) {
+         String key = h.getKey();
+         String value = h.getValue();
+         int len = key.length() + value.length()
+-            + 3 /* blank, equals and newline */
+-            + 2 /* guess 9 < actual length < 100 */;
++                + 3 /* blank, equals and newline */
++                + 2 /* guess 9 < actual length < 100 */;
+         String line = len + " " + key + "=" + value + "\n";
+         int actualLength = line.getBytes(CharsetNames.UTF_8).length;
+         while (len != actualLength) {
+@@ -32,7 +31,20 @@
+     }
+     byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+     pex.setSize(data.length);
+-    putArchiveEntry(pex);
+-    write(data);
+-    closeArchiveEntry();
++
++    try {
++        putArchiveEntry(pex);
++        write(data);
++        closeArchiveEntry();
++    } catch (IOException ioe) {
++        try {
++            // If there is an exception during entry writing,
++            // try to close the entry properly to release resources
++            closeArchiveEntry();
++        } catch (IOException closeEx) {
++            // Suppress secondary exception but can log if desired
++        }
++        throw ioe; // rethrow original exception
++    }
+ }
++

@@ -1,0 +1,9 @@
+--- 
++++ 
+@@ -1,3 +1,5 @@
+ public static String encodeBase64String(byte[] binaryData) {
+-    return StringUtils.newStringUtf8(encodeBase64(binaryData, true));
++    byte[] encoded = encodeBase64(binaryData, true);
++    return encoded == null ? null : StringUtils.newStringUtf8(encoded);
+ }
++

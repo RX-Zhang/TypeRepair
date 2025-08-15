@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -38,5 +38,17 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++
++    if (bounds.length == 0) {
++        return _unknownType();
++    }
++
++    JavaType boundType = _constructType(bounds[0], context);
++
++    // If bound is still unknown type (Object), and not Object.class, then fallback to unknown
++    if (boundType.isJavaLangObject()) {
++        return _unknownType();
++    }
++    return boundType;
+ }
++

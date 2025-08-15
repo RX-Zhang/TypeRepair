@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -12,7 +12,8 @@
+                 charsetName = foundCharset;
+                 byteData.rewind();
+                 docData = Charset.forName(foundCharset).decode(byteData).toString();
+-                doc = null;
++                doc = parser.parseInput(docData, baseUri);
++                doc.outputSettings().charset(foundCharset);
+             }
+         }
+     } else { // specified by content type header (or by user on file load)
+@@ -23,9 +24,13 @@
+         // there are times where there is a spurious byte-order-mark at the start of the text. Shouldn't be present
+         // in utf-8. If after decoding, there is a BOM, strip it; otherwise will cause the parser to go straight
+         // into head mode
+-
++        // Remove BOM if present
++        if (docData.length() > 0 && docData.charAt(0) == '\uFEFF') {
++            docData = docData.substring(1);
++        }
+         doc = parser.parseInput(docData, baseUri);
+         doc.outputSettings().charset(charsetName);
+     }
+     return doc;
+ }
++

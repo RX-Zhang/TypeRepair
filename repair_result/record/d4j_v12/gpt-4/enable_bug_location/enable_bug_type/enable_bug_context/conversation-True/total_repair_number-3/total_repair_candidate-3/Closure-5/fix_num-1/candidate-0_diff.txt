@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -1,6 +1,7 @@
+ private boolean isInlinableObject(List<Reference> refs) {
+   boolean ret = false;
+   Set<String> validProperties = Sets.newHashSet();
++  boolean hasDelete = false;
+   for (Reference ref : refs) {
+     Node name = ref.getNode();
+     Node parent = ref.getParent();
+@@ -19,6 +20,10 @@
+ 
+       // Deleting a property has different semantics from deleting
+       // a variable, so deleted properties should not be inlined.
++      if (gramps.isDelProp()) {
++        hasDelete = true;
++        continue;
++      }
+ 
+       // NOTE(nicksantos): This pass's object-splitting algorithm has
+       // a blind spot. It assumes that if a property isn't defined on an
+@@ -95,5 +100,6 @@
+     // we can inline.
+     ret = true;
+   }
+-  return ret;
++  return !hasDelete && ret;
+ }
++

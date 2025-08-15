@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -7,7 +7,12 @@
+   // Warning about typeOfThis if it doesn't resolve to an ObjectType
+   // is handled further upstream.
+   // TODO(nicksantos): Handle this correctly if we have a UnionType.
+-  typeOfThis = (ObjectType) safeResolve(typeOfThis, t, scope);
++  JSType resolvedTypeOfThis = safeResolve(typeOfThis, t, scope);
++  if (resolvedTypeOfThis.isObjectType()) {
++    typeOfThis = (ObjectType) resolvedTypeOfThis;
++  } else {
++    typeOfThis = null;
++  }
+ 
+   boolean changed = false;
+   ImmutableList.Builder<ObjectType> resolvedInterfaces =
+@@ -29,3 +34,4 @@
+ 
+   return super.resolveInternal(t, scope);
+ }
++

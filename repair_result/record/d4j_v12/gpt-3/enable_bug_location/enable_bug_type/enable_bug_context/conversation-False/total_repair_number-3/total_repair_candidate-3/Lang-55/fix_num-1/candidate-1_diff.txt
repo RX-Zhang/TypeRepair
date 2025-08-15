@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -2,6 +2,10 @@
+     if(this.runningState != STATE_RUNNING && this.runningState != STATE_SUSPENDED) {
+         throw new IllegalStateException("Stopwatch is not running. ");
+     }
++    // Correct the logic to ensure stopTime is calculated correctly
++    if (this.runningState == STATE_RUNNING) {
+         stopTime = System.currentTimeMillis();
++    }
+     this.runningState = STATE_STOPPED;
+ }
++

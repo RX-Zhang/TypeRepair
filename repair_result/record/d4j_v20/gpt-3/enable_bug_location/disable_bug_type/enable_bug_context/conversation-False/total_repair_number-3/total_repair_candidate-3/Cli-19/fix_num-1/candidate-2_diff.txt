@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -10,4 +10,9 @@
+         eatTheRest = true;
+         tokens.add(token);
+     }
++    else
++    {
++        throw new UnrecognizedOptionException("Unrecognized option: " + token, token);
++    }
+ }
++

@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -39,15 +39,17 @@
+     } else {
+       // Only traverse the right side if it's not an assignment to a prototype
+       // property or subproperty.
+-        if (lhs.getType() == Token.GETPROP &&
+-            lhs.getLastChild().getString().equals("prototype")) {
+-          return false;
+-        }
+-        if (lhs.getQualifiedName() != null && lhs.getQualifiedName().contains(".prototype.")) {
+-          return false;
+-        }
++      if (lhs.getType() == Token.GETPROP &&
++          "prototype".equals(lhs.getLastChild().getString())) {
++        return false;
++      }
++      String qName = lhs.getQualifiedName();
++      if (qName != null && qName.contains(".prototype")) {
++        return false;
++      }
+     }
+   }
+ 
+   return true;
+ }
++

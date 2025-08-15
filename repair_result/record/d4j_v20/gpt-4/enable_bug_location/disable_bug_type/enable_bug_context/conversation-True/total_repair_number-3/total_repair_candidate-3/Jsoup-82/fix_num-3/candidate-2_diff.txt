@@ -1,0 +1,71 @@
+--- 
++++ 
+@@ -52,7 +52,12 @@
+         foundCharset = validateCharset(foundCharset);
+         if (foundCharset != null && !foundCharset.equalsIgnoreCase(defaultCharset)) { // need to re-decode. (case insensitive check here to match how validate works)
+             foundCharset = foundCharset.trim().replaceAll("[\"']", "");
+-            charsetName = foundCharset;
++            // validate charset again after trim and clean
++            String validatedCharset = validateCharset(foundCharset);
++            if (validatedCharset != null)
++                charsetName = validatedCharset;
++            else
++                charsetName = defaultCharset;
+             doc = null;
+         } else if (!fullyRead) {
+             doc = null;
+@@ -63,7 +68,18 @@
+     if (doc == null) {
+         if (charsetName == null)
+             charsetName = defaultCharset;
+-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetName), bufferSize);
++
++        // Try to encode to see if charset is encodable, else fall back to utf-8
++        Charset charsetToUse;
++        try {
++            charsetToUse = Charset.forName(charsetName);
++            if (!charsetToUse.newEncoder().canEncode())
++                charsetToUse = Charset.forName("UTF-8");
++        } catch (Exception e) {
++            charsetToUse = Charset.forName("UTF-8");
++        }
++
++        BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetToUse), bufferSize);
+         if (bomCharset != null && bomCharset.offset) // creating the buffered reader ignores the input pos, so must skip here
+             reader.skip(1);
+         try {
+@@ -72,10 +88,31 @@
+             // io exception when parsing (not seen before because reading the stream as we go)
+             throw e.ioException();
+         }
+-        Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        doc.outputSettings().charset(charsetToUse);
++        // Update meta charset element if charset was changed
++        if (!charsetToUse.name().equalsIgnoreCase(charsetName)) {
++            // fix meta charset to UTF-8
++            Elements metaCharsetElements = doc.select("meta[charset]");
++            if (!metaCharsetElements.isEmpty()) {
++                for (Element meta : metaCharsetElements) {
++                    meta.attr("charset", charsetToUse.name());
++                }
++            } else {
++                Elements metaElements = doc.select("meta[http-equiv=content-type]");
++                if (!metaElements.isEmpty()) {
++                    for (Element meta : metaElements) {
++                        meta.attr("content", "text/html;charset=" + charsetToUse.name());
++                    }
++                } else {
++                    // add meta charset element at head start
++                    Element head = doc.head();
++                    if (head == null) head = doc.prependElement("head");
++                    head.prependElement("meta").attr("charset", charsetToUse.name());
++                }
++            }
++        }
+     }
+     input.close();
+     return doc;
+ }
++

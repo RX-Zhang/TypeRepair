@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -30,11 +30,16 @@
+         trailer = buffer[end - 1];
+     }
+ 
++    // Now check that there are no embedded spaces or NULs in the actual octal digits:
++    for (int i = start; i < end; i++) {
++        if (buffer[i] == 0 || buffer[i] == ' ') {
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, i, buffer[i]));
++        }
++    }
++
+     for ( ;start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
+-            break;
+-        }
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+@@ -46,3 +51,4 @@
+ 
+     return result;
+ }
++

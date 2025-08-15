@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -22,6 +22,11 @@
+     if (hasHitEOF) {
+         currEntry = null;
+         return null;
++    }
++
++    // Input validation for headerBuf to prevent IllegalArgumentException
++    if (headerBuf == null || headerBuf.length < 2) {
++        throw new IllegalArgumentException("Invalid header buffer");
+     }
+ 
+     currEntry = new TarArchiveEntry(headerBuf);
+@@ -65,3 +70,4 @@
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

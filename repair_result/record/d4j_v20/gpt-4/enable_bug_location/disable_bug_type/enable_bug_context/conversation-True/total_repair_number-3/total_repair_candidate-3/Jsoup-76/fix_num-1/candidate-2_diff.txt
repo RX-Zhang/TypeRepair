@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -247,7 +247,12 @@
+                 tb.processEndTag("form");
+             } else if (name.equals("textarea")) {
+                 tb.insert(startTag);
+-                // todo: If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move on to the next one. (Newlines at the start of textarea elements are ignored as an authoring convenience.)
++                // If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move on to the next one.
++                // (Newlines at the start of textarea elements are ignored as an authoring convenience.)
++                if (tb.nextToken().type == Token.TokenType.Character &&
++                        tb.nextToken().asCharacter().getData().equals("\n")) {
++                    tb.tokeniser.advance();
++                }
+                 tb.tokeniser.transition(TokeniserState.Rcdata);
+                 tb.markInsertionMode();
+                 tb.framesetOk(false);
+@@ -511,3 +516,4 @@
+     }
+     return true;
+ }
++

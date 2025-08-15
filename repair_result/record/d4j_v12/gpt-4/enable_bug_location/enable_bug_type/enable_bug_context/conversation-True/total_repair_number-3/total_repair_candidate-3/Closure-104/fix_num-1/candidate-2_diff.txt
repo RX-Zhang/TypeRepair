@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+   }
+ 
+   if (that instanceof UnionType) {
+-    for (JSType otherAlternate : ((UnionType) that).alternates) {
++    for (JSType otherAlternate : ((UnionType) that).getAlternates()) {
+       if (otherAlternate.isSubtype(this)) {
+         builder.addAlternate(otherAlternate);
+       }
+@@ -24,3 +24,4 @@
+     return getNativeType(JSTypeNative.NO_TYPE);
+   }
+ }
++

@@ -1,0 +1,52 @@
+--- 
++++ 
+@@ -15,7 +15,7 @@
+         return x[1];
+     }
+ 
+-    // evaluate first  endpoint
++    // evaluate first endpoint
+     y[0] = computeObjectiveValue(x[0]);
+     if (Precision.equals(y[0], 0.0, 1)) {
+         // return the first endpoint if it is a perfect root.
+@@ -40,7 +40,7 @@
+         }
+ 
+         if (y[1] * y[2] < 0) {
+-            // use all computed point as a start sampling array for solving
++            // use all computed points as a start sampling array for solving
+             nbPoints        = 3;
+             signChangeIndex = 2;
+         } else {
+@@ -115,7 +115,7 @@
+                 // the guessed root is either not strictly inside the interval or it
+                 // is a NaN (which occurs when some sampling points share the same y)
+                 // we try again with a lower interpolation order
+-                if (signChangeIndex - start >= end - signChangeIndex) {
++                if ((signChangeIndex - start) >= (end - signChangeIndex)) {
+                     // we have more points before the sign change, drop the lowest point
+                     ++start;
+                 } else {
+@@ -132,7 +132,7 @@
+ 
+         if (Double.isNaN(nextX)) {
+             // fall back to bisection
+-            nextX = xA + 0.5 * (xB - xA);
++            nextX = 0.5 * (xA + xB);
+             start = signChangeIndex - 1;
+             end   = signChangeIndex;
+         }
+@@ -170,7 +170,7 @@
+         }
+ 
+         // insert the last computed point
+-        //(by construction, we know it lies inside the tightest bracketing interval)
++        // (by construction, we know it lies inside the tightest bracketing interval)
+         System.arraycopy(x, signChangeIndex, x, signChangeIndex + 1, nbPoints - signChangeIndex);
+         x[signChangeIndex] = nextX;
+         System.arraycopy(y, signChangeIndex, y, signChangeIndex + 1, nbPoints - signChangeIndex);
+@@ -201,3 +201,4 @@
+     }
+ 
+ }
++

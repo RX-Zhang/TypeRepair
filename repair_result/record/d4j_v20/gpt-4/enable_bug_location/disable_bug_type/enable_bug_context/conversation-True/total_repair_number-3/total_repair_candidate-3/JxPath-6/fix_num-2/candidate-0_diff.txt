@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//        System.err.println("COMPARING: " +
++//            (l == null ? "null" : l.getClass().getName()) + " " +
++//            (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -35,5 +35,9 @@
+     if (l instanceof Iterator && r instanceof Iterator) {
+         return findMatch((Iterator) l, (Iterator) r);
+     }
++    
++    // Fix: when both are iterators, contain checks were swapped and the issue was comparing iterator to non-iterator
++    // For non-iterators, use the object equal method
+     return equal(l, r);
+ }
++

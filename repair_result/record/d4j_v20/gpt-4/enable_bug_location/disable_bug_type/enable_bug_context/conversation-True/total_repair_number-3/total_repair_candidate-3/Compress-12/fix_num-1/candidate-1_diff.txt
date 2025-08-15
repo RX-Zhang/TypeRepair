@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -33,7 +33,7 @@
+         StringBuffer longName = new StringBuffer();
+         byte[] buf = new byte[SMALL_BUFFER_SIZE];
+         int length = 0;
+-        while ((length = read(buf)) >= 0) {
++        while ((length = read(buf, 0, buf.length)) >= 0) {
+             longName.append(new String(buf, 0, length));
+         }
+         getNextEntry();
+@@ -50,11 +50,11 @@
+         currEntry.setName(longName.toString());
+     }
+ 
+-    if (currEntry.isPaxHeader()){ // Process Pax headers
++    if (currEntry.isPaxHeader()) { // Process Pax headers
+         paxHeaders();
+     }
+ 
+-    if (currEntry.isGNUSparse()){ // Process sparse files
++    if (currEntry.isGNUSparse()) { // Process sparse files
+         readGNUSparse();
+     }
+ 
+@@ -65,3 +65,4 @@
+     entrySize = currEntry.getSize();
+     return currEntry;
+ }
++

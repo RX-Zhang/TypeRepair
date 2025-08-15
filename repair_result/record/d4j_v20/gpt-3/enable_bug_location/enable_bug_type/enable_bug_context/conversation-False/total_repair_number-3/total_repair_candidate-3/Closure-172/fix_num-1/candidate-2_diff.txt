@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -7,7 +7,14 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
++    // To avoid type mismatch errors, check if rhsValue is a function or a valid type before returning false
++    if (rhsValue != null && (rhsValue.isFunction() || valueType.isFunctionType())) {
+       return false;
++    }
++    // Also allow non-function prototype assignments if properly typed
++    if (!valueType.isUnknownType()) {
++      return false;
++    }
+   }
+ 
+   boolean inferred = true;
+@@ -28,7 +35,7 @@
+       // Check if this is in a conditional block.
+       // Functions assigned in conditional blocks are inferred.
+       for (Node current = n.getParent();
+-           !(current.isScript() || current.isFunction());
++           current != null && !(current.isScript() || current.isFunction());
+            current = current.getParent()) {
+         if (NodeUtil.isControlStructure(current)) {
+           return true;
+@@ -47,3 +54,4 @@
+   }
+   return inferred;
+ }
++

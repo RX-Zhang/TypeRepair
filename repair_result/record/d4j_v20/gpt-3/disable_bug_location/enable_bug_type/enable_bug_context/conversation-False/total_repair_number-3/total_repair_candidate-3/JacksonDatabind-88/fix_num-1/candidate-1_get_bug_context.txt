@@ -1,0 +1,1 @@
+['registerSubtype', 'typeFromId', '_typeFromId']

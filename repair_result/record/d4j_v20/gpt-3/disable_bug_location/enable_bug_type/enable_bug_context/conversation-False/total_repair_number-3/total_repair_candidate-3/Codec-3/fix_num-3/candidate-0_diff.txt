@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -8,7 +8,7 @@
+         if (index == 1 && isVowel(charAt(value, 0)) && !slavoGermanic) {
+             result.append("KN", "N");
+         } else if (!contains(value, index + 2, 2, "EY") && 
+-                   charAt(value, index + 1) != 'Y' && !slavoGermanic) {
++                   charAt(value, index + 1) == 'N' && !slavoGermanic) { // Fixed: was != 'Y', should be == 'N'
+             result.append("N", "KN");
+         } else {
+             result.append("KN");
+@@ -27,7 +27,7 @@
+                !contains(value, index - 1, 1, "E", "I") && 
+                !contains(value, index - 1, 3, "RGY", "OGY")) {
+         //-- -ger-, -gy- --//
+-        result.append('K', 'J');
++        result.append('J', 'K'); // Fixed: was append('K', 'J'), must be append('J', 'K') for correct alternate
+         index += 2;
+     } else if (contains(value, index + 1, 1, "E", "I", "Y") || 
+                contains(value, index - 1, 4, "AGGI", "OGGI")) {
+@@ -50,3 +50,4 @@
+     }
+     return index;
+ }
++

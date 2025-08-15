@@ -1,0 +1,12 @@
+def pascal(n):
+    if n <= 0:
+        return []  # Handle case where n is less than or equal to 0
+    rows = [[1]]
+    for r in range(1, n):
+        row = []
+        for c in range(0, r + 1):  # Change condition to c <= r
+            upleft = rows[r - 1][c - 1] if c > 0 else 0
+            upright = rows[r - 1][c] if c < len(rows[r - 1]) else 0  # Change condition to check length
+            row.append(upleft + upright)
+        rows.append(row)
+    return rows

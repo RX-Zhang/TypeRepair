@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -8,6 +8,14 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (ArrayIndexOutOfBoundsException e) {
++            // Defensive catch to avoid runtime crash due to expansion bugs
++            // Mark for another rehash attempt and limit growth if needed
++            _needRehash = true;
++            // Optionally, could log or handle differently
++        }
+     }
+ }
++

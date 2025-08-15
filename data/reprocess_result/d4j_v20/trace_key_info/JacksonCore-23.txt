@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.util.TestDefaultPrettyPrinter.testInvalidSubClass
+- Error: junit.framework.AssertionFailedError: Should not pass
+- Location:             fail("Should not pass");

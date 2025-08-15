@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -7,9 +7,10 @@
+         return true;
+     }
+ 
+-    if (getName().endsWith("/")) {
++    if (getName() != null && getName().endsWith("/")) {
+         return true;
+     }
+ 
+     return false;
+ }
++

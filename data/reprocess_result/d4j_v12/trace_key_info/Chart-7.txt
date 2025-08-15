@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jfree.data.time.junit.TimePeriodValuesTests.testGetMaxMiddleIndex
+- Error: junit.framework.AssertionFailedError: expected:<1> but was:<3>
+- Location:         assertEquals(1, s.getMaxMiddleIndex());

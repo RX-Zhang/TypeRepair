@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -24,25 +24,22 @@
+     // The ustar and POSIX tar specs require a trailing NUL or
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    while (start < end && (trailer == 0 || trailer == ' ')) {
++    while (start < end && (buffer[end - 1] == 0 || buffer[end - 1] == ' ')) {
+         end--;
+-        trailer = buffer[end - 1];
+     }
+ 
+-    for ( ;start < end; start++) {
++    for ( ; start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
++        if (currentByte == 0 || currentByte == ' ') {
+             break;
+         }
+-        // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         result = (result << 3) + (currentByte - '0'); // convert from ASCII
+-        // CheckStyle:MagicNumber ON
+     }
+ 
+     return result;
+ }
++

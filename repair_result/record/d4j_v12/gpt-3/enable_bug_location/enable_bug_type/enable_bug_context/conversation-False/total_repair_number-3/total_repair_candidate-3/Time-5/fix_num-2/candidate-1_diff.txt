@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -6,9 +6,13 @@
+     millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+     millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
+     millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
++    
++    // Ensure the result is created with the correct PeriodType
+     Period result = new Period(millis, type, ISOChronology.getInstanceUTC());
+     int years = getYears();
+     int months = getMonths();
++    
++    // Normalize years and months
+     if (years != 0 || months != 0) {
+         years = FieldUtils.safeAdd(years, months / 12);
+         months = months % 12;
+@@ -19,5 +23,12 @@
+             result = result.withMonths(months);
+         }
+     }
++    
++    // Check if the resulting period supports the requested type
++    if (!type.isSupported(result)) {
++        throw new UnsupportedOperationException("Field is not supported");
++    }
++    
+     return result;
+ }
++

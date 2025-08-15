@@ -1,0 +1,59 @@
+--- 
++++ 
+@@ -7,35 +7,31 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
+-        return 0L;
+-    }
+-
+-    // Skip leading spaces
++    // Skip leading NULs and spaces (leading NULs are common in tar headers)
+     while (start < end){
+-        if (buffer[start] == ' '){
++        if (buffer[start] == 0 || buffer[start] == ' '){
+             start++;
+         } else {
+             break;
+         }
+     }
+ 
+-    // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    if (start == end) {
++        // Only nulls and spaces, interpret as 0
++        return 0L;
+     }
+ 
+-    for ( ;start < end; start++) {
++    // Must have trailing NUL or space, trim trailing NULs/spaces
++    while (end > start) {
++        byte trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        } else {
++            break;
++        }
++    }
++
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -48,3 +44,4 @@
+ 
+     return result;
+ }
++

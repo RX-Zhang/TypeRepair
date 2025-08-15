@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -17,6 +17,14 @@
+     return;
+   }
+ 
++  // We must only remove function arguments if globals can be removed
++  // or if the compilation level is advanced (i.e., modifying call sites is allowed).
++  if (!removeGlobals && !modifyCallSites) {
++    // If we cannot remove globals and cannot modify call sites,
++    // we must preserve all function arguments, so do nothing.
++    return;
++  }
++
+   Node argList = getFunctionArgList(function);
+   boolean modifyCallers = modifyCallSites
+       && callSiteOptimizer.canModifyCallers(function);
+@@ -25,7 +33,7 @@
+     Node lastArg;
+     while ((lastArg = argList.getLastChild()) != null) {
+       Var var = fnScope.getVar(lastArg.getString());
+-      if (!referenced.contains(var)) {
++      if (var != null && !referenced.contains(var)) {
+         argList.removeChild(lastArg);
+         compiler.reportCodeChange();
+       } else {
+@@ -36,3 +44,4 @@
+     callSiteOptimizer.optimize(fnScope, referenced);
+   }
+ }
++

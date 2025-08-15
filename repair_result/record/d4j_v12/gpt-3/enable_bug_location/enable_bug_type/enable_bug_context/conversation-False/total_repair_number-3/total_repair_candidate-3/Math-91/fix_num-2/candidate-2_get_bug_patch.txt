@@ -1,0 +1,9 @@
+public int compareTo(Fraction object) {
+    if (object == null) {
+        throw new NullPointerException("The fraction must not be null");
+    }
+    
+    double nOd = doubleValue();
+    double dOn = object.doubleValue();
+    return (nOd < dOn) ? -1 : ((nOd > dOn) ? +1 : 0);
+}

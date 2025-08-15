@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -13,17 +13,28 @@
+             }
+             // both explicit: verify
+             // otherwise only verify if neither explicitly annotated.
+-        }
+-
+-        // one more thing: ok to override in sub-class
+-        if (oldOne.getClass() == newOne.getClass()) {
+-            // [databind#667]: avoid one particular class of bogus problems
+-
++            // if existing is explicit and new is explicit, need to check conflicts
++            else {
++                if (oldOne.getClass() == newOne.getClass()) {
++                    throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
++                            +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
++                }
++                return;
++            }
++        } else if (explicit) {
++            // If old is not explicit, but new is explicit, override oldOne:
++            // But first check if classes conflict
++            if (oldOne.getClass() == newOne.getClass()) {
+                 throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
+                         +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
+-            // otherwise, which one to choose?
+-                // new type more generic, use old
+-            // new type more specific, use it
++            }
++        } else {
++            // both not explicit, verify conflict
++            if (oldOne.getClass() == newOne.getClass()) {
++                throw new IllegalArgumentException("Conflicting "+TYPE_DESCS[typeIndex]
++                        +" creators: already had explicitly marked "+oldOne+", encountered "+newOne);
++            }
++            return; // no explicit involved, just return
+         }
+     }
+     if (explicit) {
+@@ -31,3 +42,4 @@
+     }
+     _creators[typeIndex] = _fixAccess(newOne);
+ }
++

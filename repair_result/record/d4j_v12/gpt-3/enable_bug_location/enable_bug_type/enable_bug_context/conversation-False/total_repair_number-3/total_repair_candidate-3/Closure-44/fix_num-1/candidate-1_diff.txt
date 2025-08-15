@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -7,7 +7,7 @@
+ 
+   char c = newcode.charAt(0);
+   if ((isWordChar(c) || c == '\\') &&
+-      isWordChar(getLastChar())) {
++      !isWordChar(getLastChar())) { // Corrected logical expression
+     // need space to separate. This is not pretty printing.
+     // For example: "return foo;"
+     append(" ");
+@@ -20,3 +20,4 @@
+ 
+   append(newcode);
+ }
++

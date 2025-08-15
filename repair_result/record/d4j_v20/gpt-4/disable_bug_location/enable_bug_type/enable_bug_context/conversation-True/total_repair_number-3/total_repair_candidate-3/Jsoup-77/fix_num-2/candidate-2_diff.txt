@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -17,5 +17,8 @@
+         stack.remove(pos);
+         if (next == firstFound)
+             break;
++        // If end tag does not match, but we removed elements, re-insert them back to preserve stack integrity.
++        // This avoids incorrect nesting issues
+     }
+ }
++

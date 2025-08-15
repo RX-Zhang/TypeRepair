@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ public BaseSettings withDateFormat(DateFormat df) {
+-    if (_dateFormat == df) {
++    if (_dateFormat != null && _dateFormat.equals(df)) {
+         return this;
+     }
+     TimeZone tz = (df == null) ? _timeZone : df.getTimeZone();
+@@ -7,3 +7,4 @@
+             _typeResolverBuilder, df, _handlerInstantiator, _locale,
+             tz, _defaultBase64);
+ }
++

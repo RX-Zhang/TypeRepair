@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -10,11 +10,12 @@
+ 
+     // augment the list with the default values
+     if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = (List) this.defaultValues.get(option);
++        List defaults = (List) this.defaultValues.get(option);
++        if (defaults != null) {
++            valueList = new ArrayList(defaults);
++        }
+     }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+     
+     return valueList == null ? Collections.EMPTY_LIST : valueList;
+ }
++

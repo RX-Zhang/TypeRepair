@@ -1,0 +1,1 @@
+['setWidth', 'getWidth', 'printWrapped', 'findWrapPos', 'createPadding', 'rtrim']

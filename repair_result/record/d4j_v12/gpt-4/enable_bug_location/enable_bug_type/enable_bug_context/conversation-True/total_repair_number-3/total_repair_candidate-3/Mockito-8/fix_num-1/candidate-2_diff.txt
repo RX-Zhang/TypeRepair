@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -6,8 +6,14 @@
+     TypeVariable[] typeParameters = ((Class<?>) parameterizedType.getRawType()).getTypeParameters();
+     Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+     for (int i = 0; i < actualTypeArguments.length; i++) {
+-        TypeVariable typeParameter = typeParameters[i];
++        TypeVariable<?> typeParameter = typeParameters[i];
+         Type actualTypeArgument = actualTypeArguments[i];
++
++        if (actualTypeArgument instanceof TypeVariable) {
++            // recursively register the actual type argument to avoid infinite recursion later
++            registerTypeVariableIfNotPresent((TypeVariable<?>) actualTypeArgument);
++            actualTypeArgument = getActualTypeArgumentFor((TypeVariable<?>) actualTypeArgument);
++        }
+ 
+         if (actualTypeArgument instanceof WildcardType) {
+             contextualActualTypeParameters.put(typeParameter, boundsOf((WildcardType) actualTypeArgument));
+@@ -17,3 +23,4 @@
+         // logger.log("For '" + parameterizedType + "' found type variable : { '" + typeParameter + "(" + System.identityHashCode(typeParameter) + ")" + "' : '" + actualTypeArgument + "(" + System.identityHashCode(typeParameter) + ")" + "' }");
+     }
+ }
++

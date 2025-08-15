@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -57,4 +57,9 @@
+             }
+         }
+     }
++    // Ensure that we handle the case where the input is empty
++    if (inAvail == 0 && buf != null && pos > 0) {
++        eof = true; // Mark as end of file if no more data is available
++    }
+ }
++

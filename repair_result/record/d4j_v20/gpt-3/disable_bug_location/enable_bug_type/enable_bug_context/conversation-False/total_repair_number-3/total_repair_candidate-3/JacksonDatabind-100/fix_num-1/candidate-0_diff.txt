@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -16,7 +16,18 @@
+                 return (byte[]) ob;
+             }
+         }
++        if (n.isTextual()) {
++            String base64Text = n.textValue();
++            if (base64Text != null) {
++                try {
++                    return b64variant.decode(base64Text);
++                } catch (IllegalArgumentException e) {
++                    throw new JsonParseException("Cannot access contents of TextNode as binary due to broken Base64 encoding: " + e.getMessage(), null, e);
++                }
++            }
++        }
+     }
+     // otherwise return null to mark we have no binary content
+     return null;
+ }
++

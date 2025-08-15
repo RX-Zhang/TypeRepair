@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -3,18 +3,20 @@
+     // initialize the return list
+     List valueList = (List) values.get(option);
+ 
+-    // grab the correct default values
+     if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = defaultValues;
++        // start with an empty list to combine defaults
++        valueList = new ArrayList<>();
++        // add defaults from parameter defaultValues first
++        if (defaultValues != null && !defaultValues.isEmpty()) {
++            valueList.addAll(defaultValues);
++        }
++        // then add any defaults from the instance defaultValues map
++        List instanceDefaults = (List) this.defaultValues.get(option);
++        if (instanceDefaults != null && !instanceDefaults.isEmpty()) {
++            valueList.addAll(instanceDefaults);
++        }
+     }
++    
++    return valueList == null || valueList.isEmpty() ? Collections.EMPTY_LIST : valueList;
++}
+ 
+-    // augment the list with the default values
+-    if ((valueList == null) || valueList.isEmpty()) {
+-        valueList = (List) this.defaultValues.get(option);
+-    }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+-    
+-    return valueList == null ? Collections.EMPTY_LIST : valueList;
+-}

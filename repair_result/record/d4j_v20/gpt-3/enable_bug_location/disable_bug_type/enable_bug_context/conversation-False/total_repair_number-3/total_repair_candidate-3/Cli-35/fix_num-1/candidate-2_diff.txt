@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -2,9 +2,12 @@
+ {
+     opt = Util.stripLeadingHyphens(opt);
+     
++    // If an exact match exists, return only that option
++    if (longOpts.containsKey(opt)) {
++        return Collections.singletonList(opt);
++    }
++
+     List<String> matchingOpts = new ArrayList<String>();
+-
+-    // for a perfect match return the single option only
+ 
+     for (String longOpt : longOpts.keySet())
+     {
+@@ -16,3 +19,4 @@
+     
+     return matchingOpts;
+ }
++

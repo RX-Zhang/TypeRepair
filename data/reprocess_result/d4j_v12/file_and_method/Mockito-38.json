@@ -1,0 +1,1 @@
+{"ClassName": "ArgumentMatchingTool", "Fields": [], "Methods": ["public Integer[] getSuspiciouslyNotMatchingArgsIndexes(List matchers, Object[] arguments) { ... }", "private boolean safelyMatches(Matcher m, Object arg) { ... }", "private boolean toStringEquals(Matcher m, Object arg) { ... }"]}

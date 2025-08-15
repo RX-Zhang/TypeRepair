@@ -1,0 +1,15 @@
+public Base64() {
+    super();
+    this.encodeTable = STANDARD_ENCODE_TABLE;
+    this.lineLength = 0;
+    this.lineSeparator = null;
+    this.decodeSize = 3;
+    this.encodeSize = 4;
+    this.buffer = null;
+    this.pos = 0;
+    this.readPos = 0;
+    this.currentLinePos = 0;
+    this.modulus = 0;
+    this.eof = false;
+    this.x = 0;
+}

@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -18,13 +18,16 @@
+                 "ClassCastException occurred while creating the mockito mock :",
+                 "  class to mock : " + describeClass(mockedProxyType),
+                 "  created class : " + describeClass(settings.getTypeToMock()),
+-                "  proxy instance class : " + describeClass(mockInstance),
++                "  proxy instance class : " + (mockInstance != null ? describeClass(mockInstance) : "null"),
+                 "  instance creation by : " + classInstantiator.getClass().getSimpleName(),
+                 "",
+                 "You might experience classloading issues, please ask the mockito mailing-list.",
+                 ""
+-        ),cce);
++        ), cce);
+     } catch (org.mockito.internal.creation.instance.InstantiationException e) {
+-        throw new MockitoException("Unable to create mock instance of type '" + mockedProxyType.getSuperclass().getSimpleName() + "'", e);
++        throw new MockitoException("Unable to create mock instance of type '" + mockedProxyType.getSimpleName() + "'", e);
++    } catch (Exception e) {
++        throw new MockitoException("An unexpected error occurred while creating the mock instance", e);
+     }
+ }
++

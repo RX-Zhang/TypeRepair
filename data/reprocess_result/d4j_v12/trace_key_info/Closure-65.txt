@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.CodePrinterTest.testZero
+- Error: junit.framework.ComparisonFailure: expected:<var x="\0[00]"> but was:<var x="\0[]">
+- Location:     assertPrint("var x ='\\0';", "var x=\"\\000\"");

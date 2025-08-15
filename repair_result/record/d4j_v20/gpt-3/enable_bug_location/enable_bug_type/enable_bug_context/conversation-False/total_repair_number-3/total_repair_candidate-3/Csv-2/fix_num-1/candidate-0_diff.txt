@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -4,5 +4,9 @@
+                 "No header mapping was specified, the record values can't be accessed by name");
+     }
+     final Integer index = mapping.get(name);
+-        return index != null ? values[index.intValue()] : null;
++    if (index == null || index < 0 || index >= values.length) {
++        throw new IllegalArgumentException("Invalid index for the requested name: " + name);
++    }
++    return values[index.intValue()];
+ }
++

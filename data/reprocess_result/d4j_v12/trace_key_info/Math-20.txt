@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math3.optimization.direct.CMAESOptimizerTest.testMath864
+- Error: junit.framework.AssertionFailedError: Out of bounds (0.6318558842176571 > 0.5)
+- Location:         Assert.assertTrue("Out of bounds (" + result[0] + " > " + upper[0] + ")",

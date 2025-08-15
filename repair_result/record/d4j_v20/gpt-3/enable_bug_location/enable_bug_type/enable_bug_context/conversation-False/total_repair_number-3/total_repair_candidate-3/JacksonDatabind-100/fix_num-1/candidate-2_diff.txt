@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -6,6 +6,11 @@
+     if (n != null) {
+         // [databind#2096]: although `binaryValue()` works for real binary node
+         // and embedded "POJO" node, coercion from TextNode may require variant, so:
++        if (n.isTextual()) {
++            // Ensure we decode the TextNode using the correct Base64 variant
++            String base64String = n.textValue();
++            return b64variant.decode(base64String);
++        }
+         byte[] data = n.binaryValue();
+         if (data != null) {
+             return data;
+@@ -20,3 +25,4 @@
+     // otherwise return null to mark we have no binary content
+     return null;
+ }
++

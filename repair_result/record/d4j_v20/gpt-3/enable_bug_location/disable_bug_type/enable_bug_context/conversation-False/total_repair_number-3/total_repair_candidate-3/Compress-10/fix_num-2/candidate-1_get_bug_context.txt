@@ -1,0 +1,1 @@
+['populateFromCentralDirectory', 'readCentralDirectoryEntry', 'resolveLocalFileHeaderData']

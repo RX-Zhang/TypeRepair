@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -16,7 +16,7 @@
+     }
+     Class<?> cls;
+     try {
+-        cls =  tf.findClass(id);
++        cls = tf.findClass(id);
+     } catch (ClassNotFoundException e) {
+         // 24-May-2016, tatu: Ok, this is pretty ugly, but we should always get
+         //   DeserializationContext, just playing it safe
+@@ -30,5 +30,12 @@
+     } catch (Exception e) {
+         throw new IllegalArgumentException("Invalid type id '"+id+"' (for id type 'Id.class'): "+e.getMessage(), e);
+     }
++    
++    // Verify and convert variable types before performing operations
++    if (_baseType == null || cls == null) {
++        throw new IllegalArgumentException("Base type or class cannot be null");
++    }
++    
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

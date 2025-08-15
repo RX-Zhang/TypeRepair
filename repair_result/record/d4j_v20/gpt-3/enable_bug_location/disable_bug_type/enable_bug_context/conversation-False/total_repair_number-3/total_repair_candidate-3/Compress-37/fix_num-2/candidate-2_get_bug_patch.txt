@@ -1,0 +1,79 @@
+Map<String, String> parsePaxHeaders(final InputStream i)
+    throws IOException {
+    final Map<String, String> headers = new HashMap<String, String>(globalPaxHeaders);
+    // Format is "length keyword=value\n";
+    while(true){ // get length
+        int ch;
+        int len = 0;
+        int read = 0;
+        boolean gotLen = false;
+        // Read length field
+        while((ch = i.read()) != -1) {
+            read++;
+            if (ch == ' '){
+                gotLen = true;
+                break;
+            }
+            if (ch < '0' || ch > '9') {
+                // Malformed length, unexpected char
+                throw new IOException("Malformed Pax header length");
+            }
+            len *= 10;
+            len += ch - '0';
+        }
+        if (ch == -1) { // EOF
+            break;
+        }
+        if (!gotLen) {
+            // EOF reached before space found
+            break;
+        }
+        if (len <= 0) {
+            // Skip blank or invalid length lines
+            // Try to read and ignore rest of line
+            while((ch = i.read()) != -1 && ch != '\n');
+            continue;
+        }
+        // Now read the rest of the header line of length len - read bytes left
+        final int restLen = len - read; // read includes the length digits and space
+        if (restLen <= 0) {
+            // No data to read, possibly blank line, skip
+            // Try to read and ignore rest of line
+            while((ch = i.read()) != -1 && ch != '\n');
+            continue;
+        }
+        byte[] rest = new byte[restLen];
+        final int got = IOUtils.readFully(i, rest);
+        if (got != restLen) {
+            throw new IOException("Failed to read Paxheader. Expected "
+                                  + restLen + " bytes, read " + got);
+        }
+        // rest contains "keyword=value\n"
+        // Find '='
+        int equalsIdx = -1;
+        for (int idx = 0; idx < restLen; idx++) {
+            if (rest[idx] == '=') {
+                equalsIdx = idx;
+                break;
+            }
+        }
+        if (equalsIdx == -1) {
+            // No '=' found, malformed, skip
+            continue;
+        }
+        final String keyword = new String(rest, 0, equalsIdx, CharsetNames.UTF_8);
+        final int valLen = restLen - equalsIdx - 1;
+        if (valLen == 1 && rest[restLen - 1] == '\n') {
+            // Only newline, remove this key
+            headers.remove(keyword);
+        } else if (valLen > 1 && rest[restLen -1] == '\n') {
+            final String value = new String(rest, equalsIdx + 1, valLen - 1, CharsetNames.UTF_8);
+            headers.put(keyword, value);
+        } else {
+            // No trailing newline or unusual format, accept whole value
+            final String value = new String(rest, equalsIdx + 1, valLen, CharsetNames.UTF_8);
+            headers.put(keyword, value);
+        }
+    }
+    return headers;
+}

@@ -1,0 +1,40 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.NodeUtilTest.testLocalValue1
+- Error: junit.framework.AssertionFailedError
+- Location:     assertFalse(testLocalValue("new x()"));
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.PureFunctionIdentifierTest.testLocalizedSideEffects8
+- Error: junit.framework.AssertionFailedError: expected:<[A]> but was:<[A, f]>
+- Location:     checkMarkedCalls("/** @constructor A */ function A() {};" +
+
+
+Test failure 3:
+- Test: com.google.javascript.jscomp.PureFunctionIdentifierTest.testLocalizedSideEffects9
+- Error: junit.framework.AssertionFailedError: expected:<[A]> but was:<[A, f]>
+- Location:     checkMarkedCalls("/** @constructor A */ function A() {this.x = 1};" +
+
+
+Test failure 4:
+- Test: com.google.javascript.jscomp.PureFunctionIdentifierTest.testAnnotationInExterns_new4
+- Error: junit.framework.AssertionFailedError: expected:<[externObjSEThis]> but was:<[externObjSEThis, NEW STRING externObjSEThisMethod]>
+- Location:     checkMarkedCalls("new externObjSEThis().externObjSEThisMethod('')",
+
+
+Test failure 5:
+- Test: com.google.javascript.jscomp.PureFunctionIdentifierTest.testAnnotationInExterns_new6
+- Error: junit.framework.AssertionFailedError: expected:<[externObjSEThis]> but was:<[externObjSEThis, NEW STRING externObjSEThisMethod, f]>
+- Location:     checkMarkedCalls(
+
+
+Test failure 6:
+- Test: com.google.javascript.jscomp.PureFunctionIdentifierTest.testIssue303b
+- Error: junit.framework.AssertionFailedError: expected:<[]> but was:<[NEW STRING setLocation]>
+- Location:     checkMarkedCalls(
+
+
+Test failure 7:
+- Test: com.google.javascript.jscomp.PureFunctionIdentifierTest.testIssue303
+- Error: junit.framework.AssertionFailedError: expected:<[]> but was:<[NEW STRING setLocation]>
+- Location:     checkMarkedCalls(

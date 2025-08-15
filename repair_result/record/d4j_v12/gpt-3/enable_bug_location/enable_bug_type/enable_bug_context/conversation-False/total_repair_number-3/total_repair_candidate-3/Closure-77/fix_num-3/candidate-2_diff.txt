@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -33,9 +33,11 @@
+         if (s.regionMatches(true, i + 1, END_SCRIPT, 0,
+                             END_SCRIPT.length())) {
+           sb.append("<\\");
++          i += END_SCRIPT.length() - 1; // Skip past the end script tag
+         } else if (s.regionMatches(false, i + 1, START_COMMENT, 0,
+                                    START_COMMENT.length())) {
+           sb.append("<\\");
++          i += START_COMMENT.length() - 1; // Skip past the comment tag
+         } else {
+           sb.append(c);
+         }
+@@ -68,3 +70,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

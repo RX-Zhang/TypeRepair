@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -17,6 +17,11 @@
+                     return regex;
+                 }
+                 c= value.charAt(i);
++                // If next char is a whitespace, transform it to \s*+
++                if(Character.isWhitespace(c)) {
++                    regex.append("\\s*+");
++                    continue;
++                }
+             }
+             break;
+         case '?':
+@@ -39,3 +44,4 @@
+     }
+     return regex;
+ }
++

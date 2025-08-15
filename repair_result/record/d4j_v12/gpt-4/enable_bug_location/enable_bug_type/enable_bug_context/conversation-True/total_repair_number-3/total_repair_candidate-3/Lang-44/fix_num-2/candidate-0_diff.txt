@@ -1,0 +1,111 @@
+--- 
++++ 
+@@ -14,13 +14,16 @@
+     }
+     if (val.startsWith("0x") || val.startsWith("-0x")) {
+         return createInteger(val);
+-    }   
++    }
+     char lastChar = val.charAt(val.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    int expPos = val.indexOf('e');
++    if (expPos == -1) {
++        expPos = val.indexOf('E');
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -51,36 +54,36 @@
+         String numeric = val.substring(0, val.length() - 1);
+         boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+         switch (lastChar) {
+-            case 'l' :
+-            case 'L' :
++            case 'l':
++            case 'L':
+                 if (dec == null
+-                    && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                        && exp == null
++                        && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+-                        //Too big for a long
++                        // Too big for a long
+                     }
+                     return createBigInteger(numeric);
+ 
+                 }
+                 throw new NumberFormatException(val + " is not a valid number.");
+-            case 'f' :
+-            case 'F' :
++            case 'f':
++            case 'F':
+                 try {
+                     Float f = NumberUtils.createFloat(numeric);
+                     if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+-                        //If it's too big for a float or the float value = 0 and the string
+-                        //has non-zeros in it, then float does not have the precision we want
++                        // If it's too big for a float or the float value = 0 and the string
++                        // has non-zeros in it, then float does not have the precision we want
+                         return f;
+                     }
+ 
+                 } catch (NumberFormatException e) {
+                     // ignore the bad number
+                 }
+-                //Fall through
+-            case 'd' :
+-            case 'D' :
++                // Fall through
++            case 'd':
++            case 'D':
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+                     if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
+@@ -94,21 +97,21 @@
+                 } catch (NumberFormatException e) {
+                     // empty catch
+                 }
+-                //Fall through
+-            default :
++                // Fall through
++            default:
+                 throw new NumberFormatException(val + " is not a valid number.");
+ 
+         }
+     } else {
+-        //User doesn't have a preference on the return type, so let's start
+-        //small and go from there...
++        // User doesn't have a preference on the return type, so let's start
++        // small and go from there...
+         if (expPos > -1 && expPos < val.length() - 1) {
+             exp = val.substring(expPos + 1, val.length());
+         } else {
+             exp = null;
+         }
+         if (dec == null && exp == null) {
+-            //Must be an int,long,bigint
++            // Must be an int,long,bigint
+             try {
+                 return createInteger(val);
+             } catch (NumberFormatException nfe) {
+@@ -122,7 +125,7 @@
+             return createBigInteger(val);
+ 
+         } else {
+-            //Must be a float,double,BigDec
++            // Must be a float,double,BigDec
+             boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+             try {
+                 Float f = createFloat(val);
+@@ -147,3 +150,4 @@
+ 
+     }
+ }
++

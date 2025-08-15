@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -27,11 +27,15 @@
+     // larger than the right bound.
+     boolean inverted = false;
+ 
++    // Keep track of the number of evaluations.
++    int evaluations = 2;
++
+     // Keep finding better approximations.
+     while (true) {
+         // Calculate the next approximation.
+         final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+         final double fx = computeObjectiveValue(x);
++        evaluations++;
+ 
+         // If the new approximation is the exact root, return it. Since
+         // this is not an under-approximation or an over-approximation,
+@@ -58,6 +62,9 @@
+             case REGULA_FALSI:
+                 // Detect early that algorithm is stuck, instead of waiting
+                 // for the maximum number of iterations to be exceeded.
++                if (FastMath.abs(fx) >= FastMath.abs(f1)) {
++                    throw new TooManyEvaluationsException(evaluations);
++                }
+                 break;
+             default:
+                 // Should never happen.
+@@ -121,3 +128,4 @@
+         }
+     }
+ }
++

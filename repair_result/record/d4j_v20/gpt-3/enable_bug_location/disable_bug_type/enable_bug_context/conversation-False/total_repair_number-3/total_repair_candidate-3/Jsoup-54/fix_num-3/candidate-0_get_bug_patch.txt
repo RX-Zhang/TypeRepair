@@ -1,0 +1,19 @@
+private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+    for (Attribute attribute : source.attributes()) {
+        // Clean attribute key to conform to XML valid attribute name rules:
+        // First character: [a-zA-Z_:]
+        // Subsequent characters: [-a-zA-Z0-9_:.]
+        String key = attribute.getKey();
+
+        // Remove any characters not allowed in XML attribute names
+        key = key.replaceAll("[^a-zA-Z0-9_:.\\-]", "");
+
+        // Ensure first character is valid: a letter, underscore or colon
+        if (key.isEmpty() || !key.substring(0,1).matches("[a-zA-Z_:]")) {
+            // Skip attributes with invalid first character after cleaning
+            continue;
+        }
+
+        el.setAttribute(key, attribute.getValue());
+    }
+}

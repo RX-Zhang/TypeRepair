@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -24,6 +24,11 @@
+      */
+     Type[] bounds = type.getBounds();
+ 
++    // Ensure bounds are not empty before accessing bounds[0]
++    if (bounds.length == 0) {
++        return _unknownType(); // Return unknown type if no bounds are present
++    }
++
+     // With type variables we must use bound information.
+     // Theoretically this gets tricky, as there may be multiple
+     // bounds ("... extends A & B"); and optimally we might
+@@ -40,3 +45,4 @@
+     context._addPlaceholder(name);
+     return _constructType(bounds[0], context);
+ }
++

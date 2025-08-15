@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -6,9 +6,9 @@
+     Object l = left.compute(context);
+     Object r = right.compute(context);
+ 
+-      System.err.println("COMPARING: " +
+-          (l == null ? "null" : l.getClass().getName()) + " " +
+-          (r == null ? "null" : r.getClass().getName()));
++//    System.err.println("COMPARING: " +
++//        (l == null ? "null" : l.getClass().getName()) + " " +
++//        (r == null ? "null" : r.getClass().getName()));
+ 
+     if (l instanceof InitialContext || l instanceof SelfContext) {
+         l = ((EvalContext) l).getSingleNodePointer();
+@@ -27,13 +27,26 @@
+     }
+ 
+     if ((l instanceof Iterator) && !(r instanceof Iterator)) {
+-        return contains((Iterator) l, r);
++        if (contains((Iterator) l, r)) {
++            return true;
++        }
++        if (right instanceof Expression && ((Expression) right).compute(context) instanceof Iterator) {
++            return findMatch((Iterator) l, (Iterator) ((Expression) right).compute(context));
++        }
++        return false;
+     }
+     if (!(l instanceof Iterator) && (r instanceof Iterator)) {
+-        return contains((Iterator) r, l);
++        if (contains((Iterator) r, l)) {
++            return true;
++        }
++        if (left instanceof Expression && ((Expression) left).compute(context) instanceof Iterator) {
++            return findMatch((Iterator) ((Expression) left).compute(context), (Iterator) r);
++        }
++        return false;
+     }
+     if (l instanceof Iterator && r instanceof Iterator) {
+         return findMatch((Iterator) l, (Iterator) r);
+     }
+     return equal(l, r);
+ }
++

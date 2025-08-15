@@ -1,0 +1,81 @@
+--- 
++++ 
+@@ -8,17 +8,17 @@
+     // check for no buffered context _exposedContext - null
+     // If all the conditions matches then check for scalar / non-scalar property
+     if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+-        //if not scalar and ended successfully, and !includePath, then return null
+-            if (_currToken.isStructEnd()) {
+-                if (_headContext.isStartHandled()) {
+-                    return (_currToken = null);
+-                }
+-            } else if (_currToken.isScalarValue()) {
+-                //else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
+-                // then return null 
+-                if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
+-                    return (_currToken = null);
+-                }
++        // if not scalar and ended successfully, and !includePath, then return null
++        if (_currToken.isStructEnd()) {
++            if (_headContext.isStartHandled()) {
++                return (_currToken = null);
++            }
++        } else if (_currToken.isScalarValue()) {
++            // else if scalar, and scalar not present in obj/array and !includePath and INCLUDE_ALL matched once
++            // then return null 
++            if (!_headContext.isStartHandled() && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                return (_currToken = null);
++            }
+         }
+     }
+     // Anything buffered?
+@@ -36,12 +36,12 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
++                    // This check needed: if current token is not START_ARRAY, return it; otherwise break and go read more
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 // Almost! Most likely still have the current token;
+                 // with the sole exception of 
+                 /*
+@@ -72,7 +72,7 @@
+ 
+     // otherwise... to include or not?
+     TokenFilter f;
+-    
++
+     switch (t.id()) {
+     case ID_START_ARRAY:
+         f = _itemFilter;
+@@ -99,7 +99,7 @@
+             return (_currToken = t);
+         }
+         _headContext = _headContext.createChildArrayContext(f, false);
+-        
++
+         // Also: only need buffering if parent path to be included
+         if (_includePath) {
+             t = _nextTokenWithBuffering(_headContext);
+@@ -176,6 +176,7 @@
+                     if (_includeImmediateParent && !_headContext.isStartHandled()) {
+                         t = _headContext.nextTokenToRead(); // returns START_OBJECT but also marks it handled
+                         _exposedContext = _headContext;
++                        return (_currToken = t);
+                     }
+                 }
+                 return (_currToken = t);
+@@ -226,3 +227,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

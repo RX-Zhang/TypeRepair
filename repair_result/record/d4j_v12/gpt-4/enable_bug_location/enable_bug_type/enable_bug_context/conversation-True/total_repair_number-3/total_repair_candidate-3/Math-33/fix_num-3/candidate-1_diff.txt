@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -4,7 +4,9 @@
+     }
+ 
+     List<Integer> columnsToDrop = new ArrayList<Integer>();
+-    columnsToDrop.add(0);
++    // Do not drop column 0, because it corresponds to the Phase 2 objective function
++    // and dropping it would remove the main objective function.
++    // columnsToDrop.add(0);
+ 
+     // positive cost non-artificial variables
+     for (int i = getNumObjectiveFunctions(); i < getArtificialVariableOffset(); i++) {
+@@ -39,3 +41,4 @@
+     this.tableau = new Array2DRowRealMatrix(matrix);
+     this.numArtificialVariables = 0;
+ }
++

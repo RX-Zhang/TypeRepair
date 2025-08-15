@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -10,8 +10,10 @@
+             else:
+                 result.append(right[j])
+                 j += 1
+-        result.extend(left[i:] or right[j:])
++        result.extend(left[i:])
++        result.extend(right[j:])
+         return result
++
+     if len(arr) == 0:
+         return arr
+     else:

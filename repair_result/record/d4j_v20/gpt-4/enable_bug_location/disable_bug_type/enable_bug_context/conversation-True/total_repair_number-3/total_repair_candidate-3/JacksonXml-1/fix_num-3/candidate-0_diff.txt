@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -38,8 +38,8 @@
+             return (_currToken = JsonToken.START_OBJECT);
+         }
+         if (_parsingContext.inArray()) {
+-            // Yup: in array, so this element could be verified; but it won't be
+-            // reported anyway, and we need to process following event.
++            // Added call to addVirtualWrapping to fix empty collections within arrays
++            addVirtualWrapping(_namesToWrap);
+             token = _xmlTokens.next();
+             _mayBeLeaf = true;
+             continue;
+@@ -67,6 +67,8 @@
+             _mayBeLeaf = false;
+                 // 06-Jan-2015, tatu: as per [dataformat-xml#180], need to
+                 //    expose as empty Object, not null
++            // Overriding current name to the configured text element name to keep context for empty objects
++            overrideCurrentName(_cfgNameForTextElement);
+             return (_currToken = JsonToken.VALUE_NULL);
+         }
+         _currToken = _parsingContext.inArray() ? JsonToken.END_ARRAY : JsonToken.END_OBJECT;
+@@ -132,3 +134,4 @@
+     _throwInternal();
+     return null;
+ }
++

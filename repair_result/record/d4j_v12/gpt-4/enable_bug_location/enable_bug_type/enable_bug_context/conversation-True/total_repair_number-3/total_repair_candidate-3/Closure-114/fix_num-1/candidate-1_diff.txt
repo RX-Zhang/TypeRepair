@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -13,7 +13,7 @@
+       //
+       // TODO(user) revisit the dependency scope calculation
+       // logic.
+-      if (parent.getFirstChild().getNext() != n) {
++      if (parent.getFirstChild().getNext() == n) {
+         recordDepScope(recordNode, ns);
+       } else {
+         recordDepScope(nameNode, ns);
+@@ -25,7 +25,8 @@
+       // caller expression, but it could be nested deeper in the caller and
+       // we would still get a bug.
+       // See testAssignWithCall2 for an example of this.
+-      recordDepScope(recordNode, ns);
++      recordDepScope(nameNode, ns);
+     }
+   }
+ }
++

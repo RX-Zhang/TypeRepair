@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.math.optimization.general.MinpackTest.testMinpackJennrichSampson
+- Error: junit.framework.AssertionFailedError: expected:<0.2578199266368004> but was:<0.2578330049004441>
+- Location:     minpackTest(new JennrichSampsonFunction(10, new double[] { 0.3, 0.4 },
+
+
+Test failure 2:
+- Test: org.apache.commons.math.optimization.general.MinpackTest.testMinpackFreudensteinRoth
+- Error: junit.framework.AssertionFailedError: expected:<11.41300466147456> but was:<11.4121122022341>
+- Location:     minpackTest(new FreudensteinRothFunction(new double[] { 5.0, -20.0 },

@@ -1,0 +1,23 @@
+public static String encodeBase64String(byte[] binaryData) {
+    byte[] encoded = encodeBase64(binaryData, true);
+    // Remove trailing line separator if present.
+    if (encoded.length == 0) {
+        return "";
+    }
+    int len = encoded.length;
+    int sepLen = CHUNK_SEPARATOR.length;
+    boolean hasTrailingSeparator = false;
+    if (len >= sepLen) {
+        hasTrailingSeparator = true;
+        for (int i = 0; i < sepLen; i++) {
+            if (encoded[len - sepLen + i] != CHUNK_SEPARATOR[i]) {
+                hasTrailingSeparator = false;
+                break;
+            }
+        }
+    }
+    if (hasTrailingSeparator) {
+        len -= sepLen;
+    }
+    return StringUtils.newStringUtf8(encoded, 0, len);
+}

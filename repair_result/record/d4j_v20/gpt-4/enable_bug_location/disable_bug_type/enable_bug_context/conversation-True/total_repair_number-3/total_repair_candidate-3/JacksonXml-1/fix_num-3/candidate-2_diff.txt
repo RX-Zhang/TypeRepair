@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -40,9 +40,14 @@
+         if (_parsingContext.inArray()) {
+             // Yup: in array, so this element could be verified; but it won't be
+             // reported anyway, and we need to process following event.
+-            token = _xmlTokens.next();
+-            _mayBeLeaf = true;
+-            continue;
++            String name = _xmlTokens.getLocalName();
++            if (_namesToWrap != null && _namesToWrap.contains(name)) {
++                _xmlTokens.repeatStartElement();
++            } else {
++                token = _xmlTokens.next();
++                _mayBeLeaf = true;
++                continue;
++            }
+         }
+         String name = _xmlTokens.getLocalName();
+         _parsingContext.setCurrentName(name);
+@@ -132,3 +137,4 @@
+     _throwInternal();
+     return null;
+ }
++

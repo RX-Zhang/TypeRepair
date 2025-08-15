@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -22,7 +22,7 @@
+         doc = parser.parseInput(docData, baseUri);
+ 
+         // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
+-        Elements metaElements = doc.select("meta[http-equiv=content-type], meta[charset]");
++        Elements metaElements = doc.select("meta[http-equiv=content-type i], meta[charset]");
+         String foundCharset = null; // if not found, will keep utf-8 as best attempt
+         for (Element meta : metaElements) {
+             if (meta.hasAttr("http-equiv"))
+@@ -63,9 +63,14 @@
+     if (doc == null) {
+         if (charsetName == null)
+             charsetName = defaultCharset;
++
++        // wrap the input stream again because the previous read/reset may have moved the pointer
++        input = ConstrainableInputStream.wrap(input, bufferSize, 0);
+         BufferedReader reader = new BufferedReader(new InputStreamReader(input, charsetName), bufferSize);
++
+         if (bomCharset != null && bomCharset.offset) // creating the buffered reader ignores the input pos, so must skip here
+             reader.skip(1);
++
+         try {
+             doc = parser.parseInput(reader, baseUri);
+         } catch (UncheckedIOException e) {
+@@ -73,9 +78,28 @@
+             throw e.ioException();
+         }
+         Charset charset = Charset.forName(charsetName);
+-        doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // some charsets can read but not encode; switch to an encodable charset and update the meta el
++        if (!charset.newEncoder().canEncode()) {
++            // fallback to UTF-8 if can't encode charset
++            charset = Charset.forName("UTF-8");
++            doc.outputSettings().charset(charset);
++            // update the meta charset tag or add it
++            Element metaCharset = doc.selectFirst("meta[charset]");
++            if (metaCharset != null) {
++                metaCharset.attr("charset", charset.name());
++            } else {
++                Element head = doc.head();
++                if (head == null) {
++                    head = doc.appendElement("head");
++                }
++                head.prependElement("meta").attr("charset", charset.name());
++            }
++        } else {
++            doc.outputSettings().charset(charset);
++        }
+     }
+     input.close();
+     return doc;
+ }
++

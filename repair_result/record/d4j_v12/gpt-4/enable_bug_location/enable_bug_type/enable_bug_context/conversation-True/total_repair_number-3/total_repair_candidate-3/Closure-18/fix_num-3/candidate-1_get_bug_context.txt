@@ -1,0 +1,1 @@
+['isIdeMode', 'report', 'hasErrors']

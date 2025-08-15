@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ protected Object deserializeUsingPropertyBasedWithUnwrapped(JsonParser p,
+-		DeserializationContext ctxt)
++        DeserializationContext ctxt)
+     throws IOException, JsonProcessingException
+ {
+     final PropertyBasedCreator creator = _propertyBasedCreator;
+@@ -24,15 +24,18 @@
+                     wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+                     continue;
+                 }
+-                while (t == JsonToken.FIELD_NAME) {
+-                    p.nextToken();
+-                    tokens.copyCurrentStructure(p);
+-                    t = p.nextToken();
+-                }
+                 tokens.writeEndObject();
+                 if (bean.getClass() != _beanType.getRawClass()) {
+                     ctxt.reportMappingException("Can not create polymorphic instances with unwrapped values");
+                     return null;
++                }
++                // Finish copying remaining fields after building the bean
++ while (t == JsonToken.FIELD_NAME) {
++                    String name = p.getCurrentName();
++                    p.nextToken();
++                    tokens.writeFieldName(name);
++                    tokens.copyCurrentStructure(p);
++                    t = p.nextToken();
+                 }
+                 return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+             }
+@@ -68,5 +71,7 @@
+     } catch (Exception e) {
+         return wrapInstantiationProblem(e, ctxt);
+     }
++    tokens.writeEndObject();
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

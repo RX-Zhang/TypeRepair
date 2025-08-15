@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.core.TestJsonPointer.testWonkyNumber173
+- Error: java.lang.NumberFormatException: For input string: "1e0"
+- Location:         JsonPointer ptr = JsonPointer.compile("/1e0");

@@ -1,0 +1,7 @@
+--- 
++++ 
+@@ -31,3 +31,4 @@
+     }
+     _creators[typeIndex] = _fixAccess(newOne);
+ }
++

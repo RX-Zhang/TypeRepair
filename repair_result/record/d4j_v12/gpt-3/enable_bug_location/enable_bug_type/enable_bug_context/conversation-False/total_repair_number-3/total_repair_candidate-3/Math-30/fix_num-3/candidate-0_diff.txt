@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -13,5 +13,8 @@
+ 
+     final NormalDistribution standardNormal = new NormalDistribution(0, 1);
+ 
+-    return 2 * standardNormal.cumulativeProbability(z);
++    // Return two-tailed p-value using the complementary probability for better accuracy
++    return 2 * Math.min(standardNormal.cumulativeProbability(z), 
++                        1 - standardNormal.cumulativeProbability(z));
+ }
++

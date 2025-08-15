@@ -1,0 +1,1 @@
+['hasData', 'avail', 'resizeBuffer', 'reset']

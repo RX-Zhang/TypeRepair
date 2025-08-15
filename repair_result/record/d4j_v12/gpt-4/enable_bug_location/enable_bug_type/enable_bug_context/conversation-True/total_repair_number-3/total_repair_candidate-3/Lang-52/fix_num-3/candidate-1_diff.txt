@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -51,7 +51,7 @@
+             switch (ch) {
+                 case '\'':
+                     if (escapeSingleQuote) {
+-                      out.write('\\');
++                        out.write('\\');
+                     }
+                     out.write('\'');
+                     break;
+@@ -63,6 +63,11 @@
+                     out.write('\\');
+                     out.write('\\');
+                     break;
++                case '/':
++                    // Fix: Escape forward slash to prevent issue with </script>
++                    out.write('\\');
++                    out.write('/');
++                    break;
+                 default :
+                     out.write(ch);
+                     break;
+@@ -70,3 +75,4 @@
+         }
+     }
+ }
++

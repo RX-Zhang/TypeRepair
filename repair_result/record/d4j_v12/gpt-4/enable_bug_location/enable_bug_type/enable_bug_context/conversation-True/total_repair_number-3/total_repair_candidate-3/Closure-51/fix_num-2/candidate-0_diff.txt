@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -6,12 +6,18 @@
+     add(" ");
+   }
+ 
++  if (x == 0.0 && Double.doubleToRawLongBits(x) == Double.doubleToRawLongBits(-0.0)) {
++    // Handle negative zero explicitly, to preserve the sign.
++    add("-0.0");
++    return;
++  }
++
+   if ((long) x == x) {
+     long value = (long) x;
+     long mantissa = value;
+     int exp = 0;
+     if (Math.abs(x) >= 100) {
+-      while (mantissa / 10 * Math.pow(10, exp + 1) == value) {
++      while ((mantissa / 10) * Math.pow(10, exp + 1) == value) {
+         mantissa /= 10;
+         exp++;
+       }
+@@ -26,3 +32,4 @@
+   }
+ 
+ }
++

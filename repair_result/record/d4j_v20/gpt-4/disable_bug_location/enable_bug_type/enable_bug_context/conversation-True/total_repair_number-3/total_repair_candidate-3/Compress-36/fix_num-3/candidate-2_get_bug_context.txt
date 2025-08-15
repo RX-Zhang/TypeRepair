@@ -1,0 +1,1 @@
+['getNextEntry', 'buildDecodingStream', 'read', 'getCurrentStream']

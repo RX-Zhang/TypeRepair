@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -123,7 +123,7 @@
+                 }
+             }
+ 
+-            // Update a, b, v, w and x.
++            // Update a, b, v, w and x using best() method.
+             if (fu <= fx) {
+                 if (u < x) {
+                     b = x;
+@@ -142,15 +142,12 @@
+                 } else {
+                     b = u;
+                 }
+-                if (fu <= fw ||
+-                    Precision.equals(w, x)) {
++                if (fu <= fw || Precision.equals(w, x)) {
+                     v = w;
+                     fv = fw;
+                     w = u;
+                     fw = fu;
+-                } else if (fu <= fv ||
+-                           Precision.equals(v, x) ||
+-                           Precision.equals(v, w)) {
++                } else if (fu <= fv || Precision.equals(v, x) || Precision.equals(v, w)) {
+                     v = u;
+                     fv = fu;
+                 }
+@@ -161,3 +158,4 @@
+         ++iter;
+     }
+ }
++

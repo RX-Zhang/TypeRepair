@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -18,11 +18,16 @@
+             if (token.indexOf('=') != -1)
+             {
+                 tokens.add(token.substring(0, token.indexOf('=')));
+-                tokens.add(token.substring(token.indexOf('=') + 1, token.length()));
++                currentOption = options.getOption(token.substring(0, token.indexOf('=')));
++                if (currentOption != null && currentOption.hasArg())
++                {
++                    tokens.add(token.substring(token.indexOf('=') + 1));
++                }
+             }
+             else
+             {
+                 tokens.add(token);
++                currentOption = options.getOption(token);
+             }
+         }
+ 
+@@ -61,3 +66,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

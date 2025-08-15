@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -18,12 +18,11 @@
+         swap[r] = r;
+         for (int i = r + 1; i < order; ++i) {
+             int ii  = index[i];
+-            int isi = index[swap[i]];
++            int isi = index[swap[r]]; // Corrected from swap[i] to swap[r]
+             if (c[ii][ii] > c[isi][isi]) {
+                 swap[r] = i;
+             }
+         }
+-
+ 
+         // swap elements
+         if (swap[r] != r) {
+@@ -52,7 +51,7 @@
+             // all remaining diagonal elements are close to zero, we consider we have
+             // found the rank of the symmetric positive semidefinite matrix
+             ++r;
+-            loop = false;
++            loop = (r < order); // Changed to a condition to ensure it loops correctly
+ 
+         } else {
+ 
+@@ -83,8 +82,9 @@
+     root = MatrixUtils.createRealMatrix(order, r);
+     for (int i = 0; i < order; ++i) {
+         for (int j = 0; j < r; ++j) {
+-            root.setEntry(index[i], j, b[i][j]);
++            root.setEntry(i, j, b[i][j]); // Corrected to use "i" for correct matrix population
+         }
+     }
+ 
+ }
++

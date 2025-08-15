@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -25,9 +25,22 @@
+         if (NodeUtil.isVar(lhs)) {
+           // for(var x in y) {...}
+           lhs = lhs.getLastChild();
++          if (!conditional) {
++            addToSetIfLocal(lhs, kill);
++          }
++        } else {
++          // for (a[1] in foo) {...}
++          // This is a write to a[1], so we treat as a use of 'a' (array base) and kill of lhs.
++          if (!conditional) {
++            if (lhs.getType() == Token.GETELEM || lhs.getType() == Token.GETPROP) {
++              Node target = lhs.getFirstChild();
++              if (target.getType() == Token.NAME) {
++                addToSetIfLocal(target, gen);
++              }
++            }
++            addToSetIfLocal(lhs, kill);
++          }
+         }
+-          addToSetIfLocal(lhs, kill);
+-          addToSetIfLocal(lhs, gen);
+         computeGenKill(rhs, gen, kill, conditional);
+       }
+       return;
+@@ -84,3 +97,4 @@
+       return;
+   }
+ }
++

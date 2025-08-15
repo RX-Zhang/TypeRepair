@@ -1,0 +1,10 @@
+private String getRemainingJSDocLine() {
+  try {
+    String result = stream.getRemainingJSDocLine();
+    return result;
+  } catch (IllegalStateException e) {
+    // Handle cases where position information is inconsistent
+    errorReporter.warning("Recorded bad position information in JSDoc line: " + e.getMessage());
+    return "";
+  }
+}

@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -10,6 +10,12 @@
+   Map<TemplateType, JSType> inferred = 
+       inferTemplateTypesFromParameters(fnType, n);
+ 
++  // Check for null or undefined types in inferred map
++  for (Map.Entry<TemplateType, JSType> entry : inferred.entrySet()) {
++    if (entry.getValue() == null || entry.getValue().isUnknownType()) {
++      entry.setValue(JSType.UNKNOWN); // Replace with UNKNOWN if necessary
++    }
++  }
+ 
+   // Replace all template types. If we couldn't find a replacement, we
+   // replace it with UNKNOWN.
+@@ -26,3 +32,4 @@
+ 
+   return replacer.madeChanges;
+ }
++

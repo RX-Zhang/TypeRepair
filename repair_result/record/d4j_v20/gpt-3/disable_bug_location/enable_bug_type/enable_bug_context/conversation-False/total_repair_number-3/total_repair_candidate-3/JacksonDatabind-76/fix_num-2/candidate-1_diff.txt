@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ protected Object deserializeUsingPropertyBasedWithUnwrapped(JsonParser p,
+-		DeserializationContext ctxt)
++        DeserializationContext ctxt)
+     throws IOException, JsonProcessingException
+ {
+     final PropertyBasedCreator creator = _propertyBasedCreator;
+@@ -24,12 +24,26 @@
+                     wrapAndThrow(e, _beanType.getRawClass(), propName, ctxt);
+                     continue;
+                 }
++                // handle remaining fields after creator build
+                 while (t == JsonToken.FIELD_NAME) {
++                    String remainingName = p.getCurrentName();
+                     p.nextToken();
++                    tokens.writeFieldName(remainingName);
+                     tokens.copyCurrentStructure(p);
++
++                    // Also buffer these properties if recognized
++                    SettableBeanProperty prop = _beanProperties.find(remainingName);
++                    if (prop != null) {
++                        buffer.bufferProperty(prop, prop.deserialize(p, ctxt));
++                    } else if (_ignorableProps != null && _ignorableProps.contains(remainingName)) {
++                        handleIgnoredProperty(p, ctxt, handledType(), remainingName);
++                    } else if (_anySetter != null) {
++                        buffer.bufferAnyProperty(_anySetter, remainingName, _anySetter.deserialize(p, ctxt));
++                    }
+                     t = p.nextToken();
+                 }
+                 tokens.writeEndObject();
++
+                 if (bean.getClass() != _beanType.getRawClass()) {
+                     ctxt.reportMappingException("Can not create polymorphic instances with unwrapped values");
+                     return null;
+@@ -70,3 +84,4 @@
+     }
+     return _unwrappedPropertyHandler.processUnwrapped(p, ctxt, bean, tokens);
+ }
++

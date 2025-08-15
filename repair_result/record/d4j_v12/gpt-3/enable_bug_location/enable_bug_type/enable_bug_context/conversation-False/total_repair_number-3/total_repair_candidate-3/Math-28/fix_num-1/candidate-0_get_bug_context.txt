@@ -1,0 +1,1 @@
+['getPivotColumn', 'doIteration', 'solvePhase1']

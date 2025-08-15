@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -57,7 +57,7 @@
+         if (_mayBeLeaf) {
+             _mayBeLeaf = false;
+             _nextToken = JsonToken.FIELD_NAME;
+-            _currText = _xmlTokens.getText();
++            _currText = _xmlTokens.getLocalName();  // fix: get attribute name, not value
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
+         } else {
+@@ -91,3 +91,4 @@
+     }
+     return null;
+ }
++

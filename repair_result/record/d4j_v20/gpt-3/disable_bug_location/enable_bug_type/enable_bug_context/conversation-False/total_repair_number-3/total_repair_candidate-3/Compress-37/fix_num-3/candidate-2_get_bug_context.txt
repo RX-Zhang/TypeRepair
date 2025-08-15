@@ -1,0 +1,1 @@
+['paxHeaders', 'parsePaxHeaders', 'applyPaxHeadersToCurrentEntry']

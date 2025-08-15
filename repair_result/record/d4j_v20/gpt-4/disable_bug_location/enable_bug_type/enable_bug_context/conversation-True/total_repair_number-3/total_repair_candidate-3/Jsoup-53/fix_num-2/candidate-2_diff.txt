@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -6,20 +6,20 @@
+ 
+     do {
+         if (isEmpty()) break;
+-        Character c = consume();
+-        if (last == 0 || last != ESC) {
+-            if (c.equals(open)) {
++        char c = consume();
++        if (last != ESC) {
++            if (c == open) {
+                 depth++;
+                 if (start == -1)
+-                    start = pos;
++                    start = pos - 1; // pos has already incremented in consume()
+             }
+-            else if (c.equals(close))
++            else if (c == close)
+                 depth--;
+         }
+-
+-        if (depth > 0 && last != 0)
+-            end = pos; // don't include the outer match pair in the return
++        if (depth > 0)
++            end = pos - 1; // don't include the outer match pair in the return
+         last = c;
+     } while (depth > 0);
+     return (end >= 0) ? queue.substring(start, end) : "";
+ }
++

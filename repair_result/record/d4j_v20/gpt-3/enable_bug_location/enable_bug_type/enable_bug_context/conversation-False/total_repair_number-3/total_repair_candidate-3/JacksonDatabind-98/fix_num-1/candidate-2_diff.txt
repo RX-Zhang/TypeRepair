@@ -1,0 +1,42 @@
+--- 
++++ 
+@@ -28,22 +28,27 @@
+                     "Missing property '%s' for external type id '%s'",
+                     prop.getName(), _properties[i].getTypePropertyName());
+         }
+-        values[i] = _deserialize(p, ctxt, i, typeId);
++        Object value = _deserialize(p, ctxt, i, typeId);
+ 
++        // Convert typeId string to expected type if the type property creator parameter expects non-String
+         final SettableBeanProperty prop = extProp.getProperty();
+-        // also: if it's creator prop, fill in
+         if (prop.getCreatorIndex() >= 0) {
+-            buffer.assignParameter(prop, values[i]);
++            buffer.assignParameter(prop, value);
+ 
+             // [databind#999] And maybe there's creator property for type id too?
+             SettableBeanProperty typeProp = extProp.getTypeProperty();
+-            // for now, should only be needed for creator properties, too
+             if ((typeProp != null) && (typeProp.getCreatorIndex() >= 0)) {
+-                // 31-May-2018, tatu: [databind#1328] if id is NOT plain `String`, need to
+-                //    apply deserializer... fun fun.
+-                buffer.assignParameter(typeProp, typeId);
++                Object typedTypeId = typeId;
++                // Check if the type property expects a type other than String:
++                if (!typeProp.getType().hasRawClass(String.class)) {
++                    // Convert string typeId to expected type using proper deserializer
++                    JsonParser typeIdParser = ctxt.getParser().getCodec().treeAsTokens(ctxt.getConfig().getNodeFactory().textNode(typeId));
++                    typedTypeId = typeProp.deserialize(typeIdParser, ctxt);
++                }
++                buffer.assignParameter(typeProp, typedTypeId);
+             }
+         }
++        values[i] = value;
+     }
+     Object bean = creator.build(ctxt, buffer);
+     // third: assign non-creator properties
+@@ -55,3 +60,4 @@
+     }
+     return bean;
+ }
++

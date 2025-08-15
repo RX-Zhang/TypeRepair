@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -1,4 +1,38 @@
+ protected BasePeriod(long duration) {
+     this(duration, null, null);
+     // bug [3264409]
++    long remaining = duration;
++    int years = 0, months = 0, weeks = 0, days = 0;
++    int hours, minutes, seconds, millis;
++
++    // since constructor does not receive PeriodType, use standard period type
++    PeriodType type = PeriodType.standard();
++
++    // Calculate exact fields for years, months, weeks, days assuming standard durations
++    // Note: Standard durations for years and months are approximate (fixed days)
++    long daysInDuration = remaining / DateTimeConstants.MILLIS_PER_DAY;
++    remaining = remaining % DateTimeConstants.MILLIS_PER_DAY;
++
++    // Calculate years, months, weeks and days based on the number of days
++    years = (int)(daysInDuration / 365);
++    daysInDuration = daysInDuration % 365;
++
++    months = (int)(daysInDuration / 30);
++    daysInDuration = daysInDuration % 30;
++
++    weeks = (int)(daysInDuration / 7);
++    days = (int)(daysInDuration % 7);
++
++    // Calculate time fields from remaining milliseconds
++    hours = (int)(remaining / DateTimeConstants.MILLIS_PER_HOUR);
++    remaining = remaining % DateTimeConstants.MILLIS_PER_HOUR;
++
++    minutes = (int)(remaining / DateTimeConstants.MILLIS_PER_MINUTE);
++    remaining = remaining % DateTimeConstants.MILLIS_PER_MINUTE;
++
++    seconds = (int)(remaining / DateTimeConstants.MILLIS_PER_SECOND);
++    millis = (int)(remaining % DateTimeConstants.MILLIS_PER_SECOND);
++
++    setPeriod(years, months, weeks, days, hours, minutes, seconds, millis);
+ }
++

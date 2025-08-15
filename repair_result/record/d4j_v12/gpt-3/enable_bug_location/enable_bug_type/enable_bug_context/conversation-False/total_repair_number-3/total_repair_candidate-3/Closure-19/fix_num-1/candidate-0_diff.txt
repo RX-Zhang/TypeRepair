@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -6,7 +6,11 @@
+ 
+     case Token.GETPROP:
+       String qualifiedName = node.getQualifiedName();
+-      Preconditions.checkNotNull(qualifiedName);
++      if (qualifiedName == null) {
++        // If qualifiedName is null, cannot refine the node.
++        throw new IllegalArgumentException("Node cannot be refined due to null qualified name.\n" +
++            node.toStringTree());
++      }
+ 
+       JSType origType = node.getJSType();
+       origType = origType == null ? getNativeType(UNKNOWN_TYPE) : origType;
+@@ -20,3 +24,4 @@
+           node.toStringTree());
+   }
+ }
++

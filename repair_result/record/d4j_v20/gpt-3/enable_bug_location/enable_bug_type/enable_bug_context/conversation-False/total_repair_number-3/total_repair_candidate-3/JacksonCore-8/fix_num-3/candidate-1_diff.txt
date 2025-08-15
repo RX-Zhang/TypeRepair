@@ -1,0 +1,14 @@
+--- 
++++ 
+@@ -7,7 +7,10 @@
+         return (_resultArray = _resultString.toCharArray());
+     }
+     // Nope; but does it fit in just one segment?
+-    if (!_hasSegments)  return _currentSegment;
++    if (!_hasSegments) {
++        return _currentSegment != null ? _currentSegment : new char[0]; // Added boundary check
++    }
+     // Nope, need to have/create a non-segmented array and return it
+     return contentsAsArray();
+ }
++

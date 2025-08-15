@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -2,6 +2,9 @@
+     if (mTimeZoneForced) {
+         calendar = (Calendar) calendar.clone();
+         calendar.setTimeZone(mTimeZone);
++        // Adjust the time to the new time zone to reflect correctly
++        calendar.setTimeInMillis(calendar.getTimeInMillis());
+     }
+     return applyRules(calendar, buf);
+ }
++

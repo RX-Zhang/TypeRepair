@@ -1,0 +1,1 @@
+{"ClassName": "Cleaner", "Fields": ["private Whitelist whitelist;"], "Methods": ["public Document clean(Document dirtyDocument) { ... }", "public boolean isValid(Document dirtyDocument) { ... }", "private int copySafeNodes(Element source, Element dest) { ... }", "private ElementMeta createSafeElement(Element sourceEl) { ... }"]}

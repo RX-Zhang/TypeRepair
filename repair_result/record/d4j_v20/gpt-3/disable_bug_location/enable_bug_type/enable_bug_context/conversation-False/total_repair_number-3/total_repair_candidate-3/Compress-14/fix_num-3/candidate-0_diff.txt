@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -36,10 +36,14 @@
+         throw new IllegalArgumentException(
+                 exceptionMessage(buffer, offset, length, end-1, trailer));
+     }
+-    // May have additional NUL or space
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
++    // May have additional NUL or space or multiple spaces/NULs - skip them all
++    while (end > start) {
++        trailer = buffer[end-1];
++        if (trailer == 0 || trailer == ' '){
++            end--;
++        } else {
++            break;
++        }
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -55,3 +59,4 @@
+ 
+     return result;
+ }
++

@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.math.stat.FrequencyTest.testPcts
+- Error: junit.framework.AssertionFailedError: three (Object) pct expected:<0.5> but was:<1.0>
+- Location:         assertEquals("three (Object) pct",0.5,f.getPct((Object) (Integer.valueOf(3))),tolerance);

@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -100,7 +100,6 @@
+                 //    `java.util.TimeZone` specifically instruct use of GMT as base for
+                 //    custom timezones... odd.
+                 String timezoneId = "GMT" + timezoneOffset;
+-                  String timezoneId = "UTC" + timezoneOffset;
+ 
+                 timezone = TimeZone.getTimeZone(timezoneId);
+ 
+@@ -144,11 +143,9 @@
+         fail = e;
+     }
+     String input = (date == null) ? null : ('"' + date + "'");
+-    String msg = fail.getMessage();
+-    if (msg == null || msg.isEmpty()) {
+-        msg = "("+fail.getClass().getName()+")";
+-    }
++    String msg = (fail != null && fail.getMessage() != null) ? fail.getMessage() : "("+fail.getClass().getName()+")";
+     ParseException ex = new ParseException("Failed to parse date [" + input + "]: " + msg, pos.getIndex());
+     ex.initCause(fail);
+     throw ex;
+ }
++

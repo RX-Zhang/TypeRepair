@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -110,6 +110,13 @@
+ 
+   // We are only interested in global names.
+   if (!isGlobalNameReference(name, scope)) {
++    // Special case: handle catch block exception variable as defined
++    if (parent != null && parent.isCatch()) {
++      Node catchVar = parent.getFirstChild();
++      if (catchVar == n) {
++        return; // variable defined here, so do not treat as undefined
++      }
++    }
+     return;
+   }
+ 
+@@ -123,3 +130,4 @@
+     handleGet(module, scope, n, parent, name);
+   }
+ }
++

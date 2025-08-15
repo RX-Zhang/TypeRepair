@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -1,20 +1,21 @@
+ public List getValues(final Option option,
+                       List defaultValues) {
+-    // initialize the return list
+-    List valueList = (List) values.get(option);
++    // First get the values explicitly set on the command line
++    List valueList = getUndefaultedValues(option);
+ 
+-    // grab the correct default values
+-    if ((valueList == null) || valueList.isEmpty()) {
++    // If no values were set on the command line, use the provided default values if any
++    if (valueList.isEmpty() && defaultValues != null && !defaultValues.isEmpty()) {
+         valueList = defaultValues;
+     }
+ 
+-    // augment the list with the default values
+-    if ((valueList == null) || valueList.isEmpty()) {
++    // If still empty, use the option's predefined default values
++    if (valueList.isEmpty()) {
+         valueList = (List) this.defaultValues.get(option);
++        if (valueList == null) {
++            valueList = Collections.EMPTY_LIST;
++        }
+     }
+-            // if there are more default values as specified, add them to
+-            // the list.
+-                // copy the list first
+-    
+-    return valueList == null ? Collections.EMPTY_LIST : valueList;
++
++    return valueList;
+ }
++

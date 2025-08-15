@@ -1,0 +1,1 @@
+['hasEqualParameters', 'isEquivalentTo', 'getLeastSupertype', 'getGreatestSubtype']

@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -38,5 +38,12 @@
+      *   for resolution to catch those.
+      */
+     context._addPlaceholder(name);
+-    return _constructType(bounds[0], context);
++
++    JavaType boundType = _constructType(bounds[0], context);
++    // If bound is exactly Object, better to consider as unknown
++    if (boundType.hasGenericTypes() || !boundType.isJavaLangObject()) {
++        return boundType;
++    }
++    return _unknownType();
+ }
++

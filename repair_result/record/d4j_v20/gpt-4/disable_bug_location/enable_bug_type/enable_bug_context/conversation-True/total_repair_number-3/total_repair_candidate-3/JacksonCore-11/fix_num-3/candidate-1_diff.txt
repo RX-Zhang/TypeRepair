@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -8,6 +8,13 @@
+         //    we rehash as needed, as need-rehash flag is not copied from parent
+     }
+     if (_needRehash) {
+-        rehash();
++        try {
++            rehash();
++        } catch (ArrayIndexOutOfBoundsException e) {
++            // Defensive: if rehash causes unexpected overflow, handle gracefully by forcing reset
++            nukeSymbols(false);
++            _needRehash = false;
++        }
+     }
+ }
++

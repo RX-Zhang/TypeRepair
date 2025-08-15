@@ -1,0 +1,12 @@
+--- 
++++ 
+@@ -38,6 +38,8 @@
+     }
+     else
+     {
+-        return null;
++        // Throw a ParseException when the type is not supported or cannot be created
++        throw new ParseException("Cannot convert to " + clazz.getName() + ": " + str);
+     }
+ }
++

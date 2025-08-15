@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -15,12 +15,23 @@
+     if (val.startsWith("0x") || val.startsWith("-0x")) {
+         return createInteger(val);
+     }   
++
+     char lastChar = val.charAt(val.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    // fix: calculate expPos as the minimum positive index of 'e' or 'E'
++    int ePos = val.indexOf('e');
++    int EPos = val.indexOf('E');
++    int expPos = -1;
++    if (ePos > -1 && EPos > -1) {
++        expPos = Math.min(ePos, EPos);
++    } else if (ePos > -1) {
++        expPos = ePos;
++    } else {
++        expPos = EPos;
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -55,7 +66,7 @@
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+@@ -147,3 +158,4 @@
+ 
+     }
+ }
++

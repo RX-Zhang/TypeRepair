@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -12,13 +12,19 @@
+     numToRead = Math.min(numToRead, available());
+     
+     totalRead = is.read(buf, offset, numToRead);
+-    count(totalRead);
+     
+     if (totalRead == -1) {
+         hasHitEOF = true;
+-    } else {
+-        entryOffset += totalRead;
++        // If entryOffset < entrySize and EOF encountered, this is a truncated entry
++        if (entryOffset < entrySize) {
++            throw new IOException("Truncated tar archive entry detected");
++        }
++        return -1;
+     }
++    
++    count(totalRead);
++    entryOffset += totalRead;
+ 
+     return totalRead;
+ }
++

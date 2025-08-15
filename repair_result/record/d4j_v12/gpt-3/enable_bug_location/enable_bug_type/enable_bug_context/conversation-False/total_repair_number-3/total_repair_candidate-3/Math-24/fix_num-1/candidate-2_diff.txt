@@ -1,0 +1,82 @@
+--- 
++++ 
+@@ -72,41 +72,24 @@
+ 
+                     // f must not be evaluated too close to a or b.
+                     if (u - a < tol2 || b - u < tol2) {
+-                        if (x <= m) {
+-                            d = tol1;
+-                        } else {
+-                            d = -tol1;
+-                        }
++                        d = (x <= m) ? tol1 : -tol1;
+                     }
+                 } else {
+                     // Golden section step.
+-                    if (x < m) {
+-                        e = b - x;
+-                    } else {
+-                        e = a - x;
+-                    }
++                    e = (x < m) ? b - x : a - x;
+                     d = GOLDEN_SECTION * e;
+                 }
+             } else {
+                 // Golden section step.
+-                if (x < m) {
+-                    e = b - x;
+-                } else {
+-                    e = a - x;
+-                }
++                e = (x < m) ? b - x : a - x;
+                 d = GOLDEN_SECTION * e;
+             }
+ 
+             // Update by at least "tol1".
+             if (FastMath.abs(d) < tol1) {
+-                if (d >= 0) {
+-                    u = x + tol1;
+-                } else {
+-                    u = x - tol1;
+-                }
+-            } else {
+-                u = x + d;
++                d = (d >= 0) ? tol1 : -tol1;
+             }
++            u = x + d;
+ 
+             double fu = computeObjectiveValue(u);
+             if (!isMinim) {
+@@ -133,24 +116,20 @@
+                 v = w;
+                 fv = fw;
+                 w = x;
+-                fw = fx;
++                fx = fu;
+                 x = u;
+-                fx = fu;
+             } else {
+                 if (u < x) {
+                     a = u;
+                 } else {
+                     b = u;
+                 }
+-                if (fu <= fw ||
+-                    Precision.equals(w, x)) {
++                if (fu <= fw || Precision.equals(w, x)) {
+                     v = w;
+                     fv = fw;
+                     w = u;
+                     fw = fu;
+-                } else if (fu <= fv ||
+-                           Precision.equals(v, x) ||
+-                           Precision.equals(v, w)) {
++                } else if (fu <= fv || Precision.equals(v, x) || Precision.equals(v, w)) {
+                     v = u;
+                     fv = fu;
+                 }
+@@ -161,3 +140,4 @@
+         ++iter;
+     }
+ }
++

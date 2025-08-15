@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -40,12 +40,19 @@
+       }
+     }
+   } else if (parent.getType() != Token.EXPR_RESULT && parent.getType() != Token.BLOCK) {
+-    if (! (parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext()))) {
++    if (!(parent.getType() == Token.FOR && parent.getChildCount() == 4 && (n == parent.getFirstChild() || n == parent.getFirstChild().getNext().getNext()))) {
+       return;
+     }
+   }
++
+   if (
+       (isSimpleOp || !NodeUtil.mayHaveSideEffects(n, t.getCompiler()))) {
++    // Add protection to side-effect free expressions to preserve them
++    if (protectSideEffectFreeCode && !NodeUtil.isStatement(n)) {
++      problemNodes.add(n);
++      return;
++    }
++
+     String msg = "This code lacks side-effects. Is there a bug?";
+     if (n.isString()) {
+       msg = "Is there a missing '+' on the previous line?";
+@@ -56,10 +63,6 @@
+ 
+     t.getCompiler().report(
+         t.makeError(n, level, USELESS_CODE_ERROR, msg));
+-    // TODO(johnlenz): determine if it is necessary to
+-    // try to protect side-effect free statements as well.
+-    if (!NodeUtil.isStatement(n)) {
+-      problemNodes.add(n);
+-    }
+   }
+ }
++

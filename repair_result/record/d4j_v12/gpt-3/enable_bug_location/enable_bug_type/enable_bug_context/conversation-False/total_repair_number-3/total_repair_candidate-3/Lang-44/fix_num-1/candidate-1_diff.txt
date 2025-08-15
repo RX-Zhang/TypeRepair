@@ -1,0 +1,48 @@
+--- 
++++ 
+@@ -14,13 +14,20 @@
+     }
+     if (val.startsWith("0x") || val.startsWith("-0x")) {
+         return createInteger(val);
+-    }   
++    }
+     char lastChar = val.charAt(val.length() - 1);
+     String mant;
+     String dec;
+     String exp;
+     int decPos = val.indexOf('.');
+-    int expPos = val.indexOf('e') + val.indexOf('E') + 1;
++    int ePos = val.indexOf('e');
++    int EPos = val.indexOf('E');
++    int expPos = -1;
++    if (ePos > -1) {
++        expPos = ePos;
++    } else if (EPos > -1) {
++        expPos = EPos;
++    }
+ 
+     if (decPos > -1) {
+ 
+@@ -55,7 +62,7 @@
+             case 'L' :
+                 if (dec == null
+                     && exp == null
+-                    && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
++                    && ((numeric.charAt(0) == '-' && isDigits(numeric.substring(1))) || isDigits(numeric))) {
+                     try {
+                         return createLong(numeric);
+                     } catch (NumberFormatException nfe) {
+@@ -83,7 +90,7 @@
+             case 'D' :
+                 try {
+                     Double d = NumberUtils.createDouble(numeric);
+-                    if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
++                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                         return d;
+                     }
+                 } catch (NumberFormatException nfe) {
+@@ -147,3 +154,4 @@
+ 
+     }
+ }
++

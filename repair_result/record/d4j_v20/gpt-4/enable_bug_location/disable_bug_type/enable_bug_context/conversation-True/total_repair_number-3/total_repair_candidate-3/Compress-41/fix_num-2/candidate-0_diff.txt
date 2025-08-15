@@ -1,0 +1,29 @@
+--- 
++++ 
+@@ -26,6 +26,7 @@
+     if (sig.equals(ZipLong.CFH_SIG) || sig.equals(ZipLong.AED_SIG)) {
+         hitCentralDirectory = true;
+         skipRemainderOfArchive();
++        return null;  // Added this return to avoid continuing reading after central directory
+     }
+     if (!sig.equals(ZipLong.LFH_SIG)) {
+         return null;
+@@ -88,7 +89,7 @@
+ 
+     processZip64Extra(size, cSize);
+ 
+-    if (current.entry.getCompressedSize() != ArchiveEntry.SIZE_UNKNOWN) {
++    if (!current.hasDataDescriptor && current.entry.getCompressedSize() != ArchiveEntry.SIZE_UNKNOWN) {
+         if (current.entry.getMethod() == ZipMethod.UNSHRINKING.getCode()) {
+             current.in = new UnshrinkingInputStream(new BoundedInputStream(in, current.entry.getCompressedSize()));
+         } else if (current.entry.getMethod() == ZipMethod.IMPLODING.getCode()) {
+@@ -100,7 +101,8 @@
+             current.in = new BZip2CompressorInputStream(new BoundedInputStream(in, current.entry.getCompressedSize()));
+         }
+     }
+-    
++
+     entriesRead++;
+     return current.entry;
+ }
++

@@ -1,0 +1,66 @@
+--- 
++++ 
+@@ -19,25 +19,48 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            // find the position of '=' if any
++            int equalPos = arg.indexOf('=');
+ 
+-            if (options.hasOption(opt))
++            if (equalPos != -1)
+             {
+-                tokens.add(arg);
++                String optName = arg.substring(0, equalPos);
++                String optValue = arg.substring(equalPos + 1);
++
++                // strip leading hyphens from optName for option checking
++                String optNameStripped = Util.stripLeadingHyphens(optName);
++
++                if (options.hasOption(optNameStripped))
++                {
++                    tokens.add(optName);
++                    tokens.add(optValue);
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg);
+                 }
+                 else
+                 {
+-                    eatTheRest = stopAtNonOption;
+-                    tokens.add(arg);
++                    // Check if the first two characters (e.g. "-D") is an option
++                    if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
++                    {
++                        tokens.add(arg.substring(0, 2));
++                        tokens.add(arg.substring(2));
++                    }
++                    else
++                    {
++                        eatTheRest = stopAtNonOption;
++                        tokens.add(arg);
++                    }
+                 }
+             }
+         }
+@@ -57,3 +80,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

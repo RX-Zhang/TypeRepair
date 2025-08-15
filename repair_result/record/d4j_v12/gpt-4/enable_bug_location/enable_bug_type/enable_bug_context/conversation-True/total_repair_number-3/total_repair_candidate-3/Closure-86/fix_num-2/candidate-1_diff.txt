@@ -1,0 +1,60 @@
+--- 
++++ 
+@@ -18,28 +18,32 @@
+          && evaluatesToLocalValue(value.getLastChild(), locals);
+     case Token.INC:
+     case Token.DEC:
++      // For INC/DEC, the distinction is whether the value is a prefix or postfix.
++      // If prefix (Node.INCRDECR_PROP true), the expression value is the value after increment/decrement,
++      // which is a primitive local value.
++      // If postfix, value is the value before operation, which may not be local.
+       if (value.getBooleanProp(Node.INCRDECR_PROP)) {
+-        return evaluatesToLocalValue(value.getFirstChild(), locals);
++        return true; // prefix increment/decrement results in local value
+       } else {
+-        return true;
++        return false; // postfix increment/decrement does not guarantee local value
+       }
+     case Token.THIS:
+       return locals.apply(value);
+     case Token.NAME:
+-      return isImmutableValue(value) || locals.apply(value);
++      return NodeUtil.isImmutableValue(value) || locals.apply(value);
+     case Token.GETELEM:
+     case Token.GETPROP:
+       // There is no information about the locality of object properties.
+-      return locals.apply(value);
++      return false;
+     case Token.CALL:
+-      return callHasLocalResult(value)
+-          || isToStringMethodCall(value)
++      return NodeUtil.callHasLocalResult(value)
++          || NodeUtil.isToStringMethodCall(value)
+           || locals.apply(value);
+     case Token.NEW:
+       // TODO(nicksantos): This needs to be changed so that it
+       // returns true iff we're sure the value was never aliased from inside
+       // the constructor (similar to callHasLocalResult)
+-      return true;
++      return NodeUtil.callHasLocalResult(value);
+     case Token.FUNCTION:
+     case Token.REGEXP:
+     case Token.ARRAYLIT:
+@@ -53,9 +57,9 @@
+       // Other op force a local value:
+       //  x = '' + g (x is now an local string)
+       //  x -= g (x is now an local number)
+-      if (isAssignmentOp(value)
+-          || isSimpleOperator(value)
+-          || isImmutableValue(value)) {
++      if (NodeUtil.isAssignmentOp(value)
++          || NodeUtil.isSimpleOperator(value)
++          || NodeUtil.isImmutableValue(value)) {
+         return true;
+       }
+ 
+@@ -64,3 +68,4 @@
+           "\n parent:" + value.getParent());
+   }
+ }
++

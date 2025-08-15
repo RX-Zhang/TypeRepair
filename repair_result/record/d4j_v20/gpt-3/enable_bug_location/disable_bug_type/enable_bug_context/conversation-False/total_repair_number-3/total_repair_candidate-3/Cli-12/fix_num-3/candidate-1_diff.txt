@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -27,12 +27,34 @@
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                int pos = arg.indexOf('=');
++                if (pos != -1)
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
++                    String optWithoutValue = arg.substring(0, pos);
++                    String value = arg.substring(pos + 1);
++
++                    if (options.hasOption(optWithoutValue))
++                    {
++                        tokens.add(optWithoutValue);
++                        tokens.add(value);
++                    }
++                    else if (pos == 2 && options.hasOption(arg.substring(0, 2)))
++                    {
++                        // Special properties option (-Dproperty=value)
++                        tokens.add(arg.substring(0, 2)); // -D
++                        tokens.add(arg.substring(2));    // property=value
++                    }
++                    else
++                    {
++                        eatTheRest = stopAtNonOption;
++                        tokens.add(arg);
++                    }
++                }
++                else if (arg.length() > 1 && options.hasOption(arg.substring(0, 2)))
++                {
++                    // the format is a special properties option (-Dproperty)
+                     tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg.substring(2));    // property
+                 }
+                 else
+                 {
+@@ -57,3 +79,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

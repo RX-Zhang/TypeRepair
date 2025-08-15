@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -60,15 +60,16 @@
+             _currText = _xmlTokens.getText();
+             _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
+             _currToken = JsonToken.START_OBJECT;
++            return null; // <-- fix: return null here to avoid falling through and returning null prematurely
+         } else {
+             _parsingContext.setCurrentName(_xmlTokens.getLocalName());
+             _currToken = JsonToken.FIELD_NAME;
++            return null;  // <-- fix: similarly return null here to match behavior of nextToken()
+         }
+-        break;
+     case XmlTokenStream.XML_ATTRIBUTE_VALUE:
+         _currText = _xmlTokens.getText();
+         _currToken = JsonToken.VALUE_STRING;
+-        break;
++        return _currText; // <-- fix: return the text immediately, like nextToken returns
+     case XmlTokenStream.XML_TEXT:
+         _currText = _xmlTokens.getText();
+         if (_mayBeLeaf) {
+@@ -85,9 +86,11 @@
+         _parsingContext.setCurrentName(_cfgNameForTextElement);
+         _nextToken = JsonToken.VALUE_STRING;
+         _currToken = JsonToken.FIELD_NAME;
+-        break;
++        return null; // <-- fix: should return null here to wait for nextTextValue call to consume _nextToken
+     case XmlTokenStream.XML_END:
+         _currToken = null;
++        break;
+     }
+     return null;
+ }
++

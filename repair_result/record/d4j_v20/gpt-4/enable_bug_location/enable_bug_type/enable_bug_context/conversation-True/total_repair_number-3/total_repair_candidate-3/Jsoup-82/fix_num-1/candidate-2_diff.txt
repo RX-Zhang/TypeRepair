@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -74,8 +74,29 @@
+         }
+         Charset charset = Charset.forName(charsetName);
+         doc.outputSettings().charset(charset);
+-            // some charsets can read but not encode; switch to an encodable charset and update the meta el
++
++        // Ensure charset is encodable, fallback to UTF-8 if not encodable
++        if (!charset.newEncoder().canEncode()) {
++            charsetName = "UTF-8";
++            doc.outputSettings().charset(Charset.forName(charsetName));
++            // update the meta element charset declaration accordingly
++            Elements metaCharset = doc.select("meta[charset]");
++            if (!metaCharset.isEmpty()) {
++                for (Element meta : metaCharset) {
++                    meta.attr("charset", charsetName);
++                }
++            } else {
++                // fallback: add meta charset element if none found
++                Element meta = doc.head().selectFirst("meta[http-equiv=content-type]");
++                if (meta != null) {
++                    meta.attr("content", "text/html; charset=" + charsetName);
++                } else {
++                    doc.head().appendElement("meta").attr("charset", charsetName);
++                }
++            }
++        }
+     }
+     input.close();
+     return doc;
+ }
++

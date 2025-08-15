@@ -1,0 +1,65 @@
+public static Locale toLocale(String str) {
+    if (str == null) {
+        return null;
+    }
+    int len = str.length();
+    if (len < 2) {
+        throw new IllegalArgumentException("Invalid locale format: " + str);
+    }
+    char ch0 = str.charAt(0);
+    char ch1 = len > 1 ? str.charAt(1) : 0;
+    if (ch0 < 'a' || ch0 > 'z' || ch1 < 'a' || ch1 > 'z') {
+        throw new IllegalArgumentException("Invalid locale format: " + str);
+    }
+
+    if (len == 2) {
+        // language only
+        return new Locale(str, "");
+    } else {
+        if (str.charAt(2) != '_') {
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        if (len == 3) {
+            // invalid locale like "fr_"
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        // Special case: language + "__" + variant, e.g. "fr__POSIX"
+        // If char at pos 3 is '_' then country is "" and variant from pos 4
+        if (str.charAt(3) == '_') {
+            String language = str.substring(0, 2);
+            String country = "";
+            String variant = len > 4 ? str.substring(4) : "";
+            if (variant.isEmpty()) {
+                // invalid if no variant after "__"
+                throw new IllegalArgumentException("Invalid locale format: " + str);
+            }
+            return new Locale(language, country, variant);
+        }
+
+        // else normal case: language + "_" + country + optional ("_" + variant)
+        if (len < 5) { // too short to have a valid country
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        char ch3 = str.charAt(3);
+        char ch4 = str.charAt(4);
+        if ((ch3 < 'A' || ch3 > 'Z') && (ch3 < '0' || ch3 > '9')) {
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        if ((ch4 < 'A' || ch4 > 'Z') && (ch4 < '0' || ch4 > '9')) {
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        if (len == 5) {
+            // language + "_" + country
+            return new Locale(str.substring(0, 2), str.substring(3, 5));
+        } else {
+            if (str.charAt(5) != '_') {
+                throw new IllegalArgumentException("Invalid locale format: " + str);
+            }
+            String variant = str.substring(6);
+            if (variant.isEmpty()) {
+                throw new IllegalArgumentException("Invalid locale format: " + str);
+            }
+            return new Locale(str.substring(0, 2), str.substring(3, 5), variant);
+        }
+    }
+}

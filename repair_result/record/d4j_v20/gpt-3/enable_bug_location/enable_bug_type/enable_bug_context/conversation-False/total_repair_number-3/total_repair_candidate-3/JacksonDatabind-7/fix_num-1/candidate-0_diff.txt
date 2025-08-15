@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -1,9 +1,16 @@
+ public TokenBuffer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException
+ {
++    // Check if the current token is FIELD_NAME, indicating a missing START_OBJECT
++    if (jp.getCurrentToken() == JsonToken.FIELD_NAME) {
++        // If it is a FIELD_NAME, we need to handle it as if we had a START_OBJECT
++        writeStartObject(); // Start the object context
++        writeFieldName(jp.getCurrentName()); // Write the field name
++        jp.nextToken(); // Move to the next token
++    } else {
++        // If not FIELD_NAME, we can directly copy the current structure
+         copyCurrentStructure(jp);
+-    /* 28-Oct-2014, tatu: As per #592, need to support a special case of starting from
+-     *    FIELD_NAME, which is taken to mean that we are missing START_OBJECT, but need
+-     *    to assume one did exist.
+-     */
++    }
++    
+     return this;
+ }
++

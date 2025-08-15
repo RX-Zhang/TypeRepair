@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -5,7 +5,8 @@
+       // The expression to which the assignment is made is evaluated before
+       // the RHS is evaluated (normal left to right evaluation) but the KILL
+       // occurs after the RHS is evaluated.
+-      return VariableLiveness.KILL;
++      // Return READ here instead of KILL to indicate the variable is still read before being killed.
++      return VariableLiveness.READ;
+     } else {
+       return VariableLiveness.READ;
+     }
+@@ -23,3 +24,4 @@
+   }
+   return VariableLiveness.MAYBE_LIVE;
+ }
++

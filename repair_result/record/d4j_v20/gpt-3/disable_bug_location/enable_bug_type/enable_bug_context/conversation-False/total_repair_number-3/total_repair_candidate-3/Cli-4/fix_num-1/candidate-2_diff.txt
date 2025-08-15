@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -1,20 +1,29 @@
+ private void checkRequiredOptions()
+     throws MissingOptionException
+ {
+-    // if there are required options that have not been
+-    // processsed
+-    if (requiredOptions.size() > 0)
++    // if there are required options that have not been processed
++    if (!requiredOptions.isEmpty())
+     {
+-        Iterator iter = requiredOptions.iterator();
+-        StringBuffer buff = new StringBuffer();
+-
++        Iterator<String> iter = requiredOptions.iterator();
++        StringBuilder buff = new StringBuilder();
++        boolean first = true;
+ 
+         // loop through the required options
+         while (iter.hasNext())
+         {
++            if (!first) {
++                buff.append(", "); // add a comma for separation
++            }
+             buff.append(iter.next());
++            first = false;
+         }
+ 
+-        throw new MissingOptionException(buff.toString());
++        // Determine the correct exception message
++        String message = requiredOptions.size() > 1 ? 
++            "Missing required options: " : 
++            "Missing required option: ";
++        
++        throw new MissingOptionException(message + buff.toString());
+     }
+ }
++

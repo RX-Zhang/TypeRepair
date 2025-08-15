@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -6,7 +6,12 @@
+     // reference to first unexpected option
+     Option unexpected = null;
+ 
+-    for (final Iterator i = options.iterator(); i.hasNext();) {
++    // Use getters for options, maximum, and minimum
++    List optionsList = getOptions();
++    int maximum = getMaximum();
++    int minimum = getMinimum();
++
++    for (final Iterator i = optionsList.iterator(); i.hasNext();) {
+         final Option option = (Option) i.next();
+ 
+         // needs validation?
+@@ -19,7 +24,6 @@
+         if (commandLine.hasOption(option)) {
+             if (++present > maximum) {
+                 unexpected = option;
+-
+                 break;
+             }
+ 
+@@ -39,8 +43,10 @@
+     }
+ 
+     // validate each anonymous argument
+-    for (final Iterator i = anonymous.iterator(); i.hasNext();) {
++    List anonymousList = getAnonymous();
++    for (final Iterator i = anonymousList.iterator(); i.hasNext();) {
+         final Option option = (Option) i.next();
+         option.validate(commandLine);
+     }
+ }
++

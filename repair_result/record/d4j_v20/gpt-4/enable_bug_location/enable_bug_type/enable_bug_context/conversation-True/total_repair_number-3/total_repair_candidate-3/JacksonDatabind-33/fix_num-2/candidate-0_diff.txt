@@ -1,0 +1,30 @@
+--- 
++++ 
+@@ -5,14 +5,18 @@
+     JsonGetter jg = _findAnnotation(a, JsonGetter.class);
+     if (jg != null) {
+         name = jg.value();
++        if (name.isEmpty()) {
++            // If JsonGetter's value is empty, treat as explicit empty name
++            return PropertyName.USE_DEFAULT;
++        }
+     } else {
+         JsonProperty pann = _findAnnotation(a, JsonProperty.class);
+         if (pann != null) {
+             name = pann.value();
+-            /* 22-Apr-2014, tatu: Should figure out a better way to do this, but
+-             *   it's actually bit tricky to do it more efficiently (meta-annotations
+-             *   add more lookups; AnnotationMap costs etc)
+-             */
++            if (name.isEmpty() && !pann.required()) {
++                // Empty JsonProperty means explicit empty name only if not required
++                return PropertyName.USE_DEFAULT;
++            }
+         } else if (_hasAnnotation(a, JsonSerialize.class)
+                 || _hasAnnotation(a, JsonView.class)
+                 || _hasAnnotation(a, JsonRawValue.class)) {
+@@ -23,3 +27,4 @@
+     }
+     return PropertyName.construct(name);
+ }
++

@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: org.apache.commons.lang3.StringUtilsEqualsIndexOfTest.testContainsAnyCharArrayWithSupplementaryChars
+- Error: junit.framework.AssertionFailedError: expected:<false> but was:<true>
+- Location: 		assertEquals(false, StringUtils.containsAny(CharU20000, CharU20001.toCharArray()));
+
+
+Test failure 2:
+- Test: org.apache.commons.lang3.StringUtilsEqualsIndexOfTest.testContainsAnyStringWithSupplementaryChars
+- Error: junit.framework.AssertionFailedError: expected:<false> but was:<true>
+- Location: 		assertEquals(false, StringUtils.containsAny(CharU20000, CharU20001));

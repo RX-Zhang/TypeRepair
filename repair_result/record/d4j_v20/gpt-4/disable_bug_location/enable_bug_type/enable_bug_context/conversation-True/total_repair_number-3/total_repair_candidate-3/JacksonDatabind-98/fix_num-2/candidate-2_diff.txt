@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -19,6 +19,7 @@
+                 ctxt.reportInputMismatch(_beanType,
+                         "Missing external type id property '%s'",
+                         extProp.getTypePropertyName());
++                return null; // unreachable, but to satisfy control flow needs
+             } else {
+                 typeId = extProp.getDefaultTypeId();
+             }
+@@ -26,7 +27,8 @@
+             SettableBeanProperty prop = extProp.getProperty();
+             ctxt.reportInputMismatch(_beanType,
+                     "Missing property '%s' for external type id '%s'",
+-                    prop.getName(), _properties[i].getTypePropertyName());
++                    prop.getName(), extProp.getTypePropertyName());
++            return null; // unreachable, but to satisfy control flow needs
+         }
+         values[i] = _deserialize(p, ctxt, i, typeId);
+ 
+@@ -55,3 +57,4 @@
+     }
+     return bean;
+ }
++

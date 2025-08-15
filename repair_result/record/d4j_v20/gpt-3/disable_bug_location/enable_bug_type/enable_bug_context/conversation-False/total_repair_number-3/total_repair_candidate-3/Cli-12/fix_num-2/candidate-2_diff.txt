@@ -1,0 +1,74 @@
+--- 
++++ 
+@@ -19,25 +19,55 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            // Check for '=' in argument to separate option and value
++            int pos = arg.indexOf('=');
++            if (pos != -1)
++            {
++                String opt = arg.substring(0, pos);
++                String value = arg.substring(pos + 1);
+ 
+-            if (options.hasOption(opt))
+-            {
+-                tokens.add(arg);
++                String optWithoutHyphens = Util.stripLeadingHyphens(opt);
++
++                if (options.hasOption(optWithoutHyphens))
++                {
++                    tokens.add(opt);
++                    tokens.add(value);
++                }
++                else
++                {
++                    // Handle the case where first two chars might be an option (like -Dproperty=value)
++                    if (opt.length() >= 2 && options.hasOption(opt.substring(0, 2)))
++                    {
++                        tokens.add(opt.substring(0, 2)); // e.g. -D
++                        tokens.add(opt.substring(2) + "=" + value); // rest concatenated with '=' and the value
++                    }
++                    else
++                    {
++                        eatTheRest = stopAtNonOption;
++                        tokens.add(arg);
++                    }
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg);
+                 }
+                 else
+                 {
+-                    eatTheRest = stopAtNonOption;
+-                    tokens.add(arg);
++                    if (arg.length() >= 2 && options.hasOption(arg.substring(0, 2)))
++                    {
++                        tokens.add(arg.substring(0, 2));
++                        tokens.add(arg.substring(2));
++                    }
++                    else
++                    {
++                        eatTheRest = stopAtNonOption;
++                        tokens.add(arg);
++                    }
+                 }
+             }
+         }
+@@ -57,3 +87,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

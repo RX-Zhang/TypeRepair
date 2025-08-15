@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -35,5 +35,12 @@
+     if (valueTypeDeser != null) {
+         valueTypeDeser = valueTypeDeser.forProperty(property);
+     }
++    
++    // Check if the collection type is valid and can be instantiated
++    if (_collectionType == null || _collectionType.getRawClass() == null) {
++        throw new ConfigurationError("Collection type is not properly configured.");
++    }
++    
+     return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+ }
++

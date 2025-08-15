@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -45,5 +45,17 @@
+       }
+     }
+   }
++
++  // Additional check to prevent assigning incompatible types to prototype
++  // For example, if qName ends with ".prototype" and the valueType is a string,
++  // which is incompatible, return false to avoid type mismatch.
++  if (qName != null && qName.endsWith(".prototype")) {
++    // We disallow assigning non-function objects or strings to prototype
++    if (valueType.isStringType() || !valueType.isFunctionType()) {
++      return false;
++    }
++  }
++
+   return inferred;
+ }
++

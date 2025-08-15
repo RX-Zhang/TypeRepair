@@ -1,0 +1,56 @@
+--- 
++++ 
+@@ -21,24 +21,40 @@
+     int millisecs = val.get(Calendar.MILLISECOND);
+     if (!round || millisecs < 500) {
+         time = time - millisecs;
+-    if (field == Calendar.SECOND) {
+-        done = true;
++        if (field == Calendar.SECOND) {
++            done = true;
++        }
++    } else {
++        if (field == Calendar.SECOND) {
++            time = time + (1000L - millisecs);
++            done = true;
+         }
+     }
+ 
+     // truncate seconds
+     int seconds = val.get(Calendar.SECOND);
+-    if (!done && (!round || seconds < 30)) {
+-        time = time - (seconds * 1000L);
+-    if (field == Calendar.MINUTE) {
+-        done = true;
++    if (!done) {
++        if (!round || seconds < 30) {
++            time = time - (seconds * 1000L);
++            if (field == Calendar.MINUTE) {
++                done = true;
++            }
++        } else {
++            if (field == Calendar.MINUTE) {
++                time = time + ((60 - seconds) * 1000L);
++                done = true;
++            }
+         }
+     }
+ 
+     // truncate minutes
+     int minutes = val.get(Calendar.MINUTE);
+-    if (!done && (!round || minutes < 30)) {
+-        time = time - (minutes * 60000L);
++    if (!done) {
++        if (!round || minutes < 30) {
++            time = time - (minutes * 60000L);
++        } else {
++            time = time + ((60 - minutes) * 60000L);
++        }
+     }
+ 
+     // reset time
+@@ -123,3 +139,4 @@
+     throw new IllegalArgumentException("The field " + field + " is not supported");
+ 
+ }
++

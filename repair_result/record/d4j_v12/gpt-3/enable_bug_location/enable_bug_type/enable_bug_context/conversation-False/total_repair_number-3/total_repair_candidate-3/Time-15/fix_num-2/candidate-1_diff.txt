@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -8,8 +8,9 @@
+             return val1;
+     }
+     long total = val1 * val2;
+-    if (total / val2 != val1) {
++    if (total / val2 != val1 && val2 != 0) { // Added check for val2 != 0 to avoid division by zero
+       throw new ArithmeticException("Multiplication overflows a long: " + val1 + " * " + val2);
+     }
+     return total;
+ }
++

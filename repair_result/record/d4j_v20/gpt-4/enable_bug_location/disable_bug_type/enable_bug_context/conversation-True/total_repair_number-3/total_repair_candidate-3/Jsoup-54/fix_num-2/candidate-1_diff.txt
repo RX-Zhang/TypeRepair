@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -1,7 +1,21 @@
+ private void copyAttributes(org.jsoup.nodes.Node source, Element el) {
+     for (Attribute attribute : source.attributes()) {
+         // valid xml attribute names are: ^[a-zA-Z_:][-a-zA-Z0-9_:.]
+-        String key = attribute.getKey().replaceAll("[^-a-zA-Z0-9_:.]", "");
+-            el.setAttribute(key, attribute.getValue());
++        String key = attribute.getKey();
++        // Instead of removing invalid characters blindly, check if key is valid XML name
++        if (!isValidXmlName(key)) {
++            // For invalid attribute names, encode them or skip them
++            // Here we skip invalid attribute names to avoid DOMException
++            continue;
++        }
++        el.setAttribute(key, attribute.getValue());
+     }
+ }
++
++// Helper method to validate XML attribute names
++private boolean isValidXmlName(String name) {
++    // According to XML spec: Name ::= NameStartChar (NameChar)*
++    // Simplified regex for attribute names:
++    return name.matches("^[a-zA-Z_][\\w\\-.]*$");
++}
++

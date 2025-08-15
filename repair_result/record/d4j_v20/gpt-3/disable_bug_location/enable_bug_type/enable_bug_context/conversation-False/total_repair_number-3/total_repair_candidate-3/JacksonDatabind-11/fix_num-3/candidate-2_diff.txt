@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -15,6 +15,8 @@
+         if (actualType != null) {
+             return actualType;
+         }
++        // Add placeholder here to handle recursive types and avoid infinite loops
++        context._addPlaceholder(name);
+     }
+ 
+     /* 29-Jan-2010, tatu: We used to throw exception here, if type was
+@@ -23,6 +25,11 @@
+      *   current type (for method) since it will be masked.
+      */
+     Type[] bounds = type.getBounds();
++
++    // Defensive check: bounds should never be empty, but just in case:
++    if (bounds.length == 0) {
++        return _unknownType();
++    }
+ 
+     // With type variables we must use bound information.
+     // Theoretically this gets tricky, as there may be multiple
+@@ -33,10 +40,6 @@
+     // Either way let's just use the first bound, for now, and
+     // worry about better match later on if there is need.
+ 
+-    /* 29-Jan-2010, tatu: One more problem are recursive types
+-     *   (T extends Comparable<T>). Need to add "placeholder"
+-     *   for resolution to catch those.
+-     */
+-    context._addPlaceholder(name);
+     return _constructType(bounds[0], context);
+ }
++

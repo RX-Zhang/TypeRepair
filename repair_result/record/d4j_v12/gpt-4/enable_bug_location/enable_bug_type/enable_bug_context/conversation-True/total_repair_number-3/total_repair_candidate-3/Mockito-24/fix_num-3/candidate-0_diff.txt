@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -8,12 +8,17 @@
+             return name.toString();
+         }
+     } else if (methodsGuru.isCompareToMethod(invocation.getMethod())) {
+-        //see issue 184.
+-        //mocks by default should return 0 if references are the same, otherwise some other value because they are not the same. Hence we return 1 (anything but 0 is good).
+-        //Only for compareTo() method by the Comparable interface
++        Object mock = invocation.getMock();
++        Object[] arguments = invocation.getArguments();
++        if (arguments.length == 1 && arguments[0] == mock) {
++            // If comparing the mock to itself, return 0 to be consistent with equals
++            return 0;
++        }
++        // If comparing to a different instance, return 1 (any non-zero value is acceptable)
+         return 1;
+     }
+     
+     Class<?> returnType = invocation.getMethod().getReturnType();
+     return returnValueFor(returnType);
+ }
++

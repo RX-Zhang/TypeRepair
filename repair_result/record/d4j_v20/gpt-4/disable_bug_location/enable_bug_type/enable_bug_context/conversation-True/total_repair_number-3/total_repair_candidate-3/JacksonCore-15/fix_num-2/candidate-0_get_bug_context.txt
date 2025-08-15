@@ -1,0 +1,1 @@
+['getFilter', 'getMatchCount', 'getCurrentToken', 'hasTokenId', 'getCurrentName', '_nextToken2', '_nextTokenWithBuffering']

@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -29,17 +29,15 @@
+                         // if we cannot add the value don't worry about it
+                     }
+                 }
++                // Corrected condition to add option when it has an argument
++                cmd.addOption(opt);
+             }
+-            else if (!("yes".equalsIgnoreCase(value)
+-                    || "true".equalsIgnoreCase(value)
+-                    || "1".equalsIgnoreCase(value)))
++            else if ("yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value) || "1".equalsIgnoreCase(value))
+             {
+-                // if the value is not yes, true or 1 then don't add the
+-                // option to the CommandLine
+-                break;
++                // Corrected to add the option to the CommandLine if the value is yes, true or 1
++                cmd.addOption(opt);
+             }
+-
+-            cmd.addOption(opt);
+         }
+     }
+ }
++

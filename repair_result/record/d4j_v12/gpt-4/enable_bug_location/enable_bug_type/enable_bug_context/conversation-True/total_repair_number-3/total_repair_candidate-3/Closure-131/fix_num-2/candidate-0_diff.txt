@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -7,11 +7,14 @@
+   }
+ 
+   for (int i = 1; i < length; i++) {
+-    if (
+-        !Character.isJavaIdentifierPart(s.charAt(i))) {
++    char c = s.charAt(i);
++    // Control characters (like \u0004) are valid in Java identifiers but not in JS identifiers
++    // So we must explicitly reject control characters
++    if (!Character.isJavaIdentifierPart(c) || Character.isISOControl(c)) {
+       return false;
+     }
+   }
+ 
+   return true;
+ }
++

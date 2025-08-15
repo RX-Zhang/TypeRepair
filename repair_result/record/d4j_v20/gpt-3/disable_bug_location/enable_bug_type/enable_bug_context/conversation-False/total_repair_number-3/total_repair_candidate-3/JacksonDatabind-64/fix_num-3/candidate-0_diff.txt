@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -19,8 +19,9 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+-            serializationType = declaredType;
++            // FIXED BUG: the original code assigned then immediately overwrote serializationType
++            // Instead, we should resolve serializationType from am.getGenericType() if null
++            serializationType = _beanDesc.getType().widen(am.getGenericType()); // resolved type relative to bean
+         }
+         JavaType ct = serializationType.getContentType();
+         // Not exactly sure why, but this used to occur; better check explicitly:
+@@ -125,3 +126,4 @@
+     }
+     return bpw;
+ }
++

@@ -1,0 +1,1 @@
+['testNode', 'equalStrings', 'getNamespaceURI', 'getLocalName']

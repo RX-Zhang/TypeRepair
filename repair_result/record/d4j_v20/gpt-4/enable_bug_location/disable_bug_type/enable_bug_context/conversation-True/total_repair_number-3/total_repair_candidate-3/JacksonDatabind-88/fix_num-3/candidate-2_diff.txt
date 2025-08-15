@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -11,7 +11,13 @@
+         //    compatibility -- needed later anyway, and not doing so may open
+         //    security issues.
+         JavaType t = tf.constructFromCanonical(id);
+-            // Probably cleaner to have a method in `TypeFactory` but can't add in patch
++
++        // ensure assignment compatibility
++        if (!_baseType.getRawClass().isAssignableFrom(t.getRawClass())) {
++            throw new JsonMappingException(ctxt.getParser(),
++                String.format("Class %s not subtype of %s", t.getRawClass().getName(), _baseType.getRawClass().getName()));
++        }
++
+         return t;
+     }
+     Class<?> cls;
+@@ -32,3 +38,4 @@
+     }
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

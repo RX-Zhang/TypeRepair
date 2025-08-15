@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -6,7 +6,13 @@
+     }
+     Class<?>[] classes = new Class[array.length];
+     for (int i = 0; i < array.length; i++) {
+-        classes[i] = array[i].getClass();
++        Object element = array[i];
++        if (element == null) {
++            classes[i] = null;
++        } else {
++            classes[i] = primitiveToWrapper(element.getClass());
++        }
+     }
+     return classes;
+ }
++

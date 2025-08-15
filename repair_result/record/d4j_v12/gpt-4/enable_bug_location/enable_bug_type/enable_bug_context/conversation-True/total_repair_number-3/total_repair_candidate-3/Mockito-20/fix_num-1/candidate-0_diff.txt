@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -16,8 +16,8 @@
+     } catch (ClassCastException cce) {
+         throw new MockitoException(join(
+                 "ClassCastException occurred while creating the mockito mock :",
+-                "  class to mock : " + describeClass(mockedProxyType),
+-                "  created class : " + describeClass(settings.getTypeToMock()),
++                "  class to mock : " + describeClass(settings.getTypeToMock()),
++                "  created class : " + describeClass(mockedProxyType),
+                 "  proxy instance class : " + describeClass(mockInstance),
+                 "  instance creation by : " + classInstantiator.getClass().getSimpleName(),
+                 "",
+@@ -25,6 +25,7 @@
+                 ""
+         ),cce);
+     } catch (org.mockito.internal.creation.instance.InstantiationException e) {
+-        throw new MockitoException("Unable to create mock instance of type '" + mockedProxyType.getSuperclass().getSimpleName() + "'", e);
++        throw new MockitoException("Unable to create mock instance of type '" + settings.getTypeToMock().getSimpleName() + "'", e);
+     }
+ }
++

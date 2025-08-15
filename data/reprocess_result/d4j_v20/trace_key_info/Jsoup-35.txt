@@ -1,0 +1,6 @@
+Test failure 1:
+- Test: org.jsoup.parser.HtmlParserTest.handlesUnclosedAnchors
+- Error: junit.framework.AssertionFailedError: expected:<...com/">Link</a>
+<p><a[ href="http://example.com/"]>Error link</a></p>> but was:<...com/">Link</a>
+<p><a[]>Error link</a></p>>
+- Location:         assertEquals(want, doc.body().html());

@@ -1,0 +1,46 @@
+--- 
++++ 
+@@ -72,11 +72,12 @@
+ 
+                     // f must not be evaluated too close to a or b.
+                     if (u - a < tol2 || b - u < tol2) {
+-                        if (x <= m) {
++                        if (x < m) {
+                             d = tol1;
+                         } else {
+                             d = -tol1;
+                         }
++                        u = x + d;
+                     }
+                 } else {
+                     // Golden section step.
+@@ -86,6 +87,7 @@
+                         e = a - x;
+                     }
+                     d = GOLDEN_SECTION * e;
++                    u = x + d;
+                 }
+             } else {
+                 // Golden section step.
+@@ -95,6 +97,7 @@
+                     e = a - x;
+                 }
+                 d = GOLDEN_SECTION * e;
++                u = x + d;
+             }
+ 
+             // Update by at least "tol1".
+@@ -104,8 +107,6 @@
+                 } else {
+                     u = x - tol1;
+                 }
+-            } else {
+-                u = x + d;
+             }
+ 
+             double fu = computeObjectiveValue(u);
+@@ -161,3 +162,4 @@
+         ++iter;
+     }
+ }
++

@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -14,6 +14,7 @@
+       case '\\': sb.append(backslashEscape); break;
+       case '\"': sb.append(doublequoteEscape); break;
+       case '\'': sb.append(singlequoteEscape); break;
++      case '\0': sb.append("\\0"); break;  // Fix: explicitly handle null character '\0'
+       case '>':                       // Break --> into --\> or ]]> into ]]\>
+         if (i >= 2 &&
+             ((s.charAt(i - 1) == '-' && s.charAt(i - 2) == '-') ||
+@@ -68,3 +69,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

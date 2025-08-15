@@ -1,0 +1,1 @@
+['tryFoldAssign', 'tryFoldGetElem', 'isAssignmentTarget']

@@ -1,0 +1,1 @@
+['isEmpty', 'isNotEmpty', 'isBlank', 'isNotBlank', 'replace', 'defaultString']

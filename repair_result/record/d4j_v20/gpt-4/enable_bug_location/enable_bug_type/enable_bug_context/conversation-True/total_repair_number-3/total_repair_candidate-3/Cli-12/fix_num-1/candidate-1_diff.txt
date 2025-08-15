@@ -1,0 +1,99 @@
+--- 
++++ 
+@@ -17,27 +17,81 @@
+         {
+             tokens.add("-");
+         }
+-        else if (arg.startsWith("-"))
++        else if (arg.startsWith("--"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
+-
+-            if (options.hasOption(opt))
++            // handle long options with -- prefix
++            int equalsIndex = arg.indexOf('=');
++            if (equalsIndex != -1)
++            {
++                String opt = arg.substring(2, equalsIndex);
++                String value = arg.substring(equalsIndex + 1);
++                if (options.hasOption(opt))
++                {
++                    tokens.add("--" + opt);
++                    tokens.add(value);
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
++            }
++            else if (options.hasOption(arg.substring(2)))
+             {
+                 tokens.add(arg);
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                eatTheRest = stopAtNonOption;
++                tokens.add(arg);
++            }
++        }
++        else if (arg.startsWith("-"))
++        {
++            // handle short options with - prefix
++            int equalsIndex = arg.indexOf('=');
++            if (equalsIndex != -1)
++            {
++                String opt = arg.substring(1, equalsIndex);
++                String value = arg.substring(equalsIndex + 1);
++                if (opt.length() == 1 && options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
+-                    // the format is a special properties option (-Dproperty=value)
+-                    tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add("-" + opt);
++                    tokens.add(value);
+                 }
+                 else
+                 {
+-                    eatTheRest = stopAtNonOption;
++                    // Possibly a special property option like -Dproperty=value
++                    if (options.hasOption(arg.substring(0, 2)))
++                    {
++                        tokens.add(arg.substring(0, 2)); // -D
++                        tokens.add(arg.substring(2));    // property=value
++                    }
++                    else
++                    {
++                        eatTheRest = stopAtNonOption;
++                        tokens.add(arg);
++                    }
++                }
++            }
++            else
++            {
++                String opt = arg.substring(1);
++                if (options.hasOption(opt))
++                {
+                     tokens.add(arg);
++                }
++                else
++                {
++                    if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
++                    {
++                        tokens.add(arg.substring(0, 2)); // e.g. -D
++                        tokens.add(arg.substring(2)); // rest
++                    }
++                    else
++                    {
++                        eatTheRest = stopAtNonOption;
++                        tokens.add(arg);
++                    }
+                 }
+             }
+         }
+@@ -57,3 +111,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

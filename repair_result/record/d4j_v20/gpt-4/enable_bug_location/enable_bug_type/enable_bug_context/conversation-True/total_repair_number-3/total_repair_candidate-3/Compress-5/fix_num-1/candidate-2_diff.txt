@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -17,7 +17,7 @@
+             if (offsetInBuffer >= lengthOfLastRead) {
+                 offsetInBuffer = 0;
+                 if ((lengthOfLastRead = in.read(buf)) == -1) {
+-                    return -1;
++                    throw new IOException("Truncated ZIP file");
+                 }
+                 count(lengthOfLastRead);
+                 bytesReadFromStream += lengthOfLastRead;
+@@ -36,6 +36,9 @@
+         }
+         if (inf.needsInput()) {
+             fill();
++            if (lengthOfLastRead == -1) {
++                throw new IOException("Truncated ZIP file");
++            }
+             if (lengthOfLastRead > 0) {
+                 bytesReadFromStream += lengthOfLastRead;
+             }
+@@ -49,8 +52,12 @@
+         if (read == 0 && inf.finished()) {
+             return -1;
+         }
++        if (read == 0) {
++            throw new IOException("Truncated ZIP file");
++        }
+         crc.update(buffer, start, read);
+         return read;
+     }
+     throw new ArrayIndexOutOfBoundsException();
+ }
++

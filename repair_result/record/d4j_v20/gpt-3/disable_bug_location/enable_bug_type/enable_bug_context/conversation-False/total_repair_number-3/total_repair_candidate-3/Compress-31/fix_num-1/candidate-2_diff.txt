@@ -1,0 +1,40 @@
+--- 
++++ 
+@@ -24,19 +24,24 @@
+     // The ustar and POSIX tar specs require a trailing NUL or
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    while (start < end && (trailer == 0 || trailer == ' ')) {
+-        end--;
+-        trailer = buffer[end - 1];
++    while (end > start) {
++        final byte trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' ') {
++            end--;
++        } else {
++            break;
++        }
+     }
+ 
+-    for ( ;start < end; start++) {
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+-        if (currentByte == 0) {
+-            break;
++        // Embedded spaces or NULs are invalid
++        if (currentByte == 0 || currentByte == ' ') {
++            throw new IllegalArgumentException(
++                    exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+         // CheckStyle:MagicNumber OFF
+-        if (currentByte < '0' || currentByte > '7'){
++        if (currentByte < '0' || currentByte > '7') {
+             throw new IllegalArgumentException(
+                     exceptionMessage(buffer, offset, length, start, currentByte));
+         }
+@@ -46,3 +51,4 @@
+ 
+     return result;
+ }
++

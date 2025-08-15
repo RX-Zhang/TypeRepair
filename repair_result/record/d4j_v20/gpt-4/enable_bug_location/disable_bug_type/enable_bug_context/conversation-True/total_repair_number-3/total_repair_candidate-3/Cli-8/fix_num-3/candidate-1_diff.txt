@@ -1,0 +1,50 @@
+--- 
++++ 
+@@ -15,18 +15,39 @@
+     // characters
+     final String padding = createPadding(nextLineTabStop);
+ 
+-    while (true)
++    int textPos = pos;
++    int textLength = text.length();
++
++    while (textPos < textLength)
+     {
+-        text = padding + text.substring(pos).trim();
+-        pos = findWrapPos(text, width, nextLineTabStop);
++        // Remove leading spaces and new lines before padding
++        while (textPos < textLength && 
++               (text.charAt(textPos) == ' ' || text.charAt(textPos) == '\n' || text.charAt(textPos) == '\r'))
++        {
++            textPos++;
++        }
++        
++        int nextPos = findWrapPos(text, width, textPos);
++        String line;
++        if (nextPos == -1)
++        {
++            line = text.substring(textPos);
++        }
++        else
++        {
++            line = text.substring(textPos, nextPos);
++        }
++        
++        sb.append(padding).append(rtrim(line)).append(defaultNewLine);
+ 
+-        if (pos == -1)
++        if (nextPos == -1)
+         {
+-            sb.append(text);
+-
+-            return sb;
++            break;
+         }
+ 
+-        sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
++        textPos = nextPos;
+     }
++
++    return sb;
+ }
++

@@ -1,0 +1,67 @@
+--- 
++++ 
+@@ -21,12 +21,11 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 // Almost! Most likely still have the current token;
+                 // with the sole exception of 
+                 /*
+@@ -52,6 +51,26 @@
+     if (t == null) {
+         // no strict need to close, since we have no state here
+         return (_currToken = t);
++    }
++
++    // If _allowMultipleMatches is false, and a match has already been found,
++    // and this token is a scalar, then filter it by returning null
++    if (!_allowMultipleMatches && _matchCount > 0) {
++        switch (t.id()) {
++            case ID_START_OBJECT:
++            case ID_START_ARRAY:
++                // For non-scalars, just return null (skip)
++                delegate.skipChildren();
++                return (_currToken = null);
++            case ID_FIELD_NAME:
++                // Let fields through as they may be necessary for context
++                break;
++            default:
++                if (!_includePath && (_itemFilter == TokenFilter.INCLUDE_ALL)) {
++                    return (_currToken = null);
++                }
++                break;
++        }
+     }
+ 
+     // otherwise... to include or not?
+@@ -194,12 +213,14 @@
+     default: // scalar value
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            _matchCount++;
+             return (_currToken = t);
+         }
+         if (f != null) {
+             f = _headContext.checkValue(f);
+             if ((f == TokenFilter.INCLUDE_ALL)
+                     || ((f != null) && f.includeValue(delegate))) {
++                _matchCount++;
+                 return (_currToken = t);
+             }
+         }
+@@ -210,3 +231,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

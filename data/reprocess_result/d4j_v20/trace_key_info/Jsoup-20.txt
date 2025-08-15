@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.jsoup.helper.DataUtilTest.discardsSpuriousByteOrderMark
+- Error: junit.framework.AssertionFailedError: expected:<[One]> but was:<[]>
+- Location:         assertEquals("One", doc.head().text());

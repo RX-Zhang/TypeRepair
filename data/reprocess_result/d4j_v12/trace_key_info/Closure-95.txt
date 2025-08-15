@@ -1,0 +1,10 @@
+Test failure 1:
+- Test: com.google.javascript.jscomp.TypeCheckTest.testQualifiedNameInference5
+- Error: junit.framework.AssertionFailedError: expected a warning
+- Location:     testTypes(
+
+
+Test failure 2:
+- Test: com.google.javascript.jscomp.TypedScopeCreatorTest.testGlobalQualifiedNameInLocalScope
+- Error: junit.framework.AssertionFailedError
+- Location:     assertNotNull(globalScope.getVar("ns.foo"));

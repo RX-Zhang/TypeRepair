@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -33,7 +33,9 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        // Fix logical error: If the wrap position is before or at the padding length,
++        // fallback to hard wrap at width to avoid infinite loops
++        if ((text.length() > width) && (pos <= nextLineTabStop)) 
+         {
+             pos = width;
+         }
+@@ -41,3 +43,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

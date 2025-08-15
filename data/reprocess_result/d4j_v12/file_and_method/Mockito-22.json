@@ -1,0 +1,1 @@
+{"ClassName": "Equality", "Fields": [], "Methods": ["public static boolean areEqual(Object o1, Object o2) { ... }", "static boolean areArraysEqual(Object o1, Object o2) { ... }", "static boolean areArrayLengthsEqual(Object o1, Object o2) { ... }", "static boolean areArrayElementsEqual(Object o1, Object o2) { ... }", "static boolean isArray(Object o) { ... }"]}

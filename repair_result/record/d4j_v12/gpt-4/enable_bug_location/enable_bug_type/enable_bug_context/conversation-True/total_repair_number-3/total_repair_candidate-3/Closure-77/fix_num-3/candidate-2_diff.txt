@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -40,6 +40,9 @@
+           sb.append(c);
+         }
+         break;
++      case '\0':
++        sb.append("\\0");
++        break;
+       default:
+         // If we're given an outputCharsetEncoder, then check if the
+         //  character can be represented in this character set.
+@@ -68,3 +71,4 @@
+   sb.append(quote);
+   return sb.toString();
+ }
++

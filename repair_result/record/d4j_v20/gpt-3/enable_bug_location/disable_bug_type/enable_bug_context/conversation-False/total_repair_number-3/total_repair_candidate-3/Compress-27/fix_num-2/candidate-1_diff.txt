@@ -1,0 +1,55 @@
+--- 
++++ 
+@@ -7,31 +7,35 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
+-        return 0L;
+-    }
+-
+-    // Skip leading spaces
+-    while (start < end){
+-        if (buffer[start] == ' '){
++    // Find first non-null or non-space byte
++    while (start < end) {
++        if (buffer[start] == 0 || buffer[start] == ' ') {
+             start++;
+         } else {
+             break;
+         }
+     }
+ 
++    // If all bytes are NULs or spaces, return 0
++    if (start == end) {
++        return 0L;
++    }
++
+     // Trim all trailing NULs and spaces.
+     // The ustar and POSIX tar specs require a trailing NUL or
+     // space but some implementations use the extra digit for big
+     // sizes/uids/gids ...
+-    byte trailer = buffer[end - 1];
+-    while (start < end && (trailer == 0 || trailer == ' ')) {
+-        end--;
+-        trailer = buffer[end - 1];
++    while (end > start) {
++        byte trailer = buffer[end - 1];
++        if (trailer == 0 || trailer == ' ') {
++            end--;
++        } else {
++            break;
++        }
+     }
+     if (start == end) {
+         throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, start, trailer));
++                exceptionMessage(buffer, offset, length, start, buffer[start]));
+     }
+ 
+     for ( ;start < end; start++) {
+@@ -47,3 +51,4 @@
+ 
+     return result;
+ }
++

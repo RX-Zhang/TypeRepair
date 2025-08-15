@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -7,15 +7,15 @@
+         return;
+     }
+     
+-    // if no option has already been selected or the 
+-    // same option is being reselected then set the
+-    // selected member variable
+-    if (selected == null || selected.equals(option.getOpt()))
++    // Update the logic to ensure that the option is added
++    // to the selected variable when it is being set for the first time
++    if (selected == null) 
+     {
+         selected = option.getOpt();
+     }
+-    else
++    else if (!selected.equals(option.getOpt())) 
+     {
+         throw new AlreadySelectedException(this, option);
+     }
+ }
++

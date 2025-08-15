@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+      *    to do translation when necessary
+      */
+     TypeFactory tf = ctxt.getTypeFactory();
+-    if (id.indexOf('<') > 0) {
++    if (id != null && id.indexOf('<') > 0) {
+         // note: may want to try combining with specialization (esp for EnumMap)?
+         // 17-Aug-2017, tatu: As per [databind#1735] need to ensure assignment
+         //    compatibility -- needed later anyway, and not doing so may open
+@@ -14,9 +14,13 @@
+             // Probably cleaner to have a method in `TypeFactory` but can't add in patch
+         return t;
+     }
+-    Class<?> cls;
++    Class<?> cls = null;
+     try {
+-        cls =  tf.findClass(id);
++        if (id != null) {
++            cls = tf.findClass(id);
++        } else {
++            throw new IllegalArgumentException("Type ID cannot be null");
++        }
+     } catch (ClassNotFoundException e) {
+         // 24-May-2016, tatu: Ok, this is pretty ugly, but we should always get
+         //   DeserializationContext, just playing it safe
+@@ -32,3 +36,4 @@
+     }
+     return tf.constructSpecializedType(_baseType, cls);
+ }
++

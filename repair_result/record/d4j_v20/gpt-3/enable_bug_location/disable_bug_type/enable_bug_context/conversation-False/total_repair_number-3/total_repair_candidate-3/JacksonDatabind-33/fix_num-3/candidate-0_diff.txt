@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -16,10 +16,16 @@
+         } else if (_hasAnnotation(a, JsonSerialize.class)
+                 || _hasAnnotation(a, JsonView.class)
+                 || _hasAnnotation(a, JsonRawValue.class)) {
++            // Use default name if annotation present but no explicit name set
+             name = "";
+         } else {
+             return null;
+         }
+     }
++    if (name == null || name.isEmpty()) {
++        // Means no explicit name; get default name from annotated element
++        name = a.getName();
++    }
+     return PropertyName.construct(name);
+ }
++

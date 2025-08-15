@@ -1,0 +1,11 @@
+--- 
++++ 
+@@ -1,3 +1,7 @@
+ public double getSumSquaredErrors() {
+-    return sumYY - sumXY * sumXY / sumXX;
++    if (sumXX == 0) {
++        return Double.NaN; // To handle division by zero if no variation in x
++    }
++    return sumYY - (sumXY * sumXY / sumXX);
+ }
++

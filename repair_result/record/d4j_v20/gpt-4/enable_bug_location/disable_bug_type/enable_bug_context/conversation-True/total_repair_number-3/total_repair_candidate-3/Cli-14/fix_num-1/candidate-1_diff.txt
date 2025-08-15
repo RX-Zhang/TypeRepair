@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -6,7 +6,7 @@
+     // reference to first unexpected option
+     Option unexpected = null;
+ 
+-    for (final Iterator i = options.iterator(); i.hasNext();) {
++    for (final Iterator i = getOptions().iterator(); i.hasNext();) {
+         final Option option = (Option) i.next();
+ 
+         // needs validation?
+@@ -17,7 +17,7 @@
+ 
+         // if the child option is present then validate it
+         if (commandLine.hasOption(option)) {
+-            if (++present > maximum) {
++            if (++present > getMaximum()) {
+                 unexpected = option;
+ 
+                 break;
+@@ -34,7 +34,7 @@
+     }
+ 
+     // too few option
+-    if (present < minimum) {
++    if (present < getMinimum()) {
+         throw new OptionException(this, ResourceConstants.MISSING_OPTION);
+     }
+ 
+@@ -44,3 +44,4 @@
+         option.validate(commandLine);
+     }
+ }
++

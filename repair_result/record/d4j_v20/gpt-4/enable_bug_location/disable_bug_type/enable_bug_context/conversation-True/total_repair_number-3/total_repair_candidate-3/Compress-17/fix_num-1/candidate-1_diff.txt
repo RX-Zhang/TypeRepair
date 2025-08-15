@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -7,35 +7,29 @@
+         throw new IllegalArgumentException("Length "+length+" must be at least 2");
+     }
+ 
+-    if (buffer[start] == 0) {
++    // Skip leading nulls and spaces
++    while (start < end && (buffer[start] == 0 || buffer[start] == ' ')){
++        start++;
++    }
++
++    if (start == end) {
+         return 0L;
+     }
+ 
+-    // Skip leading spaces
+-    while (start < end){
+-        if (buffer[start] == ' '){
+-            start++;
+-        } else {
+-            break;
+-        }
++    // Must have trailing NUL or space
++    byte trailer = buffer[end - 1];
++    if (trailer != 0 && trailer != ' '){
++        throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, end - 1, trailer));
+     }
+ 
+-    // Must have trailing NUL or space
+-    byte trailer;
+-    trailer = buffer[end-1];
+-    if (trailer == 0 || trailer == ' '){
+-        end--;
+-    } else {
+-        throw new IllegalArgumentException(
+-                exceptionMessage(buffer, offset, length, end-1, trailer));
+-    }
+-    // May have additional NULs or spaces
+-    trailer = buffer[end - 1];
+-    if (trailer == 0 || trailer == ' '){
++    // May have additional trailing NULs or spaces
++    end--;
++    while (end > start && (buffer[end - 1] == 0 || buffer[end - 1] == ' ')){
+         end--;
+     }
+ 
+-    for ( ;start < end; start++) {
++    for (; start < end; start++) {
+         final byte currentByte = buffer[start];
+         // CheckStyle:MagicNumber OFF
+         if (currentByte < '0' || currentByte > '7'){
+@@ -48,3 +42,4 @@
+ 
+     return result;
+ }
++

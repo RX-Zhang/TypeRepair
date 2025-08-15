@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.csv.CSVRecordTest.testToMapWithNoHeader
+- Error: java.lang.NullPointerException
+- Location:        Map<String, String> map = shortRec.toMap();

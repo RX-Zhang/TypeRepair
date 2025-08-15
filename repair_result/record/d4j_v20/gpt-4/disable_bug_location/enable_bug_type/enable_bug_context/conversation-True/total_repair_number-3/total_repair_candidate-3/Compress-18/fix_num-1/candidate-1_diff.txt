@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -1,8 +1,8 @@
+ void writePaxHeaders(String entryName,
+                      Map<String, String> headers) throws IOException {
+     String name = "./PaxHeaders.X/" + stripTo7Bits(entryName);
+-        // TarEntry's constructor would think this is a directory
+-        // and not allow any data to be written
++    // TarEntry's constructor would think this is a directory
++    // and not allow any data to be written
+     if (name.length() >= TarConstants.NAMELEN) {
+         name = name.substring(0, TarConstants.NAMELEN - 1);
+     }
+@@ -32,7 +32,24 @@
+     }
+     byte[] data = w.toString().getBytes(CharsetNames.UTF_8);
+     pex.setSize(data.length);
+-    putArchiveEntry(pex);
+-    write(data);
+-    closeArchiveEntry();
++
++    boolean entryOpened = false;
++    try {
++        putArchiveEntry(pex);
++        entryOpened = true;
++        write(data);
++        closeArchiveEntry();
++    } catch (IOException e) {
++        // If an exception occurs and the entry was opened but not closed properly,
++        // make sure to close it to avoid resource leaks.
++        if (entryOpened && haveUnclosedEntry) {
++            try {
++                closeArchiveEntry();
++            } catch (IOException ex) {
++                // Suppress secondary exception
++            }
++        }
++        throw e;
++    }
+ }
++

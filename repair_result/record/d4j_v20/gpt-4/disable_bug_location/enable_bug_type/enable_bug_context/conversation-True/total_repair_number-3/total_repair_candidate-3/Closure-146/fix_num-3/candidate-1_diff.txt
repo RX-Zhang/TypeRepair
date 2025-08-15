@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -7,14 +7,15 @@
+ 
+   // other types
+   switch (this.testForEquality(that)) {
++    case FALSE:
++      return new TypePair(this, that);
++
+     case TRUE:
++    case UNKNOWN:
+       return new TypePair(null, null);
+-
+-    case FALSE:
+-    case UNKNOWN:
+-      return new TypePair(this, that);
+   }
+ 
+   // switch case is exhaustive
+   throw new IllegalStateException();
+ }
++

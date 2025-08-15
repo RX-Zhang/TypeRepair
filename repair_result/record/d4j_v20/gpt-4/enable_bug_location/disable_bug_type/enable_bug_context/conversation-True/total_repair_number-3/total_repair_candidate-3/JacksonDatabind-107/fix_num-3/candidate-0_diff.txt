@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -19,8 +19,17 @@
+                     // 17-Jan-2019, tatu: As per [databind#2221], better NOT return `null` but...
+                     return null;
+                 }
+-                // ... would this actually work?
+-                deser = ctxt.findContextualValueDeserializer(actual, _property);
++                if (actual == _baseType) {
++                    /* If actual type returned is same as base type, try to default to
++                       default implementation deserializer to avoid NullPointerException 
++                       (see [databind#2221]). */
++                    deser = _findDefaultImplDeserializer(ctxt);
++                    if (deser == null) {
++                        deser = ctxt.findContextualValueDeserializer(actual, _property);
++                    }
++                } else {
++                    deser = ctxt.findContextualValueDeserializer(actual, _property);
++                }
+             }
+         } else {
+             /* 16-Dec-2010, tatu: Since nominal type we get here has no (generic) type parameters,
+@@ -52,3 +61,4 @@
+     }
+     return deser;
+ }
++

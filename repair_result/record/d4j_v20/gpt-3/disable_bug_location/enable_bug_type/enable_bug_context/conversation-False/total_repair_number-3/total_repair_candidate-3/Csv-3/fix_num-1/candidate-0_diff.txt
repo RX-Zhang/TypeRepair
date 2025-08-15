@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -1,5 +1,5 @@
+ int readEscape() throws IOException {
+-    // the escape char has just been read (normally a backslash)
++    // the escape char has just been read (normally a backslash or other configured escape char)
+     final int c = in.read();
+     switch (c) {
+     case 'r':
+@@ -12,17 +12,16 @@
+         return BACKSPACE;
+     case 'f':
+         return FF;
+-    case CR:
+-    case LF:
+-    case FF: // TODO is this correct?
+-    case TAB: // TODO is this correct? Do tabs need to be escaped?
+-    case BACKSPACE: // TODO is this correct?
+-        return c;
+     case END_OF_STREAM:
+         throw new IOException("EOF whilst processing escape sequence");
+     default:
+-        // Now check for meta-characters
+-            return c;
+-        // indicate unexpected char - available from in.getLastChar()
++        // If the character after escape is not a recognized escape sequence character,
++        // then return the escape character itself plus that character, preserving the literal.
++        // To do that, push back the char 'c' and return the literal escape char so that
++        // it is included verbatim.
++        in.unread(c); // push back the char since it's not a special escape
++        // Return the escape char to represent the literal escape sequence (e.g., \N or \a)
++        return escape;
+     }
+ }
++

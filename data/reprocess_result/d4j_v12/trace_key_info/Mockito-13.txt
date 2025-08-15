@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.mockitousage.bugs.VerifyingWithAnExtraCallToADifferentMockTest.shouldAllowVerifyingWhenOtherMockCallIsInTheSameLine
+- Error: junit.framework.AssertionFailedError
+- Location:             fail();

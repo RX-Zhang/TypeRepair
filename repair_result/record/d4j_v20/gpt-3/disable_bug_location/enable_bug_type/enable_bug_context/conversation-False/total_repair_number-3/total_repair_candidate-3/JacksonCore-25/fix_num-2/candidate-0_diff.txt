@@ -1,0 +1,24 @@
+--- 
++++ 
+@@ -3,7 +3,7 @@
+     _textBuffer.resetWithShared(_inputBuffer, startPtr, (_inputPtr - startPtr));
+     char[] outBuf = _textBuffer.getCurrentSegment();
+     int outPtr = _textBuffer.getCurrentSegmentSize();
+-    final int maxCode = codes.length;
++    final int maxCode = codes.length - 1; // adjust maxCode to be last valid index
+ 
+     while (true) {
+         if (_inputPtr >= _inputEnd) {
+@@ -13,6 +13,7 @@
+         }
+         char c = _inputBuffer[_inputPtr];
+         int i = (int) c;
++        // Fix: check that i is within bounds before accessing codes[i]
+         if (i <= maxCode) {
+             if (codes[i] != 0) {
+                 break;
+@@ -41,3 +42,4 @@
+         return _symbols.findSymbol(buf, start, len, hash);
+     }
+ }
++

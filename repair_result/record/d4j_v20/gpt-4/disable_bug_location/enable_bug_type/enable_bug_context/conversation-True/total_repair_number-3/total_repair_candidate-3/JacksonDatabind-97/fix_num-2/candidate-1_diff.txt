@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -5,8 +5,11 @@
+     } else if (_value instanceof JsonSerializable) {
+         ((JsonSerializable) _value).serialize(gen, ctxt);
+     } else {
+-        // 25-May-2018, tatu: [databind#1991] do not call via generator but through context;
+-        //    this to preserve contextual information
+-        gen.writeObject(_value);
++        Object toSerialize = _value;
++        if (toSerialize instanceof POJONode) {
++            toSerialize = ((POJONode) toSerialize).getPojo();
++        }
++        gen.writeObject(toSerialize);
+     }
+ }
++

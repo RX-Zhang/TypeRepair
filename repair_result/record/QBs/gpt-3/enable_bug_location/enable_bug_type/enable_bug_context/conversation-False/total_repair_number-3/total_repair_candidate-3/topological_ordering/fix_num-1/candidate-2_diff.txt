@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -1,8 +1,18 @@
+ def topological_ordering(nodes):
+-    ordered_nodes = [node for node in nodes if not node.incoming_nodes]
+-    for node in ordered_nodes:
++    ordered_nodes = []
++    # Add nodes with no incoming edges to the ordered list
++    no_incoming = [node for node in nodes if not node.incoming_nodes]
++    
++    while no_incoming:
++        node = no_incoming.pop()
++        ordered_nodes.append(node)
++
++        # For each outgoing node, reduce the incoming count
+         for nextnode in node.outgoing_nodes:
+-            if set(ordered_nodes).issuperset(nextnode.outgoing_nodes) and nextnode not in ordered_nodes:
+-                ordered_nodes.append(nextnode)
++            nextnode.incoming_nodes.remove(node)
++            # If nextnode has no more incoming edges, add it to no_incoming
++            if not nextnode.incoming_nodes:
++                no_incoming.append(nextnode)
++
+     return ordered_nodes
+ 

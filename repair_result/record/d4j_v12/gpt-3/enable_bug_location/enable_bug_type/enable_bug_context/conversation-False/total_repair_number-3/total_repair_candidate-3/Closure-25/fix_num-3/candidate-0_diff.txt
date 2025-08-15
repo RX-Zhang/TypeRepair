@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -22,8 +22,23 @@
+     }
+   }
+   n.setJSType(type);
++  
++  // Ensure that we traverse the arguments after setting the type
+   for (Node arg = constructor.getNext(); arg != null; arg = arg.getNext()) {
+     scope = traverse(arg, scope);
+   }
++  
++  // If the constructor type is known, we should also infer the type of 'y'
++  if (type != null && type.isObjectType()) {
++    // Assuming 'y' is the variable we want to infer the type for
++    String yName = "y"; // This should be the name of the variable being constructed
++    JSType inferredType = getJSType(n); // Get the inferred type from the node
++    if (inferredType != null) {
++      // Update the type of 'y' in the scope
++      scope.inferQualifiedSlot(constructor.getQualifiedName(), yName, getNativeType(UNKNOWN_TYPE), inferredType);
++    }
++  }
++  
+   return scope;
+ }
++

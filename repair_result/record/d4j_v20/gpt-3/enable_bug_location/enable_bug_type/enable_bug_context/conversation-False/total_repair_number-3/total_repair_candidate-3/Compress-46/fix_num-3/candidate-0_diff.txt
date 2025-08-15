@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -1,7 +1,13 @@
+ private static ZipLong unixTimeToZipLong(long l) {
++    final long TWO_TO_31 = 0x80000000L;
+     final long TWO_TO_32 = 0x100000000L;
+-    if (l >= TWO_TO_32) {
++    // Accept only timestamps in [0, 2^31 -1], i.e. unsigned 31-bit range,
++    // because the value must fit in a signed 32-bit int (max 2,147,483,647).
++    // Reject negative values and values >= 2^31.
++    if (l < 0 || l >= TWO_TO_31) {
+         throw new IllegalArgumentException("X5455 timestamps must fit in a signed 32 bit integer: " + l);
+     }
++    // Cast to int to avoid sign-extension issues if needed, or use ZipLong constructor
+     return new ZipLong(l);
+ }
++

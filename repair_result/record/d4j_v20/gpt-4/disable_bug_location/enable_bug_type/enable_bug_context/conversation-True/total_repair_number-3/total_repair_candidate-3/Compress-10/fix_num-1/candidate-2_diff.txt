@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -25,9 +25,15 @@
+         }
+         byte[] localExtraData = new byte[extraFieldLen];
+         archive.readFully(localExtraData);
+-        ze.setExtra(localExtraData);
+-        offsetEntry.dataOffset = offset + LFH_OFFSET_FOR_FILENAME_LENGTH
+-            + SHORT + SHORT + fileNameLen + extraFieldLen;
++
++        // Before setting extra data, attempt to get InputStream and verify data
++        if (canReadEntryData(ze)) {
++            ze.setExtra(localExtraData);
++            offsetEntry.dataOffset = offset + LFH_OFFSET_FOR_FILENAME_LENGTH
++                + SHORT + SHORT + fileNameLen + extraFieldLen;
++        } else {
++            throw new IOException("Cannot read entry data for entry: " + ze.getName());
++        }
+ 
+         if (entriesWithoutUTF8Flag.containsKey(ze)) {
+             String orig = ze.getName();
+@@ -41,3 +47,4 @@
+         }
+     }
+ }
++

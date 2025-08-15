@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -5,8 +5,10 @@
+         u, v = edge
+         if group_by_node.setdefault(u, {u}) != group_by_node.setdefault(v, {v}):
+             mst_edges.add(edge)
+-            group_by_node[u].update(group_by_node[v])
+-            for node in group_by_node[v]:
+-                group_by_node[node].update(group_by_node[u])
++            old_group = group_by_node[v]
++            new_group = group_by_node[u]
++            new_group.update(old_group)
++            for node in old_group:
++                group_by_node[node] = new_group
+     return mst_edges
+ 

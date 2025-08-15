@@ -1,0 +1,110 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.16, pytest-8.3.5, pluggy-1.6.0
+rootdir: /home/jn_cndt4/project/code repair/BugAgent/BugAgent_1.3/data/QuixBugs_test
+plugins: anyio-4.9.0, timeout-2.4.0
+timeout: 5.0s
+timeout method: signal
+timeout func_only: False
+collected 9 items
+
+python_testcases/test_lcs_length.py FF.FFFFFF                            [100%]
+
+=================================== FAILURES ===================================
+________________________ test_lcs_length[input_data0-2] ________________________
+
+input_data = ['witch', 'sandwich'], expected = 2
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 1 == 2
+E        +  where 1 = lcs_length(*['witch', 'sandwich'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+________________________ test_lcs_length[input_data1-4] ________________________
+
+input_data = ['meow', 'homeowner'], expected = 4
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 1 == 4
+E        +  where 1 = lcs_length(*['meow', 'homeowner'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+________________________ test_lcs_length[input_data3-3] ________________________
+
+input_data = ['fun', 'function'], expected = 3
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 1 == 3
+E        +  where 1 = lcs_length(*['fun', 'function'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+________________________ test_lcs_length[input_data4-3] ________________________
+
+input_data = ['cyborg', 'cyber'], expected = 3
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 1 == 3
+E        +  where 1 = lcs_length(*['cyborg', 'cyber'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+________________________ test_lcs_length[input_data5-7] ________________________
+
+input_data = ['physics', 'physics'], expected = 7
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 1 == 7
+E        +  where 1 = lcs_length(*['physics', 'physics'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+________________________ test_lcs_length[input_data6-6] ________________________
+
+input_data = ['space age', 'pace a'], expected = 6
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 1 == 6
+E        +  where 1 = lcs_length(*['space age', 'pace a'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+________________________ test_lcs_length[input_data7-3] ________________________
+
+input_data = ['flippy', 'floppy'], expected = 3
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 2 == 3
+E        +  where 2 = lcs_length(*['flippy', 'floppy'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+________________________ test_lcs_length[input_data8-3] ________________________
+
+input_data = ['acbdegcedbg', 'begcfeubk'], expected = 3
+
+    @pytest.mark.parametrize("input_data,expected", testdata)
+    def test_lcs_length(input_data, expected):
+>       assert lcs_length(*input_data) == expected
+E       AssertionError: assert 1 == 3
+E        +  where 1 = lcs_length(*['acbdegcedbg', 'begcfeubk'])
+
+python_testcases/test_lcs_length.py:15: AssertionError
+=========================== short test summary info ============================
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data0-2] - ...
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data1-4] - ...
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data3-3] - ...
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data4-3] - ...
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data5-7] - ...
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data6-6] - ...
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data7-3] - ...
+FAILED python_testcases/test_lcs_length.py::test_lcs_length[input_data8-3] - ...
+========================= 8 failed, 1 passed in 0.04s ==========================

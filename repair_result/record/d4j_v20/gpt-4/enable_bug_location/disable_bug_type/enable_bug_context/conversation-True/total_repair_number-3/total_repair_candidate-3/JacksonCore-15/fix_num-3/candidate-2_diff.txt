@@ -1,0 +1,87 @@
+--- 
++++ 
+@@ -21,12 +21,11 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++                }
+                 // Almost! Most likely still have the current token;
+                 // with the sole exception of 
+                 /*
+@@ -45,6 +44,12 @@
+                 throw _constructError("Unexpected problem: chain of filtered context broken");
+             }
+         }
++    }
++
++    // Additional early-exit check to prevent multiple matches if not allowed
++    if (!_allowMultipleMatches && getMatchCount() > 0) {
++        _currToken = null;
++        return null;
+     }
+ 
+     // If not, need to read more. If we got any:
+@@ -160,6 +165,13 @@
+                     if (_includeImmediateParent && !_headContext.isStartHandled()) {
+                         t = _headContext.nextTokenToRead(); // returns START_OBJECT but also marks it handled
+                         _exposedContext = _headContext;
++                    } else {
++                        // if multiple matches not allowed and match already found, skip token
++                        if (!_allowMultipleMatches && getMatchCount() > 0) {
++                            delegate.nextToken();
++                            delegate.skipChildren();
++                            break;
++                        }
+                     }
+                 }
+                 return (_currToken = t);
+@@ -178,6 +190,13 @@
+             _itemFilter = f;
+             if (f == TokenFilter.INCLUDE_ALL) {
+                 if (_includePath) {
++                    return (_currToken = t);
++                } else {
++                    if (!_allowMultipleMatches && getMatchCount() > 0) {
++                        delegate.nextToken();
++                        delegate.skipChildren();
++                        break;
++                    }
+                     return (_currToken = t);
+                 }
+             }
+@@ -194,12 +213,20 @@
+     default: // scalar value
+         f = _itemFilter;
+         if (f == TokenFilter.INCLUDE_ALL) {
++            // check for multiple matches not allowed
++            if (!_allowMultipleMatches && getMatchCount() > 0) {
++                break;
++            }
+             return (_currToken = t);
+         }
+         if (f != null) {
+             f = _headContext.checkValue(f);
+             if ((f == TokenFilter.INCLUDE_ALL)
+                     || ((f != null) && f.includeValue(delegate))) {
++                // check for multiple matches not allowed
++                if (!_allowMultipleMatches && getMatchCount() > 0) {
++                    break;
++                }
+                 return (_currToken = t);
+             }
+         }
+@@ -210,3 +237,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

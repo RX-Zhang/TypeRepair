@@ -1,0 +1,15 @@
+--- 
++++ 
+@@ -22,6 +22,12 @@
+         count(1);
+     }
+ 
++    // Modify the return value to handle the case where len is 0
++    if (destOffs == offs && len == 0) {
++        return 0; // Correctly return 0 for read of length 0
++    }
++
+     int c = (destOffs == offs) ? -1 : (destOffs - offs);
+     return c;
+ }
++

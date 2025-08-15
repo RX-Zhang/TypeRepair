@@ -1,0 +1,26 @@
+--- 
++++ 
+@@ -9,16 +9,21 @@
+         throw new IllegalStateException("No current tar entry");
+     }
+ 
+-    numToRead = Math.min(numToRead, available());
++    numToRead = Math.min(numToRead, (int)(entrySize - entryOffset));
+     
+     totalRead = is.read(buf, offset, numToRead);
+     count(totalRead);
+     
+     if (totalRead == -1) {
+-        hasHitEOF = true;
++        setAtEOF(true);
+     } else {
+         entryOffset += totalRead;
++        if (entryOffset >= entrySize) {
++            consumeRemainderOfLastBlock();
++            setAtEOF(true);
++        }
+     }
+ 
+     return totalRead;
+ }
++

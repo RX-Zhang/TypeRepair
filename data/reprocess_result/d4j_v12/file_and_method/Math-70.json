@@ -1,0 +1,1 @@
+{"ClassName": "BisectionSolver", "Fields": [], "Methods": ["public double solve(double min, double max, double initial) { ... }", "public double solve(double min, double max) { ... }", "public double solve(UnivariateRealFunction f, double min, double max, double initial) { ... }", "public double solve(UnivariateRealFunction f, double min, double max) { ... }"]}

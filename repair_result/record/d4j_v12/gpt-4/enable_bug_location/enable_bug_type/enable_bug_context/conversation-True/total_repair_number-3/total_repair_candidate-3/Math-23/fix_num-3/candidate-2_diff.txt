@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -30,9 +30,8 @@
+     double fv = fx;
+     double fw = fx;
+ 
+-    UnivariatePointValuePair previous = null;
+-    UnivariatePointValuePair current
+-        = new UnivariatePointValuePair(x, isMinim ? fx : -fx);
++    UnivariatePointValuePair previous = new UnivariatePointValuePair(x, isMinim ? fx : -fx);
++    UnivariatePointValuePair current = previous;
+     // Best point encountered so far (which is the initial guess).
+ 
+     int iter = 0;
+@@ -157,11 +156,9 @@
+                 }
+             }
+         } else { // Default termination (Brent's criterion).
+-            return
+-                        best(current,
+-                             previous,
+-                        isMinim);
++            return best(current, previous, isMinim);
+         }
+         ++iter;
+     }
+ }
++

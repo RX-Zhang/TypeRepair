@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: org.apache.commons.jxpath.ri.model.JXPath154Test.testInnerEmptyNamespaceDOM
+- Error: junit.framework.ComparisonFailure: expected:</b:foo[1]/[test[1]]> but was:</b:foo[1]/[node()[2]]>
+- Location:         doTest("b:foo/test", DocumentContainer.MODEL_DOM, "/b:foo[1]/test[1]");

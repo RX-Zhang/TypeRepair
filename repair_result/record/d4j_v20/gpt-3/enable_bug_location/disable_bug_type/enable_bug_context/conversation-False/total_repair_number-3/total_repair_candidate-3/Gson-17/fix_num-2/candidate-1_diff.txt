@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,4 +1,8 @@
+ public Date read(JsonReader in) throws IOException {
++  if (in.peek() == JsonToken.NULL) {
++    in.nextNull();
++    return null;
++  }
+   if (in.peek() != JsonToken.STRING) {
+     throw new JsonParseException("The date should be a string value");
+   }
+@@ -14,3 +18,4 @@
+     throw new AssertionError();
+   }
+ }
++

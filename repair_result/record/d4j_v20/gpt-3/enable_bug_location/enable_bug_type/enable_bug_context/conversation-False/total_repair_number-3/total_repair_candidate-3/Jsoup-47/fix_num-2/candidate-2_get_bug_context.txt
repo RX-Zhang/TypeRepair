@@ -1,0 +1,1 @@
+['isBaseNamedEntity', 'escape']

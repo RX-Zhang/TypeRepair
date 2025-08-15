@@ -1,0 +1,25 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+     String elName = endTag.name();
+     Element firstFound = null;
+ 
+-    for (int pos = stack.size() -1; pos >= 0; pos--) {
++    for (int pos = stack.size() - 1; pos >= 0; pos--) {
+         Element next = stack.get(pos);
+         if (next.nodeName().equals(elName)) {
+             firstFound = next;
+@@ -12,10 +12,12 @@
+     if (firstFound == null)
+         return; // not found, skip
+ 
+-    for (int pos = stack.size() -1; pos >= 0; pos--) {
++    // Remove all elements on the stack above and including firstFound
++    for (int pos = stack.size() - 1; pos >= 0; pos--) {
+         Element next = stack.get(pos);
+         stack.remove(pos);
+         if (next == firstFound)
+             break;
+     }
+ }
++

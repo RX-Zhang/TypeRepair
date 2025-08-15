@@ -1,0 +1,10 @@
+--- 
++++ 
+@@ -7,5 +7,6 @@
+         if (element.equals(search))
+             return i;
+     }
+-    return null;
++    return -1; // Changed from null to -1 to indicate not found
+ }
++

@@ -1,0 +1,32 @@
+--- 
++++ 
+@@ -2,11 +2,20 @@
+     String functionName, HashMap<String, ObjectType> properties,
+     HashMap<String, ObjectType> currentProperties,
+     ObjectType interfaceType) {
++  if (interfaceType == null) {
++    // Defensive check for null interfaceType to avoid NullPointerException
++    return;
++  }
+   ObjectType implicitProto = interfaceType.getImplicitPrototype();
+-  Set<String> currentPropertyNames;
+-    // This can be the case if interfaceType is proxy to a non-existent
+-    // object (which is a bad type annotation, but shouldn't crash).
+-    currentPropertyNames = implicitProto.getOwnPropertyNames();
++  if (implicitProto == null) {
++    // Defensive check for null implicitProto to avoid NullPointerException
++    return;
++  }
++  Set<String> currentPropertyNames = implicitProto.getOwnPropertyNames();
++  if (currentPropertyNames == null) {
++    // Defensive check if getOwnPropertyNames returns null
++    return;
++  }
+   for (String name : currentPropertyNames) {
+     ObjectType oType = properties.get(name);
+     if (oType != null) {
+@@ -25,3 +34,4 @@
+         currentProperties, iType);
+   }
+ }
++

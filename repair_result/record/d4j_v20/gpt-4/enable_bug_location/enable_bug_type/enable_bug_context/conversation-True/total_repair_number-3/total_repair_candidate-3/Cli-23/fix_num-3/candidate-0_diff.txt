@@ -1,0 +1,20 @@
+--- 
++++ 
+@@ -15,9 +15,12 @@
+     // characters
+     final String padding = createPadding(nextLineTabStop);
+ 
++    int offset = 0;
+     while (true)
+     {
+         int lastPos = pos;
++        offset += pos;
++        // Remove leading spaces from substring to be wrapped
+         text = padding + text.substring(pos).trim();
+         pos = findWrapPos(text, width, 0);
+ 
+@@ -35,3 +38,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

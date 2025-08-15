@@ -1,0 +1,39 @@
+--- 
++++ 
+@@ -12,12 +12,12 @@
+   Node nameNode = callNode.getFirstChild();
+ 
+   // Built-in functions with no side effects.
+-  if (nameNode.getType() == Token.NAME) {
++  if (NodeUtil.isName(nameNode)) {
+     String name = nameNode.getString();
+     if (BUILTIN_FUNCTIONS_WITHOUT_SIDEEFFECTS.contains(name)) {
+       return false;
+     }
+-  } else if (nameNode.getType() == Token.GETPROP) {
++  } else if (NodeUtil.isGetProp(nameNode)) {
+     if (callNode.hasOneChild()
+         && OBJECT_METHODS_WITHOUT_SIDEEFFECTS.contains(
+               nameNode.getLastChild().getString())) {
+@@ -25,11 +25,15 @@
+     }
+ 
+     if (callNode.isOnlyModifiesThisCall()
+-        && evaluatesToLocalValue(nameNode.getFirstChild())) {
++        && NodeUtil.evaluatesToLocalValue(nameNode.getFirstChild())) {
+       return false;
+     }
+ 
+     // Functions in the "Math" namespace have no side effects.
++    if (nameNode.getFirstChild().getType() == Token.NAME &&
++        "Math".equals(nameNode.getFirstChild().getString())) {
++      return false;
++    }
+ 
+     if (compiler != null && !compiler.hasRegExpGlobalReferences()) {
+       if (nameNode.getFirstChild().getType() == Token.REGEXP
+@@ -49,3 +53,4 @@
+ 
+   return true;
+ }
++

@@ -1,0 +1,35 @@
+--- 
++++ 
+@@ -32,19 +32,18 @@
+              *   type in process (getting SimpleType of Map.class which will not work as expected)
+              */
+             if ((_baseType != null)
+-                    && _baseType.getClass() == type.getClass()) {
+-                /* 09-Aug-2015, tatu: Not sure if the second part of the check makes sense;
+-                 *   but it appears to check that JavaType impl class is the same which is
+-                 *   important for some reason?
+-                 *   Disabling the check will break 2 Enum-related tests.
+-                 */
++                    && _baseType.getClass() == type.getClass()
++                    && !_baseType.getRawClass().isAssignableFrom(type.getRawClass())) {
++                // Do not narrow if raw type is not assignable, to prevent incorrect narrowing
++                // This fixes logical error causing incorrect narrowing.
++            } else if ((_baseType != null)
++                    && _baseType.getClass() == type.getClass()
++                    && !type.hasGenericTypes()) {
+                 // 19-Jun-2016, tatu: As per [databind#1270] we may actually get full
+                 //   generic type with custom type resolvers. If so, should try to retain them.
+                 //  Whether this is sufficient to avoid problems remains to be seen, but for
+                 //  now it should improve things.
+-                if (!type.hasGenericTypes()) {
+-                    type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
+-                }
++                type = ctxt.getTypeFactory().constructSpecializedType(_baseType, type.getRawClass());
+             }
+             deser = ctxt.findContextualValueDeserializer(type, _property);
+         }
+@@ -52,3 +51,4 @@
+     }
+     return deser;
+ }
++

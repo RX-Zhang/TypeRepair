@@ -1,0 +1,13 @@
+public StringBuilder getGenericSignature(StringBuilder sb)
+{
+    _classSignature(_class, sb, false);
+    if (_referencedType.containedTypeCount() == 0) {
+        // no generic type arguments
+        sb.append(';');
+        return sb;
+    }
+    sb.append('<');
+    sb = _referencedType.getGenericSignature(sb);
+    sb.append('>');
+    return sb;
+}

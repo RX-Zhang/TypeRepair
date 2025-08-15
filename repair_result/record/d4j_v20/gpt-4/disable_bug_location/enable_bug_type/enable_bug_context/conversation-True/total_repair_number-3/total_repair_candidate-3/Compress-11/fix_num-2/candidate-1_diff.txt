@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -40,11 +40,17 @@
+         if (TarArchiveInputStream.matches(tarheader, signatureLength)) {
+             return new TarArchiveInputStream(in);
+         }
+-        // COMPRESS-117 - improve auto-recognition
++
++        // COMPRESS-117 - improve auto-recognition:
++        // Instead of trying to parse the tarheader from the input stream directly again, 
++        // use the 'createArchiveInputStream(String archiverName, InputStream in)' method 
++        // to get a TarArchiveInputStream if the header looks like a tar archive.
++
+         try {
+             TarArchiveInputStream tais = new TarArchiveInputStream(new ByteArrayInputStream(tarheader));
+-            tais.getNextEntry();
+-            return new TarArchiveInputStream(in);
++            if (tais.getNextEntry() != null) {
++                return createArchiveInputStream(TAR, in);
++            }
+         } catch (Exception e) { // NOPMD
+             // can generate IllegalArgumentException as well as IOException
+             // autodetection, simply not a TAR
+@@ -56,3 +62,4 @@
+ 
+     throw new ArchiveException("No Archiver found for the stream signature");
+ }
++

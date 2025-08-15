@@ -1,0 +1,57 @@
+--- 
++++ 
+@@ -36,12 +36,14 @@
+         if (hasT) {
+ 
+             // extract hours, minutes, seconds and milliseconds
+-            hour = parseInt(date, offset += 1, offset += 2);
++            hour = parseInt(date, offset + 1, offset + 3);
++            offset += 3;
+             if (checkOffset(date, offset, ':')) {
+                 offset += 1;
+             }
+ 
+-            minutes = parseInt(date, offset, offset += 2);
++            minutes = parseInt(date, offset, offset + 2);
++            offset += 2;
+             if (checkOffset(date, offset, ':')) {
+                 offset += 1;
+             }
+@@ -49,12 +51,13 @@
+             if (date.length() > offset) {
+                 char c = date.charAt(offset);
+                 if (c != 'Z' && c != '+' && c != '-') {
+-                    seconds = parseInt(date, offset, offset += 2);
++                    seconds = parseInt(date, offset, offset + 2);
+                     if (seconds > 59 && seconds < 63) seconds = 59; // truncate up to 3 leap seconds
++                    offset += 2;
+                     // milliseconds can be optional in the format
+                     if (checkOffset(date, offset, '.')) {
+                         offset += 1;
+-                        int endOffset = indexOfNonDigit(date, offset + 1); // assume at least one digit
++                        int endOffset = indexOfNonDigit(date, offset); // assume at least one digit
+                         int parseEndOffset = Math.min(endOffset, offset + 3); // parse up to 3 digits
+                         int fraction = parseInt(date, offset, parseEndOffset);
+                         // compensate for "missing" digits
+@@ -100,7 +103,6 @@
+                 //    `java.util.TimeZone` specifically instruct use of GMT as base for
+                 //    custom timezones... odd.
+                 String timezoneId = "GMT" + timezoneOffset;
+-                  String timezoneId = "UTC" + timezoneOffset;
+ 
+                 timezone = TimeZone.getTimeZone(timezoneId);
+ 
+@@ -143,7 +145,7 @@
+     } catch (IllegalArgumentException e) {
+         fail = e;
+     }
+-    String input = (date == null) ? null : ('"' + date + "'");
++    String input = (date == null) ? null : ('"' + date + '"');
+     String msg = fail.getMessage();
+     if (msg == null || msg.isEmpty()) {
+         msg = "("+fail.getClass().getName()+")";
+@@ -152,3 +154,4 @@
+     ex.initCause(fail);
+     throw ex;
+ }
++

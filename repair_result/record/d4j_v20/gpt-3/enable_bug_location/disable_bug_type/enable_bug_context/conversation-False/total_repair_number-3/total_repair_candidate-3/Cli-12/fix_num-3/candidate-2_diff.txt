@@ -1,0 +1,58 @@
+--- 
++++ 
+@@ -19,20 +19,44 @@
+         }
+         else if (arg.startsWith("-"))
+         {
+-            String opt = Util.stripLeadingHyphens(arg);
++            // Check for equal sign, handle accordingly
++            int equalIndex = arg.indexOf('=');
+ 
+-            if (options.hasOption(opt))
++            if (equalIndex != -1)
+             {
+-                tokens.add(arg);
++                String opt = arg.substring(0, equalIndex);
++                String value = arg.substring(equalIndex + 1);
++
++                String strippedOpt = Util.stripLeadingHyphens(opt);
++
++                if (options.hasOption(strippedOpt))
++                {
++                    tokens.add(opt);
++                    tokens.add(value);
++                }
++                else if (opt.length() == 2 && options.hasOption(opt))
++                {
++                    tokens.add(opt);
++                    tokens.add(value);
++                }
++                else
++                {
++                    tokens.add(arg);
++                }
+             }
+             else
+             {
+-                if (options.hasOption(arg.substring(0, 2)))
++                String opt = Util.stripLeadingHyphens(arg);
++
++                if (options.hasOption(opt))
+                 {
+-                    // the format is --foo=value or -foo=value
++                    tokens.add(arg);
++                }
++                else if (arg.length() > 2 && options.hasOption(arg.substring(0, 2)))
++                {
+                     // the format is a special properties option (-Dproperty=value)
+                     tokens.add(arg.substring(0, 2)); // -D
+-                    tokens.add(arg.substring(2)); // property=value
++                    tokens.add(arg.substring(2));    // property=value
+                 }
+                 else
+                 {
+@@ -57,3 +81,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

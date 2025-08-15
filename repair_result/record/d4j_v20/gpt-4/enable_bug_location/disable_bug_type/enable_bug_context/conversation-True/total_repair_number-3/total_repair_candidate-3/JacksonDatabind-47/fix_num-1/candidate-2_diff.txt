@@ -1,0 +1,65 @@
+--- 
++++ 
+@@ -3,14 +3,14 @@
+ {
+     JavaType type = baseType;
+     final TypeFactory tf = config.getTypeFactory();
+-    
++
+     // 10-Oct-2015, tatu: For 2.7, we'll need to delegate back to
+     //    now-deprecated secondary methods; this because while
+     //    direct sub-class not yet retrofitted may only override
+     //    those methods. With 2.8 or later we may consider removal
+     //    of these methods
+ 
+-    
++
+     // Ok: start by refining the main type itself; common to all types
+     Class<?> serClass = findSerializationType(a);
+     if (serClass != null) {
+@@ -21,8 +21,17 @@
+         } else {
+             try {
+                 // 11-Oct-2015, tatu: For deser, we call `TypeFactory.constructSpecializedType()`,
+-                //   may be needed here too in future?
++                // may be needed here too in future?
++                Class<?> currRaw = type.getRawClass();
++                if (serClass.isAssignableFrom(currRaw)) {
+                     type = tf.constructGeneralizedType(type, serClass);
++                } else if (currRaw.isAssignableFrom(serClass)) {
++                    type = tf.constructSpecializedType(type, serClass);
++                } else {
++                    throw new JsonMappingException(null,
++                        String.format("Failed to widen type %s with annotation (value %s), from '%s': Class %s not a super-type of [simple type, class %s]",
++                            type, serClass.getName(), a.getName(), serClass.getName(), currRaw.getName()));
++                }
+             } catch (IllegalArgumentException iae) {
+                 throw new JsonMappingException(null,
+                         String.format("Failed to widen type %s with annotation (value %s), from '%s': %s",
+@@ -44,8 +53,8 @@
+                 Class<?> currRaw = keyType.getRawClass();
+                 try {
+                     // 19-May-2016, tatu: As per [databind#1231], [databind#1178] may need to actually
+-                    //   specialize (narrow) type sometimes, even if more commonly opposite
+-                    //   is needed.
++                    // specialize (narrow) type sometimes, even if more commonly opposite
++                    // is needed.
+                     if (keyClass.isAssignableFrom(currRaw)) { // common case
+                         keyType = tf.constructGeneralizedType(keyType, keyClass);
+                     } else if (currRaw.isAssignableFrom(keyClass)) { // specialization, ok as well
+@@ -75,8 +84,8 @@
+                contentType = contentType.withStaticTyping();
+            } else {
+                // 03-Apr-2016, tatu: As per [databind#1178], may need to actually
+-               //   specialize (narrow) type sometimes, even if more commonly opposite
+-               //   is needed.
++               // specialize (narrow) type sometimes, even if more commonly opposite
++               // is needed.
+                Class<?> currRaw = contentType.getRawClass();
+                try {
+                    if (contentClass.isAssignableFrom(currRaw)) { // common case
+@@ -100,3 +109,4 @@
+     }
+     return type;
+ }
++

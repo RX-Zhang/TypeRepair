@@ -1,0 +1,44 @@
+--- 
++++ 
+@@ -15,13 +15,14 @@
+ 
+   double index = right.getDouble();
+   int intIndex = (int) index;
+-  if (intIndex != index) {
+-    error(INVALID_GETELEM_INDEX_ERROR, right);
+-    return n;
+-  }
+-
+-  if (intIndex < 0) {
+-    error(INDEX_OUT_OF_BOUNDS_ERROR, right);
++  
++  // Add input validation for index
++  if (intIndex != index || intIndex < 0) {
++    if (intIndex != index) {
++      error(PeepholeFoldConstants.INVALID_GETELEM_INDEX_ERROR, right);
++    } else {
++      error(PeepholeFoldConstants.INDEX_OUT_OF_BOUNDS_ERROR, right);
++    }
+     return n;
+   }
+ 
+@@ -29,12 +30,11 @@
+   Node elem = null;
+   for (int i = 0; current != null && i < intIndex; i++) {
+       elem = current;
+-
+-    current = current.getNext();
++      current = current.getNext();
+   }
+ 
+   if (elem == null) {
+-    error(INDEX_OUT_OF_BOUNDS_ERROR, right);
++    error(PeepholeFoldConstants.INDEX_OUT_OF_BOUNDS_ERROR, right);
+     return n;
+   }
+ 
+@@ -49,3 +49,4 @@
+   reportCodeChange();
+   return elem;
+ }
++

@@ -1,0 +1,19 @@
+--- 
++++ 
+@@ -1,4 +1,7 @@
+ def kth(arr, k):
++    if not arr:
++        raise IndexError("Array is empty")
++
+     pivot = arr[0]
+     below = [x for x in arr if x < pivot]
+     above = [x for x in arr if x > pivot]
+@@ -7,7 +10,7 @@
+     if k < num_less:
+         return kth(below, k)
+     elif k >= num_lessoreq:
+-        return kth(above, k)
++        return kth(above, k - num_lessoreq)
+     else:
+         return pivot
+ 

@@ -1,0 +1,53 @@
+public static long parseOctal(final byte[] buffer, final int offset, final int length) {
+    if (length < 2){
+        throw new IllegalArgumentException("Length "+length+" must be at least 2");
+    }
+
+    // Skip leading spaces
+    int start = offset;
+    int end = offset + length;
+
+    while (start < end && buffer[start] == ' ') {
+        start++;
+    }
+
+    // If all spaces, return 0;
+    if (start == end) {
+        return 0L;
+    }
+
+    if (buffer[start] == 0) {
+        return 0L;
+    }
+
+    // Trim trailing nulls and spaces
+    byte trailer = buffer[end - 1];
+    while (start < end && (trailer == 0 || trailer == ' ')) {
+        end--;
+        trailer = buffer[end - 1];
+    }
+
+    if (start >= end) {
+        return 0L;
+    }
+
+    // Check for embedded NUL or spaces inside the number, invalid input
+    for (int i = start; i < end; i++) {
+        byte currentByte = buffer[i];
+        if (currentByte == 0 || currentByte == ' ') {
+            throw new IllegalArgumentException(
+                    exceptionMessage(buffer, offset, length, i, currentByte));
+        }
+        if (currentByte < '0' || currentByte > '7') {
+            throw new IllegalArgumentException(
+                    exceptionMessage(buffer, offset, length, i, currentByte));
+        }
+    }
+
+    long result = 0;
+    for (int i = start; i < end; i++) {
+        result = (result << 3) + (buffer[i] - '0');
+    }
+
+    return result;
+}

@@ -1,0 +1,33 @@
+--- 
++++ 
+@@ -7,7 +7,13 @@
+ 
+   // Prototypes of constructors and interfaces are always declared.
+   if (qName != null && qName.endsWith(".prototype")) {
++    // Allow prototype assignments only if inferred type is compatible
++    // or if explicitly declared.
++    if (info != null) {
+       return false;
++    } else {
++      return true;
++    }
+   }
+ 
+   boolean inferred = true;
+@@ -28,8 +34,9 @@
+       // Check if this is in a conditional block.
+       // Functions assigned in conditional blocks are inferred.
+       for (Node current = n.getParent();
+-           !(current.isScript() || current.isFunction());
+-           current = current.getParent()) {
++          current != null &&
++          !(current.isScript() || current.isFunction());
++          current = current.getParent()) {
+         if (NodeUtil.isControlStructure(current)) {
+           return true;
+         }
+@@ -47,3 +54,4 @@
+   }
+   return inferred;
+ }
++

@@ -1,0 +1,1 @@
+{"JacksonDatabind-102": ["com.fasterxml.jackson.databind.ser.jdk.SqlDateSerializationTest::testSqlDateConfigOverride"]}

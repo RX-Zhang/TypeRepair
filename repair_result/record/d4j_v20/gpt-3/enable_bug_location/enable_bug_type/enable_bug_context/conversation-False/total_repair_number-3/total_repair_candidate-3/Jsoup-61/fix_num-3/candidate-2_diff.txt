@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,5 +1,8 @@
+ public boolean hasClass(String className) {
+     final String classAttr = attributes.get("class");
++    if (classAttr == null) {
++        return false;
++    }
+     final int len = classAttr.length();
+     final int wantLen = className.length();
+ 
+@@ -40,3 +43,4 @@
+ 
+     return false;
+ }
++

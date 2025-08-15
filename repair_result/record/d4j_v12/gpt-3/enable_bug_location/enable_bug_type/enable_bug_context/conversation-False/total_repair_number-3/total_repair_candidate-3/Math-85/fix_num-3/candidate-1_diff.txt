@@ -1,0 +1,60 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+         double initial, double lowerBound, double upperBound, 
+         int maximumIterations) throws ConvergenceException, 
+         FunctionEvaluationException {
+-    
++
+     if (function == null) {
+         throw MathRuntimeException.createIllegalArgumentException("function is null");
+     }
+@@ -17,21 +17,29 @@
+     }
+     double a = initial;
+     double b = initial;
+-    double fa;
+-    double fb;
+-    int numIterations = 0 ;
++    double fa = function.value(a);
++    double fb = function.value(b);
++    int numIterations = 0;
++
++    // If initial point already brackets root, return immediately
++    if (fa * fb < 0.0) {
++        return new double[] {a, b};
++    }
+ 
+     do {
+-        a = Math.max(a - 1.0, lowerBound);
+-        b = Math.min(b + 1.0, upperBound);
+-        fa = function.value(a);
+-        
+-        fb = function.value(b);
+-        numIterations++ ;
++        if (a > lowerBound) {
++            a = Math.max(a - 1.0, lowerBound);
++            fa = function.value(a);
++        }
++        if (b < upperBound) {
++            b = Math.min(b + 1.0, upperBound);
++            fb = function.value(b);
++        }
++        numIterations++;
+     } while ((fa * fb > 0.0) && (numIterations < maximumIterations) && 
+             ((a > lowerBound) || (b < upperBound)));
+ 
+-    if (fa * fb >= 0.0 ) {
++    if (fa * fb >= 0.0) {
+         throw new ConvergenceException(
+                   "number of iterations={0}, maximum iterations={1}, " +
+                   "initial={2}, lower bound={3}, upper bound={4}, final a value={5}, " +
+@@ -39,6 +47,7 @@
+                   numIterations, maximumIterations, initial,
+                   lowerBound, upperBound, a, b, fa, fb);
+     }
+-    
++
+     return new double[]{a, b};
+ }
++

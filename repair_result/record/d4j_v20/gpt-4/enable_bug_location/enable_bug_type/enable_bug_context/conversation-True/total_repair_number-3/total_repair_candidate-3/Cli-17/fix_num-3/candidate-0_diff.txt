@@ -1,0 +1,22 @@
+--- 
++++ 
+@@ -12,13 +12,13 @@
+             if (currentOption.hasArg() && (token.length() != (i + 1)))
+             {
+                 tokens.add(token.substring(i + 1));
+-
+                 break;
+             }
+         }
+         else if (stopAtNonOption)
+         {
+             process(token.substring(i));
++            break;
+         }
+         else
+         {
+@@ -27,3 +27,4 @@
+         }
+     }
+ }
++

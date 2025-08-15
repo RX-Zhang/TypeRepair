@@ -1,0 +1,49 @@
+--- 
++++ 
+@@ -42,7 +42,7 @@
+ 
+   if (value.isFunction()) {
+     Node callNode = reference.getParent();
+-    if (reference.getParent().isCall()) {
++    if (callNode.isCall()) {
+       CodingConvention convention = compiler.getCodingConvention();
+       // Bug 2388531: Don't inline subclass definitions into class defining
+       // calls as this confused class removing logic.
+@@ -53,10 +53,36 @@
+       }
+ 
+       // issue 668: Don't inline singleton getter methods
+-      // calls as this confused class removing logic.
++      // Don't inline singleton getter methods as this confuses class removing logic.
++      if (isSingletonGetterCall(callNode)) {
++        return false;
++      }
+     }
+   }
+ 
+   return canMoveAggressively(value) ||
+       canMoveModerately(initialization, reference);
+ }
++
++/**
++ * Returns true if the call node is a singleton getter call.
++ */
++private boolean isSingletonGetterCall(Node callNode) {
++  CodingConvention convention = compiler.getCodingConvention();
++  String singletonGetter = convention.getSingletonGetterClassName();
++  if (callNode.isCall()) {
++    Node callee = callNode.getFirstChild();
++    if (callee.isGetProp()) {
++      String propName = callee.getLastChild().getString();
++      if ("getInstance".equals(propName)) {
++        Node target = callee.getFirstChild();
++        // Check if target is a known singleton class
++        if (target.isName()) {
++          return singletonGetter != null && singletonGetter.equals(target.getString());
++        }
++      }
++    }
++  }
++  return false;
++}
++

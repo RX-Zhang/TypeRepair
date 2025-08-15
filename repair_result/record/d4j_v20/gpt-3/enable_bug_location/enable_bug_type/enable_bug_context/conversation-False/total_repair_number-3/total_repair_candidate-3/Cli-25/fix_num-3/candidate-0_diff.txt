@@ -1,0 +1,17 @@
+--- 
++++ 
+@@ -33,7 +33,8 @@
+             return sb;
+         }
+         
+-        if ( (text.length() > width) && (pos == nextLineTabStop - 1) ) 
++        // Corrected logical condition to handle the case where the text length is greater than width
++        if ( (text.length() > width) && (pos >= nextLineTabStop) ) 
+         {
+             pos = width;
+         }
+@@ -41,3 +42,4 @@
+         sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);
+     }
+ }
++

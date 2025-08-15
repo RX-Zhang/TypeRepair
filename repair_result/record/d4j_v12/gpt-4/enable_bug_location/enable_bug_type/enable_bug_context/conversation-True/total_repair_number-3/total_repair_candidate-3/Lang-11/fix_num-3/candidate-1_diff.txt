@@ -1,0 +1,78 @@
+--- 
++++ 
+@@ -14,18 +14,24 @@
+             end = chars.length;
+         } else {
+             if (!letters && !numbers) {
++                start = 0;
+                 end = Integer.MAX_VALUE;
+             } else {
+-                end = 'z' + 1;
+-                start = ' ';                
++                start = ' ';
++                end = 'z' + 1;                
+             }
+         }
+     }
+ 
++    if (end <= start) {
++        throw new IllegalArgumentException("Parameter end (" + end + ") must be greater than start (" + start + ")");
++    }
++
+     char[] buffer = new char[count];
+     int gap = end - start;
++    int countCopy = count;
+ 
+-    while (count-- != 0) {
++    while (countCopy-- != 0) {
+         char ch;
+         if (chars == null) {
+             ch = (char) (random.nextInt(gap) + start);
+@@ -36,32 +42,33 @@
+                 || numbers && Character.isDigit(ch)
+                 || !letters && !numbers) {
+             if(ch >= 56320 && ch <= 57343) {
+-                if(count == 0) {
+-                    count++;
++                if(countCopy == 0) {
++                    countCopy++;
+                 } else {
+                     // low surrogate, insert high surrogate after putting it in
+-                    buffer[count] = ch;
+-                    count--;
+-                    buffer[count] = (char) (55296 + random.nextInt(128));
++                    buffer[countCopy] = ch;
++                    countCopy--;
++                    buffer[countCopy] = (char) (55296 + random.nextInt(128));
+                 }
+             } else if(ch >= 55296 && ch <= 56191) {
+-                if(count == 0) {
+-                    count++;
++                if(countCopy == 0) {
++                    countCopy++;
+                 } else {
+                     // high surrogate, insert low surrogate before putting it in
+-                    buffer[count] = (char) (56320 + random.nextInt(128));
+-                    count--;
+-                    buffer[count] = ch;
++                    buffer[countCopy] = (char) (56320 + random.nextInt(128));
++                    countCopy--;
++                    buffer[countCopy] = ch;
+                 }
+             } else if(ch >= 56192 && ch <= 56319) {
+-                // private high surrogate, no effing clue, so skip it
+-                count++;
++                // private high surrogate, skip it
++                countCopy++;
+             } else {
+-                buffer[count] = ch;
++                buffer[countCopy] = ch;
+             }
+         } else {
+-            count++;
++            countCopy++;
+         }
+     }
+     return new String(buffer);
+ }
++

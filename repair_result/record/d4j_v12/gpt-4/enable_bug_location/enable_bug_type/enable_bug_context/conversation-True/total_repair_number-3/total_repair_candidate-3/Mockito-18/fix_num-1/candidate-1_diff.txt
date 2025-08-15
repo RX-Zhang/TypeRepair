@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -1,5 +1,7 @@
+ Object returnValueFor(Class<?> type) {
+-    if (Primitives.isPrimitiveOrWrapper(type)) {
++    if (type == Iterable.class) {
++        return new LinkedList<>();
++    } else if (Primitives.isPrimitiveOrWrapper(type)) {
+         return Primitives.defaultValueForPrimitiveOrWrapper(type);
+         //new instances are used instead of Collections.emptyList(), etc.
+         //to avoid UnsupportedOperationException if code under test modifies returned collection
+@@ -35,3 +37,4 @@
+     //Let's not care about the rest of collections.
+     return null;
+ }
++

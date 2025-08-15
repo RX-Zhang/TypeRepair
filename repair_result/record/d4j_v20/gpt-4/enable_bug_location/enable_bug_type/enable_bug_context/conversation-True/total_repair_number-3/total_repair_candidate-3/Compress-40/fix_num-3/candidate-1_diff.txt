@@ -1,0 +1,34 @@
+--- 
++++ 
+@@ -10,20 +10,20 @@
+         if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+             bitsCached |= (nextByte << bitsCachedSize);
+         } else {
+-            bitsCached <<= 8;
+-            bitsCached |= nextByte;
++            bitsCached = (bitsCached << 8) | nextByte;
+         }
+         bitsCachedSize += 8;
+     }
+-        // bitsCachedSize >= 57 and left-shifting it 8 bits would cause an overflow
+-    
++
+     final long bitsOut;
+-        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+-            bitsOut = (bitsCached & MASKS[count]);
+-            bitsCached >>>= count;
+-        } else {
+-            bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
+-        }
+-        bitsCachedSize -= count;
++    if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
++        bitsOut = bitsCached & MASKS[count];
++        bitsCached >>>= count;
++    } else {
++        bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
++        bitsCached &= MASKS[bitsCachedSize - count]; // clear out the bits we just read
++    }
++    bitsCachedSize -= count;
+     return bitsOut;
+ }
++

@@ -1,0 +1,31 @@
+--- 
++++ 
+@@ -30,6 +30,12 @@
+     }
+ 
+     // Functions in the "Math" namespace have no side effects.
++    if (nameNode.getFirstChild().getType() == Token.NAME) {
++      String namespace = nameNode.getFirstChild().getString();
++      if ("Math".equals(namespace)) {
++        return false;
++      }
++    }
+ 
+     if (compiler != null && !compiler.hasRegExpGlobalReferences()) {
+       if (nameNode.getFirstChild().getType() == Token.REGEXP
+@@ -41,11 +47,13 @@
+         Node param = nameNode.getNext();
+         if (param != null &&
+             (param.getType() == Token.STRING
+-                || param.getType() == Token.REGEXP))
+-        return false;
++                || param.getType() == Token.REGEXP)) {
++          return false;
++        }
+       }
+     }
+   }
+ 
+   return true;
+ }
++

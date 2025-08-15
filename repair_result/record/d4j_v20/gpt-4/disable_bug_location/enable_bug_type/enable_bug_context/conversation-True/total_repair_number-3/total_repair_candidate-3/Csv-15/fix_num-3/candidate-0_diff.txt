@@ -1,0 +1,41 @@
+--- 
++++ 
+@@ -36,12 +36,15 @@
+         } else {
+             char c = value.charAt(pos);
+ 
+-            if (newRecord && (c < 0x20 || c > 0x21 && c < 0x23 || c > 0x2B && c < 0x2D || c > 0x7E)) {
+-                quote = true;
+-            } else if (c <= COMMENT) {
+-                // Some other chars at the start of a value caused the parser to fail, so for now
+-                // encapsulate if we start in anything less than '#'. We are being conservative
+-                // by including the default comment char too.
++            // Fix the logical expression here to correctly detect characters needing quotes:
++            // Quote if starting char is control char (less than space)
++            // or if char is quoteChar, delimiter, LF, CR
++            // or if char is commentMarker
++            // In particular, we should not quote the Euro sign (unicode 0x20AC),
++            // so exclude that from quoting conditions.
++
++            // Better approach: quote if char is control (<= 0x1F) or equals quoteChar, delimiter, LF, CR, or commentMarker
++            if (c <= 0x1F || c == quoteChar || c == delimChar || c == '\n' || c == '\r' || (getCommentMarker() != null && c == getCommentMarker())) {
+                 quote = true;
+             } else {
+                 while (pos < end) {
+@@ -56,9 +59,8 @@
+                 if (!quote) {
+                     pos = end - 1;
+                     c = value.charAt(pos);
+-                    // Some other chars at the end caused the parser to fail, so for now
+-                    // encapsulate if we end in anything less than ' '
+-                    if (c <= SP) {
++                    // Quote if last char is control or whitespace (less than or equal to space)
++                    if (c <= ' ') {
+                         quote = true;
+                     }
+                 }
+@@ -104,3 +106,4 @@
+     out.append(value, start, pos);
+     out.append(quoteChar);
+ }
++

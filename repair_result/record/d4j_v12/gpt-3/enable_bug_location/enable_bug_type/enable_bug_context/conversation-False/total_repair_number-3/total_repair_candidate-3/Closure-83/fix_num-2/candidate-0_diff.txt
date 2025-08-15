@@ -1,0 +1,23 @@
+--- 
++++ 
+@@ -2,7 +2,7 @@
+   String param = params.getParameter(0);
+ 
+   if (param == null) {
+-    setter.addValue(true);
++    setter.addValue(false); // Changed to false to reflect the absence of a valid parameter
+     return 0;
+   } else {
+     String lowerParam = param.toLowerCase();
+@@ -11,9 +11,10 @@
+     } else if (FALSES.contains(lowerParam)) {
+       setter.addValue(false);
+     } else {
+-      setter.addValue(true);
++      setter.addValue(true); // This line may need to be reviewed based on intended behavior
+       return 0;
+     }
+     return 1;
+   }
+ }
++

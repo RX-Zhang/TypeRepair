@@ -1,0 +1,18 @@
+public int read() throws IOException {
+    int current = super.read();
+    if (current == '\n' || current == '\r') {
+        lineCounter++;
+        // Handle \r\n as a single line break by consuming the \n after \r
+        if (current == '\r') {
+            int next = super.read();
+            if (next != '\n') {
+                // If next char is not \n, reset lastChar to next as it's not part of newline
+                if (next != -1) {
+                    super.unread(next);
+                }
+            }
+        }
+    }
+    lastChar = current;
+    return lastChar;
+}

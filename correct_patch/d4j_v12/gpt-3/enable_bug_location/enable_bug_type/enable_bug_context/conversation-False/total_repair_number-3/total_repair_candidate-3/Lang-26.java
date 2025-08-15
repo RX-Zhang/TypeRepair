@@ -1,0 +1,8 @@
+public String format(Date date) {
+    Calendar c = new GregorianCalendar(mTimeZone);
+    c.setTime(date);
+    // Adjust the week of the year to match ISO 8601 standards
+    c.setFirstDayOfWeek(Calendar.MONDAY);
+    c.setMinimalDaysInFirstWeek(4);
+    return applyRules(c, new StringBuffer(mMaxLengthEstimate)).toString();
+}

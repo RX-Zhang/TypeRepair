@@ -1,0 +1,28 @@
+--- 
++++ 
+@@ -9,6 +9,20 @@
+ 
+     if (buffer[start] == 0) {
+         return 0L;
++    }
++
++    // Check for embedded NULs or spaces inside the field, which are invalid
++    for (int i = start; i < end; i++) {
++        if (buffer[i] == 0 && i != end - 1) {
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, i, buffer[i])
++            );
++        }
++        if (buffer[i] == ' ' && i != end - 1) {
++            throw new IllegalArgumentException(
++                exceptionMessage(buffer, offset, length, i, buffer[i])
++            );
++        }
+     }
+ 
+     // Skip leading spaces
+@@ -46,3 +60,4 @@
+ 
+     return result;
+ }
++

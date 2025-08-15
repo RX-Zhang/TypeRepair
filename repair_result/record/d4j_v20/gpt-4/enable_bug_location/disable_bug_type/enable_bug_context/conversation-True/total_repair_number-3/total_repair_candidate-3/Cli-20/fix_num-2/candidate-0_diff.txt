@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -39,7 +39,7 @@
+             }
+             else if (options.hasOption(token))
+             {
+-                tokens.add(token);
++                processOptionToken(token, stopAtNonOption);
+             }
+             // requires bursting
+             else
+@@ -61,3 +61,4 @@
+ 
+     return (String[]) tokens.toArray(new String[tokens.size()]);
+ }
++

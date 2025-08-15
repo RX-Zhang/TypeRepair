@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -14,7 +14,6 @@
+          *    revisited if this causes problems.
+          */
+         if (serializationType == null) {
+-              serializationType = TypeFactory.type(am.getGenericType(), _beanDesc.getType());
+             serializationType = declaredType;
+         }
+         JavaType ct = serializationType.getContentType();
+@@ -51,7 +50,10 @@
+         } else {
+             valueToSuppress = getDefaultValue(actualType);
+         }
+-        if (valueToSuppress == null) {
++        if (valueToSuppress == NO_DEFAULT_MARKER) {
++            suppressNulls = true;
++            valueToSuppress = null;
++        } else if (valueToSuppress == null) {
+             suppressNulls = true;
+         } else {
+             if (valueToSuppress.getClass().isArray()) {
+@@ -102,3 +104,4 @@
+     }
+     return bpw;
+ }
++

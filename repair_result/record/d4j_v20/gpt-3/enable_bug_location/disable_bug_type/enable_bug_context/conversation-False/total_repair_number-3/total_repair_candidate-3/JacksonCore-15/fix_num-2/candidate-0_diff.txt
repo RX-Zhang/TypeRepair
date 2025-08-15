@@ -1,0 +1,45 @@
+--- 
++++ 
+@@ -21,21 +21,22 @@
+                 _exposedContext = null;
+                 if (ctxt.inArray()) {
+                     t = delegate.getCurrentToken();
+-s this guaranteed to work without further checks?
+-                      if (t != JsonToken.START_ARRAY) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-
+-                // Almost! Most likely still have the current token;
+-                // with the sole exception of 
+-                /*
+-                t = delegate.getCurrentToken();
+-                if (t != JsonToken.FIELD_NAME) {
+-                    _currToken = t;
+-                    return t;
+-                }
+-                */
++                    // Is this guaranteed to work without further checks?
++                    if (t != JsonToken.START_ARRAY) {
++                        _currToken = t;
++                        return t;
++                    }
++
++                    // Almost! Most likely still have the current token;
++                    // with the sole exception of 
++                    /*
++                    t = delegate.getCurrentToken();
++                    if (t != JsonToken.FIELD_NAME) {
++                        _currToken = t;
++                        return t;
++                    }
++                    */
++                }
+                 break;
+             }
+             // If not, traverse down the context chain
+@@ -210,3 +211,4 @@
+     // We get here if token was not yet found; offlined handling
+     return _nextToken2();
+ }
++

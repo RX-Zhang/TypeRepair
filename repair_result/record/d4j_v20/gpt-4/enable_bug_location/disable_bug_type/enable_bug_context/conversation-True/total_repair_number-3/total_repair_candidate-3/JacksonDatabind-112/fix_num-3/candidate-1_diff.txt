@@ -1,0 +1,36 @@
+--- 
++++ 
+@@ -5,10 +5,16 @@
+     JsonDeserializer<Object> delegate = null;
+     if (_valueInstantiator != null) {
+         // [databind#2324]: check both array-delegating and delegating
+-        AnnotatedWithParams delegateCreator = _valueInstantiator.getDelegateCreator();
+-        if (delegateCreator != null) {
+-            JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
++        AnnotatedWithParams arrayDelegateCreator = _valueInstantiator.getArrayDelegateCreator();
++        if (arrayDelegateCreator != null) {
++            JavaType delegateType = _valueInstantiator.getArrayDelegateType(ctxt.getConfig());
+             delegate = findDeserializer(ctxt, delegateType, property);
++        } else {
++            AnnotatedWithParams delegateCreator = _valueInstantiator.getDelegateCreator();
++            if (delegateCreator != null) {
++                JavaType delegateType = _valueInstantiator.getDelegateType(ctxt.getConfig());
++                delegate = findDeserializer(ctxt, delegateType, property);
++            }
+         }
+     }
+     JsonDeserializer<?> valueDeser = _valueDeserializer;
+@@ -17,7 +23,7 @@
+         // [databind#125]: May have a content converter
+         valueDeser = findConvertingContentDeserializer(ctxt, property, valueDeser);
+         if (valueDeser == null) {
+-        // And we may also need to get deserializer for String
++            // And we may also need to get deserializer for String
+             valueDeser = ctxt.findContextualValueDeserializer(valueType, property);
+         }
+     } else { // if directly assigned, probably not yet contextual, so:
+@@ -33,3 +39,4 @@
+     }
+     return withResolved(delegate, valueDeser, nuller, unwrapSingle);
+ }
++

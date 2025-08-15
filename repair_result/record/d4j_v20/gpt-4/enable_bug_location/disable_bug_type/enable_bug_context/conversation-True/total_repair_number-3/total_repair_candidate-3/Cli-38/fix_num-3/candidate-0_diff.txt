@@ -1,0 +1,27 @@
+--- 
++++ 
+@@ -6,9 +6,19 @@
+         return false;
+     }
+ 
+-    // remove leading "-" and "=value"
+-    int pos = token.indexOf("=");
+-    String optName = pos == -1 ? token.substring(1) : token.substring(1, pos);
+-    return options.hasShortOption(optName);
+-    // check for several concatenated short options
++    // use handleShortAndLongOption to validate the token properly
++    String t = token.substring(1);
++    int pos = t.indexOf("=");
++
++    if (pos == -1)
++    {
++        return options.hasShortOption(t) || !options.getMatchingOptions(t).isEmpty() || // short or long option without '='
++               t.length() > 1; // possibly concatenated short options
++    }
++    else
++    {
++        String optName = t.substring(0, pos);
++        return options.hasShortOption(optName) || isJavaProperty(optName);
++    }
+ }
++

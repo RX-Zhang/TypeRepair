@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -11,8 +11,12 @@
+     case Token.BITNOT:
+     case Token.BITOR:
+     case Token.BITXOR:
++    case Token.ADD:  // Added Token.ADD to allow '+' operator for string concatenation and numeric addition
++      Node left = val.getFirstChild();
++      Node right = left != null ? left.getNext() : null;
++      return isValidDefineValue(left, defines) && isValidDefineValue(right, defines);
+ 
+-    // Uniary operators are valid if the child is valid.
++    // Unary operators are valid if the child is valid.
+     case Token.NOT:
+     case Token.NEG:
+       return isValidDefineValue(val.getFirstChild(), defines);
+@@ -26,3 +30,4 @@
+   }
+   return false;
+ }
++

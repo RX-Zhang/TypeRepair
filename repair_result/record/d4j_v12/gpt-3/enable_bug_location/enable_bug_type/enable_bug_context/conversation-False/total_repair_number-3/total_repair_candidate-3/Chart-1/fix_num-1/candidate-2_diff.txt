@@ -1,0 +1,16 @@
+--- 
++++ 
+@@ -5,7 +5,7 @@
+     }
+     int index = this.plot.getIndexOf(this);
+     CategoryDataset dataset = this.plot.getDataset(index);
+-    if (dataset != null) {
++    if (dataset == null) { // Fixed logical error: should check if dataset is null, not if it is non-null
+         return result;
+     }
+     int seriesCount = dataset.getRowCount();
+@@ -31,3 +31,4 @@
+     }
+     return result;
+ }
++

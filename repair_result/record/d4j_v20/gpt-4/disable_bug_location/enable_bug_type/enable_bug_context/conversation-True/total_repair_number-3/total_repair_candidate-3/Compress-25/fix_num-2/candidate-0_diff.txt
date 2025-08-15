@@ -1,0 +1,13 @@
+--- 
++++ 
+@@ -8,4 +8,10 @@
+     this.allowStoredEntriesWithDataDescriptor =
+         allowStoredEntriesWithDataDescriptor;
+     // haven't read anything so far
++    current = null;
++    closed = false;
++    hitCentralDirectory = false;
++    lastStoredEntry = null;
++    entriesRead = 0;
+ }
++

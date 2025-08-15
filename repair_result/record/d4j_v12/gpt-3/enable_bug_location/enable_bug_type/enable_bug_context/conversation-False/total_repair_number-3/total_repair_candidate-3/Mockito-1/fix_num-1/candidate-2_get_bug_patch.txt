@@ -1,0 +1,44 @@
+public void captureArgumentsFrom(Invocation invocation) {
+    try {
+        if (invocation.getMethod().isVarArgs()) {
+            int indexOfVararg = invocation.getRawArguments().length - 1;
+            // Assuming we want to handle varargs properly, 
+            // we should capture arguments instead of throwing an exception
+            Object[] varargs = invocation.getRawArguments()[indexOfVararg];
+            for (int i = 0; i < Array.getLength(varargs); i++) {
+                // Capture each vararg element
+                for (Matcher m : matchers) {
+                    if (m instanceof CapturesArguments) {
+                        ((CapturesArguments) m).captureFrom(Array.get(varargs, i));
+                    }
+                }
+            }
+            return; // Exit early after handling varargs
+        } else {
+            for (int position = 0; position < matchers.size(); position++) {
+                Matcher m = matchers.get(position);
+                if (m instanceof CapturesArguments && invocation.getRawArguments().length > position) {
+                    ((CapturesArguments) m).captureFrom(invocation.getArgumentAt(position, Object.class));
+                }
+            }
+        }
+
+        for (int position = 0; position < matchers.size(); position++) {
+            Matcher m = matchers.get(position);
+            if (m instanceof CapturesArguments && invocation.getRawArguments().length > position) {
+                if (isVariableArgument(invocation, position) && isVarargMatcher(m)) {
+                    Object array = invocation.getRawArguments()[position];
+                    for (int i = 0; i < Array.getLength(array); i++) {
+                        ((CapturesArguments) m).captureFrom(Array.get(array, i));
+                    }
+                    return; // Exit after capturing varargs
+                } else {
+                    ((CapturesArguments) m).captureFrom(invocation.getRawArguments()[position]);
+                }
+            }
+        }
+    } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+        // Handle possible runtime errors gracefully
+        throw new RuntimeException("Error capturing arguments: " + e.getMessage(), e);
+    }
+}

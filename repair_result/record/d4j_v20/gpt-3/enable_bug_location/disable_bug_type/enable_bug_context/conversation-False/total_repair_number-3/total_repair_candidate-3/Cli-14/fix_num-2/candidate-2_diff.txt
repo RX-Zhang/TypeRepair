@@ -1,0 +1,21 @@
+--- 
++++ 
+@@ -43,4 +43,18 @@
+         final Option option = (Option) i.next();
+         option.validate(commandLine);
+     }
++
++    // Fix for ClassCastException: Ensure cl.getValue returns a String
++    for (final Iterator i = options.iterator(); i.hasNext();) {
++        final Option option = (Option) i.next();
++        if (commandLine.hasOption(option)) {
++            Object value = commandLine.getValue(option);
++            if (value instanceof File) {
++                // Convert File to String
++                value = ((File) value).getPath();
++            }
++            commandLine.setValue(option, value);
++        }
++    }
+ }
++

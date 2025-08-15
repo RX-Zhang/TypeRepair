@@ -1,0 +1,18 @@
+--- 
++++ 
+@@ -12,6 +12,10 @@
+                         +") returned true for 'canCreateUsingDelegate()', but null for 'getDelegateType()'");
+             }
+             delegateDeser = findDeserializer(ctxt, delegateType, property);
++            // Defensive check: if delegate deserializer is null, find fallback deserializer
++            if (delegateDeser == null) {
++                delegateDeser = ctxt.findNonContextualValueDeserializer(delegateType);
++            }
+         }
+     }
+     // [databind#1043]: allow per-property allow-wrapping of single overrides:
+@@ -37,3 +41,4 @@
+     }
+     return withResolved(delegateDeser, valueDeser, valueTypeDeser, unwrapSingle);
+ }
++

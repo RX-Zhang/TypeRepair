@@ -1,0 +1,7 @@
+public String format(Date date) {
+    Calendar c = new GregorianCalendar(mTimeZone);
+    c.setTime(date);
+    // Adjust the week number based on the locale's first day of the week
+    c.setFirstDayOfWeek(Calendar.MONDAY); // Assuming Monday as the first day of the week for 'sv_SE'
+    return applyRules(c, new StringBuffer(mMaxLengthEstimate)).toString();
+}

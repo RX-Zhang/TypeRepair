@@ -1,0 +1,4 @@
+Test failure 1:
+- Test: com.fasterxml.jackson.databind.deser.creators.CreatorWithNamingStrategyTest.testSnakeCaseWithOneArg
+- Error: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Invalid definition for property `param_name0` (of type `com.fasterxml.jackson.databind.deser.creators.CreatorWithNamingStrategyTest$OneProperty`): Could not find creator property with name 'param_name0' (known Creator properties: [paramName0])
+- Location:         OneProperty actual = MAPPER.readValue(

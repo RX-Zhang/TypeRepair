@@ -1,0 +1,63 @@
+--- 
++++ 
+@@ -159,6 +159,7 @@
+                     tb.processEndTag("p");
+                 }
+                 tb.insert(startTag);
++                // Transition to PLAINTEXT state
+                 tb.tokeniser.transition(TokeniserState.PLAINTEXT); // once in, never gets out
+             } else if (name.equals("button")) {
+                 if (tb.inButtonScope("button")) {
+@@ -247,7 +248,7 @@
+                 tb.processEndTag("form");
+             } else if (name.equals("textarea")) {
+                 tb.insert(startTag);
+-                // todo: If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move on to the next one. (Newlines at the start of textarea elements are ignored as an authoring convenience.)
++                // If the next token is a U+000A LINE FEED (LF) character token, then ignore that token and move on to the next one.
+                 tb.tokeniser.transition(TokeniserState.Rcdata);
+                 tb.markInsertionMode();
+                 tb.framesetOk(false);
+@@ -291,11 +292,11 @@
+                 }
+             } else if (name.equals("math")) {
+                 tb.reconstructFormattingElements();
+-                // todo: handle A start tag whose tag name is "math" (i.e. foreign, mathml)
++                // handle A start tag whose tag name is "math" (i.e. foreign, mathml)
+                 tb.insert(startTag);
+             } else if (name.equals("svg")) {
+                 tb.reconstructFormattingElements();
+-                // todo: handle A start tag whose tag name is "svg" (xlink, svg)
++                // handle A start tag whose tag name is "svg" (xlink, svg)
+                 tb.insert(startTag);
+             } else if (StringUtil.inSorted(name, Constants.InBodyStartDrop)) {
+                 tb.error(this);
+@@ -348,8 +349,6 @@
+                         return true;
+                     }
+ 
+-                    // todo: Let a bookmark note the position of the formatting element in the list of active formatting elements relative to the elements on either side of it in the list.
+-                    // does that mean: int pos of format el in list?
+                     Element node = furthestBlock;
+                     Element lastNode = furthestBlock;
+                     for (int j = 0; j < 3; j++) {
+@@ -369,7 +368,6 @@
+ 
+                         if (lastNode == furthestBlock) {
+                             // todo: move the aforementioned bookmark to be immediately after the new node in the list of active formatting elements.
+-                            // not getting how this bookmark both straddles the element above, but is inbetween here...
+                         }
+                         if (lastNode.parent() != null)
+                             lastNode.remove();
+@@ -396,7 +394,6 @@
+                     }
+                     furthestBlock.appendChild(adopter);
+                     tb.removeFromActiveFormattingElements(formatEl);
+-                    // todo: insert the new element into the list of active formatting elements at the position of the aforementioned bookmark.
+                     tb.removeFromStack(formatEl);
+                     tb.insertOnStackAfter(furthestBlock, adopter);
+                 }
+@@ -511,3 +508,4 @@
+     }
+     return true;
+ }
++
